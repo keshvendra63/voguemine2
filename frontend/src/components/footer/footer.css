@@ -1,0 +1,36 @@
+.footer{
+    padding: 50px 0 10px 0;
+    background: black;
+    margin-top: 50px;
+    position: relative;
+}
+.footer Col{
+margin-top: 50px;
+}
+.footer h2{
+    font-size: 20px;
+    color: white;
+}
+.footer ul{
+padding-left: 0;
+margin-top: 15px;
+}
+.footer ul li{
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: rgb(232, 232, 232);
+}
+ .footer ul ul{
+    display: flex;
+ }
+ .footer ul ul li{
+    margin-right: 10px;
+ }
+.footer ul li a{
+    color: rgb(232, 232, 232);
+} 
+.footer p{
+    text-align: center;
+    color: white;
+
+}

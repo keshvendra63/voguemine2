@@ -1,0 +1,144 @@
+.categoryPage{
+    max-width: 100vw;
+}
+.categoryPage .category-banner{
+    max-width: 100%;
+    height: 50vh;
+}
+.categoryPage .category-banner img{
+    width: 100%;
+    height: 100%;
+}
+.categoryPage .collections{
+    margin:50px 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 30px;
+}
+.categoryPage .collections .collection-card{
+    width: auto;
+    text-align: center;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+.categoryPage .collections .collection-card img{
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 8px 8px 0 0;
+    padding: 10px;
+}
+.categoryPage .collections .collection-card h2{
+    font-size: 22px;
+    padding: 10px 0;
+    color: rgb(91, 91, 91);
+}
+.categoryPage .about{
+    margin: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.categoryPage .about .left-about img{
+    width: 100%;
+    height: 500px;
+}
+.categoryPage .about .right-about{
+    padding: 10px 50px;
+}
+.categoryPage .about .right-about h1{
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+.categoryPage .about .right-about p{
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+.categoryPage .about .right-about .about-content{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+}
+.employees{
+    margin: 50px;
+    text-align: center;
+}
+.owners{
+    margin: 50px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 50px;
+    text-align: center;
+}
+.owners img{
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 8px 8px 0 0;
+    padding: 5px;
+}
+.owners .ownercard{
+    border-radius: 8px;
+    border: 1px solid grey;
+}
+.employee{
+    margin: 50px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 50px;
+    text-align: center;
+}
+.employee img{
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    padding: 5px;
+}
+.employee .employee-card{
+    border-radius: 8px;
+}
+@media screen and (max-width:950px) {
+    .categoryPage .collections{
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .categoryPage .category-banner{
+        height: 30vh;
+    }
+    .categoryPage .about{
+        margin: 50px;
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    .categoryPage .about .left-about img{
+        width: 100%;
+        height: 400px;
+    }
+    .employee{
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 50px;
+    }
+}
+@media screen and (max-width:650px) {
+    .categoryPage .collections{
+        margin:50px 20px;
+        grid-gap: 15px;
+    }
+    .categoryPage .about{
+        margin: 50px 25px;
+    }
+    .categoryPage .about .right-about{
+        padding: 0;
+    }
+    .employees{
+        margin: 50px 25px;
+    }
+    .owners{
+        grid-template-columns: 1fr;
+        grid-gap: 50px;
+        text-align: center;
+    }
+    .employee{
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 30px;
+    }
+}

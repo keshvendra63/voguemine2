@@ -1,0 +1,35 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+li a{
+    color: black;
+    text-decoration: none;
+    box-shadow: none;
+}
+Link h2{
+    text-decoration: none;
+}
+a{
+    text-decoration: none;
+}
+li a:hover{
+    box-shadow: none;
+}
+.container{
+    margin:0 50px;
+}
+div a:hover{
+ box-shadow: none;
+}
+div a{
+    text-decoration: none;
+}

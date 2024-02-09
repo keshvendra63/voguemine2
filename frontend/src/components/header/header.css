@@ -1,0 +1,256 @@
+.header{
+    position:fixed;
+    top: 0;
+    width: 100vw;
+    padding: 10px 30px;
+    font-family: 'Montserrat', sans-serif;
+    z-index: 4;
+}
+.search{
+    margin: 10px auto;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+}
+.search input{
+    padding: 10px 20px;
+    width: 100%;
+    border-radius: 25px;
+    border: none;
+    background-color: rgba(225, 225, 225, 0.758);
+}
+.header.scrolled {
+    background-color: white;
+}
+
+.headerdiv{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: repeat(3,1fr);
+
+}
+.headerdiv .head2 ul{
+    list-style: none;
+    display: flex;
+}
+.headerdiv .head2 ul li{
+    margin: 0 12px;
+}
+.headerdiv .head2 ul li a{
+    color: black;
+}
+.headerdiv .head2 ul li a:hover{
+    color: red;
+    box-shadow: none;
+
+}
+
+.head3 ul{
+    list-style: none;
+    display: flex;
+    justify-content: end;
+}
+.headerdiv .head3 ul li{
+    margin: 0 8px;
+    cursor: pointer;
+    color: black;
+    font-weight: 400;
+
+}
+.head3 .li-search{
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid black;
+}
+.head3 .li-search input{
+    border:none;
+    outline: none;
+    background-color: transparent;
+width: 100px;    
+}
+.head3 .li-search input::placeholder{
+    font-size: 10px;
+    transition: all 0.3s;
+    color: black;
+}
+.head3 ul li a{
+    color: black;
+}
+
+.headerdiv .head3 ul li a:hover{
+    box-shadow: none;
+
+}
+.headerdiv .head1 img{
+    width: 180px;
+}
+.headerdiv1{
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(3,1fr);
+}
+.headerdiv1 .head1 img{
+    width: 140px;
+}
+.headerdiv1 .head1{
+    text-align: center;
+}
+.headerdiv1 .head3 ul li{
+    margin: 0 5px;
+    cursor: pointer;
+    color: black;
+    font-weight: 400;
+}
+.hamburger .icon{
+    font-size: 30px;
+}
+.header1 .head2{
+    top: 0;
+    position: absolute;
+    left: -100%;
+    background-color: rgb(255, 255, 255);
+    width: 70vw;
+    height: 100vh;
+    padding: 20px;
+    transition: all 1s;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+.header1 .head2 ul{
+    list-style: none;
+    text-align: left;
+    padding: 50px 15px;
+
+}
+.header1 .head2 ul li{
+    margin: 40px 0;
+}
+.cancel-icon{
+    position: absolute;
+    right: 10px;
+}
+.header1 .head2 .head1 img{
+    width: 150px;
+    text-align: left;
+    position: absolute;
+    left: 20px;
+}
+.header1 .head2 ul li{
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+}
+.header1 .head2 ul li a{
+    margin-left: 10px;
+}
+.header1{
+    display: none;
+}
+.login{
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top:0;
+    padding-top: 50px;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.58);
+}
+.login .login-box{
+    width: 70vw;
+    height: 80vh;
+    background-color: white;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 1fr 2fr;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    position: relative;
+}
+.login .login-left{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    border-right: 1px solid black;
+    height: 100%;
+    padding: 0 20px;
+}
+.login .login-right{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding:0 20px;
+}
+.login .login-box .login-left img{
+    height: 100%;
+    width: 100%;
+}
+.login .login-box .login-right div{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+.login .login-box .login-right .password{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    background-color: rgba(218, 218, 218, 0.815);
+    border-radius: 25px;
+
+
+}
+.login .login-box .login-right .password input{
+    width: 90%;
+    background-color: transparent;
+}
+.login .login-box .login-right .password p{
+    margin-bottom: 0;
+    color: blue;
+    font-weight: bold;
+    cursor: pointer;
+}
+.login .login-right input{
+    outline: none;
+    border: none;
+    border-radius: 25px;
+    padding: 7px 20px;
+    background-color: rgba(218, 218, 218, 0.815);
+}
+.login .login-box .form-button{
+    margin-top: 20px;
+    border: 3px solid black;
+    border-radius: 25px;
+    color: black;
+    background: none;
+    padding: 5px 0;
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 8px;
+    transition: all 0.5s;
+}
+.login .login-box .form-button:hover{
+    background-color: black;
+    color: white;
+}
+@media screen and (max-width:950px) {
+    .header{
+        padding: 12px 15px;
+
+    }
+    .header1{
+        display: block;
+    }
+    .headerdiv{
+        display: none;
+    }
+    .head3 .li-search input{
+        display: none;
+    }
+
+}
