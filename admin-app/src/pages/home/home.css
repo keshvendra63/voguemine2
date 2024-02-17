@@ -1,0 +1,123 @@
+.sales{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 0 20px;
+}
+.sales .sale{
+    padding: 10px 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+}
+.sales .sale .sale-icon{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 10px;
+    padding: 5px;
+    color: white;
+}
+.sale .icon-div{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+}
+.sales .sale1 .sale-icon{
+    background-color: rgb(49, 255, 49);
+}
+.sale1 .icon-div{
+    background-color: rgba(78, 255, 78, 0.646);
+}
+
+.sales .sale2 .sale-icon{
+    background-color: rgb(255, 182, 47);
+}
+.sale2 .icon-div{
+    background-color: rgba(255, 184, 51, 0.788);
+}
+.sales .sale3 .sale-icon{
+    background-color: rgb(255, 55, 55);
+}
+.sale3 .icon-div{
+    background-color: rgba(255, 90, 90, 0.776);
+}
+.sales .sale4 .sale-icon{
+    background-color: rgb(74, 74, 255);
+}
+.sale4 .icon-div{
+    background-color: rgba(77, 77, 255, 0.753);
+}
+.sales .sale p:nth-child(1){
+    margin-bottom: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.sales .sale p:nth-child(2){
+    font-weight: bold;
+    color: rgb(132, 132, 132);
+    letter-spacing: 1px;
+}
+
+.chart-section{
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 0 20px;
+}
+.chart-section .chart{
+    background-color: white;
+    padding: 20px;
+    height: 400px;
+}
+.chart-section .chart .chart-data{
+    width: 100%;
+    height: 100%;
+}
+.chart-section .recent-orders{
+    width: 100%;
+    height: 400px;
+    background-color: white;
+}
+.chart-section .recent-orders p{
+    font-weight: bold;
+    margin: 5px auto;
+    text-align: center;
+
+}
+.chart-section .recent-orders .table{
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+}
+.chart-section .table table{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.chart-section .table thead{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    vertical-align:0;
+    padding: 7px 0;
+    border-bottom: 1px solid rgb(234, 234, 234);
+}
+.chart-section tr{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgb(234, 234, 234);
+    padding: 6px 0;
+}
