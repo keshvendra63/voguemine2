@@ -21,11 +21,13 @@ const Men = () => {
         <img src={banner} alt="" />
       </div>
       <div className="collections">
+      <Link to="/products">
         <div className="collection-card">
-            <Link to="/products">
-            <img src={img1} alt="" />
-            <h2>Men's Premium Shirts</h2></Link>
+            
+            <img src={img1} alt="" className='col-img'/>
+            <h2>Men's Premium Shirts</h2>
         </div>
+        </Link>
         <div className="collection-card">
             <img src={img2} alt="" />
             <h2>Men's T-Shirt</h2>

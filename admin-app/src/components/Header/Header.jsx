@@ -79,19 +79,19 @@ const Header = () => {
     </div>
     <div className="header2" style={{left:openNav}}>
       <ul>
-        <li onClick={() => toggleMenu('home')}><Link to="/"><HomeIcon className='nav-icon'/>Home</Link>
+        <li onClick={() => toggleMenu('home')}><Link to="/admin"><HomeIcon className='nav-icon'/>Home</Link>
         </li>
         <li onClick={() => toggleMenu('orders')}><Link to="/orders"><ListAltIcon className='nav-icon'/>Orders</Link></li>
-        <li onClick={() => toggleMenu('products')}><Link to="#"><StyleIcon className='nav-icon'/>Products</Link></li>
-        <li onClick={() => toggleMenu('collections')}><Link to="#"><StyleIcon className='nav-icon'/>Collections</Link></li>
-        <li onClick={() => toggleMenu('customers')}><Link to="#"><PersonIcon className='nav-icon'/>Customers</Link></li>
+        <li onClick={() => toggleMenu('products')}><Link to="/product"><StyleIcon className='nav-icon'/>Products</Link></li>
+        <li onClick={() => toggleMenu('collections')}><Link to="/collection"><StyleIcon className='nav-icon'/>Collections</Link></li>
+        <li onClick={() => toggleMenu('customers')}><Link to="/customer"><PersonIcon className='nav-icon'/>Customers</Link></li>
         <li onClick={() => toggleMenu('content')}><Link to="#"><ArtTrackIcon className='nav-icon'/>Content</Link></li>
         <li onClick={() => toggleMenu('analytics')}><Link to="#"><InsightsIcon className='nav-icon'/>Analytics</Link>
         <ul className='nav-menu' style={{ display: menuVisibility['analytics'] ? 'block' : 'none' }}>
           <li onClick={() => toggleMenu('analytics')}><Link to="">Reports</Link></li>
           <li onClick={() => toggleMenu('analytics')}><Link to="">Live View</Link></li>
         </ul></li>
-        <li onClick={() => toggleMenu('discount')}><Link to="#"><BalanceIcon className='nav-icon'/>Discount</Link></li>
+        <li onClick={() => toggleMenu('discount')}><Link to="/discount"><BalanceIcon className='nav-icon'/>Discount</Link></li>
       </ul>
       <p className='setting'><SettingsIcon className='nav-icon'/>Setting</p>
     </div>
