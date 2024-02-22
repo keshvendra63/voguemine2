@@ -1,18 +1,47 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import key1 from '../../images/mens-premium-shirts.jpeg'
 import key2 from '../../images/mens-hoodies.jpeg'
 import key3 from '../../images/mens-jackets.jpg'
 import key4 from '../../images/mens-track-set.jpeg'
 import main_img from '../../images/mens-premium-shirts.jpeg'
+import { useDispatch, useSelector } from 'react-redux'
+import {getAProduct } from '../../features/products/productSlice';
+import { useLocation } from 'react-router-dom';
 import './singleproduct.css'
+import { addToCart } from '../../features/user/userSlice'
+import {toast} from 'react-toastify'
 const SingleProduct = () => {
+  const [color,setColor]=useState()
+  const [quantity,setQuantity]=useState(1)
+  console.log(quantity)
+  const singleProductState=useSelector((state)=>state?.product?.getSingleProduct)
+  console.log(singleProductState)
+  const location =useLocation()
+  const getProductId=location.pathname.split("/")[2];
+  const dispatch=useDispatch();
+  useEffect(()=>{
+      getProduct()
+  },[])
+  const getProduct=()=>{
+      dispatch(getAProduct(getProductId))
+  }
+  const addTocart=(id)=>{
+    if(color===null){
+      toast.error("Please Select Color")
+      return false
+    }
+    else{
+      dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price}))
+    }
+    
+}
   return (
     <div className='single-product'>
       <div className="product">
         <div className="prdt-left">
 
             <div className="main">
-            <img src={main_img} alt="" />
+            <img src={singleProductState?.img_src} alt="" />
             </div>
             <div className="thumbs">
                 <img src={main_img} alt="" />
@@ -24,7 +53,7 @@ const SingleProduct = () => {
             </div>
         </div>
         <div className="prdt-right">
-            <h1 className="prdt-name">MEN'S BURBERRY WHITE PREMIUM QUALITY SHIRTS</h1>
+            <h1 className="product-name">{singleProductState?.Title}</h1>
             <p className="prdt-price">Rs. 1999</p>
             <div className="size prdt-variation">
                 <p>SIZE :</p>
@@ -42,19 +71,21 @@ const SingleProduct = () => {
             <div className="color prdt-variation">
                 <p>COLOR :</p>
                 <ul>
-                    <li style={{backgroundColor:'red'}}></li>
-                    <li style={{backgroundColor:'white'}}></li>
-                    <li style={{backgroundColor:'blue'}}></li>
-                    <li style={{backgroundColor:'grey'}}></li>
+                  {
+                    singleProductState?.color.map((item,index)=>{
+                      return(
+                        <li onClick={()=>setColor(item?._id)} style={{backgroundColor:item?.title}} key={index}></li>
+                      )
+                    })
+                  }
+                    
                 </ul>
             </div>
             <div className="quantity">
-                <button>-</button>
-                <p>1</p>
-                <button>+</button>
+                <input type="number" name="" min={1} max={10} id="" onChange={(e)=>setQuantity(e.target.value)} value={quantity}/>
             </div>
             <div className="buy-btn">
-                <button>ADD TO CART</button>
+                <button onClick={(e)=>{addTocart(singleProductState?._id)}}>ADD TO CART</button>
                 <button>BUY IT NOW</button>
             </div>
             <div className="prdt-desc">

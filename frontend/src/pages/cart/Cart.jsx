@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import './cart.css'
 import banner from '../../images/A21.jpg'
 import LocalMallIcon from '@mui/icons-material/LocalMall';
@@ -6,11 +6,27 @@ import prdt_img from '../../images/mens-premium-shirts.jpeg'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import {getUserCartProduct} from '../../features/user/userSlice'
+import { addToCart } from '../../features/user/userSlice';
+
 const Cart = () => {
+    const dispatch=useDispatch();
+    useEffect(()=>{
+      getCartFromDb()
+    },[])
+    const getCartFromDb=()=>{
+        dispatch(getUserCartProduct())
+    }
+    const cartState=useSelector((state)=>state?.auth?.cartProducts)
+    const carts=cartState?cartState:[]
+    const removeFromCart=(id)=>{
+      dispatch(addToCart(id))
+      setTimeout(()=>{
+        dispatch(getUserCartProduct())
+      },300)
+    }
     return (
         <div className='cart'>
             <div className="cart-banner">
@@ -20,14 +36,17 @@ const Cart = () => {
             <div className="cart-content container">
                 <div className="left-cart">
                     <hr />
-                    <div className="cart-item">
+                    {
+  carts?.map((item,index)=>{
+    return(
+                    <div className="cart-item" key={index}>
                         <div className="cartItem-left">
                             <div className="prdt-img">
-                                <img src={prdt_img} alt="" />
+                                <img src={item?.img_src} alt="" />
                             </div>
                         </div>
                         <div className="cartItem-right">
-                            <p className="prdt-name" style={{fontWeight:'bold'}}>Premium Qulaity Shirts</p>
+                            <p className="prdt-name" style={{fontWeight:'bold'}}>{item?.Title}</p>
                             <div className="second-item">
                             <div className="size">
                                 <p>Size:</p>
@@ -58,137 +77,15 @@ const Cart = () => {
                             </div>
                             <p className="price" style={{marginTop:'20px',fontWeight:'bold'}}>Rs. 1999</p>
                             <hr />
-                            <p className='remove'>Remove</p>
+                            <p className='remove' onClick={()=>removeFromCart(item?._id)}>Remove</p>
                         </div>
                         
                     </div>
-                    <div className="cart-item">
-                        <div className="cartItem-left">
-                            <div className="prdt-img">
-                                <img src={prdt_img} alt="" />
-                            </div>
-                        </div>
-                        <div className="cartItem-right">
-                            <p className="prdt-name" style={{fontWeight:'bold'}}>Premium Qulaity Shirts</p>
-                            <div className="second-item">
-                            <div className="size">
-                                <p>Size:</p>
-                                <select name="size">
-                                    <option value="S">S</option>
-                                    <option value="M">M</option>
-                                    <option value="L">L</option>
-                                    <option value="XL">XL</option>
-                                    <option value="2XL">2XL</option>
-                                    <option value="3XL">3XL</option>
-                                    <option value="4XL">4XL</option>
-                                    <option value="5XL">5XL</option>
-                                </select>
-                            </div>
-                            <div className="quantity">
-                                <p>Qty:</p>
-                                <select name="size">
-                                    <option value="S">1</option>
-                                    <option value="S">2</option>
-                                    <option value="S">3</option>
-                                    <option value="S">4</option>
-                                    <option value="S">5</option>
-                                    <option value="S">6</option>
-                                    <option value="S">7</option>
-                                    <option value="S">8</option>
-                                </select>
-                            </div>
-                            </div>
-                            <p className="price" style={{marginTop:'20px',fontWeight:'bold'}}>Rs. 1999</p>
-                            <hr />
-                            <p className='remove'>Remove</p>
-                        </div>
-                        
-                    </div>
-                    <div className="cart-item">
-                        <div className="cartItem-left">
-                            <div className="prdt-img">
-                                <img src={prdt_img} alt="" />
-                            </div>
-                        </div>
-                        <div className="cartItem-right">
-                            <p className="prdt-name" style={{fontWeight:'bold'}}>Premium Qulaity Shirts</p>
-                            <div className="second-item">
-                            <div className="size">
-                                <p>Size:</p>
-                                <select name="size">
-                                    <option value="S">S</option>
-                                    <option value="M">M</option>
-                                    <option value="L">L</option>
-                                    <option value="XL">XL</option>
-                                    <option value="2XL">2XL</option>
-                                    <option value="3XL">3XL</option>
-                                    <option value="4XL">4XL</option>
-                                    <option value="5XL">5XL</option>
-                                </select>
-                            </div>
-                            <div className="quantity">
-                                <p>Qty:</p>
-                                <select name="size">
-                                    <option value="S">1</option>
-                                    <option value="S">2</option>
-                                    <option value="S">3</option>
-                                    <option value="S">4</option>
-                                    <option value="S">5</option>
-                                    <option value="S">6</option>
-                                    <option value="S">7</option>
-                                    <option value="S">8</option>
-                                </select>
-                            </div>
-                            </div>
-                            <p className="price" style={{marginTop:'20px',fontWeight:'bold'}}>Rs. 1999</p>
-                            <hr />
-                            <p className='remove'>Remove</p>
-                        </div>
-                        
-                    </div>
-                    <div className="cart-item">
-                        <div className="cartItem-left">
-                            <div className="prdt-img">
-                                <img src={prdt_img} alt="" />
-                            </div>
-                        </div>
-                        <div className="cartItem-right">
-                            <p className="prdt-name" style={{fontWeight:'bold'}}>Premium Qulaity Shirts</p>
-                            <div className="second-item">
-                            <div className="size">
-                                <p>Size:</p>
-                                <select name="size">
-                                    <option value="S">S</option>
-                                    <option value="M">M</option>
-                                    <option value="L">L</option>
-                                    <option value="XL">XL</option>
-                                    <option value="2XL">2XL</option>
-                                    <option value="3XL">3XL</option>
-                                    <option value="4XL">4XL</option>
-                                    <option value="5XL">5XL</option>
-                                </select>
-                            </div>
-                            <div className="quantity">
-                                <p>Qty:</p>
-                                <select name="size">
-                                    <option value="S">1</option>
-                                    <option value="S">2</option>
-                                    <option value="S">3</option>
-                                    <option value="S">4</option>
-                                    <option value="S">5</option>
-                                    <option value="S">6</option>
-                                    <option value="S">7</option>
-                                    <option value="S">8</option>
-                                </select>
-                            </div>
-                            </div>
-                            <p className="price" style={{marginTop:'10px',fontWeight:'bold'}}>Rs. 1999</p>
-                            <hr />
-                            <p className='remove'>Remove</p>
-                        </div>
-                        
-                    </div>
-                    <hr />
+
+                    )
+                })
+              }
+                                  <hr/>
                     
                     <div className="total-items">
                         <p className="quantit" style={{fontWeight:'bold'}}>2 Item</p>

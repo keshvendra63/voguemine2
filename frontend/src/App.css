@@ -62,7 +62,7 @@ div a{
 .products-listing .product-list{
     max-width:100vw;
     display:grid;
-    grid-template-columns:repeat(4, 1fr);
+    grid-template-columns:repeat(3, 1fr);
     grid-gap:20px;
 }
 .products-listing .product-list .product-card{
@@ -183,11 +183,13 @@ div a{
 .products-listing .product-list .product-card .hover-details a{
     color:black;
     width:100%;
+ 
 }
 .products-listing .product-list .product-card .hover-details a button{
     width:100%;
     padding:5px 0;
     font-weight:500;
+    margin-top: 10px;
 }
 .collection-listing{
     max-width:100vw;

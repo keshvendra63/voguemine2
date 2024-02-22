@@ -24,6 +24,20 @@ export const getUserWishlistProduct=createAsyncThunk("auth/wishlist",async(thunk
         return thunkAPI.rejectWithValue(error)
     }
 })
+export const getUserCartProduct=createAsyncThunk("auth/cart/get",async(thunkAPI)=>{
+    try{
+        return await authService.getUserCart()
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+export const addToCart=createAsyncThunk("auth/cart/add",async(cartData,thunkAPI)=>{
+    try{
+        return await authService.addToCarts(cartData)
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
 const getCustomerfromLocalStorage = localStorage.getItem("customer")
   ? JSON.parse(localStorage.getItem("customer"))
   : null;
@@ -90,6 +104,34 @@ export const authSlice=createSlice({
             state.wishlist=action.payload;
 
         }).addCase(getUserWishlistProduct.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
+        })
+        builder.addCase(getUserCartProduct.pending,(state)=>{
+            state.isLoading=true;
+        }).addCase(getUserCartProduct.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.cartProducts=action.payload;
+
+        }).addCase(getUserCartProduct.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
+        })
+        .addCase(addToCart.pending,(state)=>{
+            state.isLoading=true;
+        }).addCase(addToCart.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.cartProduct=action.payload;
+            state.message="Product added to Cart";
+        }).addCase(addToCart.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;
             state.isSuccess=false;

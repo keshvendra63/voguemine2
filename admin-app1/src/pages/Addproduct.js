@@ -92,7 +92,7 @@ const Addproduct = () => {
       setColor(null);
       setTimeout(() => {
         dispatch(resetState());
-      }, 3000);
+      }, 10000);
     },
   });
   const handleColors = (e) => {
