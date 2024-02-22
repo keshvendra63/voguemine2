@@ -1,15 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import banner from '../../images/A21.jpg'
 import './product.css'
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import img from '../../images/mens-premium-shirts.jpeg'
 import img1 from '../../images/men-shirt2.jpeg'
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import {Link} from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToWishlist, getAllProducts } from '../../features/products/productSlice';
 const Products = () => {
-    
-
+    const productState=useSelector((state)=>state?.product?.product)
+    console.log(productState)
+    const dispatch=useDispatch();
+    useEffect(()=>{
+        getProducts()
+    },[])
+    const getProducts=()=>{
+        dispatch(getAllProducts())
+    }
+    const addToWish=(id)=>{
+        dispatch(addToWishlist(id))
+    }
+    const products=productState? productState :[]
     return (
         <div className='Products'>
             <div className="product-banner">
@@ -78,240 +90,31 @@ const Products = () => {
                     </div>
                     <hr />
                     <div className="all-products">
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
+                         {
+                         products.map((item,index)=>{
+                            if(item?.Title!==""){
+                                return(
+                                    <div className="product-card" key={index}>
+                                    <Link to="/product">
+                                        <div>
+                                        <img src={item.img_src} alt="" />
+                                        <img src={img1} alt="" className='second-img'/>
+                                        <Link to="#" className='quick-add'>QUICK ADD</Link>
+                                        </div>
+                                        <p className="title">{item.Title}</p>
+                                        <p className="price">Rs. 1999</p>
+                                        
+                                    </Link>
+                                    <p className='wish-icon' onClick={(e)=>{addToWish(item?._id)}}><FavoriteIcon /></p>
                                 </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
-                        <div className="product-card">
-                            <Link to="/product">
-                                <div>
-                                <img src={img} alt="" />
-                                <img src={img1} alt="" className='second-img'/>
-                                <a href="" className='quick-add'>QUICK ADD</a>
-                                </div>
-                                <p className="title">Burberry White Premium Quality Shirt</p>
-                                <p className="price">Rs. 1999</p>
-                                
-                            </Link>
-                            <p className='wish-icon'><FavoriteIcon /></p>
-                        </div>
+                                )
+                            }
+                           
+                         })}
+                            
+                        
+                       
+                       
                     </div>
                     <div className="pages">
                     <Stack spacing={2}>

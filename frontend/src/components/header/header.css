@@ -194,20 +194,7 @@ width: 100px;
     flex-direction: column;
     margin-bottom: 10px;
 }
-.login .login-box .login-right .password{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    background-color: rgba(218, 218, 218, 0.815);
-    border-radius: 25px;
 
-
-}
-.login .login-box .login-right .password input{
-    width: 90%;
-    background-color: transparent;
-}
 .login .login-box .login-right .password p{
     margin-bottom: 0;
     color: blue;
@@ -237,6 +224,10 @@ width: 100px;
 .login .login-box .form-button:hover{
     background-color: black;
     color: white;
+}
+.error{
+    color: red;
+    font-size: 10px;
 }
 @media screen and (max-width:950px) {
     .header{

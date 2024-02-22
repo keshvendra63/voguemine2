@@ -7,11 +7,12 @@ var productSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      unique:false,
     },
     slug: {
       type: String,
       required: true,
-      unique: true,
+      unique: false,
       lowercase: true,
     },
     description: {

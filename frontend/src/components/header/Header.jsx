@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import {useFormik} from 'formik'
+import * as yup from 'yup'
+import { useDispatch } from 'react-redux'
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
@@ -14,12 +17,27 @@ import AutoAwesomeMosaicOutlinedIcon from '@mui/icons-material/AutoAwesomeMosaic
 import logo from '../../images/logo.png'
 import {Link} from 'react-router-dom'
 import './header.css'
+import { registerUser,loginUser } from '../../features/user/userSlice';
 const delayExecution = (mls) => {
   return new Promise((resolve) => {
     setTimeout(() => resolve("ok"), mls);
   });
 };
+
+const signupSchema=yup.object({
+  firstname:yup.string().required("First Name is required"),
+  lastname:yup.string().required("Last Name is required"),
+  email:yup.string().email("Email should be valid").required("Email is Required"),
+  mobile:yup.string().required("Mobile number is required"),
+  password:yup.string().required("Password is required")
+})
+const loginSchema=yup.object({
+  email:yup.string().email("Email should be valid").required("Email is Required"),
+  password:yup.string().required("Password is required")
+})
+
 const Header = () => {
+
   const placeholderText = ["Search Shirts", "Search Loafers", "Search Dresses"];
   const [state, setState] = useState("");
   const [search,setSearch] =useState("none")
@@ -43,16 +61,6 @@ const Header = () => {
   },[]);
 
   const [loginForm, setLoginForm] =useState("register")
-  const [password,setPassword] = useState("password")
-  const [show,setShow] = useState("show")
-  const showClick=()=>{
-    setPassword("text")
-    setShow("Hide")
-  }
-  const hideClick=()=>{
-    setPassword("password")
-    setShow("Show")
-  }
   const loginClick=()=>{
     setLoginForm("login")
   }
@@ -72,6 +80,32 @@ const Header = () => {
   const closeClick=()=>{
     document.getElementById("head2").style.left="-100%"
   }
+
+const dispatch=useDispatch()
+const formik=useFormik({
+  initialValues:{
+    firstname:"",
+    lastname:"",
+    email:"",
+    mobile:"",
+    password:"",
+  },
+  validationSchema:signupSchema,
+  onSubmit:(values)=>{
+    dispatch(registerUser(values))
+  }
+})
+const formik1=useFormik({
+  initialValues:{
+    email:"",
+    password:"",
+  },
+  validationSchema:loginSchema,
+  onSubmit:(values)=>{
+    dispatch(loginUser(values))
+  }
+})
+
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -108,7 +142,7 @@ const Header = () => {
         <div className='head3' style={{textAlign:'right'}}>
           <ul>
             <li className='li-search'><input type="search" name="" id="" placeholder={state}/><SearchIcon /></li>
-            <li><Link to="product"><FavoriteBorderIcon/></Link></li>
+            <li><Link to="/wishlist"><FavoriteBorderIcon/></Link></li>
             <li><Link to="/cart"><LocalMallIcon/></Link></li>
             <li onClick={loginOpen}><PersonOutlineIcon/></li>
           </ul>
@@ -153,7 +187,7 @@ const Header = () => {
               <li onClick={closeClick}><Face4OutlinedIcon/><Link to="/women">Womens</Link></li>
               <li onClick={closeClick}><FaceOutlinedIcon/><Link to="/kids">Kids</Link></li>
               <li onClick={closeClick}><AutoAwesomeMosaicOutlinedIcon/><Link to="/accessories">Accessories</Link></li>
-              <li onClick={closeClick}><FavoriteBorderIcon/><Link to="/product">Wishlist</Link></li>
+              <li onClick={closeClick}><FavoriteBorderIcon/><Link to="/wishlist">Wishlist</Link></li>
               <li onClick={closeClick}><PersonOutlineIcon/><Link onClick={loginOpen}>Login/Register</Link></li>
               
             </ul>
@@ -174,35 +208,40 @@ const Header = () => {
         <div className="login-right">
             <h2 style={{textAlign:'center',marginBottom:'20px'}}>Register</h2>
             <ClearOutlinedIcon style={{position:'absolute',right:'-30px',top:'-30px',color:'white',cursor:'pointer'}} onClick={loginClose}/>
+            <form action="" onSubmit={formik.handleSubmit}>
             <div className="first-name">
-                <input type="text" name="firstname" id="first-name" placeholder=' Name'/>
+                <input type="text" name="firstname" id="first-name" placeholder='First Name' value={formik.values.firstname} onChange={formik.handleChange("firstname")} onBlur={formik.handleBlur("firstname")}/>
+                <div className="error">
+                  {formik.touched.firstname && formik.errors.firstname}
+                </div>
+            </div>
+            <div className="last-name">
+                <input type="text" name="lastname" id="last-name" placeholder='Last Name' value={formik.values.lastname} onChange={formik.handleChange("lastname")} onBlur={formik.handleBlur("lastname")}/>
+                <div className="error">
+                  {formik.touched.lastname && formik.errors.lastname}
+                </div>
             </div>
             <div className="email">
-                <input type="email" name="email" id="email" placeholder='Email'/>
+                <input type="email" name="email" id="email" placeholder='Email' value={formik.values.email} onChange={formik.handleChange("email")} onBlur={formik.handleBlur("email")}/>
+                <div className="error">
+                  {formik.touched.email && formik.errors.email}
+                </div>
             </div>
             <div className="phone-number">
-                <input type="number" name="phone" id="phone" placeholder='Phone'/>
+                <input type="number" name="mobile" id="mobile" placeholder='Mobile' value={formik.values.mobile} onChange={formik.handleChange("mobile")} onBlur={formik.handleBlur("mobile")}/>
+                <div className="error">
+                  {formik.touched.mobile && formik.errors.mobile}
+                </div>
             </div>
             <div className="password">
-                <input type={password} name="password" id="password" placeholder='Password'/>
-                {
-                  show==="Show"? <p onClick={showClick}>
-                    {
-                      password==="password"?"Show":"Hide"
-                    }
-                  </p> :  <p onClick={hideClick}>
-                  {
-                      password==="password"?"Show":"Hide"
-                    }
-                  </p>
-                }
-
+                <input type="password" name="password" id="password" placeholder='Password' value={formik.values.password} onChange={formik.handleChange("password")} onBlur={formik.handleBlur("password")}/>
+               
+  <div className="error">
+                  {formik.touched.password && formik.errors.password}
+                </div>
             </div>
-            <div className="password">
-                <input type="text" name="confirm-password" id="confirm-password" placeholder='Confirm Password'/>
-                
-            </div>
-            <button className='form-button'>Register</button>
+            <input type="submit" value="Register" />
+            </form>
         </div>
           </div>
           :
@@ -215,24 +254,22 @@ const Header = () => {
       <div className="login-right">
           <h2 style={{textAlign:'center',marginBottom:'20px'}}>Login</h2>
           <ClearOutlinedIcon style={{position:'absolute',right:'-30px',top:'-30px',color:'white',cursor:'pointer'}} onClick={loginClose}/>
+          <form action="" onSubmit={formik1.handleSubmit}>
           <div className="email">
-              <input type="email" name="email" id="email" placeholder='Email'/>
+              <input type="email" name="email" id="email" placeholder='Email' value={formik1.values.email} onChange={formik1.handleChange("email")} onBlur={formik1.handleBlur("email")}/>
+              <div className="error">
+                  {formik1.touched.email && formik1.errors.email}
+                </div>
           </div>
           <div className="password">
-              <input type={password} name="password" id="password" placeholder='Password'/>
-              {
-                  show==="Show"? <p onClick={showClick}>
-                    {
-                      password==="password"?"Show":"Hide"
-                    }
-                  </p> :  <p onClick={hideClick}>
-                  {
-                      password==="password"?"Show":"Hide"
-                    }
-                  </p>
-                }
+              <input type="password" name="password" id="password" placeholder='Password' value={formik1.values.password} onChange={formik1.handleChange("password")} onBlur={formik1.handleBlur("password")}/>
+              <div className="error">
+                  {formik1.touched.password && formik1.errors.password}
+                </div>
+             
           </div>
-          <button className='form-button'>Login</button>
+          <input type="submit" value="Login" />
+          </form>
       </div>
         </div>
 

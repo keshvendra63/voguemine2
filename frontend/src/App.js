@@ -13,6 +13,9 @@ import Accessories from './pages/categoryPage/Accessories';
 import Cart from './pages/cart/Cart';
 import SingleProduct from './pages/singleproduct/SingleProduct';
 import Products from './pages/products/Products';
+import Wishlist from './pages/Wishlist';
+import Blogs from './pages/blogs/Blogs';
+import SingleBlog from './pages/blogs/SingleBlog';
 function App() {
   return (
     <>
@@ -29,6 +32,9 @@ function App() {
         <Route path='/cart' element={<Cart/>}/>
         <Route path="/products" element={<Products/>}/>
         <Route path="/product" element={<SingleProduct/>}/>
+        <Route path="/wishlist" element={<Wishlist/>}/>
+        <Route path='/blogs' element={<Blogs/>}/>
+        <Route path="/blog/:id" element={<SingleBlog/>}/>
       </Routes>
       <Footer/>
     </Router>
