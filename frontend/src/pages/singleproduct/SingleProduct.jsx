@@ -6,16 +6,17 @@ import key4 from '../../images/mens-track-set.jpeg'
 import main_img from '../../images/mens-premium-shirts.jpeg'
 import { useDispatch, useSelector } from 'react-redux'
 import {getAProduct } from '../../features/products/productSlice';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './singleproduct.css'
-import { addToCart } from '../../features/user/userSlice'
+import { addToCart, getUserCartProduct } from '../../features/user/userSlice'
 import {toast} from 'react-toastify'
 const SingleProduct = () => {
   const [color,setColor]=useState()
   const [quantity,setQuantity]=useState(1)
-  console.log(quantity)
+  const [alreadyAdded, setAlreadyAdded] =useState(false)
+  const navigate=useNavigate()
   const singleProductState=useSelector((state)=>state?.product?.getSingleProduct)
-  console.log(singleProductState)
+  const cartState=useSelector((state)=>state?.auth?.cartProducts)
   const location =useLocation()
   const getProductId=location.pathname.split("/")[2];
   const dispatch=useDispatch();
@@ -24,14 +25,24 @@ const SingleProduct = () => {
   },[])
   const getProduct=()=>{
       dispatch(getAProduct(getProductId))
+      dispatch(getUserCartProduct())
   }
-  const addTocart=(id)=>{
+  useEffect(()=>{
+    for (let index = 0; index <cartState.length; index++) {
+      if(getProductId===cartState[index]?.productId?._id){
+        setAlreadyAdded(true)
+      }
+      
+    }
+  })
+  const addTocart=()=>{
     if(color===null){
       toast.error("Please Select Color")
       return false
     }
     else{
       dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price}))
+      navigate('/cart')
     }
     
 }
@@ -68,7 +79,9 @@ const SingleProduct = () => {
                     <li>5XL</li>
                 </ul>
             </div>
-            <div className="color prdt-variation">
+            {
+              alreadyAdded===false && <>
+              <div className="color prdt-variation">
                 <p>COLOR :</p>
                 <ul>
                   {
@@ -81,11 +94,19 @@ const SingleProduct = () => {
                     
                 </ul>
             </div>
-            <div className="quantity">
+              </>
+            }
+            {
+              alreadyAdded===false && <>
+              <div className="quantity">
                 <input type="number" name="" min={1} max={10} id="" onChange={(e)=>setQuantity(e.target.value)} value={quantity}/>
             </div>
+              </>
+            }
             <div className="buy-btn">
-                <button onClick={(e)=>{addTocart(singleProductState?._id)}}>ADD TO CART</button>
+                <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart()}}>{
+                  alreadyAdded?"GO TO CART":"ADD TO CART"
+                }</button>
                 <button>BUY IT NOW</button>
             </div>
             <div className="prdt-desc">
