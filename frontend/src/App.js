@@ -31,6 +31,18 @@ function App() {
         <Route path='/accessories' element={<Accessories/>}/>
         <Route path='/cart' element={<Cart/>}/>
         <Route path="/products" element={<Products/>}/>
+        <Route path="/collections/men-premium-shirt" element={<Products/>}/>
+        <Route path="/collections/t-shirts" element={<Products/>}/>
+        <Route path="/collections/mens-sweatshirts" element={<Products/>}/>
+        <Route path="/collections/loafers-for-men" element={<Products/>}/>
+        <Route path="/collections/t-shirts" element={<Products/>}/>
+        <Route path="/collections/t-shirts" element={<Products/>}/>
+        <Route path="/collections/t-shirts" element={<Products/>}/>
+        <Route path="/collections/t-shirts" element={<Products/>}/>
+        <Route path="/collections/t-shirts" element={<Products/>}/>
+        <Route path="/collections/t-shirts" element={<Products/>}/>
+        <Route path="/collections/t-shirts" element={<Products/>}/>
+        <Route path="/collections/t-shirts" element={<Products/>}/>
         <Route path="/product/:id" element={<SingleProduct/>}/>
         <Route path="/wishlist" element={<Wishlist/>}/>
         <Route path='/blogs' element={<Blogs/>}/>
