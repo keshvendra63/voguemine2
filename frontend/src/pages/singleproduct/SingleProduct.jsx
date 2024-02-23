@@ -28,7 +28,7 @@ const SingleProduct = () => {
       dispatch(getUserCartProduct())
   }
   useEffect(()=>{
-    for (let index = 0; index < cartState.length; index++) {
+    for (let index = 0; index < cartState?.length; index++) {
       if(getProductId===cartState[index]?.productId?._id){
         setAlreadyAdded(true)
       }
@@ -43,6 +43,10 @@ const SingleProduct = () => {
     else{
       dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price}))
       navigate('/cart')
+      setTimeout(()=>{
+        dispatch(getUserCartProduct())
+
+      },200)
     }
     
 }

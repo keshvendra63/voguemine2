@@ -1,39 +1,56 @@
-import React,{useEffect} from 'react'
+import React,{useEffect, useState} from 'react'
 import './cart.css'
 import banner from '../../images/A21.jpg'
 import LocalMallIcon from '@mui/icons-material/LocalMall';
-import prdt_img from '../../images/mens-premium-shirts.jpeg'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import {getUserCartProduct} from '../../features/user/userSlice'
-import { addToCart } from '../../features/user/userSlice';
+import {getUserCartProduct, removeFromCart, updateQuantityFromCart} from '../../features/user/userSlice'
 
 const Cart = () => {
+    const [productUpdateDetail,setproductUpdateDetail]=useState(null)
+    const [totalAmount,setTotalAmount]=useState(null)
     const dispatch=useDispatch();
-    useEffect(()=>{
-      getCartFromDb()
-    },[])
-    const getCartFromDb=()=>{
-        dispatch(getUserCartProduct())
-    }
     const cartState=useSelector((state)=>state?.auth?.cartProducts)
+    useEffect(()=>{
+      dispatch(getUserCartProduct())
+    },[])
+    useEffect(()=>{
+if(productUpdateDetail!==null){
+    dispatch(updateQuantityFromCart({cartItemId:productUpdateDetail?.cartItemId,quantity:productUpdateDetail?.quantity}))
+    setTimeout(()=>{
+        dispatch(getUserCartProduct())
+
+      },200)
+}
+      },[productUpdateDetail])
+
     const carts=cartState?cartState:[]
-    const removeFromCart=(id)=>{
-      dispatch(addToCart(id))
+    const removeFromcart=(id)=>{
+      dispatch(removeFromCart(id))
       setTimeout(()=>{
         dispatch(getUserCartProduct())
-      },300)
+
+      },200)
+      }
+useEffect (()=> {
+    let sum=0;
+    for(let index=0; index < cartState ?.length; index++){
+        sum =sum+(Number(cartState[index].quantity) *cartState[index].price)
+        setTotalAmount(sum)
     }
+},[cartState])
     return (
         <div className='cart'>
             <div className="cart-banner">
                 <img src={banner} alt="" />
             </div>
             <h1 style={{textAlign:'center',margin:'20px 0',fontSize:'30px',display:'flex',alignItems:'center',justifyContent:'center'}}><LocalMallIcon style={{fontSize:'30px',marginRight:'10px'}}/> My Cart</h1>
-            <div className="cart-content container">
+            {
+               (cartState?.length !== null || cartState?.length !== 0)&&
+                <div className="cart-content container">
                 <div className="left-cart">
                     <hr />
                     {
@@ -63,21 +80,12 @@ const Cart = () => {
                             </div>
                             <div className="quantity">
                                 <p>Qty:</p>
-                                <select name="size">
-                                    <option value="S">1</option>
-                                    <option value="S">2</option>
-                                    <option value="S">3</option>
-                                    <option value="S">4</option>
-                                    <option value="S">5</option>
-                                    <option value="S">6</option>
-                                    <option value="S">7</option>
-                                    <option value="S">8</option>
-                                </select>
+                                <input type="number" name="" min={1} max={10} id="" onChange={(e)=>{setproductUpdateDetail({cartItemId:item?._id,quantity:e.target.value})}} value={productUpdateDetail?.quantity ? productUpdateDetail?.quantity : item?.quantity }/>
                             </div>
                             </div>
                             <p className="price" style={{marginTop:'20px',fontWeight:'bold'}}>Rs. 1999</p>
                             <hr />
-                            <p className='remove' onClick={()=>removeFromCart(item?._id)}>Remove</p>
+                            <p className='remove' onClick={()=>removeFromcart(item?._id)}>Remove</p>
                         </div>
                         
                     </div>
@@ -88,8 +96,8 @@ const Cart = () => {
                                   <hr/>
                     
                     <div className="total-items">
-                        <p className="quantit" style={{fontWeight:'bold'}}>2 Item</p>
-                        <p style={{fontWeight:'bold'}}>Rs. <span>1999</span></p>
+                        <p className="quantit" style={{fontWeight:'bold'}}>{cartState?.length} Item</p>
+                        <p style={{fontWeight:'bold'}}>Rs. <span>{totalAmount}</span></p>
                     </div>
                 </div>
                 <div className="right-cart">
@@ -122,10 +130,13 @@ const Cart = () => {
                         </div>
                     </div>
                     <p style={{fontWeight:'bold',color:'blue'}}>10% Instant Off on Prepaid Orders</p>
-                    <button className='checkout-btn'><Link to="/home" >CHECKOUT</Link></button>
+                    <button className='checkout-btn'><Link to="/checkout" >CHECKOUT</Link></button>
                     
                 </div>
             </div>
+                    
+                
+            }
         </div>
     )
 }

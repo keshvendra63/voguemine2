@@ -38,6 +38,21 @@ export const addToCart=createAsyncThunk("auth/cart/add",async(cartData,thunkAPI)
         return thunkAPI.rejectWithValue(error)
     }
 })
+export const removeFromCart=createAsyncThunk("auth/cart/product/delete",async(cartItemId,thunkAPI)=>{
+    try{
+        return await authService.removeProductFromCart(cartItemId)
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
+export const updateQuantityFromCart=createAsyncThunk("auth/cart/product/update",async(cartDetail,thunkAPI)=>{
+    try{
+        return await authService.updateProductQuantityFromCart(cartDetail)
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
 const getCustomerfromLocalStorage = localStorage.getItem("customer")
   ? JSON.parse(localStorage.getItem("customer"))
   : null;
@@ -132,6 +147,34 @@ export const authSlice=createSlice({
             state.cartProduct=action.payload;
             state.message="Product added to Cart";
         }).addCase(addToCart.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
+        })
+        .addCase(removeFromCart.pending,(state)=>{
+            state.isLoading=true;
+        }).addCase(removeFromCart.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.removeFromCart=action.payload;
+            state.message="Product removed from Cart";
+        }).addCase(removeFromCart.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
+        })
+        .addCase(updateQuantityFromCart.pending,(state)=>{
+            state.isLoading=true;
+        }).addCase(updateQuantityFromCart.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.updatedCartProduct=action.payload;
+            state.message="Quantity Updated";
+        }).addCase(updateQuantityFromCart.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;
             state.isSuccess=false;

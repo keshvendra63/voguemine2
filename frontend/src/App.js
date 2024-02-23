@@ -16,6 +16,7 @@ import Products from './pages/products/Products';
 import Wishlist from './pages/Wishlist';
 import Blogs from './pages/blogs/Blogs';
 import SingleBlog from './pages/blogs/SingleBlog';
+import Checkout from './pages/checkout/Checkout';
 function App() {
   return (
     <>
@@ -35,18 +36,11 @@ function App() {
         <Route path="/collections/t-shirts" element={<Products/>}/>
         <Route path="/collections/mens-sweatshirts" element={<Products/>}/>
         <Route path="/collections/loafers-for-men" element={<Products/>}/>
-        <Route path="/collections/t-shirts" element={<Products/>}/>
-        <Route path="/collections/t-shirts" element={<Products/>}/>
-        <Route path="/collections/t-shirts" element={<Products/>}/>
-        <Route path="/collections/t-shirts" element={<Products/>}/>
-        <Route path="/collections/t-shirts" element={<Products/>}/>
-        <Route path="/collections/t-shirts" element={<Products/>}/>
-        <Route path="/collections/t-shirts" element={<Products/>}/>
-        <Route path="/collections/t-shirts" element={<Products/>}/>
         <Route path="/product/:id" element={<SingleProduct/>}/>
         <Route path="/wishlist" element={<Wishlist/>}/>
         <Route path='/blogs' element={<Blogs/>}/>
         <Route path="/blog/:id" element={<SingleBlog/>}/>
+        <Route path="checkout" element={<Checkout/>}/>
       </Routes>
       <Footer/>
     </Router>
