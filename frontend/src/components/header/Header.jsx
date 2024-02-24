@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {useFormik} from 'formik'
 import * as yup from 'yup'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
@@ -15,7 +15,7 @@ import Face4OutlinedIcon from '@mui/icons-material/Face4Outlined';
 import FaceOutlinedIcon from '@mui/icons-material/FaceOutlined';
 import AutoAwesomeMosaicOutlinedIcon from '@mui/icons-material/AutoAwesomeMosaicOutlined';
 import logo from '../../images/logo.png'
-import {Link} from 'react-router-dom'
+import {Link, Navigate, useNavigate} from 'react-router-dom'
 import './header.css'
 import { registerUser,loginUser } from '../../features/user/userSlice';
 const delayExecution = (mls) => {
@@ -48,7 +48,7 @@ const Header = () => {
     setSearch("none")
 
   }
-
+const navigate=useNavigate()
   const changePlaceholder = async () => {
     for (let i = 0; ; i = (i + 1) % placeholderText.length) {
       await delayExecution(3000);
@@ -80,7 +80,7 @@ const Header = () => {
   const closeClick=()=>{
     document.getElementById("head2").style.left="-100%"
   }
-
+const authState=useSelector(state=>state?.auth)
 const dispatch=useDispatch()
 const formik=useFormik({
   initialValues:{
@@ -93,6 +93,12 @@ const formik=useFormik({
   validationSchema:signupSchema,
   onSubmit:(values)=>{
     dispatch(registerUser(values))
+    setTimeout(()=>{
+      if(authState.isSuccess){
+        navigate('/home')
+        setLogin('none')
+      }
+    },300)
   }
 })
 const formik1=useFormik({
@@ -103,6 +109,12 @@ const formik1=useFormik({
   validationSchema:loginSchema,
   onSubmit:(values)=>{
     dispatch(loginUser(values))
+    setTimeout(()=>{
+      if(authState.isSuccess){
+        navigate('/home')
+        setLogin('none')
+      }
+    },300)
   }
 })
 
@@ -144,7 +156,9 @@ const formik1=useFormik({
             <li className='li-search'><input type="search" name="" id="" placeholder={state}/><SearchIcon /></li>
             <li><Link to="/wishlist"><FavoriteBorderIcon/></Link></li>
             <li><Link to="/cart"><LocalMallIcon/></Link></li>
-            <li onClick={loginOpen}><PersonOutlineIcon/></li>
+            <li onClick={loginOpen}>{
+              authState?.user==null?<PersonOutlineIcon/>:<p style={{fontWeight:500,fontSize:'11px',marginBottom:0,display:'flex',justifyContent:'center',alignItems:'center',border:'2px solid black',borderRadius:'50%',width:'20px',height:'20px',marginTop:'3px',padding:'2px'}}>{authState?.user?.firstname.charAt(0).toUpperCase()}</p>
+            }</li>
           </ul>
               
 
