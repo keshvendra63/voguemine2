@@ -41,8 +41,8 @@ var orderSchema = new mongoose.Schema(
         type:Number,
         required:true
       },
-      other:{
-        type:String,
+      alterMobile:{
+        type:Number,
         required:true
       },
     },

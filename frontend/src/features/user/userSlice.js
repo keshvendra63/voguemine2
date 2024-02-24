@@ -38,6 +38,14 @@ export const addToCart=createAsyncThunk("auth/cart/add",async(cartData,thunkAPI)
         return thunkAPI.rejectWithValue(error)
     }
 })
+
+export const createAnOrder=createAsyncThunk("auth/cart/create-order",async(orderDetails,thunkAPI)=>{
+    try{
+        return await authService.createOrder(orderDetails)
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
 export const removeFromCart=createAsyncThunk("auth/cart/product/delete",async(cartItemId,thunkAPI)=>{
     try{
         return await authService.removeProductFromCart(cartItemId)
@@ -175,6 +183,20 @@ export const authSlice=createSlice({
             state.updatedCartProduct=action.payload;
             state.message="Quantity Updated";
         }).addCase(updateQuantityFromCart.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
+        })
+        .addCase(createAnOrder.pending,(state)=>{
+            state.isLoading=true;
+        }).addCase(createAnOrder.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.orderedProduct=action.payload;
+            state.message="Order Placed";
+        }).addCase(createAnOrder.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;
             state.isSuccess=false;
