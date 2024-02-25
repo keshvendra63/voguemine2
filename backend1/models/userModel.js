@@ -4,6 +4,11 @@ const crypto = require("crypto");
 // Declare the Schema of the Mongo model
 var userSchema = new mongoose.Schema(
   {
+    image: 
+      {
+        public_id: String,
+        url: String,
+      },
     firstname: {
       type: String,
       required: true,

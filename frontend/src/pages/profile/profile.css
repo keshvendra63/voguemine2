@@ -1,0 +1,32 @@
+.profile{
+    margin-top: 70px;
+    background-color: white;
+    padding: 20px;
+}
+.profile .profile-info{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+}
+.profile .profile-info .left-profile{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.profile .profile-info .left-profile img{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+.profile .profile-info .left-profile p{
+    margin-bottom: 5px;
+}
+.profile .profile-info .right-profile form div{
+    width: 100%;
+}
+.profile .profile-info .right-profile form .input{
+    margin-bottom: 15px;
+}

@@ -68,9 +68,6 @@ const navigate=useNavigate()
     setLoginForm("register")
   }
   const [login,setLogin]= useState("none")
-  const loginOpen=()=>{
-    setLogin("flex")
-  }
   const loginClose=()=>{
     setLogin("none")
   }
@@ -81,6 +78,15 @@ const navigate=useNavigate()
     document.getElementById("head2").style.left="-100%"
   }
 const authState=useSelector(state=>state?.auth)
+const loginOpen=()=>{
+  if(authState?.user===null){
+    setLogin("flex")
+  }
+  else{
+    navigate("profile")
+  }
+  
+}
 const dispatch=useDispatch()
 const formik=useFormik({
   initialValues:{
@@ -94,7 +100,7 @@ const formik=useFormik({
   onSubmit:(values)=>{
     dispatch(registerUser(values))
     setTimeout(()=>{
-      if(authState.isSuccess){
+      if(authState?.isSuccess){
         navigate('/home')
         setLogin('none')
       }

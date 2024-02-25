@@ -46,6 +46,13 @@ export const createAnOrder=createAsyncThunk("auth/cart/create-order",async(order
         return thunkAPI.rejectWithValue(error)
     }
 })
+export const getUserOrders=createAsyncThunk("auth/order/get",async(thunkAPI)=>{
+    try{
+        return await authService.getOrders()
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
 export const removeFromCart=createAsyncThunk("auth/cart/product/delete",async(cartItemId,thunkAPI)=>{
     try{
         return await authService.removeProductFromCart(cartItemId)
@@ -57,6 +64,13 @@ export const removeFromCart=createAsyncThunk("auth/cart/product/delete",async(ca
 export const updateQuantityFromCart=createAsyncThunk("auth/cart/product/update",async(cartDetail,thunkAPI)=>{
     try{
         return await authService.updateProductQuantityFromCart(cartDetail)
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+export const updateProfile=createAsyncThunk("auth/profile/update",async(data,thunkAPI)=>{
+    try{
+        return await authService.updateUser(data)
     }catch(error){
         return thunkAPI.rejectWithValue(error)
     }
@@ -202,8 +216,35 @@ export const authSlice=createSlice({
             state.isSuccess=false;
             state.message=action.error;
         })
+        .addCase(getUserOrders.pending,(state)=>{
+            state.isLoading=true;
+        }).addCase(getUserOrders.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.getOrderedProduct=action.payload;
+        }).addCase(getUserOrders.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
+        })
+        .addCase(updateProfile.pending,(state)=>{
+            state.isLoading=true;
+        }).addCase(updateProfile.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.updatedUser=action.payload;
+        }).addCase(updateProfile.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
+        })
     }
 })
 
 
 export default authSlice.reducer
+

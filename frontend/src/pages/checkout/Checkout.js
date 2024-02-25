@@ -39,9 +39,9 @@ const Checkout = () => {
         setShipping(200)
     }
     const finalAmount=shipping+totalAmount+discount
-    console.log(finalAmount)
     const dispatch=useDispatch();
     const cartState=useSelector((state)=>state?.auth?.cartProducts)
+    console.log(cartState)
     useEffect (()=> {
         let sum=0;
         for(let index=0; index < cartState?.length; index++){
@@ -89,7 +89,7 @@ const loadScript=(src)=>{
 useEffect(()=>{
     let items=[]
     for (let index = 0; index < cartState?.length; index++) {
-        items.push({product:cartState[index].productId,quantity:cartState[index].quantity,price:cartState[index].price,color:cartState[index].color})
+        items.push({product:cartState[index].productId._id,quantity:cartState[index].quantity,price:cartState[index].price,color:cartState[index].color})
         
     }
     setCartProductState(items)
@@ -109,7 +109,7 @@ const checkOutHandler=async()=>{
 
  const {amount,id:order_id,currency}=result.data.order
  const options = {
-    key: "rzp_live_ZSh7I25vQbczrS", // Enter the Key ID generated from the Dashboard
+    key: "rzp_test_DeWbJCwx392j0T", // Enter the Key ID generated from the Dashboard
     amount: amount,
     currency: currency,
     name: "Voguemine",
@@ -130,7 +130,7 @@ const checkOutHandler=async()=>{
             razorpayOrderId: response.razorpay_order_id,
         })
 
-        dispatch(createAnOrder({totalPrice:finalAmount,totalPriceAfterDiscount:finalAmount,orderItems:[],paymentInfo,shippingInfo}))
+        dispatch(createAnOrder({totalPrice:finalAmount,totalPriceAfterDiscount:finalAmount,orderItems:cartProductState,paymentInfo,shippingInfo}))
     },
     prefill: {
         name: "Voguemine",

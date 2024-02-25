@@ -11,11 +11,12 @@ import './singleproduct.css'
 import { addToCart, getUserCartProduct } from '../../features/user/userSlice'
 import {toast} from 'react-toastify'
 const SingleProduct = () => {
-  const [color,setColor]=useState()
+  const [color,setColor]=useState(null)
   const [quantity,setQuantity]=useState(1)
   const [alreadyAdded, setAlreadyAdded] =useState(false)
   const navigate=useNavigate()
   const singleProductState=useSelector((state)=>state?.product?.getSingleProduct)
+  console.log(singleProductState)
   const cartState=useSelector((state)=>state?.auth?.cartProducts)
   const location =useLocation()
   const getProductId=location.pathname.split("/")[2];
@@ -88,13 +89,15 @@ const SingleProduct = () => {
               <div className="color prdt-variation">
                 <p>COLOR :</p>
                 <ul>
-                  {
-                    singleProductState?.color.map((item,index)=>{
+                  {/* {
+                    singleProductState?.map((item,index)=>{
                       return(
-                        <li onClick={()=>setColor(item?._id)} style={{backgroundColor:item?.title}} key={index}></li>
+                        <li onClick={()=>setColor(item?._id)} style={{backgroundColor:'red'}} key={index}></li>
                       )
                     })
-                  }
+                  } */}
+                                          <li onClick={()=>setColor(singleProductState?.colors)} style={{backgroundColor:singleProductState?.colors}} >{singleProductState?.colors}</li>
+
                     
                 </ul>
             </div>

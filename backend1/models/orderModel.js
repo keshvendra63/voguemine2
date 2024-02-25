@@ -41,7 +41,7 @@ var orderSchema = new mongoose.Schema(
         type:Number,
         required:true
       },
-      alterMobile:{
+      phone:{
         type:Number,
         required:true
       },
@@ -63,8 +63,7 @@ var orderSchema = new mongoose.Schema(
       required:true
       },
       color:{
-        type:mongoose.Schema.Types.ObjectId,
-      ref:"Color",
+        type:String,
       required:true
       },
       quantity:{
