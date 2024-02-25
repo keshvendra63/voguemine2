@@ -15,9 +15,12 @@ import Face4OutlinedIcon from '@mui/icons-material/Face4Outlined';
 import FaceOutlinedIcon from '@mui/icons-material/FaceOutlined';
 import AutoAwesomeMosaicOutlinedIcon from '@mui/icons-material/AutoAwesomeMosaicOutlined';
 import logo from '../../images/logo.png'
-import {Link, Navigate, useNavigate} from 'react-router-dom'
+import {Link,useNavigate} from 'react-router-dom'
 import './header.css'
 import { registerUser,loginUser,forgotPasswordToken } from '../../features/user/userSlice';
+import {getAProduct} from '../../features/products/productSlice'
+import { Typeahead } from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 const delayExecution = (mls) => {
   return new Promise((resolve) => {
     setTimeout(() => resolve("ok"), mls);
@@ -39,7 +42,9 @@ const emailSchema=yup.object({
   email:yup.string().email("Email should be valid").required("Email is Required"),
 })
 const Header = () => {
-
+  const [paginate, setPaginate] = useState(true);
+  const [productOpt,setProductOpt]=useState([])
+  const productState=useSelector((state)=>state?.product?.product)
   const placeholderText = ["Search Shirts", "Search Loafers", "Search Dresses"];
   const [state, setState] = useState("");
   const [search,setSearch] =useState("none")
@@ -61,6 +66,16 @@ const navigate=useNavigate()
   useEffect(() => {
     changePlaceholder();
   },[]);
+
+  useEffect(()=>{
+    let data=[]
+    for (let index = 0; index < productState?.length; index++) {
+      const element = productState[index];
+      data.push({id:index,prod:element?._id,name:element?.title})
+      
+    }
+    setProductOpt(data)
+  },[productState])
 
   const [loginForm, setLoginForm] =useState("register")
   const loginClick=()=>{
@@ -137,7 +152,6 @@ const formik2=useFormik({
   validationSchema:emailSchema,
   onSubmit:(values)=>{
     dispatch(forgotPasswordToken(values))
-        navigate('/home')
         setLogin('none')
   }
 })
@@ -178,7 +192,19 @@ const formik2=useFormik({
         </div>
         <div className='head3' style={{textAlign:'right'}}>
           <ul>
-            <li className='li-search'><input type="search" name="" id="" placeholder={state}/><SearchIcon /></li>
+            <li className='li-search'><Typeahead
+        id="pagination-example"
+        onPaginate={() => console.log('Results paginated')}
+        onChange={(selected)=>{
+          navigate(`/product/${selected[0]?.prod}`)
+          dispatch(getAProduct(selected[0]?.prod))
+        }}
+        minLength={2}
+        options={productOpt}
+        labelKey={"name"}
+        paginate={paginate}
+        placeholder="Search here"
+      /><SearchIcon /></li>
             <li><Link to="/wishlist"><FavoriteBorderIcon/></Link></li>
             <li><Link to="/cart"><LocalMallIcon/></Link></li>
             <li onClick={loginOpen}>{
@@ -326,7 +352,7 @@ const formik2=useFormik({
             </div>
             <input type="submit" value="Send Link" />
             </form>
-            <button className='form-button'>Back to Login</button>
+            <button className='form-button' onClick={loginClick}>Back to Login</button>
         </div>
           </div>
 

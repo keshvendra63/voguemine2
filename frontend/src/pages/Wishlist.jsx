@@ -42,19 +42,19 @@ const Wishlist = () => {
     return(
       <div className="product-card" key={index}>
       <div className="product-img">
-        <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
+        <img src={item?.img_src} alt="" className="product-img1"/>
         <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
       </div>
       <p className="wish-icon" onClick={()=>{removeFromWishlist(item?._id)}}><CloseIcon className="cart-icon"/></p>
       <div className="product-content">
-        <p className="title">{item?.Title}</p>
+        <p className="title">{item?.title}</p>
         <Stack spacing={1} className="stars">
 <Rating name="size-small" defaultValue={5} size="small" />
 
 </Stack>
 <div className="wish">
 <div>
-<p className="price">&#8377;1999</p>
+<p className="price">&#8377;{item?.price}</p>
 <p className="sale-price">&#8377;24000</p>
 </div>
 <div>
@@ -66,8 +66,8 @@ const Wishlist = () => {
       </div>
       <div className="hover-details">
 <div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
+<p className="title">{item?.title}</p>
+<p className="price">&#8377;{item?.price}</p>
 </div>
 <div className="size">
 <p>Sizes</p>
@@ -84,11 +84,7 @@ const Wishlist = () => {
 <div className="color">
 <p>Colors</p>
 <ul>
-<li style={{backgroundColor:"red"}}></li>
-<li style={{backgroundColor:"green"}}></li>
-<li style={{backgroundColor:"blue"}}></li>
-<li style={{backgroundColor:"black"}}></li>
-<li style={{backgroundColor:"pink"}}></li>
+<li>{item?.colors}</li>
 </ul>
 </div>
 <Link to="#"><button>BUY NOW</button></Link>
