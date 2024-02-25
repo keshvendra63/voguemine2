@@ -75,6 +75,13 @@ export const updateProfile=createAsyncThunk("auth/profile/update",async(data,thu
         return thunkAPI.rejectWithValue(error)
     }
 })
+export const forgotPasswordToken=createAsyncThunk("auth/password/token",async(data,thunkAPI)=>{
+    try{
+        return await authService.forgotPassToken(data)
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
 const getCustomerfromLocalStorage = localStorage.getItem("customer")
   ? JSON.parse(localStorage.getItem("customer"))
   : null;
@@ -237,6 +244,19 @@ export const authSlice=createSlice({
             state.isSuccess=true;
             state.updatedUser=action.payload;
         }).addCase(updateProfile.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
+        })
+        .addCase(forgotPasswordToken.pending,(state)=>{
+            state.isLoading=true;
+        }).addCase(forgotPasswordToken.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.token=action.payload;
+        }).addCase(forgotPasswordToken.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;
             state.isSuccess=false;

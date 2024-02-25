@@ -81,6 +81,14 @@ const updateUser=async(data)=>{
         return response.data
     }
 }
+const forgotPassToken=async(data)=>{
+    const response=await axios.put(`${base_url}user/forgot-password-token`,data)
+    if(response.data){
+       
+        return response.data
+    }
+}
+
 
 export const authService={
     register,
@@ -92,5 +100,6 @@ export const authService={
     updateProductQuantityFromCart,
     createOrder,
     getOrders,
-    updateUser
+    updateUser,
+    forgotPassToken
 }

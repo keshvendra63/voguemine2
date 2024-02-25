@@ -17,7 +17,7 @@ import AutoAwesomeMosaicOutlinedIcon from '@mui/icons-material/AutoAwesomeMosaic
 import logo from '../../images/logo.png'
 import {Link, Navigate, useNavigate} from 'react-router-dom'
 import './header.css'
-import { registerUser,loginUser } from '../../features/user/userSlice';
+import { registerUser,loginUser,forgotPasswordToken } from '../../features/user/userSlice';
 const delayExecution = (mls) => {
   return new Promise((resolve) => {
     setTimeout(() => resolve("ok"), mls);
@@ -35,7 +35,9 @@ const loginSchema=yup.object({
   email:yup.string().email("Email should be valid").required("Email is Required"),
   password:yup.string().required("Password is required")
 })
-
+const emailSchema=yup.object({
+  email:yup.string().email("Email should be valid").required("Email is Required"),
+})
 const Header = () => {
 
   const placeholderText = ["Search Shirts", "Search Loafers", "Search Dresses"];
@@ -66,6 +68,10 @@ const navigate=useNavigate()
   }
   const registerClick=()=>{
     setLoginForm("register")
+  }
+
+  const forgotClick=()=>{
+    setLoginForm("forgotPassword")
   }
   const [login,setLogin]= useState("none")
   const loginClose=()=>{
@@ -116,13 +122,26 @@ const formik1=useFormik({
   onSubmit:(values)=>{
     dispatch(loginUser(values))
     setTimeout(()=>{
-      if(authState.isSuccess){
+      if(authState?.isSuccess){
         navigate('/home')
         setLogin('none')
       }
     },300)
   }
 })
+
+const formik2=useFormik({
+  initialValues:{
+    email:"",
+  },
+  validationSchema:emailSchema,
+  onSubmit:(values)=>{
+    dispatch(forgotPasswordToken(values))
+        navigate('/home')
+        setLogin('none')
+  }
+})
+
 
   const [scrolled, setScrolled] = useState(false);
 
@@ -219,7 +238,7 @@ const formik1=useFormik({
         </div>
       <div className="login" style={{display:login}}>
         {
-          loginForm==="register"? <div className="login-box">
+          loginForm==="register"?( <div className="login-box">
           <div className="login-left">
               <h1>Already a User ?</h1>
               <p>Thank you for be a family of Voguemine.</p>
@@ -263,35 +282,54 @@ const formik1=useFormik({
             <input type="submit" value="Register" />
             </form>
         </div>
-          </div>
-          :
-          <div className="login-box">
-        <div className="login-left">
-            <h1>New To Voguemine</h1>
-            <p>Thank you for be a family of Voguemine.</p>
-            <button className='form-button' onClick={registerClick}>Register</button>
-      </div>
-      <div className="login-right">
-          <h2 style={{textAlign:'center',marginBottom:'20px'}}>Login</h2>
-          <ClearOutlinedIcon style={{position:'absolute',right:'-30px',top:'-30px',color:'white',cursor:'pointer'}} onClick={loginClose}/>
-          <form action="" onSubmit={formik1.handleSubmit}>
-          <div className="email">
-              <input type="email" name="email" id="email" placeholder='Email' value={formik1.values.email} onChange={formik1.handleChange("email")} onBlur={formik1.handleBlur("email")}/>
-              <div className="error">
-                  {formik1.touched.email && formik1.errors.email}
-                </div>
-          </div>
-          <div className="password">
-              <input type="password" name="password" id="password" placeholder='Password' value={formik1.values.password} onChange={formik1.handleChange("password")} onBlur={formik1.handleBlur("password")}/>
-              <div className="error">
-                  {formik1.touched.password && formik1.errors.password}
-                </div>
-             
-          </div>
-          <input type="submit" value="Login" />
-          </form>
-      </div>
+          </div>)
+          : loginForm==="login"?( <div className="login-box">
+          <div className="login-left">
+              <h1>New To Voguemine</h1>
+              <p>Thank you for be a family of Voguemine.</p>
+              <button className='form-button' onClick={registerClick}>Register</button>
         </div>
+        <div className="login-right">
+            <h2 style={{textAlign:'center',marginBottom:'20px'}}>Login</h2>
+            <ClearOutlinedIcon style={{position:'absolute',right:'-30px',top:'-30px',color:'white',cursor:'pointer'}} onClick={loginClose}/>
+            <form action="" onSubmit={formik1.handleSubmit}>
+            <div className="email">
+                <input type="email" name="email" id="email" placeholder='Email' value={formik1.values.email} onChange={formik1.handleChange("email")} onBlur={formik1.handleBlur("email")}/>
+                <div className="error">
+                    {formik1.touched.email && formik1.errors.email}
+                  </div>
+            </div>
+            <div className="password">
+                <input type="password" name="password" id="password" placeholder='Password' value={formik1.values.password} onChange={formik1.handleChange("password")} onBlur={formik1.handleBlur("password")}/>
+                <div className="error">
+                    {formik1.touched.password && formik1.errors.password}
+                  </div>
+               
+            </div>
+            <p style={{cursor:'pointer',color:'blue'}} onClick={forgotClick}>forgot password?</p>
+            <input type="submit" value="Login" />
+            </form>
+        </div>
+          </div>)
+          : <div className="login-box forgot">
+          
+        <div className="login-right">
+              <h1>Forgot Password</h1>
+              <p>We will send you a link to your email to reset password.</p>
+            <ClearOutlinedIcon style={{position:'absolute',right:'-30px',top:'-30px',color:'white',cursor:'pointer'}} onClick={loginClose}/>
+            <form action="" onSubmit={formik2.handleSubmit}>
+            <div className="email">
+                <input type="email" name="email" id="email" placeholder='Email' value={formik2.values.email} onChange={formik2.handleChange("email")} onBlur={formik2.handleBlur("email")}/>
+                <div className="error">
+                    {formik2.touched.email && formik2.errors.email}
+                  </div>
+            </div>
+            <input type="submit" value="Send Link" />
+            </form>
+            <button className='form-button'>Back to Login</button>
+        </div>
+          </div>
+
 
         }
         
