@@ -19,7 +19,6 @@ const Product = (props) => {
     const [quantity,setQuantity]=useState(1)
     const [alreadyAdded, setAlreadyAdded] =useState(false)
     const navigate=useNavigate()
-    const singleProductState=useSelector((state)=>state?.product?.getSingleProduct)
     const cartState=useSelector((state)=>state?.auth?.cartProducts)
     const location =useLocation()
     const getProductId=location.pathname.split("/")[2];
@@ -29,7 +28,6 @@ const Product = (props) => {
     },[])
     const getProduct=()=>{
         dispatch(getAProduct(getProductId))
-        dispatch(getUserCartProduct())
     }
     useEffect(()=>{
       for (let index = 0; index < cartState?.length; index++) {
@@ -45,12 +43,11 @@ const Product = (props) => {
         return false
       }
       else{
-        dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price}))
-        navigate('/cart')
+        dispatch(addToCart({productId:props.id,color,quantity,price:props.price}))
         setTimeout(()=>{
           dispatch(getUserCartProduct())
   
-        },200)
+        },300)
       }
     }  
   return (
@@ -58,7 +55,7 @@ const Product = (props) => {
     <Link to={`/product/${props.id}`}>
                 <div className="product-img">
                   <img src={props.img} alt="" className="product-img1"/>
-                  <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
+                  {/* <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/> */}
                 </div>
                 </Link>
                 <p className="wish-icon" onClick={(e)=>{addToWish(props.id)}}><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
@@ -104,9 +101,9 @@ const Product = (props) => {
       </ul>
     </div>
     <Link to="#"><button>BUY NOW</button></Link>
-    <Link to="#"><button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart()}}>{
+    <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart()}} style={{width:'100%',marginTop:'10px'}}>{
                   alreadyAdded?"GO TO CART":"ADD TO CART"
-                }</button></Link>
+                }</button>
                 </div>
               </div>
   )

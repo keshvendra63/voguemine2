@@ -110,7 +110,7 @@ const Products = () => {
         {
           
                          products?.map((item,index)=>{
-                          if(item.title!=="" && (item.sku.includes("VMS-") || item.sku.includes("VMSI-")))
+                          if(item?.title!=="" && (item?.sku?.includes("VMS-") || item?.sku?.includes("VMSI-")))
                             if(urlPath==="/collections/men-premium-shirt"){
                                
                                     return(

@@ -16,7 +16,7 @@ const SingleProduct = () => {
   const [alreadyAdded, setAlreadyAdded] =useState(false)
   const navigate=useNavigate()
   const singleProductState=useSelector((state)=>state?.product?.getSingleProduct)
-  console.log(singleProductState)
+  console.log(singleProductState?.images[0]?.url)
   const cartState=useSelector((state)=>state?.auth?.cartProducts)
   const location =useLocation()
   const getProductId=location.pathname.split("/")[2];
@@ -57,7 +57,7 @@ const SingleProduct = () => {
         <div className="prdt-left">
 
             <div className="main">
-            <img src={singleProductState?.img_src} alt="" />
+            <img src={singleProductState?.img_src || singleProductState?.images[0]?.url} alt="" />
             </div>
             <div className="thumbs">
                 <img src={main_img} alt="" />
