@@ -159,9 +159,10 @@ div a{
     grid-gap:5px;
 }
 .products-listing .product-list .product-card .hover-details ul li{
-    width:25px;
-    height:25px;
-    border-radius:50%;
+    width: auto;
+    height: 20px;
+    border-radius: 2px;
+    padding: 5px;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -181,12 +182,7 @@ div a{
 .products-listing .product-list .product-card .hover-details .color p{
     margin-bottom:5px;
 }
-.products-listing .product-list .product-card .hover-details .color li{
-    width: auto;
-    height: 20px;
-    border-radius: 2px;
-    padding: 5px;
-}
+
 .products-listing .product-list .product-card .hover-details a{
     color:black;
     width:100%;

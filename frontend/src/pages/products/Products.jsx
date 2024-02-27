@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addToWishlist, getAllProducts } from '../../features/products/productSlice';
 import {addToCart} from '../../features/user/userSlice'
 import Product from '../../components/Product'
+import ProductD from '../../components/DetailProduct';
 const Products = () => {
   const [sort,setSort]=useState(null)
 
@@ -42,19 +43,27 @@ const Products = () => {
       // Function to filter products by SKU containing "VMSI"
       const groupProductsBySKUAndHandle = (products) => {
         const groupedProducts = {};
+        
         products.forEach(product => {
-            const key = `${product.sku}-${product.handle}`;
+            
+            if(product.sku && product.sku.indexOf(('VMSI'|| 'VMS-'))!==-1){
+                const key = `${product.sku}-${product.handle}`;  
             if (!groupedProducts[key]) {
                 groupedProducts[key] = [];
             }
             groupedProducts[key].push(product);
+            }
         });
         return groupedProducts;
     };
     
     const allProductsBySKUAndHandle = groupProductsBySKUAndHandle(products);
-    
-    console.log(allProductsBySKUAndHandle);
+    const arrayOfObjects = Object.entries(allProductsBySKUAndHandle).map(([key, value]) => ({ key, value }));
+console.log(arrayOfObjects)
+
+
+
+
 
     return (
         <div className='Products'>
@@ -125,88 +134,23 @@ const Products = () => {
                     <hr />
                     <div className="products-listing">
         <p className="section-heading">Featured Products</p>
-        <div className="product-list">
-        {
-          
-                         products?.map((item,index)=>{
-                          if(item?.title!=="" && (item?.sku?.includes("VMS-") || item?.sku?.includes("VMSI-")))
-                            if(urlPath==="/collections/men-premium-shirt"){
-                               
-                                    return(
-    
-    <Product id={item?._id} key={index} img={item?.img_src} title={item?.title} price={item?.price} colors={item?.colors}/>
-    
-               )
-            
-                            }
-                            if(urlPath==="/collections/t-shirts"){
-                                if((item?.sku.includes("VMTS-") || item?.sku.includes("VMTSI-"))&&item?.title!==""){
-                                    return(
-    
-    <div className="product-card" key={index}>
-    <Link to={`/product/${item?._id}`}>
-                <div className="product-img">
-                  <img src={item?.img_src} alt="" className="product-img1"/>
-                  <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-                </div>
-                <p className="wish-icon" onClick={(e)=>{addToWish(item?._id)}}><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-                <div className="product-content">
-                  <p className="title">{item?.Title}</p>
-                  <Stack spacing={1} className="stars">
-          <Rating name="size-small" defaultValue={5} size="small" />
-    
-        </Stack>
-        <div className="wish">
-        <div>
-        <p className="price">&#8377;1999</p>
-        <p className="sale-price">&#8377;24000</p>
-        </div>
-        <div>
-    <FavoriteBorderOutlinedIcon className="cart-icon" onClick={(e)=>{addToWish(item?._id)}}/>
-    <AddShoppingCartOutlinedIcon className="cart-icon" onClick={(e)=>{addTocart(item?._id)}}/>
-        </div>
-        </div>
-                </div>
-                </Link>
-                <div className="hover-details">
-    <div className="title-section">
-    <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-    <p className="price">&#8377;1999</p>
-    </div>
-    <div className="size">
-      <p>Sizes</p>
-      <ul>
-        <li>M</li>
-        <li>L</li>
-        <li>XL</li>
-        <li>2XL</li>
-        <li>3XL</li>
-        <li>4XL</li>
-        <li>5XL</li>
-      </ul>
-    </div>
-    <div className="color">
-      <p>Colors</p>
-      <ul>
-        <li style={{backgroundColor:"red"}}></li>
-        <li style={{backgroundColor:"green"}}></li>
-        <li style={{backgroundColor:"blue"}}></li>
-        <li style={{backgroundColor:"black"}}></li>
-        <li style={{backgroundColor:"pink"}}></li>
-      </ul>
-    </div>
-    <Link to="#"><button>BUY NOW</button></Link>
-    <Link to="#" onClick={(e)=>{addTocart(item?._id)}}><button>ADD TO CART</button></Link>
-                </div>
-              </div>
-    
-               )
-            }
-                            }
+                
 
-       
-     })}
+        <div className="product-list">
+            {
+                arrayOfObjects.map((arm,index)=>{
+                    return <Product key={index}>
+                        {arm?.value.map((arms)=>{
+                          return <ProductD id={arms?._id} key={arms?._id} img={arms?.img_src} title={arms?.title} price={arms?.price} colors={arms?.colors} size={arms?.size}/>
+
+                        })}
+                        </Product>
+                    
+                })
+            }
+      
         </div>
+
       </div>
                     <div className="pages">
                     <button onClick={loadMore}>Load More</button>
