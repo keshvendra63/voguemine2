@@ -10,15 +10,15 @@ import Bloglist from "./pages/Bloglist";
 import Blogcatlist from "./pages/Blogcatlist";
 import Orders from "./pages/Orders";
 import Customers from "./pages/Customers";
-import Colorlist from "./pages/Colotlist";
+import Collectionlist from "./pages/Collectionlist";
 import Categorylist from "./pages/Categorylist";
-import Brandlist from "./pages/Brandlist";
+import Sizelist from "./pages/Sizelist";
 import Productlist from "./pages/Productlist";
 import Addblog from "./pages/Addblog";
 import Addblogcat from "./pages/Addblogcat";
-import Addcolor from "./pages/Addcolor";
+import Addcollection from "./pages/Addcollection";
 import Addcat from "./pages/Addcat";
-import Addbrand from "./pages/Addbrand";
+import Addsize from "./pages/Addsize";
 import Addproduct from "./pages/Addproduct";
 import Couponlist from "./pages/Couponlist";
 import AddCoupon from "./pages/AddCoupon";
@@ -49,15 +49,15 @@ function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="order/:id" element={<ViewOrder />} />
           <Route path="customers" element={<Customers />} />
-          <Route path="list-color" element={<Colorlist />} />
-          <Route path="color" element={<Addcolor />} />
-          <Route path="color/:id" element={<Addcolor />} />
+          <Route path="list-collection" element={<Collectionlist/>} />
+          <Route path="collection" element={<Addcollection />} />
+          <Route path="collection/:id" element={<Addcollection/>} />
           <Route path="list-category" element={<Categorylist />} />
           <Route path="category" element={<Addcat />} />
           <Route path="category/:id" element={<Addcat />} />
-          <Route path="list-brand" element={<Brandlist />} />
-          <Route path="brand" element={<Addbrand />} />
-          <Route path="brand/:id" element={<Addbrand />} />
+          <Route path="list-size" element={<Sizelist />} />
+          <Route path="size" element={<Addsize />} />
+          <Route path="size/:id" element={<Addsize />} />
           <Route path="list-product" element={<Productlist />} />
           <Route path="product" element={<Addproduct />} />
         </Route>

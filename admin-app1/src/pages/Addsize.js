@@ -6,81 +6,86 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import {
-  createColor,
-  getAColor,
+  createSize,
+  getASize,
   resetState,
-  updateAColor,
-} from "../features/color/colorSlice";
+  updateASize,
+} from "../features/size/sizeSlice";
+
 let schema = yup.object().shape({
-  title: yup.string().required("Color is Required"),
+  title: yup.string().required("Size Name is Required"),
 });
-const Addcolor = () => {
+const Addsize = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
-  const getColorId = location.pathname.split("/")[3];
-  const newColor = useSelector((state) => state.color);
+  const navigate = useNavigate();
+  const getSizeId = location.pathname.split("/")[3];
+  const newSize = useSelector((state) => state.size);
   const {
     isSuccess,
     isError,
     isLoading,
-    createdColor,
-    updatedColor,
-    colorName,
-  } = newColor;
+    createdSize,
+    sizeName,
+    updatedSize,
+  } = newSize;
   useEffect(() => {
-    if (getColorId !== undefined) {
-      dispatch(getAColor(getColorId));
+    if (getSizeId !== undefined) {
+      dispatch(getASize(getSizeId));
     } else {
       dispatch(resetState());
     }
-  }, [getColorId]);
+  }, [getSizeId]);
+
   useEffect(() => {
-    if (isSuccess && createdColor) {
-      toast.success("Color Added Successfullly!");
+    if (isSuccess && createdSize) {
+      toast.success("Size Added Successfullly!");
     }
-    if (isSuccess && updatedColor) {
-      toast.success("Color Updated Successfullly!");
-      navigate("/admin/list-color");
+    if (isSuccess && updatedSize) {
+      toast.success("Size Updated Successfullly!");
+      navigate("/admin/list-size");
     }
+
     if (isError) {
       toast.error("Something Went Wrong!");
     }
-  }, [isSuccess, isError, isLoading, createdColor]);
+  }, [isSuccess, isError, isLoading]);
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      title: colorName || "",
+      title: sizeName || "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      if (getColorId !== undefined) {
-        const data = { id: getColorId, colorData: values };
-        dispatch(updateAColor(data));
+      if (getSizeId !== undefined) {
+        const data = { id: getSizeId, sizeData: values };
+        dispatch(updateASize(data));
         dispatch(resetState());
       } else {
-        dispatch(createColor(values));
+        dispatch(createSize(values));
         formik.resetForm();
         setTimeout(() => {
           dispatch(resetState());
-        }, 300);
+        }, 1000);
       }
     },
   });
+
   return (
     <div>
       <h3 className="mb-4 title">
-        {getColorId !== undefined ? "Edit" : "Add"} Color
+        {getSizeId !== undefined ? "Edit" : "Add"} Size
       </h3>
       <div>
         <form action="" onSubmit={formik.handleSubmit}>
           <CustomInput
-            type="color"
-            label="Enter Product Color"
+            type="text"
+            name="title"
             onChng={formik.handleChange("title")}
             onBlr={formik.handleBlur("title")}
             val={formik.values.title}
-            id="color"
+            label="Enter Size"
+            id="size"
           />
           <div className="error">
             {formik.touched.title && formik.errors.title}
@@ -89,7 +94,7 @@ const Addcolor = () => {
             className="btn btn-success border-0 rounded-3 my-5"
             type="submit"
           >
-            {getColorId !== undefined ? "Edit" : "Add"} Color
+            {getSizeId !== undefined ? "Edit" : "Add"} Size
           </button>
         </form>
       </div>
@@ -97,4 +102,4 @@ const Addcolor = () => {
   );
 };
 
-export default Addcolor;
+export default Addsize;

@@ -9,7 +9,7 @@ var productSchema = new mongoose.Schema(
       trim: true,
       unique:false,
     },
-    slug: {
+    handle: {
       type: String,
       required: true,
       unique: false,
@@ -31,23 +31,14 @@ var productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    quantity: {
-      type: Number,
-      required: true,
+    sku:{
+      type:String,
+      required:true,
     },
     sold: {
       type: Number,
       default: 0,
     },
-    images: [
-      {
-        public_id: String,
-        url: String,
-      },
-    ],
-    color: [{type:String,
-    required:true}],
-    tags: String,
     ratings: [
       {
         star: Number,
@@ -59,6 +50,34 @@ var productSchema = new mongoose.Schema(
       type: String,
       default: 0,
     },
+    state:{
+      type:String,
+      required:true,
+      default:"Draft"
+    },
+
+    images: [
+      {
+        public_id: String,
+        url: String,
+      },
+    ],
+    collectionName:[
+      {
+      title:String,
+  },
+],
+    variants:[
+      {
+        color:String,
+        size:String,
+        quantity:Number,
+      },
+    ],
+    tags:{
+      type:String,
+    },
+    
   },
   { timestamps: true }
 );

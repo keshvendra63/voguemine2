@@ -1,52 +1,53 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
-import brandService from "./brandService";
+import collectionService from "./collectionService";
 
-export const getBrands = createAsyncThunk(
-  "brand/get-brands",
+export const getCollections = createAsyncThunk(
+  "collection/get-collections",
   async (thunkAPI) => {
     try {
-      return await brandService.getBrands();
+      return await collectionService.getCollections();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const getABrand = createAsyncThunk(
-  "brand/get-brand",
-  async (id, thunkAPI) => {
+export const createCollection = createAsyncThunk(
+  "collection/create-collection",
+  async (collectionData, thunkAPI) => {
     try {
-      return await brandService.getBrand(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-export const createBrand = createAsyncThunk(
-  "brand/create-brand",
-  async (brandData, thunkAPI) => {
-    try {
-      return await brandService.createBrand(brandData);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-export const updateABrand = createAsyncThunk(
-  "brand/update-brand",
-  async (brand, thunkAPI) => {
-    try {
-      return await brandService.updateBrand(brand);
+      return await collectionService.createCollection(collectionData);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
-export const deleteABrand = createAsyncThunk(
-  "brand/delete-brand",
+export const getACollection = createAsyncThunk(
+  "collection/get-collection",
   async (id, thunkAPI) => {
     try {
-      return await brandService.deleteBrand(id);
+      return await collectionService.getCollection(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const updateACollection = createAsyncThunk(
+  "collection/update-collection",
+  async (collection, thunkAPI) => {
+    try {
+      return await collectionService.updateCollection(collection);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteACollection = createAsyncThunk(
+  "collection/delete-collection",
+  async (id, thunkAPI) => {
+    try {
+      return await collectionService.deleteCollection(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -56,88 +57,88 @@ export const deleteABrand = createAsyncThunk(
 export const resetState = createAction("Reset_all");
 
 const initialState = {
-  brands: [],
+  collections: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: "",
 };
-export const brandSlice = createSlice({
-  name: "brands",
+export const collectionSlice = createSlice({
+  name: "collections",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getBrands.pending, (state) => {
+      .addCase(getCollections.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getBrands.fulfilled, (state, action) => {
+      .addCase(getCollections.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.brands = action.payload;
+        state.collections = action.payload;
       })
-      .addCase(getBrands.rejected, (state, action) => {
+      .addCase(getCollections.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(createBrand.pending, (state) => {
+      .addCase(createCollection.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createBrand.fulfilled, (state, action) => {
+      .addCase(createCollection.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.createdBrand = action.payload;
+        state.createdCollection = action.payload;
       })
-      .addCase(createBrand.rejected, (state, action) => {
+      .addCase(createCollection.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(getABrand.pending, (state) => {
+      .addCase(updateACollection.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getABrand.fulfilled, (state, action) => {
+      .addCase(updateACollection.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.brandName = action.payload.title;
+        state.updatedCollection = action.payload;
       })
-      .addCase(getABrand.rejected, (state, action) => {
+      .addCase(updateACollection.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(updateABrand.pending, (state) => {
+      .addCase(getACollection.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updateABrand.fulfilled, (state, action) => {
+      .addCase(getACollection.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.updatedBrand = action.payload;
+        state.collectionName = action.payload.title;
       })
-      .addCase(updateABrand.rejected, (state, action) => {
+      .addCase(getACollection.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(deleteABrand.pending, (state) => {
+      .addCase(deleteACollection.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteABrand.fulfilled, (state, action) => {
+      .addCase(deleteACollection.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.deletedBrand = action.payload;
+        state.deletedCollection = action.payload.title;
       })
-      .addCase(deleteABrand.rejected, (state, action) => {
+      .addCase(deleteACollection.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
@@ -146,5 +147,4 @@ export const brandSlice = createSlice({
       .addCase(resetState, () => initialState);
   },
 });
-
-export default brandSlice.reducer;
+export default collectionSlice.reducer;

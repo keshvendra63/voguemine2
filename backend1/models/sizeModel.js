@@ -1,7 +1,7 @@
 const mongoose = require("mongoose"); // Erase if already required
 
 // Declare the Schema of the Mongo model
-var brandSchema = new mongoose.Schema(
+var sizeSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -16,4 +16,4 @@ var brandSchema = new mongoose.Schema(
 );
 
 //Export the model
-module.exports = mongoose.model("Brand", brandSchema);
+module.exports = mongoose.model("Size", sizeSchema);

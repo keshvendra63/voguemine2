@@ -6,86 +6,81 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import {
-  createBrand,
-  getABrand,
+  createCollection,
+  getACollection,
   resetState,
-  updateABrand,
-} from "../features/brand/brandSlice";
-
+  updateACollection,
+} from "../features/collection/collectionSlice";
 let schema = yup.object().shape({
-  title: yup.string().required("Brand Name is Required"),
+  title: yup.string().required("Collection is Required"),
 });
-const Addbrand = () => {
+const Addcollection = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
-  const getBrandId = location.pathname.split("/")[3];
-  const newBrand = useSelector((state) => state.brand);
+  const location = useLocation();
+  const getCollectionId = location.pathname.split("/")[3];
+  const newCollection = useSelector((state) => state.collection);
   const {
     isSuccess,
     isError,
     isLoading,
-    createdBrand,
-    brandName,
-    updatedBrand,
-  } = newBrand;
+    createdCollection,
+    updatedCollection,
+    collectionName,
+  } = newCollection;
   useEffect(() => {
-    if (getBrandId !== undefined) {
-      dispatch(getABrand(getBrandId));
+    if (getCollectionId !== undefined) {
+      dispatch(getACollection(getCollectionId));
     } else {
       dispatch(resetState());
     }
-  }, [getBrandId]);
-
+  }, [getCollectionId]);
   useEffect(() => {
-    if (isSuccess && createdBrand) {
-      toast.success("Brand Added Successfullly!");
+    if (isSuccess && createdCollection) {
+      toast.success("Collection Added Successfullly!");
     }
-    if (isSuccess && updatedBrand) {
-      toast.success("Brand Updated Successfullly!");
-      navigate("/admin/list-brand");
+    if (isSuccess && updatedCollection) {
+      toast.success("Collection Updated Successfullly!");
+      navigate("/admin/list-collection");
     }
-
     if (isError) {
       toast.error("Something Went Wrong!");
     }
-  }, [isSuccess, isError, isLoading]);
+  }, [isSuccess, isError, isLoading, createdCollection]);
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      title: brandName || "",
+      title: collectionName || "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      if (getBrandId !== undefined) {
-        const data = { id: getBrandId, brandData: values };
-        dispatch(updateABrand(data));
+      if (getCollectionId !== undefined) {
+        const data = { id: getCollectionId, collectionData: values };
+        dispatch(updateACollection(data));
         dispatch(resetState());
       } else {
-        dispatch(createBrand(values));
+        dispatch(createCollection(values));
         formik.resetForm();
         setTimeout(() => {
           dispatch(resetState());
-        }, 1000);
+        }, 300);
       }
     },
   });
-
   return (
     <div>
       <h3 className="mb-4 title">
-        {getBrandId !== undefined ? "Edit" : "Add"} Brand
+        {getCollectionId !== undefined ? "Edit" : "Add"} Collection
       </h3>
       <div>
         <form action="" onSubmit={formik.handleSubmit}>
           <CustomInput
-            type="text"
-            name="title"
+            type="collection"
+            label="Enter Product Collection"
             onChng={formik.handleChange("title")}
             onBlr={formik.handleBlur("title")}
             val={formik.values.title}
-            label="Enter Brand"
-            id="brand"
+            id="collection"
           />
           <div className="error">
             {formik.touched.title && formik.errors.title}
@@ -94,7 +89,7 @@ const Addbrand = () => {
             className="btn btn-success border-0 rounded-3 my-5"
             type="submit"
           >
-            {getBrandId !== undefined ? "Edit" : "Add"} Brand
+            {getCollectionId !== undefined ? "Edit" : "Add"} Collection
           </button>
         </form>
       </div>
@@ -102,4 +97,4 @@ const Addbrand = () => {
   );
 };
 
-export default Addbrand;
+export default Addcollection;

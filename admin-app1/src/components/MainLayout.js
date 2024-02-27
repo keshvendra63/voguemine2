@@ -71,14 +71,14 @@ const MainLayout = () => {
                   label: "Product List",
                 },
                 {
-                  key: "brand",
+                  key: "collection",
                   icon: <SiBrandfolder className="fs-4" />,
-                  label: "Brand",
+                  label: "Collection",
                 },
                 {
-                  key: "list-brand",
+                  key: "list-collection",
                   icon: <SiBrandfolder className="fs-4" />,
-                  label: "Brand List ",
+                  label: "Collection List ",
                 },
                 {
                   key: "category",
@@ -91,14 +91,14 @@ const MainLayout = () => {
                   label: "Category List",
                 },
                 {
-                  key: "color",
+                  key: "size",
                   icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Color",
+                  label: "Size",
                 },
                 {
-                  key: "list-color",
+                  key: "list-size",
                   icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Color List",
+                  label: "Size List",
                 },
               ],
             },

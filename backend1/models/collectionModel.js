@@ -1,7 +1,7 @@
 const mongoose = require("mongoose"); // Erase if already required
 
 // Declare the Schema of the Mongo model
-var colorSchema = new mongoose.Schema(
+var collectionSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -16,4 +16,4 @@ var colorSchema = new mongoose.Schema(
 );
 
 //Export the model
-module.exports = mongoose.model("Color", colorSchema);
+module.exports = mongoose.model("Collection", collectionSchema);
