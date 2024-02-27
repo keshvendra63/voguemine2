@@ -28,6 +28,7 @@ if(productUpdateDetail!==null){
       },[productUpdateDetail])
 
     const carts=cartState?cartState:[]
+    console.log(carts)
     const removeFromcart=(id)=>{
       dispatch(removeFromCart(id))
       setTimeout(()=>{
@@ -59,11 +60,11 @@ useEffect (()=> {
                     <div className="cart-item" key={index}>
                         <div className="cartItem-left">
                             <div className="prdt-img">
-                                <img src={item?.img_src} alt="" />
+                                <img src={item?.productId?.img_src} alt="" />
                             </div>
                         </div>
                         <div className="cartItem-right">
-                            <p className="prdt-name" style={{fontWeight:'bold'}}>{item?.Title}</p>
+                            <p className="prdt-name" style={{fontWeight:'bold'}}>{item?.productId?.title}</p>
                             <div className="second-item">
                             <div className="size">
                                 <p>Size:</p>
@@ -83,7 +84,7 @@ useEffect (()=> {
                                 <input type="number" name="" min={1} max={10} id="" onChange={(e)=>{setproductUpdateDetail({cartItemId:item?._id,quantity:e.target.value})}} value={productUpdateDetail?.quantity ? productUpdateDetail?.quantity : item?.quantity }/>
                             </div>
                             </div>
-                            <p className="price" style={{marginTop:'20px',fontWeight:'bold'}}>Rs. 1999</p>
+                            <p className="price" style={{marginTop:'20px',fontWeight:'bold'}}>Rs. {item?.price}</p>
                             <hr />
                             <p className='remove' onClick={()=>removeFromcart(item?._id)}>Remove</p>
                         </div>
@@ -126,7 +127,7 @@ useEffect (()=> {
                             <p>Rs. 200</p>
                             <p>Rs. -200</p>
                             <p>0</p>
-                            <p style={{fontWeight:'bold'}}>Rs. 3499</p>
+                            <p style={{fontWeight:'bold'}}>Rs. {totalAmount}</p>
                         </div>
                     </div>
                     <p style={{fontWeight:'bold',color:'blue'}}>10% Instant Off on Prepaid Orders</p>

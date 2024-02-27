@@ -17,7 +17,7 @@ import AutoAwesomeMosaicOutlinedIcon from '@mui/icons-material/AutoAwesomeMosaic
 import logo from '../../images/logo.png'
 import {Link,useNavigate} from 'react-router-dom'
 import './header.css'
-import { registerUser,loginUser,forgotPasswordToken } from '../../features/user/userSlice';
+import { registerUser,loginUser,forgotPasswordToken, getUserCartProduct } from '../../features/user/userSlice';
 import {getAProduct} from '../../features/products/productSlice'
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
@@ -66,7 +66,9 @@ const navigate=useNavigate()
   useEffect(() => {
     changePlaceholder();
   },[]);
-
+useEffect(()=>{
+  dispatch(getUserCartProduct())
+},[])
   useEffect(()=>{
     let data=[]
     for (let index = 0; index < productState?.length; index++) {

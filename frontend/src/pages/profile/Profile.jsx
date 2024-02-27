@@ -45,6 +45,18 @@ const profileSchema=yup.object({
   })
 
 const Profile = () => {
+  const getTokenFromLocalStorage = localStorage.getItem("customer")
+  ? JSON.parse(localStorage.getItem("customer"))
+  : null;
+
+const config2 = {
+  headers: {
+    Authorization: `Bearer ${
+      getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+    }`,
+    Accept: "application/json",
+  },
+};
   const [edit,setEdit]=useState(true)
   const [bg,setBg]=useState("white")
   const [color,setColor]=useState("black")
@@ -64,7 +76,7 @@ const Profile = () => {
         },
         validationSchema: profileSchema,
         onSubmit: (values) => {
-          dispatch(updateProfile(values))
+          dispatch(updateProfile({data:values,config2:config2}))
           setEdit(true)
           setBg("white")
           setColor("black")

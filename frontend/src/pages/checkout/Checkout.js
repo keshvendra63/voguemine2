@@ -8,10 +8,11 @@ import img from '../../images/mens-premium-shirts.jpeg'
 import {useFormik} from 'formik'
 import * as yup from 'yup'
 import { useDispatch,useSelector } from 'react-redux'
+import {useNavigate} from 'react-router-dom'
 import { TextField } from '@mui/material';
   import axios from 'axios'
 import {config} from '../../utils/axiosConfig'  
-import {createAnOrder} from '../../features/user/userSlice'
+import {createAnOrder, deleteCart, getUserCartProduct, resetState} from '../../features/user/userSlice'
   const shippingSchema=yup.object({
     firstname:yup.string().required("First Name is required"),
     lastname:yup.string().required("Last Name is required"),
@@ -40,7 +41,9 @@ const Checkout = () => {
     }
     const finalAmount=shipping+totalAmount+discount
     const dispatch=useDispatch();
+    const navigate=useNavigate()
     const cartState=useSelector((state)=>state?.auth?.cartProducts)
+    const authState=useSelector((state)=>state?.auth)
     console.log(cartState)
     useEffect (()=> {
         let sum=0;
@@ -49,6 +52,14 @@ const Checkout = () => {
             setTotalAmount(sum)
         }
     },[cartState])
+    useEffect(()=>{
+        dispatch(getUserCartProduct())
+    },[])
+    useEffect(()=>{
+        if(authState?.orderedProduct?.order!==null && authState?.orderedProduct?.success===true){
+            navigate('/profile')
+        }
+    },[authState])
     const formik = useFormik({
         initialValues: {
           firstname: "",
@@ -62,8 +73,9 @@ const Checkout = () => {
           phone: ""
         },
         validationSchema: shippingSchema,
-        onSubmit: (values) => {
-            setShippingInfo(values)
+        onSubmit:(values) => {
+           setShippingInfo(values)
+           localStorage.setItem("address",JSON.stringify(values))
             setTimeout(()=>{
                 checkOutHandler()
             },300)
@@ -125,12 +137,11 @@ const checkOutHandler=async()=>{
         };
 
         const result = await axios.post("http://localhost:5000/api/user/order/paymentVerification", data,config);
-        setPaymentInfo({
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpayOrderId: response.razorpay_order_id,
-        })
+    dispatch(createAnOrder({totalPrice:finalAmount,totalPriceAfterDiscount:finalAmount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address"))}))
+    dispatch(deleteCart())
+    localStorage.removeItem("address")
+    dispatch(resetState())
 
-        dispatch(createAnOrder({totalPrice:finalAmount,totalPriceAfterDiscount:finalAmount,orderItems:cartProductState,paymentInfo,shippingInfo}))
     },
     prefill: {
         name: "Voguemine",
@@ -148,7 +159,7 @@ const checkOutHandler=async()=>{
 const paymentObject = new window.Razorpay(options);
 paymentObject.open();
 }
-
+console.log(cartState)
     return (
         <div className='margin-section checkout'>
             <div className="left-form">
@@ -309,14 +320,21 @@ paymentObject.open();
                 </form>
             </div>
             <div className="right-form">
-                <div className="prdt">
+
+                {
+                    cartState?.map((item,index)=>{
+                        return(
+                            <div className="prdt" key={index}>
                     <div className="detail">
-                        <img src={img} alt="" />
-                        <div><p className="p-name">Men's Premium quality Burberry Shirt white</p>
-                        <p className="size"><span>S 23-24</span><span>/</span><span>Purple</span></p></div>
+                        <img src={item?.productId?.img_src} alt="" />
+                        <div><p className="p-name">{item?.productId?.title}</p>
+                        <p className="size"><span>{item?.productId?.size}</span><span>/</span><span>{item?.color}</span></p></div>
                     </div>
-                    <p className="p-price">&#8377; 1999</p>
+                    <p className="p-price">&#8377;{(item?.price)*(item?.quantity)}</p>
                 </div>
+                        )
+                    })
+                }
                 <div className="coupon">
                 <input
                             id="coupon"

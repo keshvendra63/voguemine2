@@ -1,7 +1,6 @@
-import { createSlice,createAsyncThunk} from "@reduxjs/toolkit";
+import { createSlice,createAsyncThunk,createAction} from "@reduxjs/toolkit";
 import {authService} from './userService'
 import {toast} from 'react-toastify'
-
 export const registerUser=createAsyncThunk("auth/register",async(userData,thunkAPI)=>{
     try{
         return await authService.register(userData)
@@ -60,6 +59,13 @@ export const removeFromCart=createAsyncThunk("auth/cart/product/delete",async(ca
         return thunkAPI.rejectWithValue(error)
     }
 })
+export const deleteCart=createAsyncThunk("auth/cart/delete",async(thunkAPI)=>{
+    try{
+        return await authService.emptyCart()
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
 
 export const updateQuantityFromCart=createAsyncThunk("auth/cart/product/update",async(cartDetail,thunkAPI)=>{
     try{
@@ -82,6 +88,8 @@ export const forgotPasswordToken=createAsyncThunk("auth/password/token",async(da
         return thunkAPI.rejectWithValue(error)
     }
 })
+export const resetState = createAction("Reset_all");
+
 const getCustomerfromLocalStorage = localStorage.getItem("customer")
   ? JSON.parse(localStorage.getItem("customer"))
   : null;
@@ -263,9 +271,18 @@ export const authSlice=createSlice({
             state.isError=false;
             state.isSuccess=true;
             state.updatedUser=action.payload;
-            if(state.isSuccess===true){
-                toast.info("Profile Updated Successfully")
+            let currentUserData=JSON.parse(localStorage.getItem("customer"))
+            let newUserData={
+                _id:currentUserData?._id,
+                token:currentUserData?.token,
+                firstname:action?.payload?.firstname,
+                lastname:action?.payload?.lastname,
+                email:action?.payload?.email,
+                mobile:action?.payload?.mobile,
             }
+            localStorage.setItem("customer",JSON.stringify(newUserData))
+            state.user=newUserData
+            toast.success("Profile Updated")
         }).addCase(updateProfile.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;
@@ -288,6 +305,21 @@ export const authSlice=createSlice({
             state.isSuccess=false;
             state.message=action.error;
         })
+        .addCase(deleteCart.pending,(state)=>{
+            state.isLoading=true;
+        }).addCase(deleteCart.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.deletedCart=action.payload;
+        }).addCase(deleteCart.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
+        })
+        .addCase(resetState, () => initialState);
+
     }
 })
 

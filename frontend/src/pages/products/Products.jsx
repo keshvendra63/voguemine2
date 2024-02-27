@@ -13,6 +13,7 @@ import {addToCart} from '../../features/user/userSlice'
 import Product from '../../components/Product'
 const Products = () => {
   const [sort,setSort]=useState(null)
+
   const [limit,setLimit]=useState(1000)
   const [page,setPage]=useState(1)
   const loadMore=()=>{
@@ -36,6 +37,24 @@ const Products = () => {
         dispatch(addToCart(id))
     }
     const products=productState? productState:[]
+
+      
+      // Function to filter products by SKU containing "VMSI"
+      const groupProductsBySKUAndHandle = (products) => {
+        const groupedProducts = {};
+        products.forEach(product => {
+            const key = `${product.sku}-${product.handle}`;
+            if (!groupedProducts[key]) {
+                groupedProducts[key] = [];
+            }
+            groupedProducts[key].push(product);
+        });
+        return groupedProducts;
+    };
+    
+    const allProductsBySKUAndHandle = groupProductsBySKUAndHandle(products);
+    
+    console.log(allProductsBySKUAndHandle);
 
     return (
         <div className='Products'>

@@ -75,7 +75,7 @@ const getOrders=async()=>{
 }
 
 const updateUser=async(data)=>{
-    const response=await axios.put(`${base_url}user/edit-user`,data,config)
+    const response=await axios.put(`${base_url}user/edit-user`,data.data,data.config2)
     if(response.data){
        
         return response.data
@@ -89,6 +89,13 @@ const forgotPassToken=async(data)=>{
     }
 }
 
+const emptyCart=async(data)=>{
+    const response=await axios.delete(`${base_url}user/empty-cart`,config)
+    if(response.data){
+       
+        return response.data
+    }
+}
 
 export const authService={
     register,
@@ -101,5 +108,6 @@ export const authService={
     createOrder,
     getOrders,
     updateUser,
-    forgotPassToken
+    forgotPassToken,
+    emptyCart
 }

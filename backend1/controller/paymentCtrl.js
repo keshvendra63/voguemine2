@@ -6,7 +6,7 @@ const instance=new Razorpay({
 const checkout=async(req,res)=>{
     const {amount}=req.body
     const option={
-        amount:100,
+        amount:amount*100,
         currency:"INR"
     }
     const order=await instance.orders.create(option)
