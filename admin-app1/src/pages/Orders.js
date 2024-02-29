@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Table } from "antd";
+import { Pagination, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
@@ -7,8 +7,9 @@ import { Link } from "react-router-dom";
 import { getOrders, updateAOrder } from "../features/auth/authSlice";
 const columns = [
   {
-    title: "SNo",
+    title: "ID",
     dataIndex: "key",
+    defaultSortOrder:"descend"
   },
   {
     title: "Name",
@@ -21,6 +22,18 @@ const columns = [
   {
     title: "Amount",
     dataIndex: "amount",
+  },
+  {
+    title: "Type",
+    dataIndex: "type",
+  },
+  {
+    title: "Items",
+    dataIndex: "items",
+  },
+  {
+    title: "City",
+    dataIndex: "city",
   },
   {
     title: "Date",
@@ -41,16 +54,19 @@ const Orders = () => {
   const orderState = useSelector((state) => state?.auth?.orders.orders);
   console.log(orderState)
   const data1 = [];
-  for (let i = 0; i < orderState?.length; i++) {
+  for (let i = orderState?.length-1; i>= 0; i--) {
     data1.push({
-      key: i + 1,
-      name: orderState[i]?.user?.firstname,
+      key:`#${i+1}`,
+      name: orderState[i]?.shippingInfo?.firstname,
       product: (
         <Link to={`/admin/order/${orderState[i]?._id}`}>
           View Orders
         </Link>
       ),
-      amount: orderState[i]?.totalPrice,
+      amount: orderState[i]?.finalAmount,
+      type:orderState[i]?.orderType,
+      city:orderState[i]?.shippingInfo?.city,
+      items:orderState[i].orderItems?.length,
       date: new Date(orderState[i]?.createdAt).toLocaleString(),
       action: (
         <>
@@ -71,7 +87,7 @@ const Orders = () => {
   return (
     <div>
       <h3 className="mb-4 title">Orders</h3>
-      <div>{<Table columns={columns} dataSource={data1} />}</div>
+      <div>{<Table columns={columns} dataSource={data1} scroll={{ x: 1500, y: 900 }} />}</div>
     </div>
   );
 };
