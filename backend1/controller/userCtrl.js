@@ -338,7 +338,7 @@ const getWishlist = asyncHandler(async (req, res) => {
 });
 
 const userCart = asyncHandler(async (req, res) => {
-  const {productId,color,price,quantity } = req.body;
+  const {productId,color,price,quantity,size } = req.body;
   const { _id } = req.user;
   validateMongoDbId(_id);
   try {
@@ -348,7 +348,8 @@ const userCart = asyncHandler(async (req, res) => {
       productId,
       color,
       price,
-      quantity
+      quantity,
+      size
     }).save();
     res.json(newCart);
   } catch (error) {
@@ -404,11 +405,11 @@ const updateProductQuantityFromCart = asyncHandler(async (req, res) => {
   }
 });
 const createOrder=asyncHandler(async(req,res)=>{
-  const {shippingInfo,orderItems,totalPrice,totalPriceAfterDiscount,paymentInfo}=req.body;
+  const {shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo}=req.body;
   const {_id}=req.user
   try{
     const order=await Order.create({
-      shippingInfo,orderItems,totalPrice,totalPriceAfterDiscount,paymentInfo,user:_id
+      shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo,user:_id
     })
     res.json({
       order,

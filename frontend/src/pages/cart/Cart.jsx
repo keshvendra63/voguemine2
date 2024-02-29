@@ -56,31 +56,27 @@ useEffect (()=> {
                     <hr />
                     {
   carts?.map((item,index)=>{
+    console.log(item)
     return(
                     <div className="cart-item" key={index}>
                         <div className="cartItem-left">
                             <div className="prdt-img">
-                                <img src={item?.productId?.img_src} alt="" />
+                                <img src={item?.productId?.images[0].url} alt="" />
                             </div>
                         </div>
                         <div className="cartItem-right">
                             <p className="prdt-name" style={{fontWeight:'bold'}}>{item?.productId?.title}</p>
                             <div className="second-item">
                             <div className="size">
-                                <p>Size:</p>
-                                <select name="size">
-                                    <option value="S">S</option>
-                                    <option value="M">M</option>
-                                    <option value="L">L</option>
-                                    <option value="XL">XL</option>
-                                    <option value="2XL">2XL</option>
-                                    <option value="3XL">3XL</option>
-                                    <option value="4XL">4XL</option>
-                                    <option value="5XL">5XL</option>
-                                </select>
+                                <p style={{fontWeight:500}}>Size:</p>
+                                <p>{item.size}</p>
+                            </div>
+                            <div className="size">
+                                <p style={{fontWeight:500}}>Color:</p>
+                                <p>{item.color}</p>
                             </div>
                             <div className="quantity">
-                                <p>Qty:</p>
+                                <p style={{fontWeight:500}}>Qty:</p>
                                 <input type="number" name="" min={1} max={10} id="" onChange={(e)=>{setproductUpdateDetail({cartItemId:item?._id,quantity:e.target.value})}} value={productUpdateDetail?.quantity ? productUpdateDetail?.quantity : item?.quantity }/>
                             </div>
                             </div>
@@ -101,39 +97,13 @@ useEffect (()=> {
                         <p style={{fontWeight:'bold'}}>Rs. <span>{totalAmount}</span></p>
                     </div>
                 </div>
-                <div className="right-cart">
-                    <div className="discountcode">
-                        <p>Enter Discount Code</p>
-                        <InputGroup className="mb-3">
-                            <Form.Control
-                                placeholder="Enter Discount Code"
-                                aria-label="Discount Code"
-                                aria-describedby="basic-addon2"
-                            />
-                            <Button variant="outline-secondary" id="button-addon2">
-                                APPLY
-                            </Button>
-                        </InputGroup>
-
-                    </div>
-                    <div className="total-details">
-                        <div className="left">
-                            <p>Shipping Cost</p>
-                            <p>Discount</p>
-                            <p>TAX</p>
-                            <p style={{fontWeight:'bold'}}>Estimated Total</p>
-                        </div>
-                        <div className="right">
-                            <p>Rs. 200</p>
-                            <p>Rs. -200</p>
-                            <p>0</p>
-                            <p style={{fontWeight:'bold'}}>Rs. {totalAmount}</p>
-                        </div>
-                    </div>
-                    <p style={{fontWeight:'bold',color:'blue'}}>10% Instant Off on Prepaid Orders</p>
-                    <button className='checkout-btn'><Link to="/checkout" >CHECKOUT</Link></button>
-                    
+                <div className="checkouts">
+                <p style={{fontWeight:'bold',color:'blue'}}>10% Instant Off on Prepaid Orders</p>
+                <Link to="/checkout" >  <button className='checkout-btn'>CHECKOUT</button></Link>
                 </div>
+                
+                    
+                    
             </div>
                     
                 

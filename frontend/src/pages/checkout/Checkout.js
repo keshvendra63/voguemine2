@@ -27,19 +27,21 @@ import {createAnOrder, deleteCart, getUserCartProduct, resetState} from '../../f
 
 const Checkout = () => {
     const [totalAmount,setTotalAmount]=useState(null)
-    
-    const [shipping,setShipping]=useState(0)
+    const [orderType,setOrderType]=useState("COD")
+    const [shippingCost,setShippingCost]=useState(200)
     const [discount,setDiscount]=useState(0)
-    const [shippingInfo,setShippingInfo]=useState(null)
-    const [paymentInfo,setPaymentInfo]=useState({razorpayOrderId:"",razorpayPaymentId:""})
     const [cartProductState,setCartProductState]=useState([])
     const standardClick=()=>{
-        setShipping(0)
+        setShippingCost(0)
+        setOrderType("Prepaid")
+        setDiscount((totalAmount+shippingCost)/10)
     }
     const codClick=()=>{
-        setShipping(200)
+        setShippingCost(200)
+        setOrderType("COD")
+        setDiscount(0)
     }
-    const finalAmount=shipping+totalAmount+discount
+    const finalAmount=shippingCost+totalAmount-discount
     const dispatch=useDispatch();
     const navigate=useNavigate()
     const cartState=useSelector((state)=>state?.auth?.cartProducts)
@@ -74,7 +76,6 @@ const Checkout = () => {
         },
         validationSchema: shippingSchema,
         onSubmit:(values) => {
-           setShippingInfo(values)
            localStorage.setItem("address",JSON.stringify(values))
             setTimeout(()=>{
                 checkOutHandler()
@@ -101,7 +102,7 @@ const loadScript=(src)=>{
 useEffect(()=>{
     let items=[]
     for (let index = 0; index < cartState?.length; index++) {
-        items.push({product:cartState[index].productId._id,quantity:cartState[index].quantity,price:cartState[index].price,color:cartState[index].color})
+        items.push({product:cartState[index].productId._id,quantity:cartState[index].quantity,price:cartState[index].price,color:cartState[index].color,size:cartState[0].size})
         
     }
     setCartProductState(items)
@@ -137,7 +138,7 @@ const checkOutHandler=async()=>{
         };
 
         const result = await axios.post("http://localhost:5000/api/user/order/paymentVerification", data,config);
-    dispatch(createAnOrder({totalPrice:finalAmount,totalPriceAfterDiscount:finalAmount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address"))}))
+    dispatch(createAnOrder({totalPrice:totalAmount,finalAmount:finalAmount,shippingCost:shippingCost,orderType:orderType,discount:discount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address"))}))
     dispatch(deleteCart())
     localStorage.removeItem("address")
     dispatch(resetState())
@@ -298,7 +299,7 @@ console.log(cartState)
                         <p className="section-heading">Payment</p>
                     <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="female"
+        defaultValue="cod"
         name="radio-buttons-group"
       >
         <div className="razorpay">
@@ -323,12 +324,13 @@ console.log(cartState)
 
                 {
                     cartState?.map((item,index)=>{
+                        console.log(item)
                         return(
                             <div className="prdt" key={index}>
                     <div className="detail">
-                        <img src={item?.productId?.img_src} alt="" />
+                        <img src={item?.productId?.images[0].url} alt="" />
                         <div><p className="p-name">{item?.productId?.title}</p>
-                        <p className="size"><span>{item?.productId?.size}</span><span>/</span><span>{item?.color}</span></p></div>
+                        <p className="size"><span>{item?.size}</span><span>/</span><span>{item?.color}</span></p></div>
                     </div>
                     <p className="p-price">&#8377;{(item?.price)*(item?.quantity)}</p>
                 </div>
@@ -352,8 +354,8 @@ console.log(cartState)
                     </ul>
                     <ul>
                         <li>&#8377; {totalAmount}</li>
-                        <li>&#8377; {shipping!==0?shipping:`${shipping}(Free)`}</li>
-                        <li>&#8377; {discount}</li>
+                        <li>&#8377; {shippingCost!==0?shippingCost:`${shippingCost}(Free)`}</li>
+                        <li>&#8377; -{discount}</li>
                         <li style={{fontSize:'20px',fontWeight:600}}>&#8377; {finalAmount}</li>
                     </ul>
                 </div>

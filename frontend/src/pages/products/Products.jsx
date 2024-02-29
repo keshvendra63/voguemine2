@@ -1,29 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import banner from '../../images/A21.jpg'
 import './product.css'
-import Pagination from '@mui/material/Pagination';
-import Rating from '@mui/material/Rating';
-import Stack from '@mui/material/Stack';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
-import {Link, useLocation} from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { addToWishlist, getAllProducts } from '../../features/products/productSlice';
-import {addToCart} from '../../features/user/userSlice'
+import {getAllProducts } from '../../features/products/productSlice';
 import Product from '../../components/Product'
-import ProductD from '../../components/DetailProduct';
 const Products = () => {
   const [sort,setSort]=useState(null)
 
-  const [limit,setLimit]=useState(1000)
+  const [limit,setLimit]=useState(100)
   const [page,setPage]=useState(1)
   const loadMore=()=>{
     setPage(page+1)
   }
     const productState=useSelector((state)=>state?.product?.product)
-    console.log(productState)
-    const location=useLocation()
-    const urlPath=location.pathname
     const dispatch=useDispatch();
     useEffect(()=>{
         getProducts()
@@ -31,39 +21,10 @@ const Products = () => {
     const getProducts=()=>{
         dispatch(getAllProducts({sort,limit,page}))
     }
-    const addToWish=(id)=>{
-        dispatch(addToWishlist(id))
-    }
-    const addTocart=(id)=>{
-        dispatch(addToCart(id))
-    }
     const products=productState? productState:[]
 
       
-      // Function to filter products by SKU containing "VMSI"
-      const groupProductsBySKUAndHandle = (products) => {
-        const groupedProducts = {};
-        
-        products.forEach(product => {
-            
-            if(product.sku && product.sku.indexOf(('VMSI'|| 'VMS-'))!==-1){
-                const key = `${product.sku}-${product.handle}`;  
-            if (!groupedProducts[key]) {
-                groupedProducts[key] = [];
-            }
-            groupedProducts[key].push(product);
-            }
-        });
-        return groupedProducts;
-    };
     
-    const allProductsBySKUAndHandle = groupProductsBySKUAndHandle(products);
-    const arrayOfObjects = Object.entries(allProductsBySKUAndHandle).map(([key, value]) => ({ key, value }));
-console.log(arrayOfObjects)
-
-
-
-
 
     return (
         <div className='Products'>
@@ -138,13 +99,12 @@ console.log(arrayOfObjects)
 
         <div className="product-list">
             {
-                arrayOfObjects.map((arm,index)=>{
-                    return <Product key={index}>
-                        {arm?.value.map((arms)=>{
-                          return <ProductD id={arms?._id} key={arms?._id} img={arms?.img_src} title={arms?.title} price={arms?.price} colors={arms?.colors} size={arms?.size}/>
-
-                        })}
-                        </Product>
+                
+                products.map((arm,index)=>{
+                    if(arm.collectionName==="Men's Premium Shirts"){
+                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                    
+                    }
                     
                 })
             }

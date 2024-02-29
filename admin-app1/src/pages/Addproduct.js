@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import { toast } from "react-toastify";
 import * as yup from "yup";
-import { useFormik } from "formik";
+import { useFormik, FieldArray,Field,ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { getSizes } from "../features/size/sizeSlice";
 import { getCategories } from "../features/pcategory/pcategorySlice";
@@ -22,15 +22,7 @@ let schema = yup.object().shape({
   category: yup.string().required("Category is Required"),
   brand: yup.string().required("Brand is Required"),
   sku: yup.string().required("SKU is Required"),
-  color: yup.string().required("Color is Required"),
-  size: yup.string().required("Size is Required"),
-  quantity: yup.string().required("Size is Required"),
-
-  collectionName: yup.array().of(
-    yup.object().shape({
-      title: yup.string().required('Collection title is required')
-    })
-  ).required('At least one collection is required'),
+  collectionName: yup.string().required("Collection is Required"),
   variants: yup.array().of(
     yup.object().shape({
       color: yup.string().required('Variant color is required'),
@@ -43,13 +35,8 @@ let schema = yup.object().shape({
 const Addproduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [collectionName, setCollectionName] = useState([]);
-  const [variant, setVariant] = useState([]);
 
-  const [size, setSize] = useState("l");
-  const [color, setColor] = useState("ll");
-  const [quantity, setQuantity] = useState(5);
-  const [images, setImages] = useState([]);
+
   useEffect(() => {
     dispatch(getSizes());
     dispatch(getCategories());
@@ -70,13 +57,6 @@ const Addproduct = () => {
       toast.error("Something Went Wrong!");
     }
   }, [isSuccess, isError, isLoading]);
-  const collectionopt = [];
-  collectionState.forEach((i) => {
-    collectionopt.push({
-      label: i.title,
-      value: i._id,
-    });
-  });
   const img = [];
   imgState.forEach((i) => {
     img.push({
@@ -86,9 +66,8 @@ const Addproduct = () => {
   });
 
   useEffect(() => {
-    formik.values.collectionName = collectionName ? collectionName : " ";
     formik.values.images = img;
-  }, [collectionName, img]);
+  }, [img]);
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -98,28 +77,28 @@ const Addproduct = () => {
       category: '',
       brand: '',
       sku: '',
-      color: '',
-      size: '',
-      quantity: '',
-      collectionName: [{ title: '' }],
+      collectionName:'',
       variants: [{ color: '', size: '', quantity: '' }]
     },
     
     validationSchema: schema,
     onSubmit: (values) => {
       dispatch(createProducts(values));
-      formik.resetForm();
-      setCollectionName(null);
+
       setTimeout(() => {
         dispatch(resetState());
+        formik.resetForm();
       }, 1000);
     },
   });
-  console.log(formik)
-  const handleColors = (e) => {
-    setCollectionName(e);
-    console.log(collectionName);
+  console.log(formik.values)
+  const addVariant = () => {
+    formik.setFieldValue("variants", [
+      ...formik.values.variants,
+      { color: "", size: "", quantity: "" },
+    ]);
   };
+
   return (
     <div>
       <h3 className="mb-4 title">Add Product</h3>
@@ -215,19 +194,27 @@ const Addproduct = () => {
             {formik.touched.sku && formik.errors.sku}
           </div>
             
-          <Select
-            mode="multiple"
-            allowClear
-            className="w-100"
-            placeholder="Select collections"
-            defaultValue={collectionName}
-            onChange={(i) => handleColors(i)}
-            options={collectionopt}
-          />
+          <select
+            name="collectionName"
+            onChange={formik.handleChange("collectionName")}
+            onBlur={formik.handleBlur("collectionName")}
+            value={formik.values.collectionName}
+            className="form-control py-3 mb-3"
+            id=""
+          >
+            <option value="">Select Collection</option>
+            {collectionState.map((i, j) => {
+              return (
+                <option key={j} value={i.title}>
+                  {i.title}
+                </option>
+              );
+            })}
+          </select>
           <div className="error">
             {formik.touched.collectionName && formik.errors.collectionName}
           </div>
-
+          
           <CustomInput
             type="text"
             label="Enter Product Tags"
@@ -239,17 +226,81 @@ const Addproduct = () => {
           <div className="error">
             {formik.touched.tags && formik.errors.tags}
           </div>
-          <CustomInput
-            type="number"
-            label="Enter Product Quantity"
-            name="quantity"
-            onChng={formik.handleChange("quantity")}
-            onBlr={formik.handleBlur("quantity")}
-            val={formik.values.quantity}
-          />
+         
+                {formik.values.variants.map((variant, index) => (
+                  <div key={index}>
+                    <input
+                      id={`color-${index}`}
+                      name={`variants[${index}].color`}
+                      type="text"
+                      label="Enter Color"
+                      value={formik.values.variants[index].color}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="form-control py-3 mb-3"
+                    />
+                    <div className="error">
+              {formik.touched.variants?.[index]?.color &&
+                formik.errors.variants?.[index]?.color}
+            </div>
+            <select
+            id={`size-${index}`}
+            name={`variants[${index}].size`}
+            type="text"
+            value={formik.values.variants[index].size}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="form-control py-3 mb-3"
+          >
+            <option value="">Select Size</option>
+            {sizeState.map((i, j) => {
+              return (
+                <option key={j} value={i.title}>
+                  {i.title}
+                </option>
+              );
+            })}
+          </select>
           <div className="error">
-            {formik.touched.quantity && formik.errors.quantity}
-          </div>
+              {formik.touched.variants?.[index]?.size &&
+                formik.errors.variants?.[index]?.size}
+            </div>
+                    {/* <label htmlFor={`size-${index}`}>Size:</label>
+                    <input
+                      id={`size-${index}`}
+                      name={`variants[${index}].size`}
+                      type="text"
+                      value={formik.values.variants[index].size}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                    <div className="error">
+              {formik.touched.variants?.[index]?.size &&
+                formik.errors.variants?.[index]?.size}
+            </div> */}
+          
+                    <input
+                      id={`quantity-${index}`}
+                      name={`variants[${index}].quantity`}
+                      type="number"
+                      label="Please Enter Quantity"
+                      value={formik.values.variants[index].quantity}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="form-control py-3 mb-3"
+                    />
+                    <div className="error">
+              {formik.touched.variants?.[index]?.quantity &&
+                formik.errors.variants?.[index]?.quantity}
+            </div>
+                  </div>
+                ))}
+          
+                <button type="button" onClick={addVariant}>
+                  Add Variant
+                </button>
+          
+         
           <select
             name="state"
             onChange={formik.handleChange("state")}

@@ -62,11 +62,10 @@ var productSchema = new mongoose.Schema(
         url: String,
       },
     ],
-    collectionName:[
-      {
-      title:String,
-  },
-],
+    collectionName:{
+      type: String,
+      required: true,
+    },
     variants:[
       {
         color:String,

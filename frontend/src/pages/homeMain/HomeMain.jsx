@@ -33,13 +33,13 @@ const HomeMain = () => {
       </div>
       <div className="categories">
         <div className="cate">
-          <img src={men} alt="" />
+          <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709195919/1_y7676c.jpg" alt="" />
           <div className="content">
 
           </div>
         </div>
         <div className="cate">
-            <img src={women} alt="" />
+            <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709195921/2_jsp72s.jpg" alt="" />
             <div className="content">
 
             </div>

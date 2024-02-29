@@ -66,6 +66,10 @@ var orderSchema = new mongoose.Schema(
         type:String,
       required:true
       },
+      size:{
+        type:String,
+      required:true
+      },
       quantity:{
         type:Number,
         required:true
@@ -87,7 +91,19 @@ var orderSchema = new mongoose.Schema(
       type:Number,
       required:true
     },
-    totalPriceAfterDiscount:{
+    shippingCost:{
+      type:Number,
+      required:true
+    },
+    orderType:{
+      type:String,
+      required:true
+    },
+    discount:{
+      type:Number,
+      required:true,
+    },
+    finalAmount:{
       type:Number,
       required:true
     },

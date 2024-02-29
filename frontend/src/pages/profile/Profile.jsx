@@ -177,7 +177,7 @@ const config2 = {
         <TableHead>
           <TableRow>
             <StyledTableCell>Id</StyledTableCell>
-            <StyledTableCell align="right">Products</StyledTableCell>
+            <StyledTableCell align="left">Products</StyledTableCell>
             <StyledTableCell align="right">Amount</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -187,8 +187,8 @@ const config2 = {
               <StyledTableCell component="th" scope="row">
                 {index+1}
               </StyledTableCell>
-              <StyledTableCell align="right">{(row.orderItems.map((ite)=>{return ite.product.title})).join(",")}</StyledTableCell>
-              <StyledTableCell align="right">{row.totalPrice}</StyledTableCell>
+              <StyledTableCell align="left">{(row.orderItems.map((ite)=>{return ite.product.title})).join(",")}</StyledTableCell>
+              <StyledTableCell align="right">{row.finalAmount}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

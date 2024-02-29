@@ -42,8 +42,11 @@ const Wishlist = () => {
     return(
       <div className="product-card" key={index}>
       <div className="product-img">
-        <img src={item?.img_src} alt="" className="product-img1"/>
-        <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
+        <img src={item?.images[0].url} alt="" className="product-img1"/>
+        {
+          item?.images[1].url!==""?<img src={item?.images[1].url} alt="" className="product-img2"/>:<img src=
+          "" alt="" className="product-img2"/>
+        }
       </div>
       <p className="wish-icon" onClick={()=>{removeFromWishlist(item?._id)}}><CloseIcon className="cart-icon"/></p>
       <div className="product-content">
