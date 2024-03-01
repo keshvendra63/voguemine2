@@ -1,1 +1,1 @@
-export const base_url = "https://dreammalll.shop/vogueadmin/";
+export const base_url = "http://localhost:5000/api/";
