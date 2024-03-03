@@ -34,14 +34,18 @@ const Men = () => {
             <h2>Men's T-Shirt</h2>
         </div>
         </Link>
+        <Link to="/collections/t-shirts">
         <div className="collection-card">
             <img src={img3} alt="" />
             <h2>Men's Combos</h2>
         </div>
+        </Link>
+        <Link to="/collections/loafers-for-men">
         <div className="collection-card">
             <img src={img4} alt="" />
             <h2>Men's Loafers</h2>
         </div>
+        </Link>
         <div className="collection-card">
             <img src={img5} alt="" />
             <h2>Men's Sneakers</h2>

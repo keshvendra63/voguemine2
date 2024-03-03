@@ -7,7 +7,7 @@ import {getAllProducts } from '../../features/products/productSlice';
 import Product from '../../components/Product'
 const Products = () => {
   const [sort,setSort]=useState(null)
-
+    const location=useLocation()
   const [limit,setLimit]=useState(100)
   const [page,setPage]=useState(1)
   const loadMore=()=>{
@@ -101,10 +101,26 @@ const Products = () => {
             {
                 
                 products.map((arm,index)=>{
+                    if(location.pathname==="/collections/men-premium-shirt"){
                     if(arm.collectionName==="Men's Premium Shirts"){
                         return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
                     
                     }
+                }
+                if(location.pathname==="/collections/t-shirts"){
+                    if(arm.collectionName==="Men's Premium T Shirts"){
+                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                    
+                    }
+                }
+                   
+                if(location.pathname==="/collections/loafers-for-men"){
+                    if(arm.collectionName==="Men's Loafers"){
+                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                    
+                    }
+                }
+                   
                     
                 })
             }

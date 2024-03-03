@@ -1,0 +1,130 @@
+.singlep .mains{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap:20px;
+    width: 100%;
+}
+.singlep p{
+    margin-bottom: 2px;
+}
+.singlep form input{
+    width: 100%;
+    padding: 5px;
+}
+.singlep form .submit{
+    display: flex;
+    margin-top: 20px;
+
+}
+.singlep form .submit input{
+    width: 150px;
+    margin-right: 20px;
+    border: 2px solid blue;
+    color: white;
+    background-color: blue;
+    border-radius: 5px;
+    
+}
+.singlep form .submit button{
+    width: 150px;
+    margin-right: 20px;
+    border: 2px solid red;
+    color: white;
+    background-color: red;
+    border-radius: 5px;
+    
+}
+.singlep form select{
+    width: 100%;
+    padding: 5px;
+}
+.singlep .mains .left .basic{
+    border-radius: 5px;
+    background-color: white;
+    padding: 10px;
+    height: 520px;
+}
+.singlep .mains .left .basic .desc{
+    margin-top: 10px;
+}
+.singlep .mains .left .basic .desc .descr{
+    height: 200px;
+}
+.singlep .mains .left .media{
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+    background-color: white;
+}
+.singlep .mains .left .media .imgbox{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    border: 1px solid grey;
+    padding: 5px;
+    grid-gap: 5px;
+    height: 300px;
+}
+.singlep .mains .left .media .imgbox img{
+    width: 100%;
+    height: 140px;
+    border-radius: 5px;
+}
+.singlep .mains .left .variants{
+    margin-top: 20px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+.singlep .mains .left .variants div{
+    margin-bottom: 10px;
+}
+.singlep .mains .left .variants button{
+    padding: 7px 12px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    border: 2px solid black;
+    background-color: black;
+    color: white;
+    transition: all 0.3s;
+}
+.singlep .mains .left .variants button:hover{
+    background-color: transparent;
+    color: black;
+}
+.singlep .mains .left .variants .v-category .var{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid rgb(227, 227, 227);
+    margin-top: 10px;
+    padding: 10px;
+    align-items: center;
+}
+
+.singlep .mains .right .status{
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+}
+.singlep .mains .right .insights{
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+}
+.singlep .mains .right .insights div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.singlep .mains .right .p-organization{
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+}
+.singlep .mains .right .p-organization div{
+    margin-top: 15px;
+}
+

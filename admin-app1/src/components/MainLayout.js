@@ -25,17 +25,19 @@ const MainLayout = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+
+  const user = JSON.parse(localStorage.getItem('user'));
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo">
-          <h2 className="text-white fs-5 text-center py-3 mb-0">
+      <Sider trigger={null} collapsible collapsed={collapsed} className="bg-light">
+        <div className="logo bg-light">
+          <h2 className="text-black fs-5 text-center py-3 mb-0">
             <span className="sm-logo">VM</span>
             <span className="lg-logo">Voguemine</span>
           </h2>
         </div>
         <Menu
-          theme="dark"
+          theme="light"
           mode="inline"
           defaultSelectedKeys={[""]}
           onClick={({ key }) => {
@@ -56,49 +58,19 @@ const MainLayout = () => {
               label: "Customers",
             },
             {
-              key: "Catalog",
+              key: "Products",
               icon: <AiOutlineShoppingCart className="fs-4" />,
-              label: "Catalog",
+              label: "Products",
               children: [
                 {
                   key: "product",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Add Product",
-                },
-                {
-                  key: "list-product",
-                  icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Product List",
+                  label: "Product",
                 },
                 {
                   key: "collection",
                   icon: <SiBrandfolder className="fs-4" />,
                   label: "Collection",
-                },
-                {
-                  key: "list-collection",
-                  icon: <SiBrandfolder className="fs-4" />,
-                  label: "Collection List ",
-                },
-                {
-                  key: "category",
-                  icon: <BiCategoryAlt className="fs-4" />,
-                  label: "Category",
-                },
-                {
-                  key: "list-category",
-                  icon: <BiCategoryAlt className="fs-4" />,
-                  label: "Category List",
-                },
-                {
-                  key: "size",
-                  icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Size",
-                },
-                {
-                  key: "list-size",
-                  icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Size List",
                 },
               ],
             },
@@ -197,8 +169,8 @@ const MainLayout = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <h5 className="mb-0">Keshav</h5>
-                <p className="mb-0">keshav638701@gmail.com</p>
+                <h5 className="mb-0">{user.firstname}</h5>
+                <p className="mb-0">{user.email}</p>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>

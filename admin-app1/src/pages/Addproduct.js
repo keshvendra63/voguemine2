@@ -7,8 +7,6 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useFormik, FieldArray,Field,ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { getSizes } from "../features/size/sizeSlice";
-import { getCategories } from "../features/pcategory/pcategorySlice";
 import { Input, Select } from "antd";
 import Dropzone from "react-dropzone";
 import { delImg, uploadImg } from "../features/upload/uploadSlice";
@@ -27,7 +25,7 @@ let schema = yup.object().shape({
     yup.object().shape({
       color: yup.string().required('Variant color is required'),
       size: yup.string().required('Variant size is required'),
-      quantity: yup.number().required('Variant quantity is required')
+      quantity: yup.string().required('Variant quantity is required')
     })
   ).required('At least one variant is required')
 });
@@ -38,13 +36,10 @@ const Addproduct = () => {
 
 
   useEffect(() => {
-    dispatch(getSizes());
-    dispatch(getCategories());
     dispatch(getCollections());
   }, []);
 
-  const sizeState = useSelector((state) => state.size.sizes);
-  const catState = useSelector((state) => state.pCategory.pCategories);
+
   const collectionState = useSelector((state) => state.collection.collections);
   const imgState = useSelector((state) => state.upload.images);
   const newProduct = useSelector((state) => state.product.products);
@@ -56,7 +51,7 @@ const Addproduct = () => {
     if (isError) {
       toast.error("Something Went Wrong!");
     }
-  }, [isSuccess, isError, isLoading]);
+  }, [isSuccess, isError]);
   const img = [];
   imgState.forEach((i) => {
     img.push({
@@ -160,13 +155,7 @@ const Addproduct = () => {
             id=""
           >
             <option value="">Select Category</option>
-            {catState.map((i, j) => {
-              return (
-                <option key={j} value={i.title}>
-                  {i.title}
-                </option>
-              );
-            })}
+            
           </select>
           <div className="error">
             {formik.touched.category && formik.errors.category}
@@ -253,13 +242,7 @@ const Addproduct = () => {
             className="form-control py-3 mb-3"
           >
             <option value="">Select Size</option>
-            {sizeState.map((i, j) => {
-              return (
-                <option key={j} value={i.title}>
-                  {i.title}
-                </option>
-              );
-            })}
+            
           </select>
           <div className="error">
               {formik.touched.variants?.[index]?.size &&
@@ -282,7 +265,7 @@ const Addproduct = () => {
                     <input
                       id={`quantity-${index}`}
                       name={`variants[${index}].quantity`}
-                      type="number"
+                      type="text"
                       label="Please Enter Quantity"
                       value={formik.values.variants[index].quantity}
                       onChange={formik.handleChange}

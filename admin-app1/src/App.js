@@ -11,14 +11,10 @@ import Blogcatlist from "./pages/Blogcatlist";
 import Orders from "./pages/Orders";
 import Customers from "./pages/Customers";
 import Collectionlist from "./pages/Collectionlist";
-import Categorylist from "./pages/Categorylist";
-import Sizelist from "./pages/Sizelist";
 import Productlist from "./pages/Productlist";
 import Addblog from "./pages/Addblog";
 import Addblogcat from "./pages/Addblogcat";
 import Addcollection from "./pages/Addcollection";
-import Addcat from "./pages/Addcat";
-import Addsize from "./pages/Addsize";
 import Addproduct from "./pages/Addproduct";
 import Couponlist from "./pages/Couponlist";
 import AddCoupon from "./pages/AddCoupon";
@@ -26,6 +22,7 @@ import ViewEnq from "./pages/ViewEnq";
 import ViewOrder from "./pages/ViewOrder";
 import { PublicRoute } from "./routing/PublicRoute";
 import { PrivateRoute } from "./routing/PrivateRoute";
+import SingleProduct from "./pages/SingleProduct";
 function App() {
   return (
     <Router>
@@ -52,14 +49,8 @@ function App() {
           <Route path="list-collection" element={<Collectionlist/>} />
           <Route path="collection" element={<Addcollection />} />
           <Route path="collection/:id" element={<Addcollection/>} />
-          <Route path="list-category" element={<Categorylist />} />
-          <Route path="category" element={<Addcat />} />
-          <Route path="category/:id" element={<Addcat />} />
-          <Route path="list-size" element={<Sizelist />} />
-          <Route path="size" element={<Addsize />} />
-          <Route path="size/:id" element={<Addsize />} />
-          <Route path="list-product" element={<Productlist />} />
-          <Route path="product" element={<Addproduct />} />
+          <Route path="product" element={<Productlist />} />
+          <Route path="product/:id" element={<SingleProduct />} />
         </Route>
       </Routes>
     </Router>

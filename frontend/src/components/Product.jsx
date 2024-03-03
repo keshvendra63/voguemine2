@@ -49,9 +49,9 @@ const Product = (props) => {
     <div className="product-card" key={props.keys}>
  <Link to={`/product/${props.id}`}>
                 <div className="product-img">
-                  <img src={props.img[0].url} alt="" className="product-img1"/>
+                  <img src={props?.img[0]?.url} alt="" className="product-img1"/>
                   {
-          props.img[1].url!==""?<img src={props.img[1].url} alt="" className="product-img2"/>:<img src=
+          props?.img[1]?.url!==""?<img src={props?.img[1]?.url} alt="" className="product-img2"/>:<img src=
           "" alt="" className="product-img2"/>
         }
                 </div>
