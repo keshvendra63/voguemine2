@@ -61,7 +61,7 @@ useEffect (()=> {
                     <div className="cart-item" key={index}>
                         <div className="cartItem-left">
                             <div className="prdt-img">
-                                <img src={item?.productId?.images[0].url} alt="" />
+                                <img src={item?.productId?.images[0]?.url} alt="" />
                             </div>
                         </div>
                         <div className="cartItem-right">

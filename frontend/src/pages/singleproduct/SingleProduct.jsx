@@ -12,6 +12,7 @@ import { addToCart, getUserCartProduct } from '../../features/user/userSlice'
 import {toast} from 'react-toastify'
 const SingleProduct = () => {
   const [color,setColor]=useState(null)
+  const [size,setSize]=useState(null)
   const [quantity,setQuantity]=useState(1)
   const [alreadyAdded, setAlreadyAdded] =useState(false)
   const navigate=useNavigate()
@@ -40,8 +41,12 @@ const SingleProduct = () => {
       toast.error("Please Select Color")
       return false
     }
+    if(size===null){
+      toast.error("Please Select Size")
+      return false
+    }
     else{
-      dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price}))
+      dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price,size}))
       navigate('/cart')
       setTimeout(()=>{
         dispatch(getUserCartProduct())
@@ -61,28 +66,23 @@ console.log(singleProductState)
             <img src={singleProductState?.images[0]?.url || singleProductState?.images[0]?.url} alt="" />
             </div>
             <div className="thumbs">
-                <img src={main_img} alt="" />
-                <img src={main_img} alt="" />
-                <img src={main_img} alt="" />
-                <img src={main_img} alt="" />
-                <img src={main_img} alt="" />
-                <img src={main_img} alt="" />
+                {
+                  singleProductState?.images?.map((img,index)=>{
+                    return <img src={img} alt={singleProductState?.title} key={index}/>
+                  })
+                }
             </div>
         </div>
         <div className="prdt-right">
-            <h1 className="product-name">{singleProductState?.Title}</h1>
-            <p className="prdt-price">Rs. 1999</p>
+            <h1 className="product-name">{singleProductState?.title}</h1>
+            <p className="prdt-price">{singleProductState?.price}</p>
             <div className="size prdt-variation">
                 <p>SIZE :</p>
                 <ul>
-                    <li>S</li>
-                    <li>M</li>
-                    <li>L</li>
-                    <li>XL</li>
-                    <li>2XL</li>
-                    <li>3XL</li>
-                    <li>4XL</li>
-                    <li>5XL</li>
+                {
+  singleProductState?.variants?.filter((item, index, arr) => arr.findIndex(i => i.size === item.size) === index)
+                .map((item, index) => <li onClick={() => setSize(item.size)} key={index}>{item.size}</li>)
+}
                 </ul>
             </div>
             {
@@ -97,7 +97,10 @@ console.log(singleProductState)
                       )
                     })
                   } */}
-                                          <li onClick={()=>setColor(singleProductState?.colors)} style={{backgroundColor:singleProductState?.colors}} >{singleProductState?.colors}</li>
+                                           {
+  singleProductState?.variants?.filter((item, index, arr) => arr.findIndex(i => i.color === item.color) === index)
+                .map((item, index) => <li onClick={() => setColor(item.color)} key={index}>{item.color}</li>)
+}
 
                     
                 </ul>
@@ -112,7 +115,7 @@ console.log(singleProductState)
               </>
             }
             <div className="buy-btn">
-                <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart()}}>{
+                <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(singleProductState?._id)}}>{
                   alreadyAdded?"GO TO CART":"ADD TO CART"
                 }</button>
                 <button>BUY IT NOW</button>

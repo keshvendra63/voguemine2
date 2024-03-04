@@ -66,7 +66,7 @@ const Product = (props) => {
         <div className="wish">
         <div>
         <p className="price">&#8377;{props.price}</p>
-        <p className="sale-price">&#8377;24000</p>
+        <p className="sale-price">&#8377;{(props.price)*2}</p>
         </div>
         <div>
     <FavoriteBorderOutlinedIcon className="cart-icon" onClick={(e)=>{addToWish(props.id)}}/>
@@ -84,19 +84,17 @@ const Product = (props) => {
       <p>Sizes</p>
       <ul>
       {
-  props.variants.map((item,index)=>{
-    return <li onClick={()=>setSize(item.size)} key={index}>{item.size}</li>
-  })
+  props.variants.filter((item, index, arr) => arr.findIndex(i => i.size === item.size) === index)
+                .map((item, index) => <li onClick={() => setSize(item.size)} key={index}>{item.size}</li>)
 }
       </ul>
     </div>
     <div className="color">
       <p>Colors</p>
       <ul>
-{
-  props.variants.map((item,index)=>{
-    return <li onClick={()=>setColor(item.color)} key={index}>{item.color}</li>
-  })
+      {
+  props.variants.filter((item, index, arr) => arr.findIndex(i => i.color === item.color) === index)
+                .map((item, index) => <li onClick={() => setColor(item.color)} key={index}>{item.color}</li>)
 }
       
       </ul>

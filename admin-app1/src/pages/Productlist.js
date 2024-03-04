@@ -50,7 +50,6 @@ const Productlist = () => {
     setOpen(true);
     setPId(e);
   };
-
   const hideModal = () => {
     setOpen(false);
   };
@@ -71,12 +70,12 @@ const Productlist = () => {
       price: `${productState[i]?.price}`,
       action: (
         <>
-          <Link to={`/admin/product/${productState[i]?._id}`} className=" fs-3 text-danger">
+          <Link to={`/admin/product/${productState[i]._id}`} className=" fs-3 text-danger">
             <BiEdit />
           </Link>
           <button
             className="ms-3 fs-3 text-danger bg-transparent border-0"
-            onClick={() => showModal(productState[i]?._id)}
+            onClick={() => showModal(productState[i]._id)}
           >
             <AiFillDelete />
           </button>
@@ -89,7 +88,7 @@ const Productlist = () => {
     setOpen(false);
     setTimeout(() => {
       dispatch(getProducts());
-    }, 100);
+    }, 500);
   };
   return (
     <div>

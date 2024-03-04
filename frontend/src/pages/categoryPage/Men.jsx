@@ -34,7 +34,7 @@ const Men = () => {
             <h2>Men's T-Shirt</h2>
         </div>
         </Link>
-        <Link to="/collections/t-shirts">
+        <Link to="/collections/combos">
         <div className="collection-card">
             <img src={img3} alt="" />
             <h2>Men's Combos</h2>
@@ -46,38 +46,56 @@ const Men = () => {
             <h2>Men's Loafers</h2>
         </div>
         </Link>
+        <Link to="/collections/mens-sneakers">
+
         <div className="collection-card">
             <img src={img5} alt="" />
             <h2>Men's Sneakers</h2>
         </div>
+        </Link>
+        <Link to="/collections/floaters-slippers">
+
         <div className="collection-card">
             <img src={img6} alt="" />
             <h2>Men's Slippers</h2>
         </div>
+        </Link>
+        <Link to="/collections/mens-hoodies">
         <div className="collection-card">
             <img src={img7} alt="" />
             <h2>Men's Hoodie</h2>
         </div>
+        </Link>
+        <Link to="/collections/mens-sweatshirts">
         <div className="collection-card">
             <img src={img8} alt="" />
             <h2>Men's Sweatshirt</h2>
         </div>
+        </Link>
+        <Link to="/collections/loafers-for-men">
         <div className="collection-card">
             <img src={img9} alt="" />
             <h2>Men's Pullover</h2>
         </div>
+        </Link>
+        <Link to="/collections/mens-denim-jeans">
         <div className="collection-card">
             <img src={img10} alt="" />
             <h2>Men's Denim Jeans</h2>
         </div>
+        </Link>
+        <Link to="/collections/loafers-for-men">
         <div className="collection-card">
             <img src={img11} alt="" />
             <h2>Men's Tracksets</h2>
         </div>
+        </Link>
+        <Link to="/collections/mens-pullover-jackets">
         <div className="collection-card">
             <img src={img12} alt="" />
             <h2>Men's Jackets</h2>
         </div>
+        </Link>
       </div>
     </div>
   )

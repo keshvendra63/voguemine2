@@ -61,7 +61,6 @@ const Addblog = () => {
     }
     if (isSuccess && updatedBlog) {
       toast.success("Blog Updated Successfullly!");
-      navigate("/admin/blog-list");
     }
     if (isError) {
       toast.error("Something Went Wrong!");
@@ -86,14 +85,13 @@ const Addblog = () => {
       title: blogName || "",
       description: blogDesc || "",
       category: blogCategory || "",
-      images: "",
+      images:imgState || blogImages,
     },
     validationSchema: schema,
     onSubmit: (values) => {
       if (getBlogId !== undefined) {
         const data = { id: getBlogId, blogData: values };
         dispatch(updateABlog(data));
-        dispatch(resetState());
       } else {
         dispatch(createBlogs(values));
         formik.resetForm();
@@ -172,7 +170,7 @@ const Addblog = () => {
             </Dropzone>
           </div>
           <div className="showimages d-flex flex-wrap mt-3 gap-3">
-            {imgState?.map((i, j) => {
+            {formik.values.images?.map((i, j) => {
               return (
                 <div className=" position-relative" key={j}>
                   <button
@@ -181,7 +179,7 @@ const Addblog = () => {
                     className="btn-close position-absolute"
                     style={{ top: "10px", right: "10px" }}
                   ></button>
-                  <img src={i.url} alt="" width={200} height={200} />
+                  <img src={i?.url} alt="" width={200} height={200} />
                 </div>
               );
             })}

@@ -34,7 +34,7 @@ const Checkout = () => {
     const standardClick=()=>{
         setShippingCost(0)
         setOrderType("Prepaid")
-        setDiscount((totalAmount+shippingCost)/10)
+        setDiscount((totalAmount)/10)
     }
     const codClick=()=>{
         setShippingCost(200)
@@ -50,7 +50,7 @@ const Checkout = () => {
     useEffect (()=> {
         let sum=0;
         for(let index=0; index < cartState?.length; index++){
-            sum =sum+(Number(cartState[index].quantity) *cartState[index].price)
+            sum =sum+(Number(cartState[index]?.quantity) *cartState[index]?.price)
             setTotalAmount(sum)
         }
     },[cartState])
@@ -328,7 +328,7 @@ console.log(cartState)
                         return(
                             <div className="prdt" key={index}>
                     <div className="detail">
-                        <img src={item?.productId?.images[0].url} alt="" />
+                        <img src={item?.productId?.images[0]?.url} alt="" />
                         <div><p className="p-name">{item?.productId?.title}</p>
                         <p className="size"><span>{item?.size}</span><span>/</span><span>{item?.color}</span></p></div>
                     </div>

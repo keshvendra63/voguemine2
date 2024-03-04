@@ -12,15 +12,14 @@
 }
 
 .homeMain .categories{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 .homeMain .categories .cate{
-    width: 100%;
-    max-height: 300px;
+    width:400px;
+    height: 380px;
+    margin: 0 10px;
 }
-.homeMain .categories img{
+.homeMain .categories .cate img{
     width: 100%;
     height: 100%;
 }
@@ -38,7 +37,7 @@
     height: 100%;
 }
 .shoes-section {
-    margin: 50px 0;
+    margin: 30px 0;
     display: grid;
     justify-content: center;
     align-items: center;
@@ -48,12 +47,15 @@
 }
 
 .shoes-section .shoe-left {
-    height: 70vh;
+    max-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .shoes-section .shoe-left img {
     max-height: 70vh;
-    width: 100%;
+    max-width:100%;
 }
 
 .shoes-section .shoe-right {
@@ -96,8 +98,17 @@
     .homeMain .category-selection .categories{
         grid-template-columns: 1fr 1fr;
     }
+    .homeMain .categories .cate{
+        width:300px;
+        height: 300px;
+        margin: 0 3px;
+    }
 }
 @media screen and (max-width:650px) {
+    .homeMain .categories .cate{
+        width:200px;
+        height: 200px;
+    }
     .trending-collections .trending-collection{
         grid-template-columns: 1fr;
         grid-gap: 30px;

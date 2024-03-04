@@ -1,4 +1,5 @@
 import './App.css';
+import React,{useEffect} from 'react';
 import Home from './pages/home/Home'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import HomeMain from './pages/homeMain/HomeMain'
@@ -18,7 +19,18 @@ import Blogs from './pages/blogs/Blogs';
 import SingleBlog from './pages/blogs/SingleBlog';
 import Checkout from './pages/checkout/Checkout';
 import Profile from './pages/profile/Profile';
+import { useDispatch, useSelector } from 'react-redux'
+import {getAllProducts } from './features/products/productSlice';
+
 function App() {
+  const productState=useSelector((state)=>state?.product?.product)
+  const dispatch=useDispatch();
+  useEffect(()=>{
+      getProducts()
+  },[])
+  const getProducts=()=>{
+      dispatch(getAllProducts())
+  }
   return (
     <>
     <Router>

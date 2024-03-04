@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
+import ScrollCarousel from 'scroll-carousel-react';
 import Carousel from 'react-bootstrap/Carousel';
 import Carousel1 from 'react-elastic-carousel';
 import home_benner from '../../images/home-banner.jpg'
@@ -13,9 +14,26 @@ import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
+import {useLocation} from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import {getAllProducts } from '../../features/products/productSlice';
+import Product from '../../components/Product'
 
 const HomeMain = () => {
-
+  const productState=useSelector((state)=>state?.product?.product)
+  const dispatch=useDispatch();
+  useEffect(()=>{
+      getProducts()
+  },[])
+  const getProducts=()=>{
+      dispatch(getAllProducts())
+  }
+  const products=productState? productState:[]
+    
+  const shirts = products.filter(object => object.sku && object.sku.includes('VMSI' || "vms-" || 'vms -')).slice(0,6) 
+  const tshirt = products.filter(object => object.sku && object.sku.includes('VMTS' || "vmtsi" || 'vmtsi -')).slice(0,6)
+  const jeans = products.filter(object => object.sku && object.sku.includes('VMJ' || "VMJI")).slice(0,6)
+console.log(shirts,tshirt,jeans)
   const breakpoints = [
     { width: 1, itemsToShow: 1.1 },
     { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
@@ -25,6 +43,7 @@ const HomeMain = () => {
     { width: 1750, itemsToShow: 6 },
 
   ]
+  
 
   return (
     <div className='homeMain'>
@@ -32,31 +51,57 @@ const HomeMain = () => {
         <img src={home_benner} alt="" />
       </div>
       <div className="categories">
+      <ScrollCarousel
+        autoplay
+        autoplaySpeed={5}
+        speed={4}
+        onReady={() => console.log('I am ready')}
+      >
         <div className="cate">
-          <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709195919/1_y7676c.jpg" alt="" />
+          <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709559213/01_1_w4dkso.jpg" alt="" />
           <div className="content">
 
           </div>
         </div>
         <div className="cate">
-            <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709195921/2_jsp72s.jpg" alt="" />
+            <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709559213/02_k9jteu.jpg" alt="" />
             <div className="content">
 
             </div>
         </div>
+        <div className="cate">
+          <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709559217/03_uxilkl.jpg" alt="" />
+          <div className="content">
+
+          </div>
+        </div>
+        <div className="cate">
+            <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709559212/05_ba3kea.jpg" alt="" />
+            <div className="content">
+
+            </div>
+        </div>
+        
+      </ScrollCarousel>
+   
+        
+       
       </div>
       <div className="margin-section">
       <div className="shoes-section">
         <div className="shoe-left">
           <Carousel>
             <Carousel.Item>
-              <img src={key1} alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709557920/217_tuup4g.jpg" alt="" />
             </Carousel.Item>
             <Carousel.Item>
-              <img src={key2} alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709557922/071_hneso9.jpg" alt="" />
             </Carousel.Item>
             <Carousel.Item>
-              <img src={key3} alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709557922/241_bfrxpy.jpg" alt="" />
+            </Carousel.Item>
+            <Carousel.Item>
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709557921/253_7_cnfey8.jpg" alt="" />
             </Carousel.Item>
           </Carousel>
 
@@ -69,433 +114,21 @@ const HomeMain = () => {
       </div>
       <div className="products-listing">
         <p className="section-heading">Featured Products</p>
+                
+
         <div className="product-list">
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
+            {
+                
+                shirts.map((arm,index)=>{
 
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-   
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
+                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                   
+                    
+                })
+            }
+      
         </div>
+
       </div>
       <div className="trending-collections">
         <p className="section-heading">Men's Trending</p>
@@ -521,13 +154,16 @@ const HomeMain = () => {
         <div className="shoe-left">
           <Carousel>
             <Carousel.Item>
-              <img src={key1} alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558774/01_wmosac.jpg" alt="" />
             </Carousel.Item>
             <Carousel.Item>
-              <img src={key2} alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558771/19_ap2jmj.jpg" alt="" />
             </Carousel.Item>
             <Carousel.Item>
-              <img src={key3} alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558771/49_fwk6ji.jpg" alt="" />
+            </Carousel.Item>
+            <Carousel.Item>
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558771/61_dbzjev.jpg" alt="" />
             </Carousel.Item>
           </Carousel>
 
@@ -535,433 +171,21 @@ const HomeMain = () => {
       </div>
       <div className="products-listing">
         <p className="section-heading">Featured Products</p>
+                
+
         <div className="product-list">
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
+            {
+                
+                tshirt.map((arm,index)=>{
 
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-   
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
+                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                   
+                    
+                })
+            }
+      
         </div>
+
       </div>
       <div className="trending-collections">
         <p className="section-heading">Men's Trending</p>
@@ -981,13 +205,16 @@ const HomeMain = () => {
         <div className="shoe-left">
           <Carousel data-interval="100">
             <Carousel.Item>
-              <img src={key1} alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558912/louis-vuitton-premium-quality-towel-set-of-2-523_yasoy7.jpg" alt="" />
             </Carousel.Item>
             <Carousel.Item>
-              <img src={key2} alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558912/gucci-premium-quality-loafer-socks-pack-of-5-643_uze4fs.jpg" alt="" />
             </Carousel.Item>
             <Carousel.Item>
-              <img src={key3} alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558905/gucci-black-premium-quality-belt-512_cvsizj.jpg" alt="" />
+            </Carousel.Item>
+            <Carousel.Item>
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558906/21_u8hfyb.jpg" alt="" />
             </Carousel.Item>
           </Carousel>
 
@@ -1000,433 +227,21 @@ const HomeMain = () => {
       </div>
       <div className="products-listing">
         <p className="section-heading">Featured Products</p>
+                
+
         <div className="product-list">
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
+            {
+                
+                jeans.map((arm,index)=>{
 
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-   
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
-          <div className="product-card">
-            <div className="product-img">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="product-img1"/>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365635/prada-white-black-premium-quality-shirt-442_o9oqfk.jpg" alt="" className="product-img2"/>
-            </div>
-            <p className="wish-icon"><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
-            <div className="product-content">
-              <p className="title">Louis Vuitton White Premium Quality Shirt</p>
-              <Stack spacing={1} className="stars">
-      <Rating name="size-small" defaultValue={5} size="small" />
-
-    </Stack>
-    <div className="wish">
-    <div>
-    <p className="price">&#8377;1999</p>
-    <p className="sale-price">&#8377;24000</p>
-    </div>
-    <div>
-<FavoriteBorderOutlinedIcon className="cart-icon"/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
-    </div>
-    </div>
-            </div>
-            <div className="hover-details">
-<div className="title-section">
-<p className="title">Louis Vuitton White Premium Quality Shirt</p>
-<p className="price">&#8377;1999</p>
-</div>
-<div className="size">
-  <p>Sizes</p>
-  <ul>
-    <li>M</li>
-    <li>L</li>
-    <li>XL</li>
-    <li>2XL</li>
-    <li>3XL</li>
-    <li>4XL</li>
-    <li>5XL</li>
-  </ul>
-</div>
-<div className="color">
-  <p>Colors</p>
-  <ul>
-    <li style={{backgroundColor:"red"}}></li>
-    <li style={{backgroundColor:"green"}}></li>
-    <li style={{backgroundColor:"blue"}}></li>
-    <li style={{backgroundColor:"black"}}></li>
-    <li style={{backgroundColor:"pink"}}></li>
-  </ul>
-</div>
-<Link to="#"><button>BUY NOW</button></Link>
-            </div>
-          </div>
+                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                   
+                    
+                })
+            }
+      
         </div>
+
       </div>
 
 
