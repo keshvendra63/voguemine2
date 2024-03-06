@@ -10,8 +10,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify'
 import {Link} from 'react-router-dom'
 const Product = (props) => {
-
     const [color,setColor]=useState(null)
+    const [colorBorder,setColorBorder]=useState("")
     const [size,setSize]=useState(null)
     const [quantity,setQuantity]=useState(1)
     const [alreadyAdded, setAlreadyAdded] =useState(false)
@@ -20,7 +20,7 @@ const Product = (props) => {
     const location =useLocation()
     const getProductId=location.pathname.split("/")[2];
     const dispatch=useDispatch();
- console.log(color,size)
+
     useEffect(()=>{
       for (let index = 0; index < cartState?.length; index++) {
         if(getProductId===cartState[index]?.productId?._id){
@@ -70,7 +70,7 @@ const Product = (props) => {
         </div>
         <div>
     <FavoriteBorderOutlinedIcon className="cart-icon" onClick={(e)=>{addToWish(props.id)}}/>
-    <AddShoppingCartOutlinedIcon className="cart-icon" onClick={(e)=>{addTocart(props.id)}}/>
+    {/* <AddShoppingCartOutlinedIcon className="cart-icon" onClick={(e)=>{addTocart(props.id)}}/> */}
         </div>
         </div>
                 </div>
@@ -85,7 +85,7 @@ const Product = (props) => {
       <ul>
       {
   props.variants.filter((item, index, arr) => arr.findIndex(i => i.size === item.size) === index)
-                .map((item, index) => <li onClick={() => setSize(item.size)} key={index}>{item.size}</li>)
+                .map((item, index) => <li onClick={() => setSize(item.size)} key={index} style={{border:item.size===size?'1px solid black':'transparent'}}>{item.size}</li>)
 }
       </ul>
     </div>
@@ -94,7 +94,7 @@ const Product = (props) => {
       <ul>
       {
   props.variants.filter((item, index, arr) => arr.findIndex(i => i.color === item.color) === index)
-                .map((item, index) => <li onClick={() => setColor(item.color)} key={index}>{item.color}</li>)
+                .map((item, index) => <li onClick={() =>( setColor(item.color))} key={index} style={{color:item.color===color?'black':'white'}}>{item.color}</li>)
 }
       
       </ul>

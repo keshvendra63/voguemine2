@@ -8,7 +8,7 @@ import banner from '../images/A21.jpg'
 import { useDispatch, useSelector } from 'react-redux'
 import {getUserWishlistProduct} from '../features/user/userSlice'
 import { addToWishlist} from '../features/products/productSlice';
-
+import {toast} from 'react-toastify'
 const Wishlist = () => {
   const dispatch=useDispatch();
     useEffect(()=>{
@@ -21,8 +21,9 @@ const Wishlist = () => {
     const wishlists=wishlistState?wishlistState:[]
     const removeFromWishlist=(id)=>{
       dispatch(addToWishlist(id))
+      dispatch(getUserWishlistProduct())
       setTimeout(()=>{
-        dispatch(getUserWishlistProduct())
+       toast.success("Removed")
       },300)
     }
   return (
@@ -42,9 +43,9 @@ const Wishlist = () => {
     return(
       <div className="product-card" key={index}>
       <div className="product-img">
-        <img src={item?.images[1].url} alt="" className="product-img1"/>
+        <img src={item?.images[1]?.url} alt="" className="product-img1"/>
         {
-          item?.images[2].url!==""?<img src={item?.images[2].url} alt="" className="product-img2"/>:<img src=
+          item?.images[2]?.url!==""?<img src={item?.images[2]?.url} alt="" className="product-img2"/>:<img src=
           "" alt="" className="product-img2"/>
         }
       </div>
@@ -62,7 +63,7 @@ const Wishlist = () => {
 </div>
 <div>
 <CloseIcon className="cart-icon" onClick={()=>{removeFromWishlist(item?._id)}}/>
-<AddShoppingCartOutlinedIcon className="cart-icon"/>
+{/* <AddShoppingCartOutlinedIcon className="cart-icon"/> */}
 </div>
 </div>
 

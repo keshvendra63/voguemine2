@@ -17,6 +17,7 @@ const SingleProduct = () => {
   const [size,setSize]=useState(null)
   const [quantity,setQuantity]=useState(1)
   const [alreadyAdded, setAlreadyAdded] =useState(false)
+  const [mainImage,setMainImage]=useState("")
   const navigate=useNavigate()
   const singleProductState=useSelector((state)=>state?.product?.getSingleProduct)
   const cartState=useSelector((state)=>state?.auth?.cartProducts)
@@ -68,6 +69,9 @@ const SingleProduct = () => {
     
     
 }
+const changeMainImage=(img)=>{
+  setMainImage(img?.url)
+}
 console.log(singleProductState?.images)
   return (
     <div className='single-product'>
@@ -75,12 +79,12 @@ console.log(singleProductState?.images)
         <div className="prdt-left">
 
             <div className="main">
-            <img src={singleProductState?.images[1]?.url || singleProductState?.images[1]?.url} alt="" />
+            <img src={mainImage===""?singleProductState?.images[1]?.url : mainImage} alt="" />
             </div>
             <div className="thumbs">
                 {
                   singleProductState?.images?.map((img,index)=>{
-                      return <img src={img?.url} alt={singleProductState?.title} key={index}/>
+                      return <img src={img?.url} alt={singleProductState?.title} key={index} onClick={()=>changeMainImage(img)}/>
                     
                     
                   })
@@ -88,14 +92,14 @@ console.log(singleProductState?.images)
             </div>
         </div>
         <div className="prdt-right">
-            <h1 className="product-name">{singleProductState?.title}</h1>
-            <p className="prdt-price">{singleProductState?.price}</p>
+            <p className="product-name">{singleProductState?.title}</p>
+            <p className="prdt-price">&#8377;{singleProductState?.price}</p>
             <div className="size prdt-variation">
                 <p>SIZE :</p>
                 <ul>
                 {
   singleProductState?.variants?.filter((item, index, arr) => arr.findIndex(i => i.size === item.size) === index)
-                .map((item, index) => <li onClick={() => setSize(item.size)} key={index}>{item.size}</li>)
+                .map((item, index) => <li onClick={() => setSize(item.size)} key={index} style={{color:item.size===size?'red':'black'}}>{item.size}</li>)
 }
                 </ul>
             </div>
@@ -113,7 +117,7 @@ console.log(singleProductState?.images)
                   } */}
                                            {
   singleProductState?.variants?.filter((item, index, arr) => arr.findIndex(i => i.color === item.color) === index)
-                .map((item, index) => <li onClick={() => setColor(item.color)} key={index}>{item.color}</li>)
+                .map((item, index) => <li onClick={() => setColor(item.color)} key={index} style={{color:item.color===color?'red':'black'}}>{item.color}</li>)
 }
 
                     

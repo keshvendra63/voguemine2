@@ -72,7 +72,7 @@ const Men = () => {
             <h2>Men's Sweatshirt</h2>
         </div>
         </Link>
-        <Link to="/collections/loafers-for-men">
+        <Link to="/collections/mens-pullover">
         <div className="collection-card">
             <img src={img9} alt="" />
             <h2>Men's Pullover</h2>
@@ -84,7 +84,7 @@ const Men = () => {
             <h2>Men's Denim Jeans</h2>
         </div>
         </Link>
-        <Link to="/collections/loafers-for-men">
+        <Link to="/collections/mens-trackset">
         <div className="collection-card">
             <img src={img11} alt="" />
             <h2>Men's Tracksets</h2>

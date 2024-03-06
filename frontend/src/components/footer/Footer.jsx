@@ -23,17 +23,17 @@ const Footer = () => {
         <Col className='my-2 mx-2'>
         <h2>Collection</h2>
         <ul>
-            <li><Link to="#">Men</Link></li>
-            <li><Link to="#">Women</Link></li>
-            <li><Link to="#">Kids</Link></li>
-            <li><Link to="#">Accessories</Link></li>
+            <li><Link to="/men">Men</Link></li>
+            <li><Link to="/women">Women</Link></li>
+            <li><Link to="/kids">Kids</Link></li>
+            <li><Link to="/accessories">Accessories</Link></li>
         </ul>
         </Col>
         <Col className='my-2 mx-2'>
         <h2>Useful Links</h2>
         <ul>
-            <li><Link to="#">About</Link></li>
-            <li><Link to="#">Contact Us</Link></li>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="/about">Contact Us</Link></li>
             <li><Link to="#">Track Order</Link></li>
             <li><Link to="#">Exchange Order</Link></li>
         </ul>
@@ -53,8 +53,8 @@ const Footer = () => {
             <li>Phone: <Link to="tel:+919899202079">+91 9899202079</Link></li>
             <li>Email: <Link to="mailto:customersupport@voguemine.com">customersupport@voguemine.com</Link></li>
             <ul>
-                <li><Link to="#"><InstagramIcon/></Link></li>
-                <li><Link to="#"><FacebookIcon/></Link></li>
+                <li><Link to="https://www.instagram.com/voguemine_fashion/"><InstagramIcon/></Link></li>
+                <li><Link to="https://www.facebook.com/vogueminefashion"><FacebookIcon/></Link></li>
                 <li><Link to="#"><LinkedInIcon/></Link></li>
             </ul>
         </ul>

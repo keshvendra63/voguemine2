@@ -28,21 +28,21 @@ Our team of fashion experts has scoured the globe to curate a stunning selection
                     <p>3000+</p>
                 </div>
                 <div>
-                    <h4>Customers</h4>
-                    <p>3000+</p>
+                    <h4>Orders</h4>
+                    <p>12000+</p>
                 </div>
                 <div>
-                    <h4>Customers</h4>
-                    <p>3000+</p>
+                    <h4>Products</h4>
+                    <p>22000+</p>
                 </div>
                 <div>
-                    <h4>Customers</h4>
-                    <p>3000+</p>
+                    <h4>Employees</h4>
+                    <p>50+</p>
                 </div>
             </div>
         </div>
       </div>
-      <div className="employees">
+      {/* <div className="employees">
         <h1>MEET OUR TEAM</h1>
         <div className="owners">
           <div className="ownercard">
@@ -104,7 +104,7 @@ Our team of fashion experts has scoured the globe to curate a stunning selection
             <p className="position">IT MANAGER</p>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { PlusOutlined, InboxOutlined, UploadOutlined } from '@ant-design/icons';
 import { Modal, Upload, message, Button } from 'antd';
 import { DndContext, PointerSensor, useSensor } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { PlusOutlined, InboxOutlined, UploadOutlined } from '@ant-design/icons';
 
 const { Dragger } = Upload;
 
@@ -76,15 +76,15 @@ const App = () => {
     <div style={{marginTop:'100px'}}>
       <DndContext sensors={[sensor]} onDragEnd={onDragEnd}>
         <SortableContext items={fileList.map((i) => i.uid)} strategy={verticalListSortingStrategy}>
-          <Dragger
-            multiple
-            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-            listType="picture-card"
-            fileList={fileList}
-            onPreview={handlePreview}
-            onChange={handleChange}
-            itemRender={(originNode, file) => <DraggableUploadListItem originNode={originNode} file={file} />}
-          >
+        <Dragger
+  multiple
+  action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188" // This is the action prop
+  listType="picture-card"
+  fileList={fileList}
+  onPreview={handlePreview}
+  onChange={handleChange}
+  itemRender={(originNode, file) => <DraggableUploadListItem originNode={originNode} file={file} />}
+>
             <p className="ant-upload-drag-icon">
               <InboxOutlined />
             </p>

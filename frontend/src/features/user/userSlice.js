@@ -114,7 +114,7 @@ export const authSlice=createSlice({
             state.isSuccess=true;
             state.createUser=action.payload;
             if(state.isSuccess===true){
-                toast.info("User Created Successfully")
+                toast.success("User Created Successfully")
             }
 
         }).addCase(registerUser.rejected,(state,action)=>{
@@ -135,7 +135,7 @@ export const authSlice=createSlice({
             state.user=action.payload;
             if(state.isSuccess===true){
                 localStorage.setItem("token",action.payload.token)
-                toast.info("User Logged In Successfully")
+                toast.success("User Logged In Successfully")
             }
 
         }).addCase(loginUser.rejected,(state,action)=>{
@@ -183,7 +183,7 @@ export const authSlice=createSlice({
             state.isSuccess=true;
             state.cartProduct=action.payload;
             if(state.isSuccess===true){
-                toast.info("Add to Cart Successfully")
+                toast.success("Add to Cart Successfully")
             }
         }).addCase(addToCart.rejected,(state,action)=>{
             state.isLoading=false;
@@ -202,7 +202,7 @@ export const authSlice=createSlice({
             state.isSuccess=true;
             state.removeFromCart=action.payload;
             if(state.isSuccess===true){
-                toast.info("Remove from Cart Successfully")
+                toast.success("Remove from Cart Successfully")
             }
         }).addCase(removeFromCart.rejected,(state,action)=>{
             state.isLoading=false;
@@ -240,7 +240,7 @@ export const authSlice=createSlice({
             state.isSuccess=true;
             state.orderedProduct=action.payload;
             if(state.isSuccess===true){
-                toast.info("Order Placed")
+                toast.success("Order Placed")
             }
         }).addCase(createAnOrder.rejected,(state,action)=>{
             state.isLoading=false;
@@ -312,6 +312,9 @@ export const authSlice=createSlice({
             state.isError=false;
             state.isSuccess=true;
             state.deletedCart=action.payload;
+            if(state.isSuccess===true){
+                toast.success("Removed")
+            }
         }).addCase(deleteCart.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;

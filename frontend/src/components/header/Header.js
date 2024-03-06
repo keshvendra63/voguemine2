@@ -125,11 +125,10 @@ const formik=useFormik({
   onSubmit:(values)=>{
     dispatch(registerUser(values))
     setTimeout(()=>{
-      if(authState?.isSuccess){
         navigate('/home')
         setLogin('none')
-      }
-    },300)
+      
+    },1000)
   }
 })
 const formik1=useFormik({
@@ -140,14 +139,13 @@ const formik1=useFormik({
   validationSchema:loginSchema,
   onSubmit:(values)=>{
     dispatch(loginUser(values))
-    if(authState?.isSuccess){
     setTimeout(()=>{
       
         navigate('/home')
         setLogin('none')
       
-    },300)
-  }
+    },1000)
+  
   }
 })
 
