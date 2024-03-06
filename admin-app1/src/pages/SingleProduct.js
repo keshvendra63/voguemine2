@@ -40,7 +40,6 @@ let schema = yup.object().shape({
 const SingleProduct = () => {
   const [colors, setColors] = useState('');
   const [sizes, setSizes] = useState('');
-  const [variants, setVariants] = useState([]);
   const modules = {
     toolbar: [
       [{ 'header': [1, 2, false] }],
@@ -176,24 +175,33 @@ const SingleProduct = () => {
     });
   };
 
-  const handleAddVariant = () => {
-    const colorArr = colors.split(',').map(color => color.trim());
-    const sizeArr = sizes.split(',').map(size => size.trim());
-    const newVariants = [];
-    colorArr.forEach(color => {
-      sizeArr.forEach(size => {
-        newVariants.push({ color:"", size:"", quantity: 0 });
-      });
+
+  const [variants, setVariants] = useState(productVariants || []);
+
+  const handleVariantChange = (index, field, value) => {
+    setVariants((prevVariants) => {
+      const updatedVariants = [...prevVariants];
+      updatedVariants[index] = { ...updatedVariants[index], [field]: value };
+      return updatedVariants;
     });
-    setVariants(newVariants);
   };
+
+  const handleAddVariant = () => {
+    setVariants((prevVariants) => [...prevVariants, { color: "", size: "", quantity: 0 }]);
+  };
+
+  const handleDeleteVariant = (index) => {
+    setVariants((prevVariants) => prevVariants.filter((_, i) => i !== index));
+  };
+
   return (
-    <div className='container singlep'>
-      <div className="back d-flex my-3 align-items-center">
+    <div className='singlep'>
+      
+      <form action="" onSubmit={formik.handleSubmit}>
+      <div className="back d-flex my-4 align-items-center">
         <Link to="/admin/product"><IoMdArrowRoundBack style={{ color: 'black', marginRight: '10px', fontSize: '20px' }} /></Link>
         <p style={{ fontWeight: 500, fontSize: '22px' }}>{formik.values.title}</p>
       </div>
-      <form action="" onSubmit={formik.handleSubmit}>
         <div className="mains">
           <div className="left">
             <div className="basic">
@@ -306,34 +314,35 @@ const SingleProduct = () => {
             </div>
             <div className="variants">
               <p>Variants</p>
-              <div className="color">
-                <p>Color</p>
-                <input type="text" value={colors} onChange={(e) => setColors(e.target.value)} />
-              </div>
-              <div className="size">
-                <p>Size</p>
-                <input type="text" value={sizes} onChange={(e) => setSizes(e.target.value)} />
-              </div>
-              <button type="button" onClick={handleAddVariant}>ADD VARIANT</button>
-              <div className="v-category">
-                {formik.values.variants?.map((variant, index) => (
-                  <div className="var" key={index}>
-                    <div>
-                      <p>Color: {variant.color}</p>
-                      <p>Size: {variant.size}</p>
-                    </div>
-                    <div>
-                      <p>Quantity</p>
-                      <input
-          type="number"
-          value={variant.quantity}
-          onChange={(e) => handleQuantityChange(e.target.value, index)}
-        />
-
-                    </div>
-                  </div>
-                ))}
-              </div>
+              {variants.map((variant, index) => (
+          <div className="variant" key={index}>
+            <input
+              type="text"
+              value={variant.color}
+              onChange={(e) => handleVariantChange(index, "color", e.target.value)}
+              placeholder="Color"
+            />
+            <input
+              type="text"
+              value={variant.size}
+              onChange={(e) => handleVariantChange(index, "size", e.target.value)}
+              placeholder="Size"
+            />
+            <input
+              type="number"
+              value={variant.quantity}
+              onChange={(e) => handleVariantChange(index, "quantity", parseInt(e.target.value))}
+              placeholder="Quantity"
+            />
+            <button type="button" onClick={() => handleDeleteVariant(index)}>
+              Delete
+            </button>
+          </div>
+        ))}
+        <button type="button" onClick={handleAddVariant}>
+          Add Variant
+        </button>
+      
             </div>
           </div>
           <div className="right">

@@ -18,7 +18,8 @@ import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
-const { Header, Sider, Content } = Layout;
+import { Header } from "antd/es/layout/layout";
+const {Sider, Content } = Layout;
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
@@ -29,15 +30,27 @@ const MainLayout = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
-      <Sider trigger={null} collapsible collapsed={collapsed} className="bg-light">
-        <div className="logo bg-light">
+      <Sider
+      className="bg-white"
+       breakpoint="lg"
+        collapsedWidth="300"
+        onBreakpoint={(broken) => {
+          console.log(broken);
+        }}
+        onCollapse={(collapsed, type) => {
+          console.log(collapsed, type);
+        }}
+        trigger={null} collapsible collapsed={collapsed}
+        
+        >
+        <div className="logo bg-white">
           <h2 className="text-black fs-5 text-center py-3 mb-0">
             <span className="sm-logo">VM</span>
             <span className="lg-logo">Voguemine</span>
           </h2>
         </div>
         <Menu
-          theme="light"
+          theme="white"
           mode="inline"
           defaultSelectedKeys={[""]}
           onClick={({ key }) => {
@@ -49,89 +62,90 @@ const MainLayout = () => {
           items={[
             {
               key: "",
-              icon: <AiOutlineDashboard className="fs-4" />,
+              icon: <AiOutlineDashboard className="fs-6" />,
               label: "Dashboard",
             },
             {
               key: "customers",
-              icon: <AiOutlineUser className="fs-4" />,
+              icon: <AiOutlineUser className="fs-6" />,
               label: "Customers",
             },
             {
               key: "Products",
-              icon: <AiOutlineShoppingCart className="fs-4" />,
+              icon: <AiOutlineShoppingCart className="fs-6" />,
               label: "Products",
               children: [
                 {
                   key: "product",
-                  icon: <AiOutlineShoppingCart className="fs-4" />,
+                  icon: <AiOutlineShoppingCart className="fs-6" />,
                   label: "Product",
                 },
                 {
                   key: "collection",
-                  icon: <SiBrandfolder className="fs-4" />,
+                  icon: <SiBrandfolder className="fs-6" />,
                   label: "Collection",
                 },
               ],
             },
             {
               key: "orders",
-              icon: <FaClipboardList className="fs-4" />,
+              icon: <FaClipboardList className="fs-6" />,
               label: "Orders",
             },
             {
               key: "marketing",
-              icon: <RiCouponLine className="fs-4" />,
+              icon: <RiCouponLine className="fs-6" />,
               label: "Marketing",
               children: [
                 {
                   key: "coupon",
-                  icon: <ImBlog className="fs-4" />,
+                  icon: <ImBlog className="fs-6" />,
                   label: "Add Coupon",
                 },
                 {
                   key: "coupon-list",
-                  icon: <RiCouponLine className="fs-4" />,
+                  icon: <RiCouponLine className="fs-6" />,
                   label: "Coupon List",
                 },
               ],
             },
             {
               key: "blogs",
-              icon: <FaBloggerB className="fs-4" />,
+              icon: <FaBloggerB className="fs-6" />,
               label: "Blogs",
               children: [
                 {
                   key: "blog",
-                  icon: <ImBlog className="fs-4" />,
+                  icon: <ImBlog className="fs-6" />,
                   label: "Add Blog",
                 },
                 {
                   key: "blog-list",
-                  icon: <FaBloggerB className="fs-4" />,
+                  icon: <FaBloggerB className="fs-6" />,
                   label: "Blog List",
                 },
                 {
                   key: "blog-category",
-                  icon: <ImBlog className="fs-4" />,
+                  icon: <ImBlog className="fs-6" />,
                   label: "Add Blog Category",
                 },
                 {
                   key: "blog-category-list",
-                  icon: <FaBloggerB className="fs-4" />,
+                  icon: <FaBloggerB className="fs-6" />,
                   label: "Blog Category List",
                 },
               ],
             },
             {
               key: "enquiries",
-              icon: <FaClipboardList className="fs-4" />,
+              icon: <FaClipboardList className="fs-6" />,
               label: "Enquiries",
             },
           ]}
         />
-      </Sider>
+      </Sider> 
       <Layout className="site-layout">
+        
         <Header
           className="d-flex justify-content-between ps-1 pe-5"
           style={{
@@ -170,7 +184,7 @@ const MainLayout = () => {
                 aria-expanded="false"
               >
                 <h5 className="mb-0">{user.firstname}</h5>
-                <p className="mb-0">{user.email}</p>
+                {/* <p className="mb-0">{user.email}</p> */}
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
@@ -198,8 +212,8 @@ const MainLayout = () => {
         </Header>
         <Content
           style={{
-            margin: "24px 16px",
-            padding: 24,
+            margin: "10px",
+            padding: 2,
             minHeight: 280,
             background: colorBgContainer,
           }}
@@ -217,7 +231,7 @@ const MainLayout = () => {
           />
           <Outlet />
         </Content>
-      </Layout>
+      </Layout> 
     </Layout>
   );
 };

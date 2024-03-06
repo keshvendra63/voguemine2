@@ -91,7 +91,7 @@ const Productlist = () => {
     <div>
       <h3 className="mb-4 title">Products</h3>
       <div>
-        <Table columns={columns} dataSource={data1} pagination={{ pageSize: 50 }} />
+        <Table columns={columns} dataSource={data1} pagination={{ pageSize: 50 }} scroll={{y: 500,x: 1000}}/>
       </div>
       <CustomModal
         hideModal={hideModal}

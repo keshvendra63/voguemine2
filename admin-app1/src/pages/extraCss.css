@@ -4,6 +4,10 @@
     grid-gap:20px;
     width: 100%;
 }
+.singlep{
+    margin: 50px;
+    padding: 0;
+}
 .singlep p{
     margin-bottom: 2px;
 }
@@ -48,7 +52,7 @@
     margin-top: 10px;
 }
 .singlep .mains .left .basic .desc .descr{
-    height: 200px;
+    height: 300px;
 }
 .singlep .mains .left .media{
     padding: 10px;
@@ -57,18 +61,19 @@
     background-color: white;
 }
 .singlep .mains .left .media .imgbox{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    display: flex;
+    flex-wrap: wrap;
     border: 1px solid grey;
     padding: 5px;
     grid-gap: 5px;
     min-height: 300px;
 }
 .singlep .mains .left .media .imgbox img{
-    width: 100%;
+    width: 140px;
     height: 140px;
     border-radius: 5px;
+    margin: 5px;
+    border: 1px solid rgb(189, 189, 189);
 }
 .singlep .mains .left .variants{
     margin-top: 20px;
@@ -76,8 +81,11 @@
     padding: 10px;
     border-radius: 5px;
 }
-.singlep .mains .left .variants div{
+.singlep .mains .left .variants .variant{
     margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 1fr;
+    grid-gap: 10px;
 }
 .singlep .mains .left .variants button{
     padding: 7px 12px;
@@ -128,3 +136,15 @@
     margin-top: 15px;
 }
 
+@media screen and (max-width:950px) {
+    .singlep{
+        margin: 10px 20px;
+    }
+    .singlep .mains .left .media .imgbox img{
+        width: 100px;
+        height: 100px;
+    }
+    .singlep .mains{
+        grid-template-columns:1fr;
+    }
+}

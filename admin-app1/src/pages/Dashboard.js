@@ -17,10 +17,7 @@ const columns = [
     title: "Product Count",
     dataIndex: "product",
   },
-  {
-    title: "Total Price",
-    dataIndex: "price",
-  },
+
   {
     title: "Total Price After Discount",
     dataIndex: "dprice",
@@ -67,8 +64,7 @@ for (let i = 0; i < orderState?.length; i++) {
     key: i,
     name: orderState[i]?.user?.firstname,
     product:orderState[i]?.orderItems?.length,
-    price:orderState[i]?.totalPrice,
-    dprice:orderState[i]?.totalPriceAfterDiscount,
+    dprice:orderState[i]?.finalAmount,
     status:orderState[i]?.orderStatus    ,
   });
 }
@@ -133,7 +129,7 @@ setOrderData(data1)
     },
   };
   return (
-    <div>
+    <div className="mx-3">
       <h3 className="mb-4 title">Dashboard</h3>
       <div className="d-flex justify-content-between align-items-center gap-3">
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 roudned-3">

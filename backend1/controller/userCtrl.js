@@ -496,7 +496,7 @@ const getMonthWiseOrderIncome=asyncHandler(async(req,res)=>{
       $group:{
         _id:{
           month:"$month"
-        },amount:{$sum:"$totalPriceAfterDiscount"},
+        },amount:{$sum:"$finalAmount"},
         count:{$sum:1}
       }
     }
@@ -529,7 +529,7 @@ const getYearlyTotalOrders=asyncHandler(async(req,res)=>{
       $group:{
         _id:null,
         count:{$sum:1},
-        amount:{$sum:"$totalPriceAfterDiscount"}
+        amount:{$sum:"$finalAmount"}
       }
     }
   ])
