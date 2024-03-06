@@ -274,7 +274,7 @@ const SingleProduct = () => {
                     <div className=" position-relative" key={j}>
                       <button
                         type="button"
-                        onClick={() => dispatch(delImg(i.public_id))}
+                        onClick={() => dispatch(delImg(i?.public_id))}
                         className="btn-close position-absolute"
                         style={{ top: "10px", right: "10px" }}
                       ></button>

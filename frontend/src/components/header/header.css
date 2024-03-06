@@ -36,15 +36,50 @@
 }
 .headerdiv .head2 ul li{
     margin: 0 12px;
+    position: relative;
 }
 .headerdiv .head2 ul li a{
     color: black;
+    transition: all 0.5s;
 }
-.headerdiv .head2 ul li a:hover{
-    color: red;
-    box-shadow: none;
+.headerdiv .head2 ul li:nth-child(2) a:hover{
+    color: rgb(255, 248, 42);
+}
+.headerdiv .head2 ul li:nth-child(3) a:hover{
+    color: rgb(255, 128, 128);
+}
+.headerdiv .head2 ul li:nth-child(4) a:hover{
+    color: blue;
+}
+.headerdiv .head2 ul li:nth-child(5) a:hover{
+    color: rgb(98, 98, 98);
+}
+.headerdiv .head2 ul li a::after{
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0px;
+    height: 2px;
+    background-color: black;
+    transition: all 0.5s;
+}
+.headerdiv .head2 ul li:nth-child(2) a::after{
+    background-color: rgb(255, 248, 42);
+}
+.headerdiv .head2 ul li:nth-child(3) a::after{
+    background-color: rgb(255, 128, 128);
+}
+.headerdiv .head2 ul li:nth-child(4) a::after{
+    background-color: blue;
+}
+.headerdiv .head2 ul li:nth-child(5) a::after{
+    background-color: rgb(98, 98, 98);
+}
+.headerdiv .head2 ul li:hover a::after{
+    width: 50px;
+}
 
-}
 
 .head3 ul{
     list-style: none;

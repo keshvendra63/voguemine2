@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import { UploadOutlined } from '@ant-design/icons';
+import { PlusOutlined, InboxOutlined, UploadOutlined } from '@ant-design/icons';
+import { Modal, Upload, message, Button } from 'antd';
 import { DndContext, PointerSensor, useSensor } from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Button, Upload } from 'antd';
+
+const { Dragger } = Upload;
+
+const getBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+
 const DraggableUploadListItem = ({ originNode, file }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: file.uid,
@@ -22,53 +28,27 @@ const DraggableUploadListItem = ({ originNode, file }) => {
     <div
       ref={setNodeRef}
       style={style}
-      // prevent preview event when drag end
       className={isDragging ? 'is-dragging' : ''}
       {...attributes}
       {...listeners}
     >
-      {/* hide error tooltip when dragging */}
       {file.status === 'error' && isDragging ? originNode.props.children : originNode}
     </div>
   );
 };
-const Testing = () => {
-  const [fileList, setFileList] = useState([
-    {
-      uid: '-1',
-      name: 'image1.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-    {
-      uid: '-2',
-      name: 'image2.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-    {
-      uid: '-3',
-      name: 'image3.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-    {
-      uid: '-4',
-      name: 'image4.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-    {
-      uid: '-5',
-      name: 'image.png',
-      status: 'error',
-    },
-  ]);
+
+const App = () => {
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
+  const [previewTitle, setPreviewTitle] = useState('');
+  const [fileList, setFileList] = useState([]);
+
   const sensor = useSensor(PointerSensor, {
     activationConstraint: {
       distance: 10,
     },
   });
+
   const onDragEnd = ({ active, over }) => {
     if (active.id !== over?.id) {
       setFileList((prev) => {
@@ -78,24 +58,55 @@ const Testing = () => {
       });
     }
   };
-  const onChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
+
+  const handleCancel = () => setPreviewOpen(false);
+
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
   };
+
+  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+
   return (
-    <DndContext sensors={[sensor]} onDragEnd={onDragEnd}>
-      <SortableContext items={fileList.map((i) => i.uid)} strategy={verticalListSortingStrategy}>
-        <Upload
-          action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-          fileList={fileList}
-          onChange={onChange}
-          itemRender={(originNode, file) => (
-            <DraggableUploadListItem originNode={originNode} file={file} />
-          )}
-        >
-          <Button icon={<UploadOutlined />}>Click to Upload</Button>
-        </Upload>
-      </SortableContext>
-    </DndContext>
+    <div style={{marginTop:'100px'}}>
+      <DndContext sensors={[sensor]} onDragEnd={onDragEnd}>
+        <SortableContext items={fileList.map((i) => i.uid)} strategy={verticalListSortingStrategy}>
+          <Dragger
+            multiple
+            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+            listType="picture-card"
+            fileList={fileList}
+            onPreview={handlePreview}
+            onChange={handleChange}
+            itemRender={(originNode, file) => <DraggableUploadListItem originNode={originNode} file={file} />}
+          >
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined />
+            </p>
+            <p className="ant-upload-text">Click or drag file to this area to upload</p>
+            <p className="ant-upload-hint">
+              Support for a single or bulk upload. Strictly prohibited from uploading company data or other
+              banned files.
+            </p>
+          </Dragger>
+        </SortableContext>
+      </DndContext>
+      <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+        <img
+          alt="example"
+          style={{
+            width: '100%',
+          }}
+          src={previewImage}
+        />
+      </Modal>
+    </div>
   );
 };
-export default Testing;
+
+export default App;
