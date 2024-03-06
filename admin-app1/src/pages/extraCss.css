@@ -63,7 +63,7 @@
     border: 1px solid grey;
     padding: 5px;
     grid-gap: 5px;
-    height: 300px;
+    min-height: 300px;
 }
 .singlep .mains .left .media .imgbox img{
     width: 100%;

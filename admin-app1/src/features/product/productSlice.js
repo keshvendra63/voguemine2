@@ -21,18 +21,6 @@ export const createProducts = createAsyncThunk(
     }
   }
 );
-export const deleteAProduct = createAsyncThunk(
-  "product/delete-product",
-  async (id, thunkAPI) => {
-    try {
-      return await productService.deleteProduct(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-
 export const getAProduct = createAsyncThunk(
   "product/get-product",
   async (id, thunkAPI) => {
@@ -53,6 +41,20 @@ export const updateAProduct = createAsyncThunk(
     }
   }
 );
+
+export const deleteAProduct = createAsyncThunk(
+  "product/delete-product",
+  async (id, thunkAPI) => {
+    try {
+      return await productService.deleteProduct(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+
+
 
 export const resetState = createAction("Reset_all");
 

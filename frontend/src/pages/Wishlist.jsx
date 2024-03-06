@@ -42,9 +42,9 @@ const Wishlist = () => {
     return(
       <div className="product-card" key={index}>
       <div className="product-img">
-        <img src={item?.images[0].url} alt="" className="product-img1"/>
+        <img src={item?.images[1].url} alt="" className="product-img1"/>
         {
-          item?.images[1].url!==""?<img src={item?.images[1].url} alt="" className="product-img2"/>:<img src=
+          item?.images[2].url!==""?<img src={item?.images[2].url} alt="" className="product-img2"/>:<img src=
           "" alt="" className="product-img2"/>
         }
       </div>

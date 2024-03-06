@@ -1,5 +1,6 @@
 import { React, useEffect, useState } from "react";
 import './extraCss.css'
+import { useDrag, useDrop } from "react-dnd";
 import ReactQuill from "react-quill";
 import { Link, useLocation } from 'react-router-dom'
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -12,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Input, Select } from "antd";
 import Dropzone from "react-dropzone";
 import { delImg, uploadImg } from "../features/upload/uploadSlice";
-import { createProducts, resetState, getAProduct, updateAProduct, getProducts } from "../features/product/productSlice";
+import { createProducts, resetState, getAProduct, updateAProduct, getProducts} from "../features/product/productSlice";
 import { getCollections } from "../features/collection/collectionSlice";
 let schema = yup.object().shape({
   title: yup.string().required("Title is Required"),
@@ -31,6 +32,10 @@ let schema = yup.object().shape({
     })
   ).required('At least one variant is required')
 });
+
+
+
+
 
 const SingleProduct = () => {
   const [colors, setColors] = useState('');
@@ -69,7 +74,6 @@ const SingleProduct = () => {
     isError,
     isLoading,
     createdProduct,
-    updatedProduct,
     productTitle,
     productDescription,
     productCategory,
@@ -81,10 +85,11 @@ const SingleProduct = () => {
     productState,
     productCollectionName,
     productVariants,
-    productTags } = productStat
+    productTags,
+    updatedProduct  } = productStat
   useEffect(() => {
 
-    if (getProductId !== (undefined || null || "")) {
+    if (getProductId !== undefined) {
       dispatch(getAProduct(getProductId));
       img.push(productImages);
     } else {
@@ -92,6 +97,7 @@ const SingleProduct = () => {
     }
   }, [getProductId]);
   useEffect(() => {
+    dispatch(resetState());
     dispatch(getCollections());
   }, []);
 
@@ -116,10 +122,9 @@ const SingleProduct = () => {
   useEffect(() => {
     formik.values.images = img;
   }, [productImages]);
-  useEffect(() => {
-    setVariants(productVariants || []);
-  }, [productVariants]);
 
+
+  const combinedImages = productImages?.length > 0 ? [...productImages, ...imgState] : imgState;
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -133,7 +138,7 @@ const SingleProduct = () => {
       category: productCategory || '',
       brand: productBrand || '',
       sku: productSku || '',
-      images:imgState || productImages,
+      images:combinedImages || imgState,
       collectionName: productCollectionName || '',
       variants: productVariants || [],
     },
@@ -141,21 +146,27 @@ const SingleProduct = () => {
     validationSchema: schema,
     onSubmit: (values) => {
       values.variants = variants
+      console.log(ErrorMessage)
       if (getProductId !== undefined) {
         const product = { id: getProductId, productData: values };
         dispatch(updateAProduct(product));
         setTimeout(() => {
-          navigate("product")
-        }, 300);
+          dispatch(getProducts())
+          navigate("/admin/product")
+        }, 1000);
       } else {
         dispatch(createProducts(values));
-        dispatch(getProducts())
         setTimeout(() => {
+          dispatch(getProducts())
           dispatch(resetState());
         }, 300);
       }
     },
   });
+
+  useEffect(() => {
+    setVariants(productVariants || []);
+  }, [productVariants]);
 
   const handleQuantityChange = (value, index) => {
     setVariants(prevVariants => {
@@ -171,17 +182,16 @@ const SingleProduct = () => {
     const newVariants = [];
     colorArr.forEach(color => {
       sizeArr.forEach(size => {
-        newVariants.push({ color, size, quantity: 0 });
+        newVariants.push({ color:"", size:"", quantity: 0 });
       });
     });
     setVariants(newVariants);
   };
-  console.log(productImages)
   return (
     <div className='container singlep'>
       <div className="back d-flex my-3 align-items-center">
-        <Link><IoMdArrowRoundBack style={{ color: 'black', marginRight: '10px', fontSize: '20px' }} /></Link>
-        <p style={{ fontWeight: 500, fontSize: '22px' }}>Armani Exchange Black Premium Quality Shirt</p>
+        <Link to="/admin/product"><IoMdArrowRoundBack style={{ color: 'black', marginRight: '10px', fontSize: '20px' }} /></Link>
+        <p style={{ fontWeight: 500, fontSize: '22px' }}>{formik.values.title}</p>
       </div>
       <form action="" onSubmit={formik.handleSubmit}>
         <div className="mains">
@@ -259,12 +269,12 @@ const SingleProduct = () => {
               <p>Media</p>
               <div className="imgbox">
                 {
-                (formik.values.images)==[undefined] ? productImages?.map((i, j) => {
+                combinedImages?.map((i, j) => {
                   return (
                     <div className=" position-relative" key={j}>
                       <button
                         type="button"
-                        onClick={() => dispatch(delImg(i?.public_id))}
+                        onClick={() => dispatch(delImg(i.public_id))}
                         className="btn-close position-absolute"
                         style={{ top: "10px", right: "10px" }}
                       ></button>
@@ -272,20 +282,8 @@ const SingleProduct = () => {
                     </div>
                   );
                 })
-                :
-                productImages?.map((i, j) => {
-                  return (
-                    <div className=" position-relative" key={j}>
-                      <button
-                        type="button"
-                        onClick={() => dispatch(delImg(i?.public_id))}
-                        className="btn-close position-absolute"
-                        style={{ top: "10px", right: "10px" }}
-                      ></button>
-                      <img src={i?.url} alt="" />
-                    </div>
-                  );
-                })
+               
+              
 
               }
                 <Dropzone
@@ -423,7 +421,7 @@ const SingleProduct = () => {
         </div>
         <div className="submit">
 
-          <button>Delete Product</button>
+          
         </div>
         <input type="submit" value="Save" />
       </form>

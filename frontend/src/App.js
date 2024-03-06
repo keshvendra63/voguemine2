@@ -21,7 +21,8 @@ import Checkout from './pages/checkout/Checkout';
 import Profile from './pages/profile/Profile';
 import { useDispatch, useSelector } from 'react-redux'
 import {getAllProducts } from './features/products/productSlice';
-
+import ScrollToTop from './components/ScrollToTop';
+import Testing from './pages/Testing';
 function App() {
   const productState=useSelector((state)=>state?.product?.product)
   const dispatch=useDispatch();
@@ -35,6 +36,7 @@ function App() {
     <>
     <Router>
     <Header/>
+    <ScrollToTop />
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/home' element={<HomeMain/>}/>
@@ -63,6 +65,7 @@ function App() {
         <Route path="/blog/:id" element={<SingleBlog/>}/>
         <Route path="checkout" element={<Checkout/>}/>
         <Route path='/profile' element={<Profile/>}/>
+        <Route path='/testing' element={<Testing/>}/>
       </Routes>
       <Footer/>
     </Router>

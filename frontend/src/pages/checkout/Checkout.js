@@ -114,7 +114,7 @@ const checkOutHandler=async()=>{
     alert("Razorpay SDK failed to load")
     return
  }
- const result=await axios.post("http://localhost:5000/api/user/order/checkout",{amount:finalAmount},config)
+ const result=await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/checkout",{amount:finalAmount},config)
  if(!result){
     alert("Something went wrong")
     return
@@ -137,7 +137,7 @@ const checkOutHandler=async()=>{
 
         };
 
-        const result = await axios.post("http://localhost:5000/api/user/order/paymentVerification", data,config);
+        const result = await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/paymentVerification", data,config);
     dispatch(createAnOrder({totalPrice:totalAmount,finalAmount:finalAmount,shippingCost:shippingCost,orderType:orderType,discount:discount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address"))}))
     dispatch(deleteCart())
     localStorage.removeItem("address")
@@ -328,7 +328,7 @@ console.log(cartState)
                         return(
                             <div className="prdt" key={index}>
                     <div className="detail">
-                        <img src={item?.productId?.images[0]?.url} alt="" />
+                        <img src={item?.productId?.images[1]?.url} alt="" />
                         <div><p className="p-name">{item?.productId?.title}</p>
                         <p className="size"><span>{item?.size}</span><span>/</span><span>{item?.color}</span></p></div>
                     </div>

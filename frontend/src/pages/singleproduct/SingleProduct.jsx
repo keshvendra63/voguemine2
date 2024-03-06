@@ -5,10 +5,12 @@ import key3 from '../../images/mens-jackets.jpg'
 import key4 from '../../images/mens-track-set.jpeg'
 import main_img from '../../images/mens-premium-shirts.jpeg'
 import { useDispatch, useSelector } from 'react-redux'
-import {getAProduct } from '../../features/products/productSlice';
+import {getAProduct,getAllProducts } from '../../features/products/productSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './singleproduct.css'
 import { addToCart, getUserCartProduct } from '../../features/user/userSlice'
+import Product from '../../components/Product'
+
 import {toast} from 'react-toastify'
 const SingleProduct = () => {
   const [color,setColor]=useState(null)
@@ -28,6 +30,16 @@ const SingleProduct = () => {
       dispatch(getAProduct(getProductId))
       dispatch(getUserCartProduct())
   }
+  const productState=useSelector((state)=>state?.product?.product)
+  useEffect(()=>{
+      getProducts()
+  },[])
+  const getProducts=()=>{
+      dispatch(getAllProducts())
+  }
+  const products=productState? productState:[]
+    
+  const shirts = products.filter(object => object.sku && object.sku.includes('VMSI' || "vms-" || 'vms -')).slice(0,4) 
   useEffect(()=>{
     for (let index = 0; index < cartState?.length; index++) {
       if(getProductId===cartState[index]?.productId?._id){
@@ -56,19 +68,21 @@ const SingleProduct = () => {
     
     
 }
-console.log(singleProductState)
+console.log(singleProductState?.images)
   return (
     <div className='single-product'>
       <div className="product">
         <div className="prdt-left">
 
             <div className="main">
-            <img src={singleProductState?.images[0]?.url || singleProductState?.images[0]?.url} alt="" />
+            <img src={singleProductState?.images[1]?.url || singleProductState?.images[1]?.url} alt="" />
             </div>
             <div className="thumbs">
                 {
                   singleProductState?.images?.map((img,index)=>{
-                    return <img src={img} alt={singleProductState?.title} key={index}/>
+                      return <img src={img?.url} alt={singleProductState?.title} key={index}/>
+                    
+                    
                   })
                 }
             </div>
@@ -121,42 +135,32 @@ console.log(singleProductState)
                 <button>BUY IT NOW</button>
             </div>
             <div className="prdt-desc">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo error expedita vel accusantium ab enim sit voluptatum doloribus consequuntur ipsa, ex, autem aliquam. Repudiandae animi, officiis mollitia numquam saepe eligendi atque repellat molestias necessitatibus temporibus provident, aliquam ad obcaecati veniam.
-                </p>
+                <p dangerouslySetInnerHTML={{ __html: singleProductState?.description }}/>
+              
+                
             </div>
 
         </div>
       </div>
       <p className='you-like'>YOU MAY ALSO LIKE</p>
-      <div className="prdt-suggesstions">
-            <div className="product">
-            <img src={key1} alt="" />
-            <div className="product-content">
-            <p className="title">Men's Burberry White Premium Quality Shirt</p>
-            <p className="price">Rs. 10,699</p>
-            </div>
-          </div>
-          <div className="product">
-            <img src={key2} alt="" />
-            <div className="product-content">
-            <p className="title">Men's Burberry White Premium Quality Shirt</p>
-            <p className="price">Rs. 10,699</p>
-            </div>
-          </div>
-          <div className="product">
-            <img src={key3} alt="" />
-            <div className="product-content">
-            <p className="title">Men's Burberry White Premium Quality Shirt</p>
-            <p className="price">Rs. 10,699</p>
-            </div>
-          </div>
-          <div className="product">
-            <img src={key4} alt="" />
-            <div className="product-content">
-            <p className="title">Men's Burberry White Premium Quality Shirt</p>
-            <p className="price">Rs. 10,699</p>
-            </div>
-            </div>
+      
+      <div className="products-listing">
+        <p className="section-heading">Featured Products</p>
+                
+
+        <div className="product-list">
+            {
+                
+                shirts.map((arm,index)=>{
+
+                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                   
+                    
+                })
+            }
+      
+        </div>
+
       </div>
     </div>
   )

@@ -57,10 +57,6 @@ var productSchema = new mongoose.Schema(
     },
 
     images: [
-      {
-        public_id: String,
-        url: String,
-      },
     ],
     collectionName:{
       type: String,
@@ -68,9 +64,18 @@ var productSchema = new mongoose.Schema(
     },
     variants:[
       {
-        color:String,
-        size:String,
-        quantity:Number,
+        color:{
+          type:String,
+          default:"",
+        },
+        size:{
+          type:String,
+          default:"",
+        },
+        quantity:{
+          type:Number,
+          default:0,
+        },
       },
     ],
     tags:{
@@ -78,7 +83,15 @@ var productSchema = new mongoose.Schema(
     },
     
   },
-  { timestamps: true }
+  {
+    toJSON: {
+      virtuals: true,
+    },
+    toObject: {
+      virtuals: true,
+    },
+    timestamps: true,
+  }
 );
 
 //Export the model

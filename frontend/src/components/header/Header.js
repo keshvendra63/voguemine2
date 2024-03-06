@@ -50,9 +50,11 @@ const Header = () => {
   const [search,setSearch] =useState("none")
   const openSearch=()=>{
     setSearch("flex")
+    setScrolled(true);
   }
   const closeSearch=()=>{
     setSearch("none")
+    setScrolled(false);
 
   }
 const navigate=useNavigate()
@@ -73,7 +75,7 @@ useEffect(()=>{
     let data=[]
     for (let index = 0; index < productState?.length; index++) {
       const element = productState[index];
-      data.push({id:index,prod:element?._id,name:element?.title})
+      data.push({id:index,prod:element?._id,name:element?.title,sku:element?.sku})
       
     }
     setProductOpt(data)
@@ -106,7 +108,7 @@ const loginOpen=()=>{
     setLogin("flex")
   }
   else{
-    navigate("profile")
+    navigate("/profile")
   }
   
 }
@@ -138,12 +140,14 @@ const formik1=useFormik({
   validationSchema:loginSchema,
   onSubmit:(values)=>{
     dispatch(loginUser(values))
+    if(authState?.isSuccess){
     setTimeout(()=>{
-      if(authState?.isSuccess){
+      
         navigate('/home')
         setLogin('none')
-      }
+      
     },300)
+  }
   }
 })
 
@@ -261,7 +265,22 @@ const formik2=useFormik({
         </div>
       </div>
       <div className="search" style={{display:search}}>
-          <input type="search" name="" id="" placeholder='Search'/>
+      <Typeahead
+        id="pagination-example"
+        onPaginate={() => console.log('Results paginated')}
+        onChange={(selected)=>{
+          setSearch("none")
+          setScrolled(false);
+          navigate(`/product/${selected[0]?.prod}`)
+          dispatch(getAProduct(selected[0]?.prod))
+          
+        }}
+        minLength={2}
+        options={productOpt}
+        labelKey={"sku"}
+        paginate={paginate}
+        placeholder="Search here"
+      />
           <li onClick={closeSearch}><ClearOutlinedIcon style={{cursor:'pointer'}}  /></li>
         </div>
       <div className="login" style={{display:login}}>
@@ -274,7 +293,7 @@ const formik2=useFormik({
         </div>
         <div className="login-right">
             <h2 style={{textAlign:'center',marginBottom:'20px'}}>Register</h2>
-            <ClearOutlinedIcon style={{position:'absolute',right:'-30px',top:'-30px',color:'white',cursor:'pointer'}} onClick={loginClose}/>
+            <ClearOutlinedIcon style={{position:'absolute',right:'10px',top:'10px',color:'black',cursor:'pointer'}} onClick={loginClose}/>
             <form action="" onSubmit={formik.handleSubmit}>
             <div className="first-name">
                 <input type="text" name="firstname" id="first-name" placeholder='First Name' value={formik.values.firstname} onChange={formik.handleChange("firstname")} onBlur={formik.handleBlur("firstname")}/>
@@ -319,7 +338,7 @@ const formik2=useFormik({
         </div>
         <div className="login-right">
             <h2 style={{textAlign:'center',marginBottom:'20px'}}>Login</h2>
-            <ClearOutlinedIcon style={{position:'absolute',right:'-30px',top:'-30px',color:'white',cursor:'pointer'}} onClick={loginClose}/>
+            <ClearOutlinedIcon style={{position:'absolute',right:'10px',top:'10px',color:'black',cursor:'pointer'}} onClick={loginClose}/>
             <form action="" onSubmit={formik1.handleSubmit}>
             <div className="email">
                 <input type="email" name="email" id="email" placeholder='Email' value={formik1.values.email} onChange={formik1.handleChange("email")} onBlur={formik1.handleBlur("email")}/>
@@ -344,7 +363,7 @@ const formik2=useFormik({
         <div className="login-right">
               <h1>Forgot Password</h1>
               <p>We will send you a link to your email to reset password.</p>
-            <ClearOutlinedIcon style={{position:'absolute',right:'-30px',top:'-30px',color:'white',cursor:'pointer'}} onClick={loginClose}/>
+            <ClearOutlinedIcon style={{position:'absolute',right:'10px',top:'10px',color:'black',cursor:'pointer'}} onClick={loginClose}/>
             <form action="" onSubmit={formik2.handleSubmit}>
             <div className="email">
                 <input type="email" name="email" id="email" placeholder='Email' value={formik2.values.email} onChange={formik2.handleChange("email")} onBlur={formik2.handleBlur("email")}/>

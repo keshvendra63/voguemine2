@@ -140,6 +140,8 @@ div a{
     margin-right:20px;
     font-weight:300;
     cursor:pointer;
+    font-size: 18px;
+    margin-top: 8px;
 }
 .products-listing .product-list .product-card .hover-details .title-section{
     display:flex;
@@ -260,6 +262,7 @@ div a{
 @media screen and (max-width:950px){
     .products-listing .product-list{
         grid-template-columns:repeat(2, 1fr);
+        grid-gap: 10px;
     }
     .products-listing .product-list .product-card .hover-details{
         display:none;
@@ -274,6 +277,6 @@ div a{
 }
 @media screen and (max-width:650px) {
     .margin-section{
-        margin: 0 20px;
+        margin: 0 10px;
     }
 }

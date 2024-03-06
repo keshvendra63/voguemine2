@@ -12,11 +12,7 @@ const createProduct = async (product) => {
 
   return response.data;
 };
-const deleteProduct = async (id) => {
-  const response = await axios.delete(`${base_url}product/${id}`, config);
 
-  return response.data;
-};
 
 const updateProduct = async (product) => {
   const response = await axios.put(
@@ -46,7 +42,11 @@ const getProduct = async (id) => {
   return response.data;
 };
 
+const deleteProduct = async (id) => {
+  const response = await axios.delete(`${base_url}product/${id}`, config);
 
+  return response.data;
+};
 
 const productService = {
   getProducts,

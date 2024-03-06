@@ -448,7 +448,7 @@ const getAllOrders=asyncHandler(async(req,res)=>{
 const getSingleOrder=asyncHandler(async(req,res)=>{
   const {id}=req.params
   try{
-    const orders=await Order.findOne({_id:id}).populate("user").populate("user").populate("orderItems.product")
+    const orders=await Order.findOne({_id:id}).populate("user").populate("orderItems.product")
     res.json({
       orders
     })

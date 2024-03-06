@@ -249,5 +249,24 @@ width: 100px;
     .head3 .li-search input{
         display: none;
     }
+    .login .login-box{
+        width: 98vw;
+        height: 80vh;
+    }
+    .login .login-left{
+        border-right: 1px solid black;
+        height: 100%;
+        padding:5px;
+    }
+    .login .login-right{
+        padding:5px;
+    }
+    .login .login-right input{
+        width: 95%;
+    }
+
+
+    
+
 
 }

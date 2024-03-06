@@ -23,7 +23,7 @@ const multerFilter = (req, file, cb) => {
 const uploadPhoto = multer({
   storage: storage,
   fileFilter: multerFilter,
-  limits: { fileSize: 1000000 },
+  limits: { fileSize: 999999999 },
 });
 
 const productImgResize = async (req, res, next) => {
@@ -31,7 +31,7 @@ const productImgResize = async (req, res, next) => {
   await Promise.all(
     req.files.map(async (file) => {
       await sharp(file.path)
-        .resize(300, 300)
+        .resize(500, 500)
         .toFormat("jpeg")
         .jpeg({ quality: 90 })
         .toFile(`public/images/products/${file.filename}`);
@@ -46,7 +46,7 @@ const blogImgResize = async (req, res, next) => {
   await Promise.all(
     req.files.map(async (file) => {
       await sharp(file.path)
-        .resize(300, 300)
+        .resize(500, 500)
         .toFormat("jpeg")
         .jpeg({ quality: 90 })
         .toFile(`public/images/blogs/${file.filename}`);
