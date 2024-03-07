@@ -1,0 +1,66 @@
+.head{
+    display: flex;
+    justify-content: space-between;
+}
+.head h1{
+    font-size: 25px;
+    letter-spacing: 2px;
+}
+.head p{
+    margin-bottom: 2px;
+    font-size: 12px;
+}
+p{
+    line-height: normal;
+}
+.detail{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    margin-top: 10px;
+}
+.detail p{
+    margin-bottom: 3px;
+    font-size: 12px;
+}
+.head{
+    
+        margin-bottom: 2px;
+        font-size: 12px;    
+}
+.item{
+    display: flex;
+    justify-content: space-between; 
+    margin-top: 10px;
+}
+.item img{
+    width: 70px;
+    height: 70px;
+}
+.img{
+    display: flex;
+}
+.item p{
+    font-size: 12px;
+}
+.produ-detail p{
+    margin-bottom: 2px;
+    font-size: 12px;
+
+}
+.total-amount p{
+    margin-bottom: 2px;
+    font-size: 12px;
+
+}
+.shop {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-direction: column;
+}
+.shop p{
+    margin-bottom: 2px;
+    font-size: 12px;
+}

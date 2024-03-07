@@ -71,7 +71,10 @@ const Collectionlist = () => {
   };
   return (
     <div>
+      <div className="heads d-flex justify-content-between">
       <h3 className="mb-4 title">Collections</h3>
+      <Link to='/admin/collection'><button>Add Collection</button></Link>
+      </div>
       <div>
         <Table columns={columns} dataSource={data1} />
       </div>

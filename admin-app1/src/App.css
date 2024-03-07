@@ -42,3 +42,106 @@
   font-family: Roboto !important;
   color: var(--color-828599);
 }
+.order-head{
+  display: flex;
+  justify-content: space-between;
+}
+.order-head p{
+  margin-bottom: 2px;
+  margin-right: 10px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.order-head .left{
+  display: flex;
+}
+.order-head .right button{
+  margin-left: 10px;
+  padding: 5px;
+}
+.order-head .left div{
+  display: flex;
+  align-items: center;
+  
+}
+.order-detail p{
+  margin-bottom: 2px;
+}
+.order-detail{
+  display: grid;
+  grid-gap:0 20px;
+  grid-template-columns: 2fr 1fr;
+  margin: 20px 0;
+}
+.order-detail .left-section{
+  border-radius: 5px;
+  padding:5px 10px;
+}
+.order-detail .left-section .order-products{
+  background-color: white;
+  padding: 5px;
+  border-radius: 5px;
+}
+.order-detail .left-section .order-products .prdt{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border: 1px solid rgb(202, 202, 202);
+  border-radius: 5px;
+  padding: 5px;
+}
+.order-detail .left-section .order-products .prdt .left{
+  display: flex;
+  align-items: center;
+}
+.order-detail .left-section .order-products .prdt .left .detail p{
+  display: block;
+}
+.order-detail .left-section .order-products .prdt .left img{
+  width: 50px;
+  height: 50px;
+  margin-right: 5px;
+  border-radius: 3px;
+  border: 1px solid rgb(202, 202, 202);
+}
+.order-detail .left-section .order-products .prdt .right{
+  text-align: end;
+}
+.order-detail .right-section{
+  background-color: white;
+  border-radius: 5px;
+  padding:5px 10px;
+}
+.order-detail .left-section .payment-info{
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+.order-detail .left-section .payment-info .payment{
+  display: flex;
+  justify-content: space-between;
+  grid-gap: 5px;
+  
+}
+.order-detail .left-section .payment-info .payment p{
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.order-detail .left-section .payment-info .payment .right{
+  text-align: end;
+}
+
+.order-detail .right-section{
+  margin-top: 5px;
+}
+.order-detail .right-section div{
+  margin-bottom: 15px;
+  border: 1px solid rgb(202, 202, 202);
+  border-radius: 5px;
+  padding: 5px;
+}
+.order-detail .right-section div p{
+  color: grey;
+}

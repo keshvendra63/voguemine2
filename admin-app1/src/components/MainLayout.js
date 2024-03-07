@@ -81,7 +81,7 @@ const MainLayout = () => {
                   label: "Product",
                 },
                 {
-                  key: "collection",
+                  key: "list-collection",
                   icon: <SiBrandfolder className="fs-6" />,
                   label: "Collection",
                 },

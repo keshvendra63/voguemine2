@@ -19,7 +19,7 @@ const columns = [
     sorter: (a, b) => a?.title?.length - b?.title?.length,
   },
   {
-    title: "Stutus",
+    title: "Status",
     dataIndex: "state",
     sorter: (a, b) => a?.state?.length - b?.state?.length,
   },
@@ -89,7 +89,10 @@ const Productlist = () => {
   };
   return (
     <div>
+      <div className="heads d-flex justify-content-between">
       <h3 className="mb-4 title">Products</h3>
+      <Link to='/admin/addProduct'><button>Add Product</button></Link>
+      </div>
       <div>
         <Table columns={columns} dataSource={data1} pagination={{ pageSize: 50 }} scroll={{y: 500,x: 1000}}/>
       </div>
