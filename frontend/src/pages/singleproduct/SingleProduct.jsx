@@ -39,7 +39,8 @@ const SingleProduct = () => {
       dispatch(getAllProducts())
   }
   const products=productState? productState:[]
-    
+   const customer=JSON.parse(localStorage.getItem("customer"))
+
   const shirts = products.filter(object => object.sku && object.sku.includes('VMSI' || "vms-" || 'vms -')).slice(0,4) 
   useEffect(()=>{
     for (let index = 0; index < cartState?.length; index++) {
@@ -58,6 +59,10 @@ const SingleProduct = () => {
       toast.error("Please Select Size")
       return false
     }
+    if(customer==null){
+      toast.error("Please Login First to Add to Cart")
+    }
+    
     else{
       dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price,size}))
       
@@ -77,7 +82,12 @@ const buyNow=()=>{
   if(size===null){
     toast.error("Please Select Size")
     return false
-  }
+  } 
+  if(customer==null){
+   toast.error("Please Login First to Buy")
+ }
+ 
+
   else{
     dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price,size}))
     

@@ -75,7 +75,7 @@ useEffect(()=>{
     let data=[]
     for (let index = 0; index < productState?.length; index++) {
       const element = productState[index];
-      data.push({id:index,prod:element?._id,name:element?.title,sku:element?.sku})
+      data.push({id:index,prod:element?._id,name:element?.description || element?.sku || element?.title })
       
     }
     setProductOpt(data)

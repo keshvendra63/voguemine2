@@ -20,6 +20,7 @@ import {getAllProducts } from '../../features/products/productSlice';
 import Product from '../../components/Product'
 
 const HomeMain = () => {
+
   const productState=useSelector((state)=>state?.product?.product)
   const dispatch=useDispatch();
   useEffect(()=>{
@@ -107,13 +108,13 @@ console.log(shirts,tshirt,jeans)
 
         </div>
         <div className="shoe-right">
-          <p className='section-heading'>The Premium Shoes Collection</p>
-          <p>Introducing our Premium Quality Men's Sneakers collection - the ultimate fusion of style and comfort. Crafted with precision and the finest materials, our sneakers redefine luxury footwear. Each pair exudes timeless elegance and durability, promising a perfect fit for your active lifestyle.</p>
-          <a className='btn'>BUY NOW</a>
+          <p className='section-heading'>Introducing our premium men's footwear collection</p>
+          <p>- style and comfort with our exceptional range of men's footwear that will keep you walking in confidence.</p>
+          <Link to="//collections/loafers-for-men" className='btn'>BUY NOW</Link>
         </div>
       </div>
       <div className="products-listing">
-        <p className="section-heading">Featured Products</p>
+        <p className="section-heading">Men's Featured Products</p>
                 
 
         <div className="product-list">
@@ -147,9 +148,9 @@ console.log(shirts,tshirt,jeans)
       <div className="shoes-section">
         
         <div className="shoe-right">
-          <p className='section-heading'>The Premium Shoes Collection</p>
-          <p>Introducing our Premium Quality Men's Sneakers collection - the ultimate fusion of style and comfort. Crafted with precision and the finest materials, our sneakers redefine luxury footwear. Each pair exudes timeless elegance and durability, promising a perfect fit for your active lifestyle.</p>
-          <a className='btn'>BUY NOW</a>
+          <p className='section-heading'>Ladies Premium Sandals and Heels</p>
+          <p>Style like a Queen with our gorgeous selection of Premium Sandals and Heels for Women.</p>
+          <Link to="#" className='btn'>BUY NOW</Link>
         </div>
         <div className="shoe-left">
           <Carousel>
@@ -188,7 +189,7 @@ console.log(shirts,tshirt,jeans)
 
       </div>
       <div className="trending-collections">
-        <p className="section-heading">Men's Trending</p>
+        <p className="section-heading">Women's Trending</p>
         <div className="trending-collection">
           <div className="trending-card">
             <img src={men} alt="" />
@@ -220,8 +221,8 @@ console.log(shirts,tshirt,jeans)
 
         </div>
         <div className="shoe-right">
-          <h1>The Premium Shoes Collection</h1>
-          <p>Introducing our Premium Quality Men's Sneakers collection - the ultimate fusion of style and comfort. Crafted with precision and the finest materials, our sneakers redefine luxury footwear. Each pair exudes timeless elegance and durability, promising a perfect fit for your active lifestyle.</p>
+          <h1>Luxury Accessories for Everlasting Grace</h1>
+          <p>Experience everlasting grace through our collection of luxurious accessories, adding a touch of timeless elegance to your style.</p>
           <a className='btn'>BUY NOW</a>
         </div>
       </div>

@@ -10,6 +10,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify'
 import {Link} from 'react-router-dom'
 const Product = (props) => {
+  const customer=JSON.parse(localStorage.getItem("customer"))
+
     const [color,setColor]=useState(null)
     const [colorBorder,setColorBorder]=useState("")
     const [size,setSize]=useState(null)
@@ -38,12 +40,23 @@ const Product = (props) => {
         toast.error("Please Select Size")
         return false
       }
+      if(customer==null){
+        toast.error("Please Login First to Add to Cart")
+      }
+      
       else{
         dispatch(addToCart({productId:props.id,color,quantity,price:props.price,size}))
       }
     } 
     const addToWish=(id)=>{
+      if(customer==null){
+        toast.error("Please Login First to Add to Wishlist")
+      }
+ else{
+
+     
       dispatch(addToWishlist(id))
+ }
   }
 
   const buyNow=()=>{
@@ -55,6 +68,10 @@ const Product = (props) => {
       toast.error("Please Select Size")
       return false
     }
+    if(customer==null){
+      toast.error("Please Login First to Buy Now")
+    }
+    
     else{
       dispatch(addToCart({productId:props.id,color,quantity,price:props.price,size}))
       

@@ -8,8 +8,10 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {getUserCartProduct, removeFromCart, updateQuantityFromCart} from '../../features/user/userSlice'
-
+import { toast } from 'react-toastify';
 const Cart = () => {
+    const customer=JSON.parse(localStorage.getItem("customer"))
+
     const [productUpdateDetail,setproductUpdateDetail]=useState(null)
     const [totalAmount,setTotalAmount]=useState(null)
     const dispatch=useDispatch();
@@ -19,12 +21,16 @@ const Cart = () => {
     },[])
     useEffect(()=>{
 if(productUpdateDetail!==null){
+    if(customer==null){
+        toast.error("Please Login First to Update Quantity")
+      }
+ else{     
     dispatch(updateQuantityFromCart({cartItemId:productUpdateDetail?.cartItemId,quantity:productUpdateDetail?.quantity}))
     setTimeout(()=>{
         dispatch(getUserCartProduct())
 
       },200)
-}
+}}
       },[productUpdateDetail])
 
     const carts=cartState?cartState:[]
