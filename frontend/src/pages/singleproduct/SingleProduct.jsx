@@ -69,6 +69,26 @@ const SingleProduct = () => {
     
     
 }
+const buyNow=()=>{
+  if(color===null){
+    toast.error("Please Select Color")
+    return false
+  }
+  if(size===null){
+    toast.error("Please Select Size")
+    return false
+  }
+  else{
+    dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price,size}))
+    
+    setTimeout(()=>{
+      dispatch(getUserCartProduct())
+      navigate('/checkout')
+    },500)
+  }
+  
+  
+}
 const changeMainImage=(img)=>{
   setMainImage(img?.url)
 }
@@ -136,7 +156,7 @@ console.log(singleProductState?.images)
                 <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(singleProductState?._id)}}>{
                   alreadyAdded?"GO TO CART":"ADD TO CART"
                 }</button>
-                <button>BUY IT NOW</button>
+                <button onClick={buyNow}>BUY IT NOW</button>
             </div>
             <div className="prdt-desc">
                 <p dangerouslySetInnerHTML={{ __html: singleProductState?.description }}/>

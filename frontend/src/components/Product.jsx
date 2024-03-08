@@ -45,6 +45,28 @@ const Product = (props) => {
     const addToWish=(id)=>{
       dispatch(addToWishlist(id))
   }
+
+  const buyNow=()=>{
+    if(color===null){
+      toast.error("Please Select Color")
+      return false
+    }
+    if(size===null){
+      toast.error("Please Select Size")
+      return false
+    }
+    else{
+      dispatch(addToCart({productId:props.id,color,quantity,price:props.price,size}))
+      
+      setTimeout(()=>{
+        dispatch(getUserCartProduct())
+        navigate('/checkout')
+      },500)
+    }
+    
+    
+}
+
   return (
     <div className="product-card" key={props.keys}>
  <Link to={`/product/${props.id}`}>
@@ -99,7 +121,7 @@ const Product = (props) => {
       
       </ul>
     </div>
-    <Link to="#"><button>BUY NOW</button></Link>
+    <button onClick={buyNow} style={{width:'100%'}}>BUY NOW</button>
     <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(props.id)}} style={{width:'100%',marginTop:'10px'}}>{
                   alreadyAdded?"GO TO CART":"ADD TO CART"
                 }</button>
