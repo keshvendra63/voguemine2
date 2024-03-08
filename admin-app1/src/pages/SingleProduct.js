@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useEffect, useState,useRef } from "react";
 import './extraCss.css'
 import { useDrag, useDrop } from "react-dnd";
 import ReactQuill from "react-quill";
@@ -26,15 +26,62 @@ let schema = yup.object().shape({
   collectionName: yup.string().required("Collection is Required"),
   variants: yup.array().of(
     yup.object().shape({
-      color: yup.string().required('Variant color is required'),
-      size: yup.string().required('Variant size is required'),
+      color: yup.string(),
+      size: yup.string(),
       quantity: yup.number().required('Variant quantity is required')
     })
   ).required('At least one variant is required')
 });
 
 
+const Image = ({ src, id, index, moveImage, deleteImage }) => {
+  const ref = useRef(null);
+  const [, drop] = useDrop({
+    accept: "image",
+    hover(item, monitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+      moveImage(dragIndex, hoverIndex);
+      item.index = hoverIndex;
+    },
+  });
+  const [{ isDragging }, drag] = useDrag({
+    type: "image",
+    item: () => {
+      return { id, index };
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  const opacity = isDragging ? 0 : 1;
+  drag(drop(ref));
 
+  return (
+    <div ref={ref} style={{ opacity }} className="image-container">
+      <div className="image" style={{ backgroundImage:src}}>
+        <img src={src}/>
+        <button className="delete-button" onClick={() => deleteImage(id)}>Delete</button>
+      </div>
+    </div>
+  );
+};
 
 
 const SingleProduct = () => {
@@ -96,7 +143,6 @@ const SingleProduct = () => {
     }
   }, [getProductId]);
   useEffect(() => {
-    dispatch(resetState());
     dispatch(getCollections());
   }, []);
 
@@ -193,6 +239,19 @@ const SingleProduct = () => {
   const handleDeleteVariant = (index) => {
     setVariants((prevVariants) => prevVariants.filter((_, i) => i !== index));
   };
+  const moveImage = (dragIndex, hoverIndex) => {
+    const draggedImage = formik.values.images[dragIndex];
+    const newImages = [...formik.values.images];
+    newImages.splice(dragIndex, 1);
+    newImages.splice(hoverIndex, 0, draggedImage);
+    formik.setFieldValue("images", newImages);
+  };
+
+  const deleteImage = (id) => {
+    const filteredImages = formik.values.images.filter((image) => image.public_id !== id);
+    formik.setFieldValue("images", filteredImages);
+  };
+
 
   return (
     <div className='singlep'>
@@ -276,40 +335,30 @@ const SingleProduct = () => {
             <div className="media">
               <p>Media</p>
               <div className="imgbox">
-                {
-                combinedImages?.map((i, j) => {
-                  return (
-                    <div className=" position-relative" key={j}>
-                      <button
-                        type="button"
-                        onClick={() => dispatch(delImg(i?.public_id))}
-                        className="btn-close position-absolute"
-                        style={{ top: "10px", right: "10px" }}
-                      ></button>
-                      <img src={i?.url} alt="" />
-                    </div>
-                  );
-                })
-               
-              
-
-              }
-                <Dropzone
-                  onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}
-                >
-                  {({ getRootProps, getInputProps }) => (
-                    <section>
-                      <div {...getRootProps()}>
-                        <input {...getInputProps()} />
-                        <p>
-                          Drag 'n' drop some files here, or click to select files
-                        </p>
-                      </div>
-                    </section>
-                  )}
-                </Dropzone>
-
-              </div>
+    {formik.values.images.map((image, index) => (
+      <Image
+        key={image?.public_id}
+        src={image?.url}
+        id={image?.public_id}
+        index={index}
+        moveImage={moveImage}
+        deleteImage={deleteImage}
+      />
+    ))}
+    <Dropzone
+      onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}
+      style={{width:'100px',height:'100x',border:'1px solid grey',borderRadius:'5px'}}
+     >
+      {({ getRootProps, getInputProps }) => (
+        <section >
+          <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            <p>Drag 'n' drop some files here, or click to select files</p>
+          </div>
+        </section>
+      )}
+    </Dropzone>
+  </div>
 
             </div>
             <div className="variants">

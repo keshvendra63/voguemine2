@@ -2,6 +2,7 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const dbConnect = require("./config/dbConnect");
 const { notFound, errorHandler } = require("./middlewares/errorHandler");
+
 const app = express();
 const dotenv = require("dotenv").config();
 const PORT = 5000;
@@ -16,7 +17,6 @@ const uploadRouter = require("./routes/uploadRoute");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
-
 dbConnect();
 app.use(morgan("dev"));
 app.use(cors());
@@ -31,7 +31,6 @@ app.use("/api/coupon", couponRouter);
 app.use("/api/collection", collectionRouter);
 app.use("/api/enquiry", enqRouter);
 app.use("/api/upload", uploadRouter);
-
 app.use(notFound);
 app.use(errorHandler);
 app.listen(PORT, () => {

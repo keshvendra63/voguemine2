@@ -1,4 +1,5 @@
 import "./App.css";
+import React,{useEffect} from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -23,8 +24,13 @@ import ViewOrder from "./pages/ViewOrder";
 import { PublicRoute } from "./routing/PublicRoute";
 import { PrivateRoute } from "./routing/PrivateRoute";
 import SingleProduct from "./pages/SingleProduct";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
 function App() {
+  
   return (
+    <DndProvider backend={HTML5Backend}>
     <Router>
       <Routes>
         <Route path="/" element={<PublicRoute><Login /></PublicRoute>} />
@@ -55,6 +61,7 @@ function App() {
         </Route>
       </Routes>
     </Router>
+    </DndProvider>
   );
 }
 

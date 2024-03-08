@@ -60,11 +60,11 @@ const SingleProduct = () => {
     }
     else{
       dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price,size}))
-      navigate('/cart')
+      
       setTimeout(()=>{
         dispatch(getUserCartProduct())
-
-      },200)
+        navigate('/cart')
+      },500)
     }
     
     

@@ -23,7 +23,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import {getAllProducts } from './features/products/productSlice';
 import ScrollToTop from './components/ScrollToTop';
 import Testing from './pages/Testing';
+
 function App() {
+
   const productState=useSelector((state)=>state?.product?.product)
   const dispatch=useDispatch();
   useEffect(()=>{
