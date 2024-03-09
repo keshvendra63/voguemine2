@@ -49,8 +49,8 @@ const blogImgResize = async (req, res, next) => {
         .resize(500, 500)
         .toFormat("jpeg")
         .jpeg({ quality: 90 })
-        .toFile(`public/images/blogs/${file.filename}`);
-      fs.unlinkSync(`public/images/blogs/${file.filename}`);
+        .toFile(`public/images/${file.filename}`);
+      fs.unlinkSync(`public/images/${file.filename}`);
     })
   );
   next();
