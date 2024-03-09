@@ -1,0 +1,15 @@
+{
+  "name": "voguemine2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install-server":"cd backend1 && npm install --force",
+    "start-server":"cd backend1 && node index.js",
+    "install-client":"cd admin-app1 && npm install --force",
+    "build-client":"cd admin-app1 && npm run build",
+    "start-client":"cd admin-app1 && npm run start"
+  },
+  "author": "",
+  "license": "ISC"
+}
