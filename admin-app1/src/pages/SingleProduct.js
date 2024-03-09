@@ -113,7 +113,7 @@ const SingleProduct = () => {
   const getProductId = location.pathname.split("/")[3];
   const imgState = useSelector((state) => state.upload.images);
   const collectionState = useSelector((state) => state.collection.collections);
-  const productStat = useSelector((state) => state.product)
+  const productStat = useSelector((state) => state?.product)
 
   const {
     isSuccess,
