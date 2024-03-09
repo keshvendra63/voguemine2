@@ -31,7 +31,7 @@ function App() {
   
   return (
     <DndProvider backend={HTML5Backend}>
-    <Router>
+    <Router basename="/">
       <Routes>
         <Route path="/" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/reset-password" element={<Resetpassword />} />
