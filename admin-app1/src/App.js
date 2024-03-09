@@ -30,8 +30,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 function App() {
   
   return (
-    <DndProvider backend={HTML5Backend}>
-    <Router basename="/">
+    <DndProvider backend={HTML5Backend} basename="/">
+    <Router >
       <Routes>
         <Route path="/" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/reset-password" element={<Resetpassword />} />
