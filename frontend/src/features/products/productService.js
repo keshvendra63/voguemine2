@@ -3,10 +3,25 @@ import {base_url, config} from '../../utils/axiosConfig'
 
 const getProducts=async(data)=>{
     
-     const response= await axios.get(`${base_url}product?collectionName=${data.collectionName}&page=${data.page}&limit=${data.limit}`)
-    
-    if(response.data){
-        return response.data
+    let url = `${base_url}product?page=${data.page}&limit=${data.limit}`;
+
+    // Check if collectionName is provided
+    if (data && data.collectionName) {
+        url += `&collectionName=${data.collectionName}`;
+    }
+
+    // Add pagination parameters
+
+    try {
+        const response = await axios.get(url);
+        
+        if (response.data) {
+            return response.data;
+        }
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        // Handle error appropriately
+        throw error;
     }
 }
 const addToWishList=async(prodId)=>{

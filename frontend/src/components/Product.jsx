@@ -46,6 +46,7 @@ const Product = (props) => {
         navigate("/home")
       }
       
+      
       else{
         dispatch(addToCart({productId:props.id,color,quantity,price:props.price,size}))
       }

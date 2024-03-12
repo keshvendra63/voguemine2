@@ -26,7 +26,7 @@ body {
   flex: 0 0 250px !important;
   max-width: 250px !important;
   min-width: 0px !important;
-  width: 250px !important;
+  width: 150px !important;
 }
 .ant-menu-item{
   padding: 0;

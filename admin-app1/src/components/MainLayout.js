@@ -41,15 +41,23 @@ const MainLayout = () => {
   const productState = useSelector((state) => state?.product?.products);
 console.log(productState);
   const user = JSON.parse(localStorage.getItem('user'));
-  useEffect(()=>{
-    let data=[]
+  const [imageIndex, setImageIndex] = useState(0);
+
+  const handleImageError = () => {
+    // Increment the image index to load the next image URL
+    setImageIndex(prevIndex => prevIndex + 1);
+  }; 
+  useEffect(() => {
+    let data = [];
     for (let index = 0; index < productState?.length; index++) {
       const element = productState[index];
-      data.push({id:index,prod:element?._id,name:element?.sku})
-      
+      // Extracting all relevant product details for search
+      const imageUrl = element?.images[imageIndex]?.url;
+      const details = `${element.sku} ${element.title} ${element.description}`;
+      data.push({ id: index, prod: element?._id, details,imageUrl }); // Include all relevant details
     }
-    setProductOpt(data)
-  },[productState])
+    setProductOpt(data);
+  }, [productState]);
 
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
@@ -192,10 +200,16 @@ console.log(productState);
         }}
         minLength={2}
         options={productOpt}
-        labelKey={"name"}
+        labelKey={"details"}
         paginate={paginate}
         placeholder="Search here"
-        style={{width:'200px',height:'30px',marginTop:'10px'}}
+        style={{width:'500px',height:'30px',marginTop:'10px'}}
+        renderMenuItemChildren={(option) => (
+          <div>
+            <img src={option.imageUrl} alt="" style={{ width: '50px', height: '50px', marginRight: '10px' }} onError={handleImageError}/>
+            <span>{option.details}</span>
+          </div>
+        )}
       />
           <div className="d-flex gap-4 align-items-center">
             <div className="position-relative">

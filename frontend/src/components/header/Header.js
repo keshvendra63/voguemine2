@@ -49,6 +49,8 @@ const Header = () => {
   const [state, setState] = useState("");
   const [search,setSearch] =useState("none")
 
+const dispatch=useDispatch()
+
   const openSearch=()=>{
     setSearch("flex")
     setScrolled(true);
@@ -58,9 +60,26 @@ const Header = () => {
     setScrolled(false);
 
   }
-  useEffect(()=>{
-    changePlaceholder()
-  })
+  useEffect(() => {
+    const limit = 5000;
+    const page = 1;
+    const collectionName = ""; // Update this if needed
+
+    const fetchData = async () => {
+      try {
+        if (collectionName) {
+          await dispatch(getAllProducts({ limit, page, collectionName }));
+        } else {
+          await dispatch(getAllProducts({ limit, page }));
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch])
+  console.log(productState)
 const navigate=useNavigate()
   const changePlaceholder = async () => {
     for (let i = 0; ; i = (i + 1) % placeholderText.length) {
@@ -68,13 +87,20 @@ const navigate=useNavigate()
       setState(placeholderText[i]);
     }  
   };
+  const [imageIndex, setImageIndex] = useState(0);
+
+  const handleImageError = () => {
+    // Increment the image index to load the next image URL
+    setImageIndex(prevIndex => prevIndex + 1);
+  }; 
   useEffect(() => {
     let data = [];
     for (let index = 0; index < productState?.length; index++) {
       const element = productState[index];
       // Extracting all relevant product details for search
-      const details = `${element.sku} ${element.description} ${element.title}`;
-      data.push({ id: index, prod: element?._id, details }); // Include all relevant details
+      const imageUrl = element?.images[imageIndex]?.url;
+      const details = `${element.sku} ${element.title} ${element.description}`;
+      data.push({ id: index, prod: element?._id, details,imageUrl }); // Include all relevant details
     }
     setProductOpt(data);
   }, [productState]);
@@ -110,7 +136,6 @@ const loginOpen=()=>{
   }
   
 }
-const dispatch=useDispatch()
 const formik=useFormik({
   initialValues:{
     firstname:"",
@@ -203,7 +228,7 @@ const formik2=useFormik({
         }}
         minLength={2}
         options={productOpt}
-        labelKey={"name"}
+        labelKey={"details"}
         paginate={paginate}
         placeholder={state}
       /><SearchIcon /></li>
@@ -273,9 +298,15 @@ const formik2=useFormik({
         }}
         minLength={2}
         options={productOpt}
-        labelKey={"sku"}
+        labelKey={"details"}
         paginate={paginate}
         placeholder="Search here"
+        renderMenuItemChildren={(option) => (
+          <div>
+            <img src={option.imageUrl} alt="" style={{ width: '50px', height: '50px', marginRight: '10px' }} onError={handleImageError}/>
+            <span>{option.details}</span>
+          </div>
+        )}
       />
           <li onClick={closeSearch}><ClearOutlinedIcon style={{cursor:'pointer'}}  /></li>
         </div>
