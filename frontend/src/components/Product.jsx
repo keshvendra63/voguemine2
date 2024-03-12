@@ -31,6 +31,7 @@ const Product = (props) => {
         
       }
     })
+
     const addTocart=()=>{
       if(color===null){
         toast.error("Please Select Color")
@@ -42,6 +43,7 @@ const Product = (props) => {
       }
       if(customer==null){
         toast.error("Please Login First to Add to Cart")
+        navigate("/home")
       }
       
       else{
@@ -83,16 +85,21 @@ const Product = (props) => {
     
     
 }
+const [imageIndex, setImageIndex] = useState(0);
+
+  const handleImageError = () => {
+    // Increment the image index to load the next image URL
+    setImageIndex(prevIndex => prevIndex + 1);
+  };
 
   return (
     <div className="product-card" key={props.keys}>
  <Link to={`/product/${props.id}`}>
                 <div className="product-img">
-                  <img src={props?.img[1]?.url} alt="" className="product-img1"/>
-                  {
-          props?.img[2]?.url!==""?<img src={props?.img[2]?.url} alt="" className="product-img2"/>:<img src=
-          "" alt="" className="product-img2"/>
-        }
+                  <img src={props?.img[imageIndex]?.url} alt="" className="product-img1" onError={handleImageError}/>
+                  
+          <img src={props?.img[imageIndex+1]?.url} alt="" className="product-img2" onError={handleImageError}/>
+        
                 </div>
                 </Link>
                 <p className="wish-icon" onClick={(e)=>{addToWish(props.id)}}><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
@@ -124,7 +131,7 @@ const Product = (props) => {
       <ul>
       {
   props.variants.filter((item, index, arr) => arr.findIndex(i => i.size === item.size) === index)
-                .map((item, index) => <li onClick={() => setSize(item.size)} key={index} style={{border:item.size===size?'1px solid black':'transparent'}}>{item.size}</li>)
+                .map((item, index) => <li onClick={() => setSize(item.size)} key={index} style={{border:item.size===size?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.size}</li>)
 }
       </ul>
     </div>
@@ -133,15 +140,17 @@ const Product = (props) => {
       <ul>
       {
   props.variants.filter((item, index, arr) => arr.findIndex(i => i.color === item.color) === index)
-                .map((item, index) => <li onClick={() =>( setColor(item.color))} key={index} style={{color:item.color===color?'black':'white'}}>{item.color}</li>)
+                .map((item, index) => <li onClick={() =>( setColor(item.color))} key={index} style={{border:item.color===color?'2px solid black':'1px solid grey',color:item.color===color?'black':'rgb(122, 122, 122)'}}>{item.color}</li>)
 }
       
       </ul>
     </div>
+    <div className="btns">
     <button onClick={buyNow} style={{width:'100%'}}>BUY NOW</button>
-    <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(props.id)}} style={{width:'100%',marginTop:'10px'}}>{
+    <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(props.id)}} style={{width:'100%'}}>{
                   alreadyAdded?"GO TO CART":"ADD TO CART"
                 }</button>
+    </div>
                 </div>
               </div>
   )

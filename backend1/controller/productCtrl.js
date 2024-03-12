@@ -53,45 +53,53 @@ const getaProduct = asyncHandler(async (req, res) => {
 
 const getAllProduct = asyncHandler(async (req, res) => {
   try {
+    let query ={ };
+
+    // Check if a collection name is provided
+    if (req.params.collectionName) {
+      query = { collectionName: req.params.collectionName};
+    }
+
     // Filtering
     const queryObj = { ...req.query };
     const excludeFields = ["page", "sort", "limit", "fields"];
     excludeFields.forEach((el) => delete queryObj[el]);
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    
-    let query = Product.find(JSON.parse(queryStr));
+    const filter = JSON.parse(queryStr);
+
+    query = { ...query, ...filter };
+
+    // Querying products based on collection name and filters
+    let productQuery = Product.find(query);
 
     // Sorting
-
     if (req.query.sort) {
       const sortBy = req.query.sort.split(",").join(" ");
-      query = query.sort(sortBy);
+      productQuery = productQuery.sort(sortBy);
     } else {
-      query = query.sort("-createdAt");
+      productQuery = productQuery.sort("-createdAt");
     }
 
-    // limiting the fields
-
+    // Limiting the fields
     if (req.query.fields) {
       const fields = req.query.fields.split(",").join(" ");
-      query = query.select(fields);
+      productQuery = productQuery.select(fields);
     } else {
-      query = query.select("-__v");
+      productQuery = productQuery.select("-__v");
     }
 
-    // pagination
-
-    const page = parseInt(req.query.page);
-    const limit =parseInt(req.query.limit);
+    // Pagination
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 21;
     const skip = (page - 1) * limit;
-    query = query.skip(skip).limit(limit);
-    if (req.query.page) {
-      const productCount = await Product.countDocuments();
-      if (skip >= productCount) throw new Error("This Page does not exists");
-    }
-    const product = await query;
-    res.json(product);
+    productQuery = productQuery.skip(skip).limit(limit);
+
+    // Executing the query
+    const products = await productQuery;
+    
+    // Sending response
+    res.json(products);
   } catch (error) {
     throw new Error(error);
   }

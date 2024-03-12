@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import {
   AiOutlineDashboard,
@@ -6,6 +6,7 @@ import {
   AiOutlineUser,
   AiOutlineBgColors,
 } from "react-icons/ai";
+import { useDispatch, useSelector } from 'react-redux'
 import { RiCouponLine } from "react-icons/ri";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,15 +20,37 @@ import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Header } from "antd/es/layout/layout";
+import {getAProduct, getProducts} from '../features/product/productSlice'
+import { Typeahead } from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 const {Sider, Content } = Layout;
 const MainLayout = () => {
+  const [paginate, setPaginate] = useState(true);
+  const [productOpt,setProductOpt]=useState([])
   const [collapsed, setCollapsed] = useState(false);
+  const [productId, setproductId] = useState("");
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getProducts());
+  }, []);
+  const productState = useSelector((state) => state?.product?.products);
+console.log(productState);
   const user = JSON.parse(localStorage.getItem('user'));
+  useEffect(()=>{
+    let data=[]
+    for (let index = 0; index < productState?.length; index++) {
+      const element = productState[index];
+      data.push({id:index,prod:element?._id,name:element?.sku})
+      
+    }
+    setProductOpt(data)
+  },[productState])
+
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
       <Sider
@@ -160,6 +183,20 @@ const MainLayout = () => {
               onClick: () => setCollapsed(!collapsed),
             }
           )}
+          <Typeahead
+        id="pagination-example"
+        onPaginate={() => console.log('Results paginated')}
+        onChange={(selected)=>{
+          navigate(`/admin/product/${selected[0]?.prod}`)
+          dispatch(getAProduct(selected[0]?.prod))
+        }}
+        minLength={2}
+        options={productOpt}
+        labelKey={"name"}
+        paginate={paginate}
+        placeholder="Search here"
+        style={{width:'200px',height:'30px',marginTop:'10px'}}
+      />
           <div className="d-flex gap-4 align-items-center">
             <div className="position-relative">
               <IoIosNotifications className="fs-4" />
@@ -173,7 +210,7 @@ const MainLayout = () => {
                 <img
                   width={32}
                   height={32}
-                  src="https://stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/images/customers/customer-4-64x64.jpg"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-EPpUybuj7WPyKO73vZKCbNBNuU6B8pyX4A&usqp=CAU"
                   alt=""
                 />
               </div>

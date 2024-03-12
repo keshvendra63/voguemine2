@@ -13,6 +13,8 @@ import Product from '../../components/Product'
 
 import {toast} from 'react-toastify'
 const SingleProduct = () => {
+  const limit=3
+  const page=1
   const [color,setColor]=useState(null)
   const [size,setSize]=useState(null)
   const [quantity,setQuantity]=useState(1)
@@ -23,6 +25,7 @@ const SingleProduct = () => {
   const cartState=useSelector((state)=>state?.auth?.cartProducts)
   const location =useLocation()
   const getProductId=location.pathname.split("/")[2];
+  const collectionName=singleProductState?.collectionName
   const dispatch=useDispatch();
   useEffect(()=>{
       getProduct()
@@ -34,14 +37,13 @@ const SingleProduct = () => {
   const productState=useSelector((state)=>state?.product?.product)
   useEffect(()=>{
       getProducts()
-  },[])
+  },[limit,page,collectionName])
   const getProducts=()=>{
-      dispatch(getAllProducts())
+      dispatch(getAllProducts({limit,page,collectionName}))
   }
   const products=productState? productState:[]
    const customer=JSON.parse(localStorage.getItem("customer"))
 
-  const shirts = products.filter(object => object.sku && object.sku.includes('VMSI' || "vms-" || 'vms -')).slice(0,4) 
   useEffect(()=>{
     for (let index = 0; index < cartState?.length; index++) {
       if(getProductId===cartState[index]?.productId?._id){
@@ -102,14 +104,18 @@ const buyNow=()=>{
 const changeMainImage=(img)=>{
   setMainImage(img?.url)
 }
-console.log(singleProductState?.images)
-  return (
+const [imageIndex, setImageIndex] = useState(0);
+
+  const handleImageError = () => {
+    // Increment the image index to load the next image URL
+    setImageIndex(prevIndex => prevIndex + 1);
+  };  return (
     <div className='single-product'>
       <div className="product">
         <div className="prdt-left">
 
             <div className="main">
-            <img src={mainImage===""?singleProductState?.images[1]?.url : mainImage} alt="" />
+            <img src={mainImage==""?singleProductState?.images[imageIndex]?.url : mainImage} alt="" onError={handleImageError}/>
             </div>
             <div className="thumbs">
                 {
@@ -129,7 +135,7 @@ console.log(singleProductState?.images)
                 <ul>
                 {
   singleProductState?.variants?.filter((item, index, arr) => arr.findIndex(i => i.size === item.size) === index)
-                .map((item, index) => <li onClick={() => setSize(item.size)} key={index} style={{color:item.size===size?'red':'black'}}>{item.size}</li>)
+                .map((item, index) => <li onClick={() => setSize(item.size)} key={index} style={{border:item.size===size?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.size}</li>)
 }
                 </ul>
             </div>
@@ -147,7 +153,7 @@ console.log(singleProductState?.images)
                   } */}
                                            {
   singleProductState?.variants?.filter((item, index, arr) => arr.findIndex(i => i.color === item.color) === index)
-                .map((item, index) => <li onClick={() => setColor(item.color)} key={index} style={{color:item.color===color?'red':'black'}}>{item.color}</li>)
+                .map((item, index) => <li onClick={() => setColor(item.color)} key={index} style={{border:item.color===color?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.color}</li>)
 }
 
                     
@@ -185,7 +191,7 @@ console.log(singleProductState?.images)
         <div className="product-list">
             {
                 
-                shirts.map((arm,index)=>{
+                products.map((arm,index)=>{
 
                         return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
                    

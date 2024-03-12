@@ -109,57 +109,74 @@ useEffect(()=>{
 },[])
 
 const checkOutHandler=async()=>{
- const res=await loadScript("https://checkout.razorpay.com/v1/checkout.js")
- if(!res){
-    alert("Razorpay SDK failed to load")
-    return
- }
- const result=await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/checkout",{amount:finalAmount},config)
- if(!result){
-    alert("Something went wrong")
-    return
- }
-
- const {amount,id:order_id,currency}=result.data.order
- const options = {
-    key: "rzp_test_DeWbJCwx392j0T", // Enter the Key ID generated from the Dashboard
-    amount: amount,
-    currency: currency,
-    name: "Voguemine",
-    description: "Voguemine Payment",
-    image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKfisT9A6XILZ3k7Gdg8hsJ1Xds88qRlXTbhc8AtBsng&s",
-    order_id: order_id,
-    handler: async function (response) {
+    if (orderType === "COD") {
+        // If order type is COD, proceed with placing the order without opening Razorpay
         const data = {
-            orderCreationId: order_id,
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpayOrderId: response.razorpay_order_id,
-
+            orderCreationId: "COD", // Set a placeholder value for order creation ID for COD orders
+            razorpayPaymentId: "COD", // Set a placeholder value for Razorpay payment ID for COD orders
+            razorpayOrderId: "COD", // Set a placeholder value for Razorpay order ID for COD orders
         };
 
-        const result = await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/paymentVerification", data,config);
-    dispatch(createAnOrder({totalPrice:totalAmount,finalAmount:finalAmount,shippingCost:shippingCost,orderType:orderType,discount:discount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address"))}))
-    dispatch(deleteCart())
-    localStorage.removeItem("address")
-    dispatch(resetState())
+        // Simulating a successful payment verification for COD orders
+        dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: discount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")) }))
+        dispatch(deleteCart())
+        localStorage.removeItem("address")
+        dispatch(resetState())
+    }
+    else{
+        const res=await loadScript("https://checkout.razorpay.com/v1/checkout.js")
+        if(!res){
+           alert("Razorpay SDK failed to load")
+           return
+        }
+        const result=await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/checkout",{amount:finalAmount},config)
+        if(!result){
+           alert("Something went wrong")
+           return
+        }
+       
+        const {amount,id:order_id,currency}=result.data.order
+        const options = {
+           key: "rzp_test_DeWbJCwx392j0T", // Enter the Key ID generated from the Dashboard
+           amount: amount,
+           currency: currency,
+           name: "Voguemine",
+           description: "Voguemine Payment",
+           image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKfisT9A6XILZ3k7Gdg8hsJ1Xds88qRlXTbhc8AtBsng&s",
+           order_id: order_id,
+           handler: async function (response) {
+               const data = {
+                   orderCreationId: order_id,
+                   razorpayPaymentId: response.razorpay_payment_id,
+                   razorpayOrderId: response.razorpay_order_id,
+       
+               };
+       
+               const result = await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/paymentVerification", data,config);
+           dispatch(createAnOrder({totalPrice:totalAmount,finalAmount:finalAmount,shippingCost:shippingCost,orderType:orderType,discount:discount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address"))}))
+           dispatch(deleteCart())
+           localStorage.removeItem("address")
+           dispatch(resetState())
+       
+           },
+           prefill: {
+               name: "Voguemine",
+               email: "info@voguemine.com",
+               contact: "6306492433",
+           },
+           notes: {
+               address: "Voguemine Premium Quality Clothes",
+           },
+           theme: {
+               color: "#61dafb",
+           },
+       };
+       
+       const paymentObject = new window.Razorpay(options);
+       paymentObject.open();
+       }
+    }
 
-    },
-    prefill: {
-        name: "Voguemine",
-        email: "info@voguemine.com",
-        contact: "6306492433",
-    },
-    notes: {
-        address: "Voguemine Premium Quality Clothes",
-    },
-    theme: {
-        color: "#61dafb",
-    },
-};
-
-const paymentObject = new window.Razorpay(options);
-paymentObject.open();
-}
 console.log(cartState)
     return (
         <div className='margin-section checkout'>

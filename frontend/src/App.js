@@ -26,14 +26,6 @@ import Testing from './pages/Testing';
 
 function App() {
 
-  const productState=useSelector((state)=>state?.product?.product)
-  const dispatch=useDispatch();
-  useEffect(()=>{
-      getProducts()
-  },[])
-  const getProducts=()=>{
-      dispatch(getAllProducts())
-  }
   return (
     <>
     <Router basename='/'>
@@ -62,7 +54,34 @@ function App() {
         <Route path="/collections/mens-pullover-jackets" element={<Products/>}/>
         <Route path="/collections/mens-pullover" element={<Products/>}/>
         <Route path="/collections/mens-trackset" element={<Products/>}/>
-
+        <Route path="/collections/womens-shirt-t-shirts" element={<Products/>}/>
+        <Route path="/collections/womens-dress" element={<Products/>}/>
+        <Route path="/collections/womens-co-ord-set" element={<Products/>}/>
+        <Route path="/collections/flat-sandals" element={<Products/>}/>
+        <Route path="/collections/heeled-sandals" element={<Products/>}/>
+        <Route path="/collections/womens-legging" element={<Products/>}/>
+        <Route path="/collections/womens-sweatshirt" element={<Products/>}/>
+        <Route path="/collections/womens-hoodie" element={<Products/>}/>
+        <Route path="/collections/womens-pullovers" element={<Products/>}/>
+        <Route path="/collections/womens-pullover-jackets" element={<Products/>}/>
+        <Route path="/collections/womens-winter-coats" element={<Products/>}/>
+        <Route path="/collections/womens-track-sets" element={<Products/>}/>
+        <Route path="/collections/kids-tracksuit" element={<Products/>}/>
+        <Route path="/collections/kids-boy-jacket" element={<Products/>}/>
+        <Route path="/collections/kids-girl-jacket" element={<Products/>}/>
+        <Route path="/collections/kids-hoodie" element={<Products/>}/>
+        <Route path="/collections/kids-co-ord-set" element={<Products/>}/>
+        <Route path="/collections/kids-shirt" element={<Products/>}/>
+        <Route path="/collections/kid-girls-dress" element={<Products/>}/>
+        <Route path="/collections/kids-t-shirts" element={<Products/>}/>
+        <Route path="/collections/belts" element={<Products/>}/>
+        <Route path="/collections/towels" element={<Products/>}/>
+        <Route path="/collections/under-garment" element={<Products/>}/>
+        <Route path="/collections/no-show" element={<Products/>}/>
+        <Route path="/collections/low-ankle" element={<Products/>}/>
+        <Route path="/collections/low-cut" element={<Products/>}/>
+        <Route path="/collections/anklet" element={<Products/>}/>
+        <Route path="/collections/crew" element={<Products/>}/>
         <Route path="/product/:id" element={<SingleProduct/>}/>
         <Route path="/wishlist" element={<Wishlist/>}/>
         <Route path='/blogs' element={<Blogs/>}/>

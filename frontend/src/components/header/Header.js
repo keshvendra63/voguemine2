@@ -18,7 +18,7 @@ import logo from '../../images/logo.png'
 import {Link,useNavigate} from 'react-router-dom'
 import './header.css'
 import { registerUser,loginUser,forgotPasswordToken, getUserCartProduct } from '../../features/user/userSlice';
-import {getAProduct} from '../../features/products/productSlice'
+import {getAProduct, getAllProducts} from '../../features/products/productSlice'
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 const delayExecution = (mls) => {
@@ -48,6 +48,7 @@ const Header = () => {
   const placeholderText = ["Search Shirts", "Search Loafers", "Search Dresses"];
   const [state, setState] = useState("");
   const [search,setSearch] =useState("none")
+
   const openSearch=()=>{
     setSearch("flex")
     setScrolled(true);
@@ -57,6 +58,9 @@ const Header = () => {
     setScrolled(false);
 
   }
+  useEffect(()=>{
+    changePlaceholder()
+  })
 const navigate=useNavigate()
   const changePlaceholder = async () => {
     for (let i = 0; ; i = (i + 1) % placeholderText.length) {
@@ -64,22 +68,16 @@ const navigate=useNavigate()
       setState(placeholderText[i]);
     }  
   };
-
   useEffect(() => {
-    changePlaceholder();
-  },[]);
-useEffect(()=>{
-  dispatch(getUserCartProduct())
-},[])
-  useEffect(()=>{
-    let data=[]
+    let data = [];
     for (let index = 0; index < productState?.length; index++) {
       const element = productState[index];
-      data.push({id:index,prod:element?._id,name:element?.description || element?.sku || element?.title })
-      
+      // Extracting all relevant product details for search
+      const details = `${element.sku} ${element.description} ${element.title}`;
+      data.push({ id: index, prod: element?._id, details }); // Include all relevant details
     }
-    setProductOpt(data)
-  },[productState])
+    setProductOpt(data);
+  }, [productState]);
 
   const [loginForm, setLoginForm] =useState("register")
   const loginClick=()=>{
@@ -207,7 +205,7 @@ const formik2=useFormik({
         options={productOpt}
         labelKey={"name"}
         paginate={paginate}
-        placeholder="Search here"
+        placeholder={state}
       /><SearchIcon /></li>
             <li><Link to="/wishlist"><FavoriteBorderIcon/></Link></li>
             <li><Link to="/cart"><LocalMallIcon/></Link></li>

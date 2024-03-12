@@ -20,22 +20,34 @@ import {getAllProducts } from '../../features/products/productSlice';
 import Product from '../../components/Product'
 
 const HomeMain = () => {
+  const collections = ["Men's Premium Shirts", "Men's Premium T Shirts", "Men's Denim Jeans"];
+  const [data,setData]=useState([])
+  const page = 1;
+  const limit = 6;
+  const productState = useSelector((state) => state?.product?.product);
+  const dispatch = useDispatch();
 
-  const productState=useSelector((state)=>state?.product?.product)
-  const dispatch=useDispatch();
-  useEffect(()=>{
-      getProducts()
-  },[])
-  const getProducts=()=>{
-      dispatch(getAllProducts())
-  }
-  const products=productState? productState:[]
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const promises = collections.map((collectionName) =>dispatch(getAllProducts({ limit, collectionName, page })));
+      
+      const dat=await Promise.all(promises)
+      const combinedPayArray = dat.reduce((accumulator, currentObject) => {
+        return [...accumulator, ...currentObject.payload];
+    }, []);
     
-  const shirts = products.filter(object => object.sku && object.sku.includes('VMSI' || "vms-" || 'vms -')).slice(0,6) 
-  const tshirt = products.filter(object => object.sku && object.sku.includes('VMTS' || "vmtsi" || 'vmtsi -')).slice(0,6)
-  const jeans = products.filter(object => object.sku && object.sku.includes('VMJ' || "VMJI")).slice(0,6)
-console.log(shirts,tshirt,jeans)
-  const breakpoints = [
+    setData(combinedPayArray)
+
+    };
+  
+    fetchProducts();
+  }, [limit, page]);
+  const products = productState ? productState : [];
+
+  const shirts = data.filter(object => object.collectionName && object.collectionName==="Men's Premium Shirts").slice(0, 6);
+  const tshirt = data.filter(object => object.collectionName && object.collectionName === "Men's Premium T Shirts").slice(0, 6);
+  const jeans = data.filter(object => object.collectionName && object.collectionName === "Men's Denim Jeans").slice(0, 6);
+   const breakpoints = [
     { width: 1, itemsToShow: 1.1 },
     { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
     { width: 850, itemsToShow: 3 },
@@ -88,6 +100,7 @@ console.log(shirts,tshirt,jeans)
         
        
       </div>
+      
       <div className="margin-section">
       <div className="shoes-section">
         <div className="shoe-left">
@@ -109,8 +122,8 @@ console.log(shirts,tshirt,jeans)
         </div>
         <div className="shoe-right">
           <p className='section-heading'>Introducing our premium men's footwear collection</p>
-          <p>- style and comfort with our exceptional range of men's footwear that will keep you walking in confidence.</p>
-          <Link to="//collections/loafers-for-men" className='btn'>BUY NOW</Link>
+          <p>style and comfort with our exceptional range of men's footwear that will keep you walking in confidence.</p>
+          <Link to="/collections/loafers-for-men" className='btn'>BUY NOW</Link>
         </div>
       </div>
       <div className="products-listing">
@@ -119,10 +132,9 @@ console.log(shirts,tshirt,jeans)
 
         <div className="product-list">
             {
-                
                 shirts.map((arm,index)=>{
 
-                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                        return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
                    
                     
                 })
@@ -148,7 +160,7 @@ console.log(shirts,tshirt,jeans)
       <div className="shoes-section">
         
         <div className="shoe-right">
-          <p className='section-heading'>Ladies Premium Sandals and Heels</p>
+          <p >Ladies Premium Sandals and Heels</p>
           <p>Style like a Queen with our gorgeous selection of Premium Sandals and Heels for Women.</p>
           <Link to="#" className='btn'>BUY NOW</Link>
         </div>
@@ -179,7 +191,7 @@ console.log(shirts,tshirt,jeans)
                 
                 tshirt.map((arm,index)=>{
 
-                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                        return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
                    
                     
                 })
@@ -221,7 +233,7 @@ console.log(shirts,tshirt,jeans)
 
         </div>
         <div className="shoe-right">
-          <h1>Luxury Accessories for Everlasting Grace</h1>
+          <p>Luxury Accessories for Everlasting Grace</p>
           <p>Experience everlasting grace through our collection of luxurious accessories, adding a touch of timeless elegance to your style.</p>
           <a className='btn'>BUY NOW</a>
         </div>
@@ -235,7 +247,7 @@ console.log(shirts,tshirt,jeans)
                 
                 jeans.map((arm,index)=>{
 
-                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                        return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
                    
                     
                 })
@@ -246,41 +258,7 @@ console.log(shirts,tshirt,jeans)
       </div>
 
 
-<div className="collection-listing">
-  <p>Featured Collection</p>
-  <div className="collection-list">
-    <div className="collection-card">
-    <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="collection-img"/>
-    <div className="collection-content">  <p className="collection-title">Men's Premium Shirts</p>
-    <Link to="#"><button>VIEW COLLECTION</button></Link></div>
-    </div>
-    <div className="collection-card">
-    <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="collection-img"/>
-    <div className="collection-content">  <p className="collection-title">Men's Premium Shirts</p>
-    <Link to="#"><button>VIEW COLLECTION</button></Link></div>
-    </div>
-    <div className="collection-card">
-    <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="collection-img"/>
-    <div className="collection-content">  <p className="collection-title">Men's Premium Shirts</p>
-    <Link to="#"><button>VIEW COLLECTION</button></Link></div>
-    </div>
-    <div className="collection-card">
-    <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="collection-img"/>
-    <div className="collection-content">  <p className="collection-title">Men's Premium Shirts</p>
-    <Link to="#"><button>VIEW COLLECTION</button></Link></div>
-    </div>
-    <div className="collection-card">
-    <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="collection-img"/>
-    <div className="collection-content">  <p className="collection-title">Men's Premium Shirts</p>
-    <Link to="#"><button>VIEW COLLECTION</button></Link></div>
-    </div>
-    <div className="collection-card">
-    <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1708365741/giorgio-armani-seaweed-green-premium-quality-shirt-448_oxomzr.png" alt="" className="collection-img"/>
-  <div className="collection-content">  <p className="collection-title">Men's Premium Shirts</p>
-    <Link to="#"><button>VIEW COLLECTION</button></Link></div>
-    </div>
-  </div>
-</div>
+
 
       </div>
 

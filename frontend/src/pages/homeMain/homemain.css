@@ -67,17 +67,26 @@
     padding: 0 50px;
 }
 
-.shoes-section .shoe-right h1 {
-    font-size: 30px;
+.shoes-section .shoe-right p:nth-child(1) {
+    font-size: 35px;
     margin-bottom: 20px;
+    font-family: var(--heading-font);
+    letter-spacing: 0px;
+    line-height: 1.2;
+    text-align: center;
 }
 
-.shoes-section .shoe-right p {
+.shoes-section .shoe-right p:nth-child(2) {
+
+    letter-spacing: 1px;
     margin-bottom: 20px;
     font-family: var(--paragraph-font);
+    font-size: 18px;
+    text-align: center;
 }
 
 .shoes-section .shoe-right a {
+    text-align: left;
     padding: 10px 30px;
     background-color: none;
     border: 3px solid black;

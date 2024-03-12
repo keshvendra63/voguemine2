@@ -5,88 +5,209 @@ import {useLocation} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {getAllProducts } from '../../features/products/productSlice';
 import Product from '../../components/Product'
+import { PoweroffOutlined } from '@ant-design/icons';
+import { Button, Flex } from 'antd';
 const Products = () => {
+    const [collectionName,setCollectionName]=useState("")
+    const [spinner,setSpinner]=useState("none")
+    const [btn,setBtn]=useState("block")
   const [sort,setSort]=useState(null)
     const location=useLocation()
-  const [limit,setLimit]=useState(100)
+  const [limit,setLimit]=useState(21)
   const [page,setPage]=useState(1)
-  const loadMore=()=>{
-    setPage(page+1)
-  }
+
+useEffect(()=>{
+    if(location.pathname==="/collections/men-premium-shirt"){
+        setCollectionName("Men's Premium Shirts")
+      }
+      if(location.pathname==="/collections/t-shirts"){
+        setCollectionName("Men's Premium T Shirts")
+      }
+      if(location.pathname==="/collections/mens-sweatshirts"){
+        setCollectionName("Men's Sweatshirts")
+      }
+      if(location.pathname==="/collections/loafers-for-men"){
+        setCollectionName("Men's Loafers")
+      }
+      if(location.pathname==="/collections/floaters-slippers"){
+        setCollectionName("Men's Premium Slippers")
+      }
+      if(location.pathname==="/collections/mens-sneakers"){
+        setCollectionName("Men's Sneakers")
+      }
+      if(location.pathname==="/collections/mens-denim-jeans"){
+        setCollectionName("Men's Denim Jeans")
+      }
+      if(location.pathname==="/collections/mens-hoodies"){
+        setCollectionName("Men's Hoodies")
+      }
+      if(location.pathname==="/collections/mens-trackpants"){
+        setCollectionName("Men's Trackpants")
+      }
+      if(location.pathname==="/collections/combos"){
+        setCollectionName("men,s combos")
+      }
+      if(location.pathname==="/collections/mens-pullover-jackets"){
+        setCollectionName("Men's Jackets")
+      }
+      if(location.pathname==="/collections/mens-pullover"){
+        setCollectionName("Men's Pullover")
+      }
+      if(location.pathname==="/collections/mens-trackset"){
+        setCollectionName("Men's Track Set")
+      }
+      if(location.pathname==="/collections/womens-shirt-t-shirts"){
+        setCollectionName("Women's T-Shirt")
+    }
+    
+    if(location.pathname==="/collections/womens-dress"){
+    setCollectionName("Women's Dresses")
+    }
+    
+    if(location.pathname==="/collections/womens-co-ord-set"){
+    setCollectionName("Women's Co-ord set")
+    }
+    
+    if(location.pathname==="/collections/flat-sandals"){
+    setCollectionName("Flat Sandals")
+    }
+    
+    if(location.pathname==="/collections/heeled-sandals"){
+    setCollectionName("Heeled Sandals")
+    }
+    
+    if(location.pathname==="/collections/womens-legging"){
+    setCollectionName("Women's Lower & Legging")
+    }
+    
+    if(location.pathname==="/collections/womens-sweatshirt"){
+    setCollectionName("Women's Sweatshirts")
+    }
+    
+    if(location.pathname==="/collections/womens-hoodie"){
+    setCollectionName("Women's Pullovers")
+    }
+    
+    if(location.pathname==="/collections/womens-pullovers"){
+    setCollectionName("Women's Pullovers")
+    }
+    
+    if(location.pathname==="/collections/womens-pullover-jackets"){
+    setCollectionName("Womens'Jackets")
+    }
+    
+    if(location.pathname==="/collections/womens-winter-coats"){
+    setCollectionName("Women's Winter Coats")
+    }
+    
+    if(location.pathname==="/collections/womens-track-sets"){
+    setCollectionName("Women's Track Sets")
+    }
+    
+    if(location.pathname==="/collections/kids-tracksuit"){
+    setCollectionName("Kids Tracksuit")
+    }
+    
+    if(location.pathname==="/collections/kids-boy-jacket"){
+    setCollectionName("Kid's Jackets")
+    }
+    
+    if(location.pathname==="/collections/kids-girl-jacket"){
+    setCollectionName("Kid's Girl co-ord Set")
+    }
+    
+    if(location.pathname==="/collections/kids-hoodie"){
+    setCollectionName("Kid's Boy's Cord-Set")
+    }
+    
+    if(location.pathname==="/collections/kids-co-ord-set"){
+    setCollectionName("Kid's Girl co-ord Set")
+    }
+    
+    if(location.pathname==="/collections/kids-shirt"){
+    setCollectionName("Kids Shirts")
+    }
+    
+    if(location.pathname==="/collections/kid-girls-dress"){
+    setCollectionName("Kid Girl's Dress")
+    }
+    
+    if(location.pathname==="/collections/kids-t-shirts"){
+    setCollectionName("Kid's T-Shirts")
+    }
+    
+    if(location.pathname==="/collections/belts"){
+    setCollectionName("Men's Belt")
+    }
+    
+    if(location.pathname==="/collections/towels"){
+    setCollectionName("Accessories Towel for Men and Women" || "Towels for Men & Women")
+    }
+    
+    if(location.pathname==="/collections/under-garment"){
+    setCollectionName("Men's Accessories Under Garments" || "Men's Under Garments")
+    }
+    
+    if(location.pathname==="/collections/no-show"){
+    setCollectionName("Anklet Socks")
+    }
+    
+    if(location.pathname==="/collections/low-ankle"){
+    setCollectionName("Anklet Socks")
+    }
+    
+    if(location.pathname==="/collections/low-cut"){
+    setCollectionName("Anklet Socks")
+    }
+    
+    if(location.pathname==="/collections/anklet"){
+    setCollectionName("Anklet Socks")
+    }
+    
+    if(location.pathname==="/collections/crew"){
+    setCollectionName("Men's Trackpants")
+    }
+    
+    
+})
     const productState=useSelector((state)=>state?.product?.product)
     const dispatch=useDispatch();
     useEffect(()=>{
         getProducts()
-    },[sort,limit,page])
+    },[sort,limit,page,collectionName])
     const getProducts=()=>{
-        dispatch(getAllProducts({sort,limit,page}))
+        dispatch(getAllProducts({sort,limit,page,collectionName}))
     }
     const products=productState? productState:[]
       
-    const shirts = products.filter(object => object.collectionName && object.collectionName==="Men's Premium Shirts") 
-    const tshirt = products.filter(object => object.collectionName && object.collectionName==="Men's Premium T Shirts")
-    const jeans = products.filter(object => object.collectionName && object.collectionName==="Men's Denim Jeans")
-    const loafers = products.filter(object => object.collectionName && object.collectionName==="Men's Loafers")
-    const sneaker = products.filter(object => object.collectionName && object.collectionName==="Men's Sneakers")
-    const jackets = products.filter(object => object.collectionName && object.collectionName==="Men's Jackets")
-    const hoodies = products.filter(object => object.collectionName && object.collectionName==="Men's Hoodies")
-    const slippers = products.filter(object => object.collectionName && object.collectionName==="Men's Premium Slippers")
-    const combo = products.filter(object =>object.collectionName && object.collectionName==="men,s combos")
-    const trackset = products.filter(object => object.collectionName && object.collectionName==="Men's Track Set")
-    const trackpants = products.filter(object => object.collectionName && object.collectionName==="Men's Trackpants")
-    const sweatshirt = products.filter(object => object.collectionName && object.collectionName==="Men's Sweatshirts")
-    const pullover = products.filter(object => object.collectionName && object.collectionName==="Men's Pullover")
-    // .slice(0, 100);
 
+    const [loadings, setLoadings] = useState([]);
+    const enterLoading = (index) => {
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings];
+        newLoadings[index] = true;
+        return newLoadings;
+      });
+      setTimeout(() => {
+        setLoadings((prevLoadings) => {
+          const newLoadings = [...prevLoadings];
+          newLoadings[index] = false;
+          return newLoadings;
+        });
+      }, 3000);
+    };
+    const loadMore=()=>{
+    
+      setLimit(limit+21)
+      enterLoading(0)
+    }
     return (
         <div className='Products'>
             <div className="product-banner">
                 <img src={banner} alt="" />
             </div>
             <div className="products-box margin-section">
-                {/* <div className="filter">
-                    <div className="category">
-                        <p>Availability</p>
-                        <ul>
-                            <li><input type="checkbox" name="" id="" />In Stock</li>
-                            <li><input type="checkbox" name="" id="" />Out of Stock</li>
-                        </ul>
-                    </div>
-                    <div className="price">
-                        <p>Price</p>
-                        <ul>
-                            <li>min:<input type="number" /></li>
-                            <li>max:<input type="number" /></li>
-                        </ul>
-
-
-                    </div>
-                    <div className="size">
-                        <p>Size</p>
-                        <ul>
-                            <li><input type="checkbox" name="" id="" />30</li>
-                            <li><input type="checkbox" name="" id="" />32</li>
-                            <li><input type="checkbox" name="" id="" />34</li>
-                            <li><input type="checkbox" name="" id="" />36</li>
-                            <li><input type="checkbox" name="" id="" />38</li>
-                            <li><input type="checkbox" name="" id="" />40</li>
-                            <li><input type="checkbox" name="" id="" />42</li>
-                        </ul>
-                    </div>
-                    <div className="color">
-                        <p>Colour</p>
-                        <ul>
-                            <li><input type="checkbox" name="" id="" />30</li>
-                            <li><input type="checkbox" name="" id="" />32</li>
-                            <li><input type="checkbox" name="" id="" />34</li>
-                            <li><input type="checkbox" name="" id="" />36</li>
-                            <li><input type="checkbox" name="" id="" />38</li>
-                            <li><input type="checkbox" name="" id="" />40</li>
-                            <li><input type="checkbox" name="" id="" />42</li>
-                        </ul>
-                    </div>
-
-                </div> */}
+ 
                 <div className="products-page">
                     <div className="sorting">
                         <div className="filter">
@@ -114,76 +235,10 @@ const Products = () => {
 
 
 
-                location.pathname==="/collections/men-premium-shirt"?
-                shirts.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
-                })
-                :
-                location.pathname==="/collections/t-shirts"?
-                tshirt.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
-                })
-                :
-                   
-                location.pathname==="/collections/mens-denim-jeans"?
-                jeans.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
-                })
-                :
-                location.pathname==="/collections/mens-sweatshirts"?
-                sweatshirt.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
-                })
-                :
-                location.pathname==="/collections/loafers-for-men"?
-                loafers.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
-                })
-                :
-                location.pathname==="/collections/floaters-slippers"?
-                slippers.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
-                })
-                :
-                location.pathname==="/collections/mens-sneakers"?
-                sneaker.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
-                })
-                :
-                location.pathname==="/collections/mens-hoodies"?
-                hoodies.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
-                })
-                :
-                location.pathname==="/collections/mens-trackpants"?
-                trackpants.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
-                })
-                :
-                location.pathname==="/collections/combos"?
-                combo.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
-                })
-                :
-                location.pathname==="/collections/mens-pullover-jackets"?
-                jackets.map((arm,index)=>{
+                products.map((arm,index)=>{
                     return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
                 })
                 
-                :
-                location.pathname==="/collections/mens-pullover"?
-                pullover.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
-                })
-                
-                :
-                location.pathname==="/collections/mens-trackset"?
-                trackset.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
-                })
-                
-                :
-                ""
                     
             
 }
@@ -192,7 +247,9 @@ const Products = () => {
 
       </div>
                     <div className="pages">
-                    <button onClick={loadMore}>Load More</button>
+                    <Button type="primary" loading={loadings[0]} onClick={loadMore}>
+          Load More
+        </Button>
                     </div>
                 </div>
             </div>

@@ -29,6 +29,8 @@ router.put("/:id", authMiddleware, isAdmin, updateProduct);
 router.get("/:id", getaProduct);
 
 router.get("/", getAllProduct);
+router.get("/:collectionName", getAllProduct);
+
 router.delete("/:id", authMiddleware, isAdmin, deleteProduct);
 
 

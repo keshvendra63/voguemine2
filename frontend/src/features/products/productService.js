@@ -2,8 +2,9 @@ import axios from 'axios'
 import {base_url, config} from '../../utils/axiosConfig'
 
 const getProducts=async(data)=>{
-    console.log(data)
-    const response= await axios.get(`${base_url}product`)
+    
+     const response= await axios.get(`${base_url}product?collectionName=${data.collectionName}&page=${data.page}&limit=${data.limit}`)
+    
     if(response.data){
         return response.data
     }

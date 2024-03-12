@@ -12,30 +12,41 @@ const columns = [
   {
     title: "SNo",
     dataIndex: "key",
+    width:100
+  },
+  {
+    title: "Image",
+    dataIndex: "img",
+    width:100
   },
   {
     title: "Title",
     dataIndex: "title",
     sorter: (a, b) => a?.title?.length - b?.title?.length,
+    width:300,
   },
   {
     title: "Status",
     dataIndex: "state",
     sorter: (a, b) => a?.state?.length - b?.state?.length,
+    width:100,
   },
   {
     title: "Sku",
     dataIndex: "sku",
     sorter: (a, b) => a?.sku?.length - b?.sku?.length,
+    width:150
   },
   {
     title: "Price",
     dataIndex: "price",
     sorter: (a, b) => a?.price - b?.price,
+    width:100,
   },
   {
     title: "Action",
     dataIndex: "action",
+    width:150
   },
 ];
 
@@ -55,11 +66,18 @@ const Productlist = () => {
     dispatch(resetState())
     dispatch(getProducts());
   }, []);
+  const [imageIndex, setImageIndex] = useState(0);
+
+  const handleImageError = () => {
+    // Increment the image index to load the next image URL
+    setImageIndex(prevIndex => prevIndex + 1);
+  };
   const productState = useSelector((state) => state?.product?.products);
   const data1 = [];
   for (let i = 0; i < productState?.length; i++) {
     data1.push({
       key: i + 1,
+      img: <img src={productState[i]?.images[imageIndex]?.url} alt="" onError={handleImageError} style={{width:'40px',height:'40px',borderRadius:'5px',border:'1px solid'}}/>,
       title: productState[i]?.title,
       state: productState[i]?.state,
       sku: productState[i]?.sku,

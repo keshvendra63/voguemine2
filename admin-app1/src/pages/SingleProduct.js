@@ -197,7 +197,6 @@ const SingleProduct = () => {
         dispatch(updateAProduct(product));
         setTimeout(() => {
           dispatch(getProducts())
-          navigate("/admin/product")
         }, 1000);
       } else {
         dispatch(createProducts(values));
@@ -408,6 +407,9 @@ const SingleProduct = () => {
                 <option value="draft">Draft</option>
               </select>
             </div>
+            <div className="error">
+                {formik.touched.state && formik.errors.state}
+              </div>
             <div className="insights">
               <div>
                 <p>Insights</p>
@@ -427,6 +429,9 @@ const SingleProduct = () => {
                   className="form-control py-3 mb-3"
                   id="" />
               </div>
+              <div className="error">
+                {formik.touched.category && formik.errors.category}
+              </div>
               <div className="title">
                 <p>Brand</p>
                 <input type="text"
@@ -436,6 +441,9 @@ const SingleProduct = () => {
                   onBlur={formik.handleBlur("brand")}
                   value={formik.values.brand} />
               </div>
+              <div className="error">
+                {formik.touched.brand && formik.errors.brand}
+              </div>
               <div className="title">
                 <p>SKU</p>
                 <input type="text"
@@ -444,6 +452,9 @@ const SingleProduct = () => {
                   onChange={formik.handleChange("sku")}
                   onBlur={formik.handleBlur("sku")}
                   value={formik.values.sku} />
+              </div>
+              <div className="error">
+                {formik.touched.sku && formik.errors.sku}
               </div>
               <div className="title">
                 <p>Collection</p>
@@ -465,6 +476,9 @@ const SingleProduct = () => {
                   })}
                 </select>
               </div>
+              <div className="error">
+                {formik.touched.collectionName && formik.errors.collectionName}
+              </div>
               <div className="title">
                 <p>Tags</p>
                 <input type="text"
@@ -473,6 +487,9 @@ const SingleProduct = () => {
                   onChange={formik.handleChange("tags")}
                   onBlur={formik.handleBlur("tags")}
                   value={formik.values.tags} />
+              </div>
+              <div className="error">
+                {formik.touched.tags && formik.errors.tags}
               </div>
             </div>
           </div>

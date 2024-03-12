@@ -100,14 +100,15 @@ div a{
     padding:10px;
 }
 .products-listing .product-list .product-card .product-content .title{
-    font-size:13px;
+    font-size:18px;
     margin-bottom:5px;
-    letter-spacing:2px;
+    letter-spacing:1px;
 }
 .products-listing .product-list .product-card .product-content .price{
     font-weight:500;
     margin-top:5px;
     margin-bottom:0px;
+    color: var(--price-color);
 }
 .products-listing .product-list .product-card .product-content .sale-price{
     font-size:11px;
@@ -148,12 +149,14 @@ div a{
     justify-content:space-between;
 }
 .products-listing .product-list .product-card .hover-details .title-section .title{
-    font-size:12px;
+    font-size:18px;
     margin-right:30px;
     font-weight:500;
 }
 .products-listing .product-list .product-card .hover-details .title-section .price{
     font-weight:500;
+    color: var(--price-color);
+
 }
 .products-listing .product-list .product-card .hover-details ul{
     display:flex;
@@ -169,14 +172,13 @@ div a{
     justify-content:center;
     align-items:center;
     margin-right:5px;
-    font-size:10px;
+    font-size:12px;
     font-weight:500;
-    color:white;
-    background-color:grey;
+    color:grey;
     cursor:pointer;
+    border: 1px solid grey;
 }
 .products-listing .product-list .product-card .hover-details ul li:hover{
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .products-listing .product-list .product-card .hover-details .size p{
     margin-bottom:5px;
@@ -187,8 +189,27 @@ div a{
 
 .products-listing .product-list .product-card .hover-details a{
     color:black;
-    width:100%;
+    width:50%;
  
+}
+.products-listing .product-list .product-card .hover-details .btns{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 6px;
+    width: 100%;
+}
+.products-listing .product-list .product-card .hover-details .btns button{
+    height: 45px;
+}
+.products-listing .product-list .product-card .hover-details .btns button:nth-child(1){
+    border: 2px solid rgb(31, 31, 31);
+    color: rgb(31, 31, 31);
+    background-color: transparent;
+}
+.products-listing .product-list .product-card .hover-details .btns button:nth-child(2){
+    border: 2px solid rgb(31, 31, 31);
+    color: white;
+    background-color: rgb(31, 31, 31);
 }
 .products-listing .product-list .product-card .hover-details a button{
     width:100%;
@@ -254,8 +275,7 @@ div a{
 }
 .section-heading{
     font-weight: 500;
-    font-size: 25px;
-    letter-spacing: 3px;
+    font-size: 30px;
     font-family: var(--heading-font);
     margin-bottom: 20px;
 }
