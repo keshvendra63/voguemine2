@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {getAllProducts } from './features/products/productSlice';
 import ScrollToTop from './components/ScrollToTop';
 import Testing from './pages/Testing';
+import Login from './pages/login/Login';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
     <ScrollToTop />
       <Routes>
         <Route path='/' element={<Home/>}/>
+        <Route path='/login' element={<Login/>}/>
         <Route path='/home' element={<HomeMain/>}/>
         <Route path='/about' element={<About/>}/>
         <Route path='/men' element={<Men/>}/>

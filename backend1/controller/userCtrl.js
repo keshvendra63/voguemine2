@@ -534,7 +534,32 @@ const getYearlyTotalOrders=asyncHandler(async(req,res)=>{
   ])
   res.json(data)
 })
+const getTodaysOrderIncome = asyncHandler(async (req, res) => {
+  // Get today's date
+  const today = new Date();
+  const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0); // Start of today
+  const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59); // End of today
 
+  const data = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: startOfDay,
+          $lte: endOfDay
+        }
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalIncome: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 }
+      }
+    }
+  ]);
+
+  res.json(data);
+});
 
 
 module.exports = {
@@ -565,5 +590,6 @@ module.exports = {
   getAllOrders,
   getSingleOrder,
   updateOrder,
-  emptyCart
+  emptyCart,
+  getTodaysOrderIncome
 };

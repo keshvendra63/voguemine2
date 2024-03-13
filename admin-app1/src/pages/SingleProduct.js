@@ -197,7 +197,7 @@ const SingleProduct = () => {
         dispatch(updateAProduct(product));
         setTimeout(() => {
           dispatch(getProducts())
-        }, 1000);
+        }, 300);
       } else {
         dispatch(createProducts(values));
         setTimeout(() => {

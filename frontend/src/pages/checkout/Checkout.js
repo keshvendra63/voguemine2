@@ -8,11 +8,13 @@ import img from '../../images/mens-premium-shirts.jpeg'
 import {useFormik} from 'formik'
 import * as yup from 'yup'
 import { useDispatch,useSelector } from 'react-redux'
-import {useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 import { TextField } from '@mui/material';
   import axios from 'axios'
 import {config} from '../../utils/axiosConfig'  
 import {createAnOrder, deleteCart, getUserCartProduct, resetState} from '../../features/user/userSlice'
+import {getAllCoupons,getACoupon} from '../../features/coupon/couponSlice'
+import { toast } from 'react-toastify';
   const shippingSchema=yup.object({
     firstname:yup.string().required("First Name is required"),
     lastname:yup.string().required("Last Name is required"),
@@ -31,6 +33,19 @@ const Checkout = () => {
     const [shippingCost,setShippingCost]=useState(200)
     const [discount,setDiscount]=useState(0)
     const [cartProductState,setCartProductState]=useState([])
+    const [coupon,setCoupon]=useState("")
+    const [couponAmount,setCouponAmount]=useState(0)
+    const couponState=useSelector((state)=>state?.coupon?.coupon)
+    const applyCoupon=()=>{
+        couponState.map((item)=>{
+            if(item.name===coupon){
+                setCouponAmount((item.discount/100)*(totalAmount))
+            }
+            else{
+                toast.error("Invalid Coupon")
+            }
+        })
+    }
     const standardClick=()=>{
         setShippingCost(0)
         setOrderType("Prepaid")
@@ -41,12 +56,11 @@ const Checkout = () => {
         setOrderType("COD")
         setDiscount(0)
     }
-    const finalAmount=shippingCost+totalAmount-discount
+    const finalAmount=shippingCost+totalAmount-discount-couponAmount
     const dispatch=useDispatch();
     const navigate=useNavigate()
     const cartState=useSelector((state)=>state?.auth?.cartProducts)
     const authState=useSelector((state)=>state?.auth)
-    console.log(cartState)
     useEffect (()=> {
         let sum=0;
         for(let index=0; index < cartState?.length; index++){
@@ -56,6 +70,7 @@ const Checkout = () => {
     },[cartState])
     useEffect(()=>{
         dispatch(getUserCartProduct())
+        dispatch(getAllCoupons())
     },[])
     useEffect(()=>{
         if(authState?.orderedProduct?.order!==null && authState?.orderedProduct?.success===true){
@@ -176,8 +191,13 @@ const checkOutHandler=async()=>{
        paymentObject.open();
        }
     }
+    const [imageIndex, setImageIndex] = useState(0);
 
-console.log(cartState)
+  const handleImageError = () => {
+    // Increment the image index to load the next image URL
+    setImageIndex(prevIndex => prevIndex + 1);
+  };
+
     return (
         <div className='margin-section checkout'>
             <div className="left-form">
@@ -294,10 +314,10 @@ console.log(cartState)
                     <TextField
                             label="Phone"
                             type="number"
-                            name='mobile'
-                            value={formik.values.mobile} onChange={formik.handleChange("mobile")} onBlur={formik.handleBlur("mobile")}
+                            name='phone'
+                            value={formik.values.phone} onChange={formik.handleChange("phone")} onBlur={formik.handleBlur("phone")}
                         /> <div className="error">
-                        {formik.touched.mobile && formik.errors.mobile}
+                        {formik.touched.phone && formik.errors.phone}
                       </div>
 
                     </div>
@@ -305,11 +325,11 @@ console.log(cartState)
                     <TextField
                             label="Alternative Phone"
                             type="number"
-                            name='phone'
-                            value={formik.values.phone} onChange={formik.handleChange("phone")} onBlur={formik.handleBlur("phone")}
+                            name='mobile'
+                            value={formik.values.mobile} onChange={formik.handleChange("mobile")} onBlur={formik.handleBlur("mobile")}
                         /> 
                         <div className="error">
-                  {formik.touched.phone && formik.errors.phone}
+                  {formik.touched.mobile && formik.errors.mobile}
                 </div>
                     </div>
                     <div className="payment" style={{margin:'50px 0'}}>
@@ -341,11 +361,10 @@ console.log(cartState)
 
                 {
                     cartState?.map((item,index)=>{
-                        console.log(item)
                         return(
                             <div className="prdt" key={index}>
                     <div className="detail">
-                        <img src={item?.productId?.images[1]?.url} alt="" />
+                        <img src={item?.productId?.images[imageIndex]?.url} alt="" onError={handleImageError}/>
                         <div><p className="p-name">{item?.productId?.title}</p>
                         <p className="size"><span>{item?.size}</span><span>/</span><span>{item?.color}</span></p></div>
                     </div>
@@ -359,20 +378,24 @@ console.log(cartState)
                             id="coupon"
                             label="Coupon Code"
                             type="text"
+                            value={coupon}
+                            onChange={(e)=>setCoupon(e.target.value)}
                         />
-                        <button>APPLY</button>
+                        <button onClick={applyCoupon}>APPLY</button>
                 </div>
                 <div className="total">
                     <ul>
                         <li>Subtotal</li>
                         <li>Shipping</li>
                         <li>Discount</li>
+                        <li>Coupon</li>
                         <li style={{fontSize:'20px',fontWeight:600}}>Total</li>
                     </ul>
                     <ul>
                         <li>&#8377; {totalAmount}</li>
                         <li>&#8377; {shippingCost!==0?shippingCost:`${shippingCost}(Free)`}</li>
                         <li>&#8377; -{discount}</li>
+                        <li>&#8377; -{couponAmount}</li>
                         <li style={{fontSize:'20px',fontWeight:600}}>&#8377; {finalAmount}</li>
                     </ul>
                 </div>

@@ -115,7 +115,7 @@ font-size: 20px;
     display: flex;
     flex-direction: column;
 }
-.single-product .product .prdt-right .buy-btn button{
+.single-product .product .prdt-right .buy-btn .btn{
     padding: 7px 0;
     margin-bottom: 20px;
     color: black;
@@ -124,7 +124,7 @@ font-size: 20px;
     transition: all 0.5s;
 
 }
-.single-product .product .prdt-right .buy-btn button:hover{
+.single-product .product .prdt-right .buy-btn .btn:hover{
     color: White;
     background-color: black;
 }

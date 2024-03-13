@@ -26,7 +26,7 @@ import { PrivateRoute } from "./routing/PrivateRoute";
 import SingleProduct from "./pages/SingleProduct";
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-
+import OrderForm from './components/OrderForm'
 function App() {
   
   return (
@@ -58,6 +58,7 @@ function App() {
           <Route path="product" element={<Productlist />} />
           <Route path="product/:id" element={<SingleProduct />} />
           <Route path="addProduct" element={<SingleProduct />} />
+          <Route path="createOrder" element={<OrderForm/>}/>
         </Route>
       </Routes>
     </Router>

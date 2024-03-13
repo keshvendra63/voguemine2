@@ -43,6 +43,16 @@ export const getYearlyData = createAsyncThunk(
     }
   }
 );
+export const getTodayData = createAsyncThunk(
+  "orders/todaydata",
+  async (thunkAPI) => {
+    try {
+      return await authService.getTodayOrders();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 export const getOrders = createAsyncThunk(
   "order/get-orders",
@@ -160,7 +170,24 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
         state.isLoading = false;
-      }).addCase(updateAOrder.pending, (state) => {
+      })
+      .addCase(getTodayData.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getTodayData.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.todayData = action.payload;
+        state.message = "success";
+      })
+      .addCase(getTodayData.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
+      .addCase(updateAOrder.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(updateAOrder.fulfilled, (state, action) => {

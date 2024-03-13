@@ -198,15 +198,22 @@ div a{
     grid-gap: 6px;
     width: 100%;
 }
-.products-listing .product-list .product-card .hover-details .btns button{
+.products-listing .product-list .product-card .hover-details .btns .btn{
     height: 45px;
 }
-.products-listing .product-list .product-card .hover-details .btns button:nth-child(1){
+.products-listing .product-list .product-card .hover-details .btns .btn-disable{
+    border: 2px solid white;
+    color: white;
+    background-color: grey;
+    height: 45px;
+
+}
+.products-listing .product-list .product-card .hover-details .btns .btn:nth-child(1){
     border: 2px solid rgb(31, 31, 31);
     color: rgb(31, 31, 31);
     background-color: transparent;
 }
-.products-listing .product-list .product-card .hover-details .btns button:nth-child(2){
+.products-listing .product-list .product-card .hover-details .btns .btn:nth-child(2){
     border: 2px solid rgb(31, 31, 31);
     color: white;
     background-color: rgb(31, 31, 31);
@@ -279,6 +286,16 @@ div a{
     font-family: var(--heading-font);
     margin-bottom: 20px;
 }
+
+.disabled-btn{
+    padding: 7px 0;
+    margin-bottom: 20px;
+    color: white;
+    border: 3px solid white;
+    background: grey;
+    transition: all 0.5s;
+}
+
 @media screen and (max-width:950px){
     .products-listing .product-list{
         grid-template-columns:repeat(2, 1fr);

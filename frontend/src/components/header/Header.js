@@ -79,7 +79,6 @@ const dispatch=useDispatch()
 
     fetchData();
   }, [dispatch])
-  console.log(productState)
 const navigate=useNavigate()
   const changePlaceholder = async () => {
     for (let i = 0; ; i = (i + 1) % placeholderText.length) {
@@ -105,21 +104,9 @@ const navigate=useNavigate()
     setProductOpt(data);
   }, [productState]);
 
-  const [loginForm, setLoginForm] =useState("register")
-  const loginClick=()=>{
-    setLoginForm("login")
-  }
-  const registerClick=()=>{
-    setLoginForm("register")
-  }
-
-  const forgotClick=()=>{
-    setLoginForm("forgotPassword")
-  }
-  const [login,setLogin]= useState("none")
-  const loginClose=()=>{
-    setLogin("none")
-  }
+useEffect(()=>{
+  changePlaceholder()
+})
   const hamClick=()=>{
     document.getElementById("head2").style.left=0
   }
@@ -129,60 +116,13 @@ const navigate=useNavigate()
 const authState=useSelector(state=>state?.auth)
 const loginOpen=()=>{
   if(authState?.user===null){
-    setLogin("flex")
+    navigate('/login')
   }
   else{
     navigate("/profile")
   }
   
 }
-const formik=useFormik({
-  initialValues:{
-    firstname:"",
-    lastname:"",
-    email:"",
-    mobile:"",
-    password:"",
-  },
-  validationSchema:signupSchema,
-  onSubmit:(values)=>{
-    dispatch(registerUser(values))
-    setTimeout(()=>{
-        navigate('/home')
-        setLogin('none')
-      
-    },1000)
-  }
-})
-const formik1=useFormik({
-  initialValues:{
-    email:"",
-    password:"",
-  },
-  validationSchema:loginSchema,
-  onSubmit:(values)=>{
-    dispatch(loginUser(values))
-    setTimeout(()=>{
-      
-        navigate('/home')
-        setLogin('none')
-      
-    },1000)
-  
-  }
-})
-
-const formik2=useFormik({
-  initialValues:{
-    email:"",
-  },
-  validationSchema:emailSchema,
-  onSubmit:(values)=>{
-    dispatch(forgotPasswordToken(values))
-        setLogin('none')
-  }
-})
-
 
   const [scrolled, setScrolled] = useState(false);
 
@@ -280,7 +220,7 @@ const formik2=useFormik({
               <li onClick={closeClick}><FaceOutlinedIcon/><Link to="/kids">Kids</Link></li>
               <li onClick={closeClick}><AutoAwesomeMosaicOutlinedIcon/><Link to="/accessories">Accessories</Link></li>
               <li onClick={closeClick}><FavoriteBorderIcon/><Link to="/wishlist">Wishlist</Link></li>
-              <li onClick={closeClick}><PersonOutlineIcon/><Link onClick={loginOpen}>Login/Register</Link></li>
+              <li onClick={closeClick}><PersonOutlineIcon/><p onClick={loginOpen}>Login/Register</p></li>
               
             </ul>
         </div>
@@ -310,107 +250,7 @@ const formik2=useFormik({
       />
           <li onClick={closeSearch}><ClearOutlinedIcon style={{cursor:'pointer'}}  /></li>
         </div>
-      <div className="login" style={{display:login}}>
-        {
-          loginForm==="register"?( <div className="login-box">
-          <div className="login-left">
-              <h1>Already a User ?</h1>
-              <p>Thank you for be a family of Voguemine.</p>
-              <button className='form-button' onClick={loginClick}>Login</button>
-        </div>
-        <div className="login-right">
-            <h2 style={{textAlign:'center',marginBottom:'20px'}}>Register</h2>
-            <ClearOutlinedIcon style={{position:'absolute',right:'10px',top:'10px',color:'black',cursor:'pointer'}} onClick={loginClose}/>
-            <form action="" onSubmit={formik.handleSubmit}>
-            <div className="first-name">
-                <input type="text" name="firstname" id="first-name" placeholder='First Name' value={formik.values.firstname} onChange={formik.handleChange("firstname")} onBlur={formik.handleBlur("firstname")}/>
-                <div className="error">
-                  {formik.touched.firstname && formik.errors.firstname}
-                </div>
-            </div>
-            <div className="last-name">
-                <input type="text" name="lastname" id="last-name" placeholder='Last Name' value={formik.values.lastname} onChange={formik.handleChange("lastname")} onBlur={formik.handleBlur("lastname")}/>
-                <div className="error">
-                  {formik.touched.lastname && formik.errors.lastname}
-                </div>
-            </div>
-            <div className="email">
-                <input type="email" name="email" id="email" placeholder='Email' value={formik.values.email} onChange={formik.handleChange("email")} onBlur={formik.handleBlur("email")}/>
-                <div className="error">
-                  {formik.touched.email && formik.errors.email}
-                </div>
-            </div>
-            <div className="phone-number">
-                <input type="number" name="mobile" id="mobile" placeholder='Mobile' value={formik.values.mobile} onChange={formik.handleChange("mobile")} onBlur={formik.handleBlur("mobile")}/>
-                <div className="error">
-                  {formik.touched.mobile && formik.errors.mobile}
-                </div>
-            </div>
-            <div className="password">
-                <input type="password" name="password" id="password" placeholder='Password' value={formik.values.password} onChange={formik.handleChange("password")} onBlur={formik.handleBlur("password")}/>
-               
-  <div className="error">
-                  {formik.touched.password && formik.errors.password}
-                </div>
-            </div>
-            <input type="submit" value="Register" />
-            </form>
-        </div>
-          </div>)
-          : loginForm==="login"?( <div className="login-box">
-          <div className="login-left">
-              <h1>New To Voguemine</h1>
-              <p>Thank you for be a family of Voguemine.</p>
-              <button className='form-button' onClick={registerClick}>Register</button>
-        </div>
-        <div className="login-right">
-            <h2 style={{textAlign:'center',marginBottom:'20px'}}>Login</h2>
-            <ClearOutlinedIcon style={{position:'absolute',right:'10px',top:'10px',color:'black',cursor:'pointer'}} onClick={loginClose}/>
-            <form action="" onSubmit={formik1.handleSubmit}>
-            <div className="email">
-                <input type="email" name="email" id="email" placeholder='Email' value={formik1.values.email} onChange={formik1.handleChange("email")} onBlur={formik1.handleBlur("email")}/>
-                <div className="error">
-                    {formik1.touched.email && formik1.errors.email}
-                  </div>
-            </div>
-            <div className="password">
-                <input type="password" name="password" id="password" placeholder='Password' value={formik1.values.password} onChange={formik1.handleChange("password")} onBlur={formik1.handleBlur("password")}/>
-                <div className="error">
-                    {formik1.touched.password && formik1.errors.password}
-                  </div>
-               
-            </div>
-            <p style={{cursor:'pointer',color:'blue'}} onClick={forgotClick}>forgot password?</p>
-            <input type="submit" value="Login" />
-            </form>
-        </div>
-          </div>)
-          : <div className="login-box forgot">
-          
-        <div className="login-right">
-              <h1>Forgot Password</h1>
-              <p>We will send you a link to your email to reset password.</p>
-            <ClearOutlinedIcon style={{position:'absolute',right:'10px',top:'10px',color:'black',cursor:'pointer'}} onClick={loginClose}/>
-            <form action="" onSubmit={formik2.handleSubmit}>
-            <div className="email">
-                <input type="email" name="email" id="email" placeholder='Email' value={formik2.values.email} onChange={formik2.handleChange("email")} onBlur={formik2.handleBlur("email")}/>
-                <div className="error">
-                    {formik2.touched.email && formik2.errors.email}
-                  </div>
-            </div>
-            <input type="submit" value="Send Link" />
-            </form>
-            <button className='form-button' onClick={loginClick}>Back to Login</button>
-        </div>
-          </div>
 
-
-        }
-        
-        
-      
-
-      </div>
     </div>
   )
 }

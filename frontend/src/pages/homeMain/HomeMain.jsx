@@ -70,30 +70,23 @@ const HomeMain = () => {
         speed={4}
         onReady={() => console.log('I am ready')}
       >
+        <Link to="/men">
         <div className="cate">
           <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709559213/01_1_w4dkso.jpg" alt="" />
-          <div className="content">
-
-          </div>
         </div>
+        </Link><Link to="/women">
         <div className="cate">
             <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709559213/02_k9jteu.jpg" alt="" />
-            <div className="content">
-
-            </div>
         </div>
+        </Link><Link to="/kids">
         <div className="cate">
           <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709559217/03_uxilkl.jpg" alt="" />
-          <div className="content">
-
-          </div>
         </div>
+        </Link><Link to="/accessories">
         <div className="cate">
             <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709559212/05_ba3kea.jpg" alt="" />
-            <div className="content">
-
-            </div>
         </div>
+        </Link>
         
       </ScrollCarousel>
    

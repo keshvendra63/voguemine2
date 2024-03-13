@@ -3,7 +3,7 @@ import { BsArrowDownRight, BsArrowUpRight } from "react-icons/bs";
 import { Column } from "@ant-design/plots";
 import { Table } from "antd";
 import {useDispatch,useSelector} from 'react-redux'
-import {getMonthlyData, getOrders, getYearlyData} from '../features/auth/authSlice'
+import {getMonthlyData, getOrders, getYearlyData,getTodayData} from '../features/auth/authSlice'
 const columns = [
   {
     title: "SNo",
@@ -35,23 +35,22 @@ const Dashboard = () => {
   const dispatch=useDispatch()
   const monthlyDataState=useSelector(state=>state?.auth?.monthlyData)
   const yearlyDataState=useSelector(state=>state?.auth?.yearlyData)
+  const todayDataState=useSelector(state=>state?.auth?.todayData)
   const orderState=useSelector(state=>state?.auth?.orders.orders)
-
-  console.log(orderState)
   
   useEffect(()=>{
     dispatch(getMonthlyData())
     dispatch(getYearlyData())
+    dispatch(getTodayData())
     dispatch(getOrders())
   },[])
-  console.log(monthlyDataState)
   useEffect(()=>{
     let monthNames=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
     let data=[]
     let monthlyOrderCount=[]
     for (let index = 0; index < monthlyDataState?.length; index++) {
       const element = monthlyDataState[index];
-      data.push({type:monthNames[element?._id?.month],income:element?.count})
+      data.push({type:monthNames[element?._id?.month],income:element?.amount})
       monthlyOrderCount.push({type:monthNames[element?._id?.month],sales:element?.count})
 
       
@@ -131,7 +130,7 @@ setOrderData(data1)
   return (
     <div className="mx-3">
       <h3 className="mb-4 title">Dashboard</h3>
-      <div className="d-flex justify-content-between align-items-center gap-3">
+      <div className="d-flex justify-content-between align-items-center gap-3 flex-wrap">
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 roudned-3">
           <div>
             <p className="desc">Total Income</p>
@@ -152,9 +151,19 @@ setOrderData(data1)
             <p className="mb-0  desc">Yearly Total Sales</p>
           </div>
         </div>
+        <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 roudned-3">
+          <div>
+            <p className="desc">Today Income</p>
+            <h4 className="mb-0 sub-title">{todayDataState && todayDataState[0]?.amount}</h4>
+          </div>
+          <div>
+            <p className="desc">Today Orders</p>
+            <h4 className="mb-0 sub-title">{todayDataState && todayDataState[0]?.count}</h4>
+          </div>
+        </div>
       </div>
-      <div className="d-flex justify-content-between gap-3">
-      <div className="mt-4 flex-grow-1 w-50">
+      <div className="d-flex justify-content-between gap-3 flex-wrap">
+      <div className="mt-4 flex-grow-1 w-45">
         <h3 className="mb-5 title">Income Statics</h3>
         <div>
           <Column {...config} />
@@ -170,7 +179,7 @@ setOrderData(data1)
       <div className="mt-4">
         <h3 className="mb-5 title">Recent Orders</h3>
         <div>
-          <Table columns={columns} dataSource={orderData} />
+          <Table columns={columns} dataSource={orderData} scroll={{x:800}}/>
         </div>
       </div>
     </div>

@@ -72,13 +72,12 @@ const AddCoupon = () => {
       if (getCouponId !== undefined) {
         const data = { id: getCouponId, couponData: values };
         dispatch(updateACoupon(data));
-        dispatch(resetState());
       } else {
         dispatch(createCoupon(values));
         formik.resetForm();
         setTimeout(() => {
           dispatch(resetState);
-        }, 300);
+        }, 2000);
       }
     },
   });

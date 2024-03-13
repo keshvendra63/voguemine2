@@ -18,6 +18,7 @@
     width:400px;
     height: 380px;
     margin: 0 10px;
+    cursor: pointer;
 }
 .homeMain .categories .cate img{
     width: 100%;

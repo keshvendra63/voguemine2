@@ -43,7 +43,7 @@ const Product = (props) => {
       }
       if(customer==null){
         toast.error("Please Login First to Add to Cart")
-        navigate("/home")
+        navigate("/login")
       }
       
       
@@ -73,6 +73,7 @@ const Product = (props) => {
     }
     if(customer==null){
       toast.error("Please Login First to Buy Now")
+      navigate("/login")
     }
     
     else{
@@ -92,6 +93,20 @@ const [imageIndex, setImageIndex] = useState(0);
     // Increment the image index to load the next image URL
     setImageIndex(prevIndex => prevIndex + 1);
   };
+  const [btnDisable,setBtnDisable]=useState(false)
+
+  const findVariant = (color, size) => {
+    return props?.variants.find(variant => variant.color === color && variant.size === size);
+  };
+  useEffect(()=>{
+    const matchingVariant = findVariant(color, size);
+    if (matchingVariant?.quantity===0) {
+        setBtnDisable(true)  
+    }
+    else{
+      setBtnDisable(false)
+    }
+  },[color,size])
 
   return (
     <div className="product-card" key={props.keys}>
@@ -147,8 +162,8 @@ const [imageIndex, setImageIndex] = useState(0);
       </ul>
     </div>
     <div className="btns">
-    <button onClick={buyNow} style={{width:'100%'}}>BUY NOW</button>
-    <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(props.id)}} style={{width:'100%'}}>{
+    <button onClick={buyNow} style={{width:'100%'}} className={btnDisable?'btn-disable':"btn"} disabled={btnDisable}>BUY NOW</button>
+    <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(props.id)}} style={{width:'100%'}} className={btnDisable?'btn-disable':"btn"} disabled={btnDisable}>{
                   alreadyAdded?"GO TO CART":"ADD TO CART"
                 }</button>
     </div>

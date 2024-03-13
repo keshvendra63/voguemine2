@@ -31,9 +31,9 @@ const productImgResize = async (req, res, next) => {
   await Promise.all(
     req.files.map(async (file) => {
       await sharp(file.path)
-        .resize(500, 500)
+        .resize(1100, 1100)
         .toFormat("jpeg")
-        .jpeg({ quality: 90 })
+        .jpeg({ quality: 100 })
         .toFile(`public/images/${file.filename}`);
       fs.unlinkSync(`public/images/${file.filename}`);
     })
@@ -46,9 +46,9 @@ const blogImgResize = async (req, res, next) => {
   await Promise.all(
     req.files.map(async (file) => {
       await sharp(file.path)
-        .resize(500, 500)
+        .resize(1100, 1100)
         .toFormat("jpeg")
-        .jpeg({ quality: 90 })
+        .jpeg({ quality: 100 })
         .toFile(`public/images/${file.filename}`);
       fs.unlinkSync(`public/images/${file.filename}`);
     })

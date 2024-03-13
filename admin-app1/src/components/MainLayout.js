@@ -23,12 +23,24 @@ import { Header } from "antd/es/layout/layout";
 import {getAProduct, getProducts} from '../features/product/productSlice'
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import { getOrders} from "../features/auth/authSlice";
 const {Sider, Content } = Layout;
 const MainLayout = () => {
   const [paginate, setPaginate] = useState(true);
   const [productOpt,setProductOpt]=useState([])
   const [collapsed, setCollapsed] = useState(false);
   const [productId, setproductId] = useState("");
+  const [timing,setTiming]=useState()
+  const orderState = useSelector((state) => state?.auth?.orders.orders);
+
+
+
+orderState?.map((item)=>{
+  if(item.createdAt===timing){
+    console.log("matched")
+  }
+})
+
 
   const {
     token: { colorBgContainer },
@@ -39,7 +51,6 @@ const MainLayout = () => {
     dispatch(getProducts());
   }, []);
   const productState = useSelector((state) => state?.product?.products);
-console.log(productState);
   const user = JSON.parse(localStorage.getItem('user'));
   const [imageIndex, setImageIndex] = useState(0);
 
@@ -66,10 +77,8 @@ console.log(productState);
        breakpoint="lg"
         collapsedWidth="300"
         onBreakpoint={(broken) => {
-          console.log(broken);
         }}
         onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
         }}
         trigger={null} collapsible collapsed={collapsed}
         
@@ -221,21 +230,18 @@ console.log(productState);
 
             <div className="d-flex gap-3 align-items-center dropdown">
               <div>
-                <img
-                  width={32}
-                  height={32}
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-EPpUybuj7WPyKO73vZKCbNBNuU6B8pyX4A&usqp=CAU"
-                  alt=""
-                />
-              </div>
               <div
                 role="button"
                 id="dropdownMenuLink"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <h5 className="mb-0">{user.firstname}</h5>
-                {/* <p className="mb-0">{user.email}</p> */}
+                <img
+                  width={32}
+                  height={32}
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-EPpUybuj7WPyKO73vZKCbNBNuU6B8pyX4A&usqp=CAU"
+                  alt=""
+                />
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
@@ -258,6 +264,10 @@ console.log(productState);
                     Signout
                 </li>
               </div>
+              
+                {/* <p className="mb-0">{user.email}</p> */}
+              </div>
+             
             </div>
           </div>
         </Header>

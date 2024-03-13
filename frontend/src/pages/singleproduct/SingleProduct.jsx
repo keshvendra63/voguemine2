@@ -1,9 +1,4 @@
 import React,{useEffect, useState} from 'react'
-import key1 from '../../images/mens-premium-shirts.jpeg'
-import key2 from '../../images/mens-hoodies.jpeg'
-import key3 from '../../images/mens-jackets.jpg'
-import key4 from '../../images/mens-track-set.jpeg'
-import main_img from '../../images/mens-premium-shirts.jpeg'
 import { useDispatch, useSelector } from 'react-redux'
 import {getAProduct,getAllProducts } from '../../features/products/productSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -20,6 +15,7 @@ const SingleProduct = () => {
   const [quantity,setQuantity]=useState(1)
   const [alreadyAdded, setAlreadyAdded] =useState(false)
   const [mainImage,setMainImage]=useState("")
+  const [btnDisable,setBtnDisable]=useState(false)
   const navigate=useNavigate()
   const singleProductState=useSelector((state)=>state?.product?.getSingleProduct)
   const cartState=useSelector((state)=>state?.auth?.cartProducts)
@@ -63,6 +59,7 @@ const SingleProduct = () => {
     }
     if(customer==null){
       toast.error("Please Login First to Add to Cart")
+      navigate("/login")
     }
     
     else{
@@ -87,6 +84,8 @@ const buyNow=()=>{
   } 
   if(customer==null){
    toast.error("Please Login First to Buy")
+   navigate("/login")
+
  }
  
 
@@ -109,7 +108,22 @@ const [imageIndex, setImageIndex] = useState(0);
   const handleImageError = () => {
     // Increment the image index to load the next image URL
     setImageIndex(prevIndex => prevIndex + 1);
-  };  return (
+  };  
+
+  const findVariant = (color, size) => {
+    return singleProductState?.variants.find(variant => variant.color === color && variant.size === size);
+  };
+  useEffect(()=>{
+    const matchingVariant = findVariant(color, size);
+    if (matchingVariant?.quantity===0) {
+        setBtnDisable(true)  
+    }
+    else{
+      setBtnDisable(false)
+    }
+  },[color,size])
+  
+  return (
     <div className='single-product'>
       <div className="product">
         <div className="prdt-left">
@@ -169,10 +183,10 @@ const [imageIndex, setImageIndex] = useState(0);
               </>
             }
             <div className="buy-btn">
-                <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(singleProductState?._id)}}>{
+                <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(singleProductState?._id)}} className={btnDisable?'disabled-btn':"btn"} disabled={btnDisable}>{
                   alreadyAdded?"GO TO CART":"ADD TO CART"
                 }</button>
-                <button onClick={buyNow}>BUY IT NOW</button>
+                <button className={btnDisable?'disabled-btn':"btn"} onClick={buyNow} disabled={btnDisable}>BUY IT NOW</button>
             </div>
             <div className="prdt-desc">
                 <p dangerouslySetInnerHTML={{ __html: singleProductState?.description }}/>
