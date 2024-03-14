@@ -233,7 +233,9 @@ useEffect(()=>{
 
 useEffect(()=>{
     if(products?.length<limit){
-      setBtn("none")
+      setTimeout(()=>{
+        setBtn("none")
+      },3000)
     }
     else{
       setBtn("block")
