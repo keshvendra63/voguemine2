@@ -1,13 +1,14 @@
 import React,{useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {getAProduct,getAllProducts } from '../../features/products/productSlice';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import './singleproduct.css'
 import { addToCart, getUserCartProduct } from '../../features/user/userSlice'
 import Product from '../../components/Product'
 
 import {toast} from 'react-toastify'
 const SingleProduct = () => {
+  const { handle } = useParams()
   const limit=3
   const page=1
   const [color,setColor]=useState(null)
@@ -27,13 +28,14 @@ const SingleProduct = () => {
       getProduct()
   },[])
   const getProduct=()=>{
-      dispatch(getAProduct(getProductId))
+      
       dispatch(getUserCartProduct())
   }
   const productState=useSelector((state)=>state?.product?.product)
   useEffect(()=>{
+    dispatch(getAProduct(handle))
       getProducts()
-  },[limit,page,collectionName])
+  },[limit,page,collectionName,handle])
   const getProducts=()=>{
       dispatch(getAllProducts({limit,page,collectionName}))
   }
@@ -64,6 +66,14 @@ const SingleProduct = () => {
     
     else{
       dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price,size}))
+      window.fbq('track', 'AddToCart', {
+        content_name:`${singleProductState?.title}`,
+        content_category:`${singleProductState?.category}`,
+        content_ids:`${singleProductState?._id}`,
+        content_type: 'product',
+        value:`${singleProductState?.price}`,
+        currency: 'USD'
+    });
       
       setTimeout(()=>{
         dispatch(getUserCartProduct())
@@ -91,7 +101,14 @@ const buyNow=()=>{
 
   else{
     dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price,size}))
-    
+    window.fbq('track', 'Purchase', {
+      content_name:`${singleProductState?.title}`,
+      content_category:`${singleProductState?.category}`,
+      content_ids:`${singleProductState?._id}`,
+      content_type: 'product',
+      value:`${singleProductState?.price}`,
+      currency: 'USD'
+  });
     setTimeout(()=>{
       dispatch(getUserCartProduct())
       navigate('/checkout')
@@ -207,7 +224,7 @@ const [imageIndex, setImageIndex] = useState(0);
                 
                 products.map((arm,index)=>{
 
-                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>
                    
                     
                 })

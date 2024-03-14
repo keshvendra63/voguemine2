@@ -18,7 +18,7 @@ import logo from '../../images/logo.png'
 import {Link,useNavigate} from 'react-router-dom'
 import './header.css'
 import { registerUser,loginUser,forgotPasswordToken, getUserCartProduct } from '../../features/user/userSlice';
-import {getAProduct, getAllProducts} from '../../features/products/productSlice'
+import {getAProduct,getProducts} from '../../features/products/productSlice'
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 const delayExecution = (mls) => {
@@ -44,7 +44,7 @@ const emailSchema=yup.object({
 const Header = () => {
   const [paginate, setPaginate] = useState(true);
   const [productOpt,setProductOpt]=useState([])
-  const productState=useSelector((state)=>state?.product?.product)
+  const productState=useSelector((state)=>state?.product?.prdt)
   const placeholderText = ["Search Shirts", "Search Loafers", "Search Dresses"];
   const [state, setState] = useState("");
   const [search,setSearch] =useState("none")
@@ -60,25 +60,6 @@ const dispatch=useDispatch()
     setScrolled(false);
 
   }
-  useEffect(() => {
-    const limit = 5000;
-    const page = 1;
-    const collectionName = ""; // Update this if needed
-
-    const fetchData = async () => {
-      try {
-        if (collectionName) {
-          await dispatch(getAllProducts({ limit, page, collectionName }));
-        } else {
-          await dispatch(getAllProducts({ limit, page }));
-        }
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch])
 const navigate=useNavigate()
   const changePlaceholder = async () => {
     for (let i = 0; ; i = (i + 1) % placeholderText.length) {
@@ -99,14 +80,15 @@ const navigate=useNavigate()
       // Extracting all relevant product details for search
       const imageUrl = element?.images[imageIndex]?.url;
       const details = `${element.sku} ${element.title} ${element.description}`;
-      data.push({ id: index, prod: element?._id, details,imageUrl }); // Include all relevant details
+      data.push({ id: index, prod: element?.handle, details,imageUrl }); // Include all relevant details
     }
     setProductOpt(data);
   }, [productState]);
 
 useEffect(()=>{
+  dispatch(getProducts())
   changePlaceholder()
-})
+},[])
   const hamClick=()=>{
     document.getElementById("head2").style.left=0
   }
@@ -163,7 +145,7 @@ const loginOpen=()=>{
         id="pagination-example"
         onPaginate={() => console.log('Results paginated')}
         onChange={(selected)=>{
-          navigate(`/product/${selected[0]?.prod}`)
+          navigate(`/products/${selected[0]?.prod}`)
           dispatch(getAProduct(selected[0]?.prod))
         }}
         minLength={2}
@@ -171,6 +153,12 @@ const loginOpen=()=>{
         labelKey={"details"}
         paginate={paginate}
         placeholder={state}
+        renderMenuItemChildren={(option) => (
+          <div>
+            <img src={option.imageUrl} alt="" style={{ width: '50px', height: '50px', marginRight: '10px' }} onError={handleImageError}/>
+            <span>{option.details}</span>
+          </div>
+        )}
       /><SearchIcon /></li>
             <li><Link to="/wishlist"><FavoriteBorderIcon/></Link></li>
             <li><Link to="/cart"><LocalMallIcon/></Link></li>
@@ -232,7 +220,7 @@ const loginOpen=()=>{
         onChange={(selected)=>{
           setSearch("none")
           setScrolled(false);
-          navigate(`/product/${selected[0]?.prod}`)
+          navigate(`/products/${selected[0]?.prod}`)
           dispatch(getAProduct(selected[0]?.prod))
           
         }}

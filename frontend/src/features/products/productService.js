@@ -24,6 +24,13 @@ const getProducts=async(data)=>{
         throw error;
     }
 }
+const getAllProducts = async () => {
+    const response = await axios.get(`${base_url}product?limit=5000`);
+  
+    return response.data;
+  };
+
+
 const addToWishList=async(prodId)=>{
     const response= await axios.put(`${base_url}product/wishlist`,{prodId},config)
     if(response.data){
@@ -31,8 +38,8 @@ const addToWishList=async(prodId)=>{
     }
 }
 
-const getProduct=async(id)=>{
-    const response= await axios.get(`${base_url}product/${id}`)
+const getProduct=async(handle)=>{
+    const response= await axios.get(`${base_url}product/${handle}`)
     if(response.data){
         return response.data
     }
@@ -40,5 +47,6 @@ const getProduct=async(id)=>{
 export const productService={
     getProducts,
     addToWishList,
-    getProduct
+    getProduct,
+    getAllProducts
 }

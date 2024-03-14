@@ -236,7 +236,7 @@ useEffect(()=>{
 
 
                 products.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>    
+                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>    
                 })
                 
                     

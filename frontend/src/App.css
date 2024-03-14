@@ -160,6 +160,7 @@ div a{
 }
 .products-listing .product-list .product-card .hover-details ul{
     display:flex;
+    flex-wrap: wrap;
     padding-left:0;
     grid-gap:5px;
 }
@@ -177,6 +178,7 @@ div a{
     color:grey;
     cursor:pointer;
     border: 1px solid grey;
+    margin-top: 10px;
 }
 .products-listing .product-list .product-card .hover-details ul li:hover{
 }

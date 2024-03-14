@@ -56,7 +56,7 @@ function App() {
           <Route path="collection" element={<Addcollection />} />
           <Route path="collection/:id" element={<Addcollection/>} />
           <Route path="product" element={<Productlist />} />
-          <Route path="product/:id" element={<SingleProduct />} />
+          <Route path="product/:handle" element={<SingleProduct />} />
           <Route path="addProduct" element={<SingleProduct />} />
           <Route path="createOrder" element={<OrderForm/>}/>
         </Route>

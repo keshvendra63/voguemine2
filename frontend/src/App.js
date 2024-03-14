@@ -84,7 +84,7 @@ function App() {
         <Route path="/collections/low-cut" element={<Products/>}/>
         <Route path="/collections/anklet" element={<Products/>}/>
         <Route path="/collections/crew" element={<Products/>}/>
-        <Route path="/product/:id" element={<SingleProduct/>}/>
+        <Route path="/products/:handle" element={<SingleProduct/>}/>
         <Route path="/wishlist" element={<Wishlist/>}/>
         <Route path='/blogs' element={<Blogs/>}/>
         <Route path="/blog/:id" element={<SingleBlog/>}/>

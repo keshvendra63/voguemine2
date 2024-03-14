@@ -37,7 +37,7 @@ const Dashboard = () => {
   const yearlyDataState=useSelector(state=>state?.auth?.yearlyData)
   const todayDataState=useSelector(state=>state?.auth?.todayData)
   const orderState=useSelector(state=>state?.auth?.orders.orders)
-  
+  console.log(todayDataState)
   useEffect(()=>{
     dispatch(getMonthlyData())
     dispatch(getYearlyData())
@@ -154,11 +154,11 @@ setOrderData(data1)
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 roudned-3">
           <div>
             <p className="desc">Today Income</p>
-            <h4 className="mb-0 sub-title">{todayDataState && todayDataState[0]?.amount}</h4>
+            <h4 className="mb-0 sub-title">{todayDataState && todayDataState[0]?.totalIncome}</h4>
           </div>
           <div>
             <p className="desc">Today Orders</p>
-            <h4 className="mb-0 sub-title">{todayDataState && todayDataState[0]?.count}</h4>
+            <h4 className="mb-0 sub-title">{todayDataState && todayDataState[0]?.totalCount}</h4>
           </div>
         </div>
       </div>

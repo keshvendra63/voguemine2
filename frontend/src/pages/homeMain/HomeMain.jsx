@@ -3,11 +3,7 @@ import ScrollCarousel from 'scroll-carousel-react';
 import Carousel from 'react-bootstrap/Carousel';
 import Carousel1 from 'react-elastic-carousel';
 import home_benner from '../../images/home-banner.jpg'
-import men from '../../images/men.jpg'
-import women from '../../images/women.jpg'
-import key1 from '../../images/key1.jpg'
-import key2 from '../../images/key2.jpg'
-import key3 from '../../images/key3.jpg'
+
 import {Link} from 'react-router-dom'
 import './homemain.css'
 import Rating from '@mui/material/Rating';
@@ -127,7 +123,7 @@ const HomeMain = () => {
             {
                 shirts.map((arm,index)=>{
 
-                        return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                        return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>
                    
                     
                 })
@@ -140,13 +136,13 @@ const HomeMain = () => {
         <p className="section-heading">Men's Trending</p>
         <div className="trending-collection">
           <div className="trending-card">
-            <img src={men} alt="" />
+            <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a28_ywebvi.jpg" alt="" />
           </div>
           <div className="trending-card">
-            <img src={men} alt="" />
+            <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a29_e50fly.jpg" alt="" />
           </div>
           <div className="trending-card">
-            <img src={men} alt="" />
+            <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341077/a27_juuuzb.jpg" alt="" />
           </div>
         </div>
       </div>
@@ -184,7 +180,7 @@ const HomeMain = () => {
                 
                 tshirt.map((arm,index)=>{
 
-                        return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                        return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>
                    
                     
                 })
@@ -197,13 +193,13 @@ const HomeMain = () => {
         <p className="section-heading">Women's Trending</p>
         <div className="trending-collection">
           <div className="trending-card">
-            <img src={men} alt="" />
+            <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341073/a31_kv2mnb.jpg" alt="" />
           </div>
           <div className="trending-card">
-            <img src={men} alt="" />
+            <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341073/a30_g0wu0m.jpg" alt="" />
           </div>
           <div className="trending-card">
-            <img src={men} alt="" />
+            <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a32_l5be5c.jpg" alt="" />
           </div>
         </div>
       </div>
@@ -240,7 +236,7 @@ const HomeMain = () => {
                 
                 jeans.map((arm,index)=>{
 
-                        return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants}/>
+                        return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>
                    
                     
                 })

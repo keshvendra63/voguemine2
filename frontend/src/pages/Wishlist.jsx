@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import {Link} from 'react-router-dom'
@@ -9,8 +9,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import {getUserWishlistProduct} from '../features/user/userSlice'
 import { addToWishlist} from '../features/products/productSlice';
 import {toast} from 'react-toastify'
+import { useLocation, useNavigate } from 'react-router-dom';
+
 const Wishlist = () => {
-  const dispatch=useDispatch();
+  const [color,setColor]=useState(null)
+    const [size,setSize]=useState(null)
+    const [quantity,setQuantity]=useState(1)
+    const [alreadyAdded, setAlreadyAdded] =useState(false)
+    const navigate=useNavigate()
+    const cartState=useSelector((state)=>state?.auth?.cartProducts)
+    const location =useLocation()
+    const getProductId=location.pathname.split("/")[2];
+    const dispatch=useDispatch();
     useEffect(()=>{
       getWishlistFromDb()
     },[])
@@ -76,19 +86,19 @@ const Wishlist = () => {
 <div className="size">
 <p>Sizes</p>
 <ul>
-<li>M</li>
-<li>L</li>
-<li>XL</li>
-<li>2XL</li>
-<li>3XL</li>
-<li>4XL</li>
-<li>5XL</li>
+{
+  item?.variants.filter((item, index, arr) => arr.findIndex(i => i.size === item.size) === index)
+                .map((item, index) => <li onClick={() => setSize(item.size)} key={index} style={{border:item.size===size?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.size}</li>)
+}
 </ul>
 </div>
 <div className="color">
 <p>Colors</p>
 <ul>
-<li>{item?.colors}</li>
+{
+  item?.variants?.filter((item, index, arr) => arr.findIndex(i => i.color === item.color) === index)
+                .map((item, index) => <li onClick={() =>( setColor(item.color))} key={index} style={{border:item.color===color?'2px solid black':'1px solid grey',color:item.color===color?'black':'rgb(122, 122, 122)'}}>{item.color}</li>)
+}
 </ul>
 </div>
 <Link to="#"><button>BUY NOW</button></Link>

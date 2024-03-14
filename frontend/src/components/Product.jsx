@@ -49,6 +49,14 @@ const Product = (props) => {
       
       else{
         dispatch(addToCart({productId:props.id,color,quantity,price:props.price,size}))
+        window.fbq('track', 'AddToCart', {
+          content_name:`${props?.title}`,
+          content_category: 'Product',
+          content_ids:`${props?.id}`,
+          content_type: 'product',
+          value:`${props?.price}`,
+          currency: 'USD'
+      });
       }
     } 
     const addToWish=(id)=>{
@@ -78,6 +86,14 @@ const Product = (props) => {
     
     else{
       dispatch(addToCart({productId:props.id,color,quantity,price:props.price,size}))
+      window.fbq('track', 'Purchase', {
+        content_name:`${props?.title}`,
+        content_category: 'Product',
+        content_ids:`${props?.id}`,
+        content_type: 'product',
+        value:`${props?.price}`,
+        currency: 'USD'
+    });
       
       setTimeout(()=>{
         dispatch(getUserCartProduct())
@@ -110,7 +126,7 @@ const [imageIndex, setImageIndex] = useState(0);
 
   return (
     <div className="product-card" key={props.keys}>
- <Link to={`/product/${props.id}`}>
+ <Link to={`/products/${props.handle}`}>
                 <div className="product-img">
                   <img src={props?.img[imageIndex]?.url} alt="" className="product-img1" onError={handleImageError}/>
                   

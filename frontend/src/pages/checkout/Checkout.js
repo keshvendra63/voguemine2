@@ -135,6 +135,14 @@ const checkOutHandler=async()=>{
         // Simulating a successful payment verification for COD orders
         dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: discount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")) }))
         dispatch(deleteCart())
+        window.fbq('track', 'InitiateCheckout', {
+            content_name: 'Checkout',
+            content_category: 'Page',
+            content_ids: 'Checkout Page',
+            content_type: 'page',
+            value:`${finalAmount}`,
+            currency: 'USD'
+        });
         localStorage.removeItem("address")
         dispatch(resetState())
     }
@@ -172,6 +180,14 @@ const checkOutHandler=async()=>{
            dispatch(deleteCart())
            localStorage.removeItem("address")
            dispatch(resetState())
+           window.fbq('track', 'InitiateCheckout', {
+            content_name: 'Checkout',
+            content_category: 'Page',
+            content_ids: 'Checkout Page',
+            content_type: 'page',
+            value:`${finalAmount}`,
+            currency: 'USD'
+        });
        
            },
            prefill: {
@@ -341,7 +357,7 @@ const checkOutHandler=async()=>{
       >
         <div className="razorpay">
             <div className="up">
-            <FormControlLabel value="razorpay" control={<Radio />} label="Razorpay Secure (UPI, Cards, Wallets, NetBanking)" onClick={standardClick}/>
+            <FormControlLabel value="razorpay" control={<Radio />} label="Razorpay Secure (UPI, Cards, Wallets, NetBanking)" onClick={standardClick} disabled={true}/>
             <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" />
             </div>
             <div className="bottom">

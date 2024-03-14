@@ -26,7 +26,7 @@ router.put("/wishlist", authMiddleware, addToWishlist);
 router.put("/rating", authMiddleware, rating);
 
 router.put("/:id", authMiddleware, isAdmin, updateProduct);
-router.get("/:id", getaProduct);
+router.get("/:handle", getaProduct);
 
 router.get("/", getAllProduct);
 router.get("/:collectionName", getAllProduct);

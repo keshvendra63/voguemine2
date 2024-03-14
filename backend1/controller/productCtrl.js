@@ -41,10 +41,8 @@ const deleteProduct = asyncHandler(async (req, res) => {
 });
 
 const getaProduct = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  validateMongoDbId(id);
   try {
-    const findProduct = await Product.findById(id)
+    const findProduct = await Product.findOne({handle:req.params.handle})
     res.json(findProduct);
   } catch (error) {
     throw new Error(error);

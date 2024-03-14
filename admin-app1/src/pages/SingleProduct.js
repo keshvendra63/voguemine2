@@ -2,7 +2,7 @@ import { React, useEffect, useState,useRef } from "react";
 import './extraCss.css'
 import { useDrag, useDrop } from "react-dnd";
 import ReactQuill from "react-quill";
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
@@ -85,6 +85,7 @@ const Image = ({ src, id, index, moveImage, deleteImage }) => {
 
 
 const SingleProduct = () => {
+  const {handle}=useParams()
   const [colors, setColors] = useState('');
   const [sizes, setSizes] = useState('');
   const modules = {
@@ -136,12 +137,12 @@ const SingleProduct = () => {
   useEffect(() => {
 
     if (getProductId !== undefined) {
-      dispatch(getAProduct(getProductId));
+      dispatch(getAProduct(handle));
       img.push(productImages);
     } else {
       dispatch(resetState());
     }
-  }, [getProductId]);
+  }, [handle]);
   useEffect(() => {
     dispatch(getCollections());
   }, []);
