@@ -51,7 +51,7 @@ const getaProduct = asyncHandler(async (req, res) => {
 
 const getAllProduct = asyncHandler(async (req, res) => {
   try {
-    let query ={ };
+    let query ={state:'active'};
 
     // Check if a collection name is provided
     if (req.params.collectionName) {
