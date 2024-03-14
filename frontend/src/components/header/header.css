@@ -10,12 +10,12 @@
     margin: 10px auto;
     justify-content: center;
     align-items: center;
-    width: 90%;
+    width: 98%;
 }
 .search input{
     padding: 10px 20px;
     width: 100%;
-    border-radius: 25px;
+    border-radius: 10px;
     border: none;
     background-color: rgba(225, 225, 225, 0.758);
     border-color: transparent;

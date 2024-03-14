@@ -30,3 +30,15 @@
 .profile .profile-info .right-profile form .input{
     margin-bottom: 15px;
 }
+
+
+@media screen and (max-width:650px) {
+    .profile .profile-info{
+        grid-template-columns: 1fr;
+    
+    }
+    .profile .profile-info .left-profile img{
+        width: 150px;
+        height: 150px;
+    }
+}

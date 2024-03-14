@@ -194,7 +194,7 @@ const SingleProduct = () => {
       values.variants = variants
       console.log(ErrorMessage)
       if (getProductId !== undefined) {
-        const product = { id: getProductId, productData: values };
+        const product = { handle: handle, productData: values };
         dispatch(updateAProduct(product));
         setTimeout(() => {
           dispatch(getProducts())

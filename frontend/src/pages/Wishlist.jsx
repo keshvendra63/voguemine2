@@ -1,10 +1,8 @@
 import React, { useEffect,useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
-import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import {Link} from 'react-router-dom'
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
-import banner from '../images/A21.jpg'
 import { useDispatch, useSelector } from 'react-redux'
 import {getUserWishlistProduct} from '../features/user/userSlice'
 import { addToWishlist} from '../features/products/productSlice';
@@ -37,13 +35,13 @@ const Wishlist = () => {
       },300)
     }
   return (
-    <div className='margin-section'>
+    <div className=''>
         <div className="category-banner">
-        <img src={banner} alt="" />
+        <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710437934/featured_1_kbn550.png" alt="" />
       </div>
             <div className="products-listing">
         <p className="section-heading">Wishlist</p>
-        <div className="product-list">
+        <div className="product-list margin-section">
           {
             wishlists.length===0 && <div>NO DATA</div>
           }

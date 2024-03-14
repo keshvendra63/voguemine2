@@ -48,6 +48,7 @@ const Header = () => {
   const placeholderText = ["Search Shirts", "Search Loafers", "Search Dresses"];
   const [state, setState] = useState("");
   const [search,setSearch] =useState("none")
+  const [svalue,setSvalue]=useState("")
 
 const dispatch=useDispatch()
 
@@ -122,6 +123,15 @@ const loginOpen=()=>{
       window.removeEventListener('scroll', handleScroll);
     };
   }, [scrolled]);
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+        navigate(`/products?search=${svalue}`)
+        setSearch("none")
+    setScrolled(false);
+    }
+    
+};
+
   return (
     <div className={`header ${scrolled ? 'scrolled' : ''}`}>
       
@@ -141,25 +151,7 @@ const loginOpen=()=>{
         </div>
         <div className='head3' style={{textAlign:'right'}}>
           <ul>
-            <li className='li-search'><Typeahead
-        id="pagination-example"
-        onPaginate={() => console.log('Results paginated')}
-        onChange={(selected)=>{
-          navigate(`/products/${selected[0]?.prod}`)
-          dispatch(getAProduct(selected[0]?.prod))
-        }}
-        minLength={2}
-        options={productOpt}
-        labelKey={"details"}
-        paginate={paginate}
-        placeholder={state}
-        renderMenuItemChildren={(option) => (
-          <div>
-            <img src={option.imageUrl} alt="" style={{ width: '50px', height: '50px', marginRight: '10px' }} onError={handleImageError}/>
-            <span>{option.details}</span>
-          </div>
-        )}
-      /><SearchIcon /></li>
+            <li className='li-search'><input type="search" name="" id="" value={svalue} onChange={(e)=>setSvalue(e.target.value)} onKeyDown={handleKeyDown}/><SearchIcon /></li>
             <li><Link to="/wishlist"><FavoriteBorderIcon/></Link></li>
             <li><Link to="/cart"><LocalMallIcon/></Link></li>
             <li onClick={loginOpen}>{
@@ -214,28 +206,7 @@ const loginOpen=()=>{
         </div>
       </div>
       <div className="search" style={{display:search}}>
-      <Typeahead
-        id="pagination-example"
-        onPaginate={() => console.log('Results paginated')}
-        onChange={(selected)=>{
-          setSearch("none")
-          setScrolled(false);
-          navigate(`/products/${selected[0]?.prod}`)
-          dispatch(getAProduct(selected[0]?.prod))
-          
-        }}
-        minLength={2}
-        options={productOpt}
-        labelKey={"details"}
-        paginate={paginate}
-        placeholder="Search here"
-        renderMenuItemChildren={(option) => (
-          <div>
-            <img src={option.imageUrl} alt="" style={{ width: '50px', height: '50px', marginRight: '10px' }} onError={handleImageError}/>
-            <span>{option.details}</span>
-          </div>
-        )}
-      />
+      <input type="search" placeholder={state} value={svalue} onChange={(e)=>setSvalue(e.target.value)} onKeyDown={handleKeyDown}/>
           <li onClick={closeSearch}><ClearOutlinedIcon style={{cursor:'pointer'}}  /></li>
         </div>
 

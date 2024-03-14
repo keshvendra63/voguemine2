@@ -44,7 +44,7 @@ div a{
 }
 
 .margin-section{
-    margin: 0 50px;
+    margin:20px 150px;
 }
 .section-name{
     font-size: 30px;
@@ -52,7 +52,7 @@ div a{
 }
 .products-listing{
     max-width:100vw;
-    padding:50px 0;
+    padding:0 0 20px 0;
 }
 .products-listing .product-name{
     font-weight:400;
@@ -72,6 +72,9 @@ div a{
 }
 .products-listing .product-list .product-card .product-img{
     position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-color: white;
 }
 .products-listing .product-list .product-card .wish-icon{
     position:absolute;
@@ -82,15 +85,17 @@ div a{
 }
 .products-listing .product-list .product-card .product-img img{
     width:100%;
-    aspect-ratio:1/1;
+    height: 100%;
     
 }
 .products-listing .product-list .product-card .product-img .product-img2{
     position: absolute;
+    width: 100%;
     top:0;
     left:0;
     opacity:0;
     transition: all 0s;
+    background-color: white;
 }
 
 .products-listing .product-list .product-card:hover .product-img2{
@@ -298,6 +303,39 @@ div a{
     transition: all 0.5s;
 }
 
+
+.skeleton{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 20px;
+    margin: 20px 0;
+    width: 100%;
+}
+.skeleton div{
+    height: 300px;
+    background-color: rgb(205, 205, 205);
+    border-radius:3px;
+    animation: skelton 1s infinite alternate;}
+.skeleton div:nth-child(4){
+    display: none;
+}
+    @keyframes skelton {
+        0% {
+            background-color: rgb(205, 205, 205); /* Starting color */
+        }
+        100% {
+            background-color: rgb(233, 233, 233); /* Ending color */
+        }
+    }
+
+
+
+@media screen and (max-width:1200px) {
+    .margin-section{
+        margin:20px 80px;
+    }
+}    
+
 @media screen and (max-width:950px){
     .products-listing .product-list{
         grid-template-columns:repeat(2, 1fr);
@@ -312,10 +350,19 @@ div a{
     .products-listing .product-list .product-card .wish-icon{
         display:none;
     }
+    .skeleton{
+        grid-template-columns: 1fr 1fr;
+    }
+    .skeleton div:nth-child(4){
+        display: block;
+    }
+    .margin-section{
+        margin:20px 50px;
+    }
 
 }
 @media screen and (max-width:650px) {
     .margin-section{
-        margin: 0 10px;
+        margin:20px 10px;
     }
 }

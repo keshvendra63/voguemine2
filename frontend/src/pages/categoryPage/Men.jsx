@@ -20,7 +20,7 @@ const Men = () => {
       <div className="category-banner">
         <img src={banner} alt="" />
       </div>
-      <div className="collections">
+      <div className="collections margin-section">
       <Link to="/collections/men-premium-shirt">
         <div className="collection-card">
             

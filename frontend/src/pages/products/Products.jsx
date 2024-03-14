@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import banner from '../../images/A21.jpg'
 import './product.css'
 import {useLocation} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import {getAllProducts } from '../../features/products/productSlice';
+import {getAllProducts,getProducts } from '../../features/products/productSlice';
 import Product from '../../components/Product'
-import { PoweroffOutlined } from '@ant-design/icons';
-import { Button, Flex } from 'antd';
+import { Button} from 'antd';
 const Products = () => {
     const [collectionName,setCollectionName]=useState("")
     const [spinner,setSpinner]=useState("none")
     const [btn,setBtn]=useState("block")
-  const [sort,setSort]=useState(null)
+  const [sort,setSort]=useState("-createdAt")
     const location=useLocation()
   const [limit,setLimit]=useState(21)
   const [page,setPage]=useState(1)
+  const [loading,setLoading]=useState(true)
 
+  const searchParams =location.search
+
+// Get the value of the 'search' parameter
+const searchValue = searchParams.split('=')[1];
 useEffect(()=>{
     if(location.pathname==="/collections/men-premium-shirt"){
         setCollectionName("Men's Premium Shirts")
@@ -171,16 +174,23 @@ useEffect(()=>{
     
 })
     const productState=useSelector((state)=>state?.product?.product)
-    const dispatch=useDispatch();
-    useEffect(()=>{
-        getProducts()
-    },[sort,limit,page,collectionName])
-    const getProducts=()=>{
-        dispatch(getAllProducts({sort,limit,page,collectionName}))
-    }
-    const products=productState? productState:[]
-      
+    const productState1=useSelector((state)=>state?.product?.prdt)
+    const productStat = useSelector((state) => state?.product);
 
+    const {isError,isLoading,isSuccess}=productStat
+    const dispatch=useDispatch();
+    
+    useEffect(()=>{
+      if(searchValue===undefined){
+          dispatch(getAllProducts({sort,limit,page,collectionName}))
+      }
+    
+    else{
+        dispatch(getProducts({searchValue,limit,sort,page}))
+    }
+    },[collectionName,searchValue,page,limit])
+    const products=searchValue===undefined?(productState? productState:[]):(productState1? productState1:[])
+      
     const [loadings, setLoadings] = useState([]);
     const enterLoading = (index) => {
       setLoadings((prevLoadings) => {
@@ -201,10 +211,40 @@ useEffect(()=>{
       setLimit(limit+21)
       enterLoading(0)
     }
+    
+    const sortChange = (e) => {
+      const selectedSort = e.target.value; // Get the selected sorting order
+      setSort(selectedSort); // Update the sort state variable
+      if (searchValue === undefined) {
+          dispatch(getAllProducts({ sort: selectedSort, limit, page, collectionName })); // Dispatch action with the updated sorting order
+      } else {
+          dispatch(getProducts({ searchValue, limit, sort: selectedSort, page })); // Dispatch action with the updated sorting order
+      }
+  };
+
+  useEffect(()=>{
+    if(isLoading && products){
+      setLoading(true)
+    }
+    if(isSuccess && products){
+      setLoading(false)
+    }
+  },[isLoading,isSuccess])
+
+useEffect(()=>{
+    if(products?.length<limit){
+      setBtn("none")
+    }
+    else{
+      setBtn("block")
+    }
+  
+})
+
     return (
         <div className='Products'>
             <div className="product-banner">
-                <img src={banner} alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710437941/featured_pxsye7.png" alt="" />
             </div>
             <div className="products-box margin-section">
  
@@ -213,9 +253,9 @@ useEffect(()=>{
                         <div className="filter">
                             <p>Filter</p>
                         </div>
-                        <p style={{fontWeight:'bold'}}>1000 Products</p>
+                        <p style={{fontWeight:'bold'}}>{limit} Products</p>
                         <div className="sort">
-                            <select name="" id="" style={{fontWeight:'bold'}} onChange={(e)=>setSort(e.target.value)}>
+                            <select name="" id="" style={{fontWeight:'bold'}} onChange={sortChange} value={sort} defaultValue="-createdAt">
                                 <option value="title">Alphabet A-Z</option>
                                 <option value="-title">Alphabet Z-A</option>
                                 <option value="price">Price Low to High</option>
@@ -228,8 +268,14 @@ useEffect(()=>{
                     <hr />
                     <div className="products-listing">
         <p className="section-heading">Featured Products</p>
-                
-
+        {
+          loading? <div className="skeleton">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        :
         <div className="product-list">
             {
 
@@ -244,10 +290,13 @@ useEffect(()=>{
 }
       
         </div>
+}
+
+        
 
       </div>
                     <div className="pages">
-                    <Button type="primary" loading={loadings[0]} onClick={loadMore}>
+                    <Button type="primary" loading={loadings[0]} onClick={loadMore} style={{display:btn}}>
           Load More
         </Button>
                     </div>

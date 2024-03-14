@@ -17,7 +17,7 @@ const Accessories = () => {
     <div className="category-banner">
       <img src={banner} alt="" />
     </div>
-    <div className="collections">
+    <div className="collections margin-section">
       <Link to="/collections/belts">
       <div className="collection-card">
           <img src={a1} alt="" />

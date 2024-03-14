@@ -5,7 +5,6 @@ import {useFormik} from 'formik'
 import TextField from '@mui/material/TextField';
 import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
-import img from '../../images/mens-premium-shirts.jpeg'
 import {getUserOrders} from '../../features/user/userSlice'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -97,8 +96,8 @@ const config2 = {
       <div className="profile-info">
         <div className="left-profile">
             <div className="info">
-                <img src={img} alt="" />
-                <p className="name">{authState?.firstname+" "+authState?.lastname}</p>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXNauy1n3zSAGCX3pWg1xnKeFOjSgG1MVQwQ&usqp=CAU" alt="" />
+                <p className="name" style={{fontWeight:600}}>{authState?.firstname+" "+authState?.lastname}</p>
                 <p className="email">{authState?.email}</p>
             </div>
         </div>

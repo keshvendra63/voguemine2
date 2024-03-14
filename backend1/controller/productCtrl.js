@@ -14,13 +14,11 @@ const createProduct = asyncHandler(async (req, res) => {
 });
 
 const updateProduct = asyncHandler(async (req, res) => {
-  const {id} = req.params;
-  validateMongoDbId(id);
   try {
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
     }
-    const updateProduct = await Product.findOneAndUpdate({_id:id} , req.body, {
+    const updateProduct = await Product.findOneAndUpdate({handle:req.params.handle} , req.body, {
       new: true,
     });
     res.json(updateProduct);
@@ -30,10 +28,8 @@ const updateProduct = asyncHandler(async (req, res) => {
 });
 
 const deleteProduct = asyncHandler(async (req, res) => {
-  const {id} = req.params;
-  validateMongoDbId(id);
   try {
-    const deleteProduct = await Product.findOneAndDelete({_id:id});
+    const deleteProduct = await Product.findOneAndDelete({handle:req.params.handle});
     res.json(deleteProduct);
   } catch (error) {
     throw new Error(error);
@@ -51,16 +47,26 @@ const getaProduct = asyncHandler(async (req, res) => {
 
 const getAllProduct = asyncHandler(async (req, res) => {
   try {
-    let query ={state:'active'};
+    let query ={};
 
     // Check if a collection name is provided
     if (req.params.collectionName) {
       query = { collectionName: req.params.collectionName};
     }
 
+    if (req.query.search) {
+      const searchRegex = new RegExp(req.query.search, "i");
+      const keywords = req.query.search.toLowerCase().split(' ');
+      query.$or = [
+          { title: { $regex: searchRegex } },
+          { sku: { $regex: searchRegex } },
+          { 'variants.color': { $in: keywords } },
+          { description: { $regex: searchRegex } }
+      ];
+  }
     // Filtering
     const queryObj = { ...req.query };
-    const excludeFields = ["page", "sort", "limit", "fields"];
+    const excludeFields = ["page", "sort", "limit", "fields","search"];
     excludeFields.forEach((el) => delete queryObj[el]);
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);

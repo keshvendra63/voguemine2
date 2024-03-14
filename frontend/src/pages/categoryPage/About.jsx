@@ -9,7 +9,7 @@ const About = () => {
             <div className="category-banner">
         <img src={banner} alt="" />
       </div>
-      <div className="about">
+      <div className="about margin-section">
         <div className="left-about">
             <img src={about_img} alt="" />
             

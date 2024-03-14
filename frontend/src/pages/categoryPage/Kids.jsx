@@ -17,7 +17,7 @@ const Kids = () => {
     <div className="category-banner">
       <img src={banner} alt="" />
     </div>
-    <div className="collections">
+    <div className="collections margin-section">
       <Link to="/collections/kids-hoodie">
       <div className="collection-card">
           <img src={k1} alt="" />

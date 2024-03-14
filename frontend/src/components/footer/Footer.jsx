@@ -52,10 +52,10 @@ const Footer = () => {
         <ul>
             <li>Phone: <Link to="tel:+919899202079">+91 9899202079</Link></li>
             <li>Email: <Link to="mailto:customersupport@voguemine.com">customersupport@voguemine.com</Link></li>
+            <li>Address: H-119, Sector 63, Noida, U.P, 201301</li>
             <ul>
                 <li><Link to="https://www.instagram.com/voguemine_fashion/"><InstagramIcon/></Link></li>
                 <li><Link to="https://www.facebook.com/vogueminefashion"><FacebookIcon/></Link></li>
-                <li><Link to="#"><LinkedInIcon/></Link></li>
             </ul>
         </ul>
         </Col>

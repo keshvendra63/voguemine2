@@ -21,7 +21,7 @@ const Women = () => {
             <div className="category-banner">
                 <img src={banner} alt="" />
             </div>
-            <div className="collections">
+            <div className="collections margin-section">
                 <Link to="/collections/womens-winter-coats">
                 <div className="collection-card">
                     <img src={w12} alt="" />

@@ -1,10 +1,6 @@
 import React,{useEffect, useState} from 'react'
 import './cart.css'
-import banner from '../../images/A21.jpg'
 import LocalMallIcon from '@mui/icons-material/LocalMall';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {getUserCartProduct, removeFromCart, updateQuantityFromCart} from '../../features/user/userSlice'
@@ -52,12 +48,12 @@ useEffect (()=> {
     return (
         <div className='cart'>
             <div className="cart-banner">
-                <img src={banner} alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710437939/featured_2_jgppuj.png" alt="" />
             </div>
             <h1 style={{textAlign:'center',margin:'20px 0',fontSize:'30px',display:'flex',alignItems:'center',justifyContent:'center'}}><LocalMallIcon style={{fontSize:'30px',marginRight:'10px'}}/> My Cart</h1>
             {
                (cartState?.length !== null || cartState?.length !== 0)&&
-                <div className="cart-content container">
+                <div className="cart-content margin-section">
                 <div className="left-cart">
                     <hr />
                     {

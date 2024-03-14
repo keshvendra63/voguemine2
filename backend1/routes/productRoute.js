@@ -25,13 +25,13 @@ router.put(
 router.put("/wishlist", authMiddleware, addToWishlist);
 router.put("/rating", authMiddleware, rating);
 
-router.put("/:id", authMiddleware, isAdmin, updateProduct);
+router.put("/:handle", authMiddleware, isAdmin, updateProduct);
 router.get("/:handle", getaProduct);
 
 router.get("/", getAllProduct);
 router.get("/:collectionName", getAllProduct);
 
-router.delete("/:id", authMiddleware, isAdmin, deleteProduct);
+router.delete("/:handle", authMiddleware, isAdmin, deleteProduct);
 
 
 module.exports = router;

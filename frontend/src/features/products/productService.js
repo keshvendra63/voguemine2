@@ -3,11 +3,11 @@ import {base_url, config} from '../../utils/axiosConfig'
 
 const getProducts=async(data)=>{
     
-    let url = `${base_url}product?page=${data.page}&limit=${data.limit}`;
+    let url = `${base_url}product?page=${data.page}&limit=${data.limit}&collectionName=${data.collectionName}&state=active&sort=${data.sort}`;
 
     // Check if collectionName is provided
     if (data && data.collectionName) {
-        url += `&collectionName=${data.collectionName}`;
+        url += ``;
     }
 
     // Add pagination parameters
@@ -24,8 +24,8 @@ const getProducts=async(data)=>{
         throw error;
     }
 }
-const getAllProducts = async () => {
-    const response = await axios.get(`${base_url}product?limit=5000`);
+const getAllProducts = async (data) => {
+    const response = await axios.get(`${base_url}product?search=${data.searchValue}&state=active&page=${data.page}&limit=${data.limit}&sort=${data.sort}`);
   
     return response.data;
   };

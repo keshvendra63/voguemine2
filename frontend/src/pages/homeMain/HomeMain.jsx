@@ -18,14 +18,19 @@ import Product from '../../components/Product'
 const HomeMain = () => {
   const collections = ["Men's Premium Shirts", "Men's Premium T Shirts", "Men's Denim Jeans"];
   const [data,setData]=useState([])
+  const [loading,setLoading]=useState(true)
   const page = 1;
   const limit = 6;
   const productState = useSelector((state) => state?.product?.product);
+  const productStat = useSelector((state) => state?.product);
+
+  const {isError,isLoading,isSuccess}=productStat
+  const sort="-createdAt"
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const promises = collections.map((collectionName) =>dispatch(getAllProducts({ limit, collectionName, page })));
+      const promises = collections.map((collectionName) =>dispatch(getAllProducts({ limit, collectionName, page,sort })));
       
       const dat=await Promise.all(promises)
       const combinedPayArray = dat.reduce((accumulator, currentObject) => {
@@ -52,6 +57,16 @@ const HomeMain = () => {
     { width: 1750, itemsToShow: 6 },
 
   ]
+
+
+  useEffect(()=>{
+    if(isLoading && data){
+      setLoading(true)
+    }
+    if(isSuccess && data){
+      setLoading(false)
+    }
+  },[isLoading,isSuccess])
   
 
   return (
@@ -95,16 +110,16 @@ const HomeMain = () => {
         <div className="shoe-left">
           <Carousel>
             <Carousel.Item>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709557920/217_tuup4g.jpg" alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435068/02_1_b3pb1b.jpg" alt="" />
             </Carousel.Item>
             <Carousel.Item>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709557922/071_hneso9.jpg" alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435064/03_1_vl6zcn.jpg" alt="" />
             </Carousel.Item>
             <Carousel.Item>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709557922/241_bfrxpy.jpg" alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435065/01_2_u32eu9.jpg" alt="" />
             </Carousel.Item>
             <Carousel.Item>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709557921/253_7_cnfey8.jpg" alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435057/04_qr04zp.jpg" alt="" />
             </Carousel.Item>
           </Carousel>
 
@@ -117,33 +132,51 @@ const HomeMain = () => {
       </div>
       <div className="products-listing">
         <p className="section-heading">Men's Featured Products</p>
-                
 
-        <div className="product-list">
-            {
-                shirts.map((arm,index)=>{
 
-                        return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>
-                   
-                    
-                })
-            }
-      
+        {
+          loading? <div className="skeleton">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
+        :
+<div className="product-list">
+
+         
+{
+    shirts.map((arm,index)=>{
+
+            return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>
+       
+        
+    })
+}
+
+</div>
+        }
+                
+        
+        
 
       </div>
       <div className="trending-collections">
         <p className="section-heading">Men's Trending</p>
         <div className="trending-collection">
+          <Link to="/collections/men-premium-shirt">
           <div className="trending-card">
             <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a28_ywebvi.jpg" alt="" />
           </div>
+          </Link><Link to="/collections/t-shirts">
           <div className="trending-card">
             <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a29_e50fly.jpg" alt="" />
           </div>
+          </Link><Link to="/collections/mens-denim-jeans">
           <div className="trending-card">
             <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341077/a27_juuuzb.jpg" alt="" />
           </div>
+          </Link>
         </div>
       </div>
       <div className="shoes-section">
@@ -151,21 +184,21 @@ const HomeMain = () => {
         <div className="shoe-right">
           <p >Ladies Premium Sandals and Heels</p>
           <p>Style like a Queen with our gorgeous selection of Premium Sandals and Heels for Women.</p>
-          <Link to="#" className='btn'>BUY NOW</Link>
+          <Link to="/collections/heeled-sandals" className='btn'>BUY NOW</Link>
         </div>
         <div className="shoe-left">
           <Carousel>
             <Carousel.Item>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558774/01_wmosac.jpg" alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435076/5_bectm1.jpg" alt="" />
             </Carousel.Item>
             <Carousel.Item>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558771/19_ap2jmj.jpg" alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435069/8_elliue.jpg" alt="" />
             </Carousel.Item>
             <Carousel.Item>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558771/49_fwk6ji.jpg" alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435069/6_frkrlu.jpg" alt="" />
             </Carousel.Item>
             <Carousel.Item>
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558771/61_dbzjev.jpg" alt="" />
+              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435065/7_avg0cf.jpg" alt="" />
             </Carousel.Item>
           </Carousel>
 
@@ -174,33 +207,47 @@ const HomeMain = () => {
       <div className="products-listing">
         <p className="section-heading">Featured Products</p>
                 
-
-        <div className="product-list">
-            {
-                
-                tshirt.map((arm,index)=>{
-
-                        return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>
-                   
-                    
-                })
-            }
-      
+        {
+          loading? <div className="skeleton">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
+        :
+        <div className="product-list">
+        {
+            
+            tshirt.map((arm,index)=>{
+
+                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>
+               
+                
+            })
+        }
+  
+    </div>
+}
+       
 
       </div>
       <div className="trending-collections">
         <p className="section-heading">Women's Trending</p>
         <div className="trending-collection">
+          <Link to="/collections/womens-dress">
           <div className="trending-card">
             <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341073/a31_kv2mnb.jpg" alt="" />
           </div>
+          </Link><Link to="/collections/womens-shirt-t-shirts">
           <div className="trending-card">
             <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341073/a30_g0wu0m.jpg" alt="" />
           </div>
+          </Link>
+          <Link to="/collections/womens-co-ord-set">
           <div className="trending-card">
             <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a32_l5be5c.jpg" alt="" />
           </div>
+          </Link>
         </div>
       </div>
       <div className="shoes-section">
@@ -224,25 +271,34 @@ const HomeMain = () => {
         <div className="shoe-right">
           <p>Luxury Accessories for Everlasting Grace</p>
           <p>Experience everlasting grace through our collection of luxurious accessories, adding a touch of timeless elegance to your style.</p>
-          <a className='btn'>BUY NOW</a>
+          <Link to="/accessories" className='btn'>BUY NOW</Link>
         </div>
       </div>
       <div className="products-listing">
         <p className="section-heading">Featured Products</p>
-                
-
-        <div className="product-list">
-            {
-                
-                jeans.map((arm,index)=>{
-
-                        return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>
-                   
-                    
-                })
-            }
-      
+        {
+          loading? <div className="skeleton">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
+        :
+        <div className="product-list">
+        {
+            
+            jeans.map((arm,index)=>{
+
+                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>
+               
+                
+            })
+        }
+  
+    </div>
+}   
+
+       
 
       </div>
 
