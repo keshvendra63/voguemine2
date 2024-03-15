@@ -3,6 +3,7 @@ import './product.css'
 import {useLocation} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {getAllProducts,getProducts } from '../../features/products/productSlice';
+import {getUserWishlistProduct} from '../../features/user/userSlice'
 import Product from '../../components/Product'
 import { Button} from 'antd';
 const Products = () => {
@@ -243,10 +244,12 @@ useEffect(()=>{
   
 })
 
+
+
     return (
         <div className='Products'>
-            <div className="product-banner">
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710437941/featured_pxsye7.png" alt="" />
+            <div className="category-banner">
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710505437/a36_ba131u.jpg" alt="" />
             </div>
             <div className="products-box margin-section">
  

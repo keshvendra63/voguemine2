@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import {useFormik} from 'formik'
-import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -17,9 +15,7 @@ import AutoAwesomeMosaicOutlinedIcon from '@mui/icons-material/AutoAwesomeMosaic
 import logo from '../../images/logo.png'
 import {Link,useNavigate} from 'react-router-dom'
 import './header.css'
-import { registerUser,loginUser,forgotPasswordToken, getUserCartProduct } from '../../features/user/userSlice';
-import {getAProduct,getProducts} from '../../features/products/productSlice'
-import { Typeahead } from 'react-bootstrap-typeahead';
+import {getProducts} from '../../features/products/productSlice'
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 const delayExecution = (mls) => {
   return new Promise((resolve) => {
@@ -27,23 +23,7 @@ const delayExecution = (mls) => {
   });
 };
 
-const signupSchema=yup.object({
-  firstname:yup.string().required("First Name is required"),
-  lastname:yup.string().required("Last Name is required"),
-  email:yup.string().email("Email should be valid").required("Email is Required"),
-  mobile:yup.string().required("Mobile number is required"),
-  password:yup.string().required("Password is required")
-})
-const loginSchema=yup.object({
-  email:yup.string().email("Email should be valid").required("Email is Required"),
-  password:yup.string().required("Password is required")
-})
-const emailSchema=yup.object({
-  email:yup.string().email("Email should be valid").required("Email is Required"),
-})
 const Header = () => {
-  const [paginate, setPaginate] = useState(true);
-  const [productOpt,setProductOpt]=useState([])
   const productState=useSelector((state)=>state?.product?.prdt)
   const placeholderText = ["Search Shirts", "Search Loafers", "Search Dresses"];
   const [state, setState] = useState("");
@@ -70,21 +50,6 @@ const navigate=useNavigate()
   };
   const [imageIndex, setImageIndex] = useState(0);
 
-  const handleImageError = () => {
-    // Increment the image index to load the next image URL
-    setImageIndex(prevIndex => prevIndex + 1);
-  }; 
-  useEffect(() => {
-    let data = [];
-    for (let index = 0; index < productState?.length; index++) {
-      const element = productState[index];
-      // Extracting all relevant product details for search
-      const imageUrl = element?.images[imageIndex]?.url;
-      const details = `${element.sku} ${element.title} ${element.description}`;
-      data.push({ id: index, prod: element?.handle, details,imageUrl }); // Include all relevant details
-    }
-    setProductOpt(data);
-  }, [productState]);
 
 useEffect(()=>{
   dispatch(getProducts())

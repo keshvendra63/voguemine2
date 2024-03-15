@@ -1,14 +1,6 @@
 .cart{
     max-width: 100vw;
 }
-.cart .cart-banner{
-    max-width: 100%;
-    height: 50vh;
-}
-.cart .cart-banner img{
-    width: 100%;
-    height: 100%;
-}
 .cart-content{
     margin-top: 50px;
     display: flex;

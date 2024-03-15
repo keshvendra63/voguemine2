@@ -47,8 +47,8 @@ useEffect (()=> {
 },[cartState])
     return (
         <div className='cart'>
-            <div className="cart-banner">
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710437939/featured_2_jgppuj.png" alt="" />
+            <div className="category-banner">
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710505435/a34_pjehqe.jpg" alt="" />
             </div>
             <h1 style={{textAlign:'center',margin:'20px 0',fontSize:'30px',display:'flex',alignItems:'center',justifyContent:'center'}}><LocalMallIcon style={{fontSize:'30px',marginRight:'10px'}}/> My Cart</h1>
             {

@@ -37,7 +37,7 @@ const Wishlist = () => {
   return (
     <div className=''>
         <div className="category-banner">
-        <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710437934/featured_1_kbn550.png" alt="" />
+        <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710505441/a33_dc4zuw.jpg" alt="" />
       </div>
             <div className="products-listing">
         <p className="section-heading">Wishlist</p>

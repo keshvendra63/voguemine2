@@ -1,14 +1,7 @@
 .Products{
     max-width: 100vw;
 }
-.Products .product-banner{
-    max-width: 100%;
-    height: 50vh;
-}
-.Products .product-banner img{
-    width: 100%;
-    height: 100%;
-}
+
 .Products .products-box{
     position: relative;
     margin-top: 50px;

@@ -13,6 +13,8 @@ const SingleProduct = () => {
   const page=1
   const [color,setColor]=useState(null)
   const [size,setSize]=useState(null)
+  const [sold,setSold]=useState("none")
+
   const [quantity,setQuantity]=useState(1)
   const [alreadyAdded, setAlreadyAdded] =useState(false)
   const [mainImage,setMainImage]=useState("")
@@ -139,6 +141,26 @@ const [imageIndex, setImageIndex] = useState(0);
       setBtnDisable(false)
     }
   },[color,size])
+  useEffect(() => {
+    if (singleProductState?.variants) {
+      const firstAvailableVariant = singleProductState?.variants?.find(variant => variant.quantity > 0);
+      if (firstAvailableVariant) {
+        setColor(firstAvailableVariant.color);
+        setSize(firstAvailableVariant.size);
+      }
+      if(!firstAvailableVariant){
+        setBtnDisable(true) 
+      }
+
+      const totalQuantity = singleProductState?.variants?.reduce((total, item) => total + item.quantity, 0);
+      if (totalQuantity === 0) {
+        setSold("block");
+      } else {
+        setSold("none");
+      }
+    }
+  }, [singleProductState?.variants]);
+ 
   
   return (
     <div className='single-product'>
@@ -160,7 +182,16 @@ const [imageIndex, setImageIndex] = useState(0);
         </div>
         <div className="prdt-right">
             <p className="product-name">{singleProductState?.title}</p>
+            <div style={{display:'flex',alignItems:'center'}}>
             <p className="prdt-price">&#8377;{singleProductState?.price}</p>
+            <p style={{display:sold,
+            margin:'0 10px', 
+            backgroundColor: 'rgb(37, 37, 37)',
+    color: 'white',
+    borderRadius: '4px',
+    padding:'0px 10px',
+    height: '24px'}}>Sold out</p>
+            </div>
             <div className="size prdt-variation">
                 <p>SIZE :</p>
                 <ul>

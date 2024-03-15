@@ -24,6 +24,8 @@ import {getAllProducts } from './features/products/productSlice';
 import ScrollToTop from './components/ScrollToTop';
 import Testing from './pages/Testing';
 import Login from './pages/login/Login';
+import Policies from './pages/policies/Policies';
+import Contact from './pages/contact/Contact';
 
 function App() {
 
@@ -91,6 +93,12 @@ function App() {
         <Route path="checkout" element={<Checkout/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/testing' element={<Testing/>}/>
+        <Route path='/pages/shipping-policy' element={<Policies/>}/>
+        <Route path='/pages/refund-and-return-policy' element={<Policies/>}/>
+        <Route path='/pages/terms-of-service' element={<Policies/>}/>
+        <Route path='/pages/privacy-policy' element={<Policies/>}/>
+        <Route path='/pages/contact' element={<Contact/>}/>
+
       </Routes>
       <Footer/>
     </Router>

@@ -23,6 +23,9 @@
 .header.scrolled {
     background-color: white;
 }
+.header{
+    background-color: transparent;
+}
 
 .headerdiv{
     display: grid;
@@ -274,6 +277,7 @@ width: 100px;
 @media screen and (max-width:950px) {
     .header{
         padding: 12px 15px;
+        background-color: white;    
 
     }
     .header1{
