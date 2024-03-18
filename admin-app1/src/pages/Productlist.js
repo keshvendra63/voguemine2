@@ -89,7 +89,7 @@ const Productlist = () => {
           </Link>
           <button
             className="ms-3 fs-3 text-danger bg-transparent border-0"
-            onClick={() => showModal(productState[i]._id)}
+            onClick={() => showModal(productState[i]?.handle)}
           >
             <AiFillDelete />
           </button>
