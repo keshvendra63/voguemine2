@@ -65,7 +65,7 @@ orderState?.map((item)=>{
       // Extracting all relevant product details for search
       const imageUrl = element?.images[imageIndex]?.url;
       const details = `${element.sku} ${element.title} ${element.description}`;
-      data.push({ id: index, prod: element?._id, details,imageUrl }); // Include all relevant details
+      data.push({ id: index, prod: element?.handle, details,imageUrl }); // Include all relevant details
     }
     setProductOpt(data);
   }, [productState]);

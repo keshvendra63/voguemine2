@@ -11,7 +11,6 @@ var productSchema = new mongoose.Schema(
     },
     handle: {
       type: String,
-      required: true,
       unique: false,
       lowercase: true,
     },

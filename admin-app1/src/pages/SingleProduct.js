@@ -17,7 +17,7 @@ import { createProducts, resetState, getAProduct, updateAProduct, getProducts} f
 import { getCollections } from "../features/collection/collectionSlice";
 let schema = yup.object().shape({
   title: yup.string().required("Title is Required"),
-  handle: yup.string().required("handle is Required"),
+  handle: yup.string(),
   description: yup.string().required("Description is Required"),
   price: yup.number().required("Price is Required"),
   category: yup.string().required("Category is Required"),
