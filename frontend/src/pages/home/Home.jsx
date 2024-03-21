@@ -1,6 +1,7 @@
 import './home.css'
 import home_video from '../../images/mainVideo.mp4'
 import { Link } from 'react-router-dom'
+import logo from '../../images/logo.png'
 const Home = () => {
     
   return (
@@ -11,8 +12,7 @@ const Home = () => {
 </video>
 </div>
 <div className="head-text">
-<h1 style={{color:'white',fontSize:'25px',letterSpacing:'10px'}}>VOGUEMINE</h1>
-<p style={{color:'white',marginTop:'-10px',fontSize:'10px',wordSpacing:'2px',width:'100%',textAlign:'center',marginLeft:'-10px',letterSpacing:'3px'}}>THE MARQUE AT YOUR PRICE</p>
+<img src={logo} alt="" style={{position:'absolute',top:'20px',width:'200px'}}/>
 </div>
 <Link to="/home" style={{textDecoration:'none',color:'white'}}>SHOP NOW</Link>
     </div>
