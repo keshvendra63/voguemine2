@@ -457,17 +457,14 @@ const getSingleOrder=asyncHandler(async(req,res)=>{
   }
 })
 const updateOrder=asyncHandler(async(req,res)=>{
-  const {id}=req.params
-  try{
-    const orders=await Order.findById(id)
-    orders.orderStatus=req.body.status
-    await orders.save()
-    res.json({
-      orders
-    })
-  }
-  catch(error){
-    throw new Error(error)
+  const { id } = req.params;
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.json(updatedOrder);
+  } catch (error) {
+    throw new Error(error);
   }
 })
 const getMonthWiseOrderIncome=asyncHandler(async(req,res)=>{
