@@ -489,11 +489,22 @@ const getMonthWiseOrderIncome=asyncHandler(async(req,res)=>{
         }
       }
     },{
-      $group:{
-        _id:{
-          month:"$month"
-        },amount:{$sum:"$finalAmount"},
-        count:{$sum:1}
+      $group: {
+        _id: {
+          month: "$month"
+        },
+        amount: { $sum: "$finalAmount" },
+        count: { $sum: 1 },
+        items: { $push: "$orderItems" } // Accumulate all items in orders
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        amount: 1,
+        count: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
       }
     }
   ])
@@ -522,10 +533,20 @@ const getYearlyTotalOrders=asyncHandler(async(req,res)=>{
       }
     },
     {
-      $group:{
-        _id:null,
-        count:{$sum:1},
-        amount:{$sum:"$finalAmount"}
+      $group: {
+        _id: null,
+        count: { $sum: 1 },
+        amount: { $sum: "$finalAmount" },
+        items: { $push: "$orderItems" } // Accumulate all items in orders
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        amount: 1,
+        count: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
       }
     }
   ])
@@ -550,13 +571,101 @@ const getTodaysOrderIncome = asyncHandler(async (req, res) => {
       $group: {
         _id: null,
         totalIncome: { $sum: "$finalAmount" },
-        totalCount: { $sum: 1 }
+        totalCount: { $sum: 1 },
+        items: { $push: "$orderItems" } // Accumulate all items in orders
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        totalIncome: 1,
+        totalCount: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
       }
     }
   ]);
 
   res.json(data);
 });
+const getWeekWiseOrderIncome = asyncHandler(async (req, res) => {
+  // Get the start and end dates for the current week
+  const today = new Date();
+  const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()); // Start of the week (Sunday)
+  const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (6 - today.getDay())); // End of the week (Saturday)
+
+  const data = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: startOfWeek,
+          $lte: endOfWeek
+        }
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalIncome: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        items: { $push: "$orderItems" } // Accumulate all items in orders
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        totalIncome: 1,
+        totalCount: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
+      }
+    }
+  ]);
+
+  res.json(data);
+});
+
+
+const getYesterdayOrderIncome = asyncHandler(async (req, res) => {
+  // Get yesterday's date
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  const startOfDay = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0); // Start of yesterday
+  const endOfDay = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59); // End of yesterday
+
+  const data = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: startOfDay,
+          $lte: endOfDay
+        }
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalIncome: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        items: { $push: "$orderItems" } // Accumulate all items in orders
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        totalIncome: 1,
+        totalCount: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
+      }
+    }
+  ]);
+
+  res.json(data);
+});
+
 
 
 module.exports = {
@@ -588,5 +697,7 @@ module.exports = {
   getSingleOrder,
   updateOrder,
   emptyCart,
-  getTodaysOrderIncome
+  getTodaysOrderIncome,
+  getWeekWiseOrderIncome,
+  getYesterdayOrderIncome
 };
