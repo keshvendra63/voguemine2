@@ -23,6 +23,10 @@ var couponSchema = new mongoose.Schema({
   customertype:{
     type:String,
     required:true,
+  },
+  status:{
+    type:"String",
+    required:true,
   }
 });
 
