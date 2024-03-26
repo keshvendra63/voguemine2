@@ -13,9 +13,17 @@ var couponSchema = new mongoose.Schema({
     required: true,
   },
   discount: {
-    type: Number,
+    type: String,
     required: true,
   },
+  discounttype:{
+    type:String,
+    required:true,
+  },
+  customertype:{
+    type:String,
+    required:true,
+  }
 });
 
 //Export the model
