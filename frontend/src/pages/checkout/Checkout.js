@@ -36,9 +36,10 @@ const Checkout = () => {
     const [coupon,setCoupon]=useState("")
     const [couponAmount,setCouponAmount]=useState(0)
     const couponState=useSelector((state)=>state?.coupon?.coupon)
+    console.log(couponState)
     const applyCoupon=()=>{
         couponState.map((item)=>{
-            if(item.name===coupon){
+            if(item?.name===coupon){
                 setCouponAmount((item.discount/100)*(totalAmount))
             }
             else{
