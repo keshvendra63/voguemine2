@@ -28,7 +28,18 @@ var couponSchema = new mongoose.Schema({
     type:"String",
     required:true,
   }
-});
+  ,
+  minItem:{
+    type:Number,
+  },
+  cEmail:{
+    type:String,
+  },
+
+},{
+  timestamps:true,
+}
+);
 
 //Export the model
 module.exports = mongoose.model("Coupon", couponSchema);
