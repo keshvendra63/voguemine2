@@ -9,6 +9,31 @@ var collectionSchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
+    img:{
+      type:String,
+
+    },
+    category:{
+      type:String,
+      
+    },
+    handle:{
+      type:String,
+      unique: true,
+      lowercase: true,
+    },
+    status:{
+      type:String,
+    },
+    products:[
+      {
+        product:{
+          type:mongoose.Schema.Types.ObjectId,
+        ref:"Product",
+        }
+      }
+    ]
+
   },
   {
     timestamps: true,

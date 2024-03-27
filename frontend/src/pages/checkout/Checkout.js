@@ -40,11 +40,51 @@ const Checkout = () => {
     const applyCoupon=()=>{
         couponState.map((item)=>{
             if(item?.name===coupon){
-                setCouponAmount((item.discount/100)*(totalAmount))
+                if(item?.status==="active"){
+                    if(item?.discounttype==="freeShip"){
+                        setShippingCost(0)
+                    }
+                    if(item?.discounttype==="buyX"){
+                        if(item?.minItem<=10){
+                          if(item?.minItem>=cartState?.length){
+                            if(item?.discount?.includes("%")){
+                                const percent=parseFloat(item?.discount)/100
+                                setCouponAmount(percent*totalAmount)
+                            }
+                            else{
+                                setCouponAmount(parseInt(item?.discount))
+                            }
+                          }
+                          else{
+                            toast.error("")
+                          }
+                        }
+                        else{
+                            if(item?.minItem>=totalAmount){
+                                if(item?.discount?.includes("%")){
+                                    const percent=parseFloat(item?.discount)/100
+                                    setCouponAmount(percent*totalAmount)
+                                }
+                                else{
+                                    setCouponAmount(parseInt(item?.discount))
+                                }
+                              }
+                        }
+                    }
+                    if(item?.discounttype==="order"){
+                        if(item?.discount?.includes("%")){
+                            const percent=parseFloat(item?.discount)/100
+                            setCouponAmount(percent*totalAmount)
+                        }
+                        else{
+                            setCouponAmount(parseInt(item?.discount))
+                        }
+                    }
+                }
             }
-            else{
-                toast.error("Invalid Coupon")
-            }
+            // else{
+            //     toast.error("Invalid Coupon")
+            // }
         })
     }
     const standardClick=()=>{
