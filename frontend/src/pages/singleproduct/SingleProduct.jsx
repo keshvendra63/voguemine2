@@ -52,7 +52,7 @@ const SingleProduct = () => {
       
     }
   })
-  const addTocart=()=>{
+  const addTocart=async()=>{
     if(color===null){
       toast.error("Please Select Color")
       return false
@@ -67,7 +67,7 @@ const SingleProduct = () => {
     }
     
     else{
-      dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price,size}))
+      await dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price,size}))
       window.fbq('track', 'AddToCart', {
         content_name:`${singleProductState?.title}`,
         content_category:`${singleProductState?.category}`,
@@ -80,12 +80,12 @@ const SingleProduct = () => {
       setTimeout(()=>{
         dispatch(getUserCartProduct())
         navigate('/cart')
-      },500)
+      },1000)
     }
     
     
 }
-const buyNow=()=>{
+const buyNow=async()=>{
   if(color===null){
     toast.error("Please Select Color")
     return false
@@ -102,7 +102,7 @@ const buyNow=()=>{
  
 
   else{
-    dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price,size}))
+    await dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price,size}))
     window.fbq('track', 'Purchase', {
       content_name:`${singleProductState?.title}`,
       content_category:`${singleProductState?.category}`,
@@ -114,7 +114,7 @@ const buyNow=()=>{
     setTimeout(()=>{
       dispatch(getUserCartProduct())
       navigate('/checkout')
-    },500)
+    },1000)
   }
   
   

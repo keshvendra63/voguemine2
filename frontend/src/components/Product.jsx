@@ -29,7 +29,7 @@ const Product = (props) => {
     const dispatch=useDispatch();
 
    
-    const addTocart=()=>{
+    const addTocart=async()=>{
       if(color===null){
         toast.error("Please Select Color")
         return false
@@ -45,7 +45,7 @@ const Product = (props) => {
       
       
       else{
-        dispatch(addToCart({productId:props.id,color,quantity,price:props.price,size}))
+        await dispatch(addToCart({productId:props.id,color,quantity,price:props.price,size}))
         window.fbq('track', 'AddToCart', {
           content_name:`${props?.title}`,
           content_category: 'Product',
@@ -68,7 +68,7 @@ const Product = (props) => {
  }
   }
 
-  const buyNow=()=>{
+  const buyNow=async()=>{
     if(color===null){
       toast.error("Please Select Color")
       return false
@@ -83,7 +83,7 @@ const Product = (props) => {
     }
     
     else{
-      dispatch(addToCart({productId:props.id,color,quantity,price:props.price,size}))
+      await dispatch(addToCart({productId:props.id,color,quantity,price:props.price,size}))
       window.fbq('track', 'Purchase', {
         content_name:`${props?.title}`,
         content_category: 'Product',
@@ -96,7 +96,7 @@ const Product = (props) => {
       setTimeout(()=>{
         dispatch(getUserCartProduct())
         navigate('/checkout')
-      },500)
+      },1000)
     }
     
     

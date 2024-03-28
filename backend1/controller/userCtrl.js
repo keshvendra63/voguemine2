@@ -194,7 +194,15 @@ const saveAddress = asyncHandler(async (req, res, next) => {
 
 const getallUser = asyncHandler(async (req, res) => {
   try {
-    const getUsers = await User.find().populate("wishlist");
+    const page = parseInt(req.query.page) || 1; // Get the page number from the query parameter, default to 1
+    const limit = parseInt(req.query.limit) || 10; // Get the limit from the query parameter, default to 10
+    const skip = (page - 1) * limit; // Calculate the number of documents to skip
+
+    const getUsers = await User.find()
+      .populate("wishlist")
+      .skip(skip) // Skip the specified number of documents
+      .limit(limit); // Limit the number of documents returned
+
     res.json(getUsers);
   } catch (error) {
     throw new Error(error);
