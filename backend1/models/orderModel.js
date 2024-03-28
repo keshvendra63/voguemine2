@@ -7,6 +7,10 @@ var orderSchema = new mongoose.Schema(
       type:mongoose.Schema.Types.ObjectId,
       ref:"User",
     },
+    orderNumber: {
+      type: String,
+      unique: true,
+    },
     shippingInfo:{
       firstname:{
         type:String,
@@ -115,6 +119,25 @@ var orderSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+orderSchema.pre("save", async function (next) {
+  try {
+    if (!this.orderNumber) {
+      const latestOrder = await this.constructor.findOne({}, {}, { sort: { 'createdAt': -1 } });
+      let latestOrderNumber = 0;
 
-//Export the model
-module.exports = mongoose.model("Order", orderSchema);
+      if (latestOrder && latestOrder.orderNumber) {
+        latestOrderNumber = parseInt(latestOrder.orderNumber.replace('VM', ''), 10);
+      }
+
+      const newOrderNumber = `VM${latestOrderNumber + 1}`;
+      this.orderNumber = newOrderNumber;
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+const Order = mongoose.model("Order", orderSchema);
+
+module.exports = Order;

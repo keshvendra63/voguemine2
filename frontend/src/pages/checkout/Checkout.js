@@ -162,7 +162,7 @@ useEffect(()=>{
         
     }
     setCartProductState(items)
-},[])
+},[cartState])
 
 const checkOutHandler=async()=>{
     if (orderType === "COD") {
