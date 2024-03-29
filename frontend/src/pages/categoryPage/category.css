@@ -51,6 +51,7 @@
 .categoryPage .about{
     display: grid;
     grid-template-columns: 1fr 1fr;
+    font-family: var(--heading-font);
 }
 .categoryPage .about .left-about img{
     width: 100%;

@@ -98,6 +98,12 @@ const loginOpen=()=>{
 };
 
   return (
+    <>
+    <div className="main-head">
+    Use code "SAVE5" and get 5% off
+
+
+    </div>
     <div className={`header ${scrolled ? 'scrolled' : ''}`}>
       
       <div className="headerdiv">
@@ -116,7 +122,7 @@ const loginOpen=()=>{
         </div>
         <div className='head3' style={{textAlign:'right'}}>
           <ul>
-            <li className='li-search'><input type="search" name="" id="" value={svalue} onChange={(e)=>setSvalue(e.target.value)} onKeyDown={handleKeyDown}/><SearchIcon /></li>
+            <li className='li-search'><input type="search" name="" id="" value={svalue} onChange={(e)=>setSvalue(e.target.value)} onKeyDown={handleKeyDown} placeholder={state}/><SearchIcon /></li>
             <li><Link to="/wishlist"><FavoriteBorderIcon/></Link></li>
             <li><Link to="/cart"><LocalMallIcon/></Link></li>
             <li onClick={loginOpen}>{
@@ -176,6 +182,7 @@ const loginOpen=()=>{
         </div>
 
     </div>
+    </>
   )
 }
 
