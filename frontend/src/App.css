@@ -65,7 +65,7 @@ div a{
 .products-listing .product-list{
     max-width:100vw;
     display:grid;
-    grid-template-columns:repeat(3, 1fr);
+    grid-template-columns:repeat(4, 1fr);
     grid-gap:20px;
 }
 .products-listing .product-list .product-card{
@@ -343,7 +343,13 @@ div a{
     }
 
 
-
+@media screen and (max-width:1450px) {
+    .products-listing .product-list{
+        grid-template-columns:repeat(3, 1fr);
+        grid-gap: 10px;
+    }
+    }    
+    
 @media screen and (max-width:1200px) {
     .margin-section{
         margin:20px 80px;

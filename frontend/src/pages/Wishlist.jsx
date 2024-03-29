@@ -39,9 +39,9 @@ const Wishlist = () => {
         <div className="category-banner">
         <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710505441/a33_dc4zuw.jpg" alt="" />
       </div>
-            <div className="products-listing">
+            <div className="products-listing margin-section">
         <p className="section-heading">Wishlist</p>
-        <div className="product-list margin-section">
+        <div className="product-list ">
           {
             wishlists.length===0 && <div>NO DATA</div>
           }

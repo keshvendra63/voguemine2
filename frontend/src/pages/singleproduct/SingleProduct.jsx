@@ -2,6 +2,8 @@ import React,{useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {getAProduct,getAllProducts } from '../../features/products/productSlice';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
 import './singleproduct.css'
 import { addToCart, getUserCartProduct } from '../../features/user/userSlice'
 import Product from '../../components/Product'
@@ -9,7 +11,7 @@ import Product from '../../components/Product'
 import {toast} from 'react-toastify'
 const SingleProduct = () => {
   const { handle } = useParams()
-  const limit=3
+  const limit=4
   const page=1
   const [color,setColor]=useState(null)
   const [size,setSize]=useState(null)
@@ -160,10 +162,19 @@ const [imageIndex, setImageIndex] = useState(0);
       }
     }
   }, [singleProductState?.variants]);
- 
-  
+  const incrementQuantity = () => {
+    if (quantity < 10) {
+      setQuantity(quantity + 1);
+    }
+  };
+
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  }
   return (
-    <div className='single-product'>
+    <div className='single-product margin-section'>
       <div className="product">
         <div className="prdt-left">
 
@@ -184,6 +195,7 @@ const [imageIndex, setImageIndex] = useState(0);
             <p className="product-name">{singleProductState?.title}</p>
             <div style={{display:'flex',alignItems:'center'}}>
             <p className="prdt-price">&#8377;{singleProductState?.price}</p>
+            <p style={{color:'grey',fontSize:'13px',textDecoration:'line-through',margin:'0 10px 0 10px'}}>{(singleProductState?.price)*2}</p>
             <p style={{display:sold,
             margin:'0 10px', 
             backgroundColor: 'rgb(37, 37, 37)',
@@ -226,7 +238,9 @@ const [imageIndex, setImageIndex] = useState(0);
             {
               alreadyAdded===false && <>
               <div className="quantity">
-                <input type="number" name="" min={1} max={10} id="" onChange={(e)=>setQuantity(e.target.value)} value={quantity}/>
+<p onClick={decrementQuantity}><RemoveIcon className='qty-icon'/></p>
+<p>{quantity}</p>
+<p onClick={incrementQuantity}><AddIcon className='qty-icon'/></p>
             </div>
               </>
             }
@@ -246,9 +260,7 @@ const [imageIndex, setImageIndex] = useState(0);
       </div>
       <p className='you-like'>YOU MAY ALSO LIKE</p>
       
-      <div className="products-listing">
-        <p className="section-heading">Featured Products</p>
-                
+      <div className="products-listing ">                
 
         <div className="product-list">
             {

@@ -10,7 +10,7 @@ const Products = () => {
     const [collectionName,setCollectionName]=useState("")
     const [spinner,setSpinner]=useState("none")
     const [btn,setBtn]=useState("block")
-  const [sort,setSort]=useState("-createdAt")
+  const [sort,setSort]=useState("createdAt")
     const location=useLocation()
   const [limit,setLimit]=useState(21)
   const [page,setPage]=useState(1)

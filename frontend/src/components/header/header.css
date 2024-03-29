@@ -52,6 +52,7 @@ letter-spacing: 1px;
 .headerdiv .head2 ul{
     list-style: none;
     display: flex;
+    margin-bottom: 0;
 }
 .headerdiv .head2 ul li{
     margin: 0 12px;
