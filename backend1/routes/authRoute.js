@@ -47,7 +47,7 @@ router.post("/cart", authMiddleware, userCart);
 router.post("/order/checkout",authMiddleware,checkout)
 router.post("/order/paymentVerification",authMiddleware,paymentVerification)
 // router.post("/cart/applycoupon", authMiddleware, applyCoupon);
-router.post("/cart/create-order", authMiddleware, createOrder);
+router.post("/cart/create-order", createOrder);
 router.get("/all-users", getallUser);
 router.get("/getmyorders", authMiddleware, getMyOrders);
 router.get("/getallorders", authMiddleware, isAdmin, getAllOrders);

@@ -63,7 +63,8 @@ const getAllProduct = asyncHandler(async (req, res) => {
           { 'variants.color': { $in: keywords } },
           { description: { $regex: searchRegex } }
       ];
-  }
+    }
+    
     // Filtering
     const queryObj = { ...req.query };
     const excludeFields = ["page", "sort", "limit", "fields","search"];
@@ -100,8 +101,17 @@ const getAllProduct = asyncHandler(async (req, res) => {
     productQuery = productQuery.skip(skip).limit(limit);
 
     // Executing the query
-    const products = await productQuery;
-    
+    let products = await productQuery;
+
+    // Move products with quantity 0 to the end
+    products.sort((a, b) => {
+      const sumQuantityA = a.variants.reduce((acc, variant) => acc + variant.quantity, 0);
+      const sumQuantityB = b.variants.reduce((acc, variant) => acc + variant.quantity, 0);
+      if (sumQuantityA === 0 && sumQuantityB !== 0) return 1;
+      if (sumQuantityA !== 0 && sumQuantityB === 0) return -1;
+      return 0;
+    });
+
     // Sending response
     res.json(products);
   } catch (error) {

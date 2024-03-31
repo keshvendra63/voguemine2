@@ -10,6 +10,7 @@ import {toast} from 'react-toastify'
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const Wishlist = () => {
+const [wishlist,setWishlist]=useState([])
   const [color,setColor]=useState(null)
     const [size,setSize]=useState(null)
     const [quantity,setQuantity]=useState(1)
@@ -19,17 +20,17 @@ const Wishlist = () => {
     const location =useLocation()
     const getProductId=location.pathname.split("/")[2];
     const dispatch=useDispatch();
-    useEffect(()=>{
-      getWishlistFromDb()
-    },[])
-    const getWishlistFromDb=()=>{
-        dispatch(getUserWishlistProduct())
-    }
-    const wishlistState=useSelector((state)=>state?.auth?.wishlist?.wishlist)
-    const wishlists=wishlistState?wishlistState:[]
+    useEffect(() => {
+      // Retrieve cart items from localStorage
+      const cartFromStorage = JSON.parse(localStorage.getItem('wishlist')) || [];
+      setWishlist(cartFromStorage);
+  }, []);
+
     const removeFromWishlist=(id)=>{
-      dispatch(addToWishlist(id))
-      dispatch(getUserWishlistProduct())
+      const cardDetails = JSON.parse(localStorage.getItem('wishlist')) || [];
+      const updatedWishlistDetails = cardDetails.filter(item => item.productId !== id);
+        localStorage.setItem('wishlist', JSON.stringify(updatedWishlistDetails));
+        setWishlist(updatedWishlistDetails)
       setTimeout(()=>{
        toast.success("Removed")
       },300)
@@ -43,21 +44,21 @@ const Wishlist = () => {
         <p className="section-heading">Wishlist</p>
         <div className="product-list ">
           {
-            wishlists.length===0 && <div>NO DATA</div>
+            wishlist.length===0 && <div>NO DATA</div>
           }
 
 {
-  wishlists?.map((item,index)=>{
+  wishlist?.map((item,index)=>{
     return(
       <div className="product-card" key={index}>
       <div className="product-img">
-        <img src={item?.images[1]?.url} alt="" className="product-img1"/>
+        <img src={item?.product?.images[1]?.url} alt="" className="product-img1"/>
         {
-          item?.images[2]?.url!==""?<img src={item?.images[2]?.url} alt="" className="product-img2"/>:<img src=
+          item?.product?.images[2]?.url!==""?<img src={item?.product?.images[2]?.url} alt="" className="product-img2"/>:<img src=
           "" alt="" className="product-img2"/>
         }
       </div>
-      <p className="wish-icon" onClick={()=>{removeFromWishlist(item?._id)}}><CloseIcon className="cart-icon"/></p>
+      <p className="wish-icon" onClick={()=>{removeFromWishlist(item?.product?._id)}}><CloseIcon className="cart-icon"/></p>
       <div className="product-content">
         <p className="title">{item?.title}</p>
         <Stack spacing={1} className="stars">
@@ -66,11 +67,11 @@ const Wishlist = () => {
 </Stack>
 <div className="wish">
 <div>
-<p className="price">&#8377;{item?.price}</p>
+<p className="price">&#8377;{item?.product?.price}</p>
 <p className="sale-price">&#8377;24000</p>
 </div>
 <div>
-<CloseIcon className="cart-icon" onClick={()=>{removeFromWishlist(item?._id)}}/>
+<CloseIcon className="cart-icon" onClick={()=>{removeFromWishlist(item?.productId)}}/>
 {/* <AddShoppingCartOutlinedIcon className="cart-icon"/> */}
 </div>
 </div>
@@ -85,7 +86,7 @@ const Wishlist = () => {
 <p>Sizes</p>
 <ul>
 {
-  item?.variants.filter((item, index, arr) => arr.findIndex(i => i.size === item.size) === index)
+  item?.product?.variants.filter((item, index, arr) => arr.findIndex(i => i.size === item.size) === index)
                 .map((item, index) => <li onClick={() => setSize(item.size)} key={index} style={{border:item.size===size?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.size}</li>)
 }
 </ul>
@@ -94,7 +95,7 @@ const Wishlist = () => {
 <p>Colors</p>
 <ul>
 {
-  item?.variants?.filter((item, index, arr) => arr.findIndex(i => i.color === item.color) === index)
+  item?.product?.variants?.filter((item, index, arr) => arr.findIndex(i => i.color === item.color) === index)
                 .map((item, index) => <li onClick={() =>( setColor(item.color))} key={index} style={{border:item.color===color?'2px solid black':'1px solid grey',color:item.color===color?'black':'rgb(122, 122, 122)'}}>{item.color}</li>)
 }
 </ul>

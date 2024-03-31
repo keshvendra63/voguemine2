@@ -24,6 +24,7 @@
     right: 20px;
     color: blue;
     font-weight: bold;
+    cursor: pointer;
     
 }
 .cart-content .left-cart .total-items{

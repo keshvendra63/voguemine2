@@ -138,7 +138,7 @@ const HomeMain = () => {
                 {
                   shirts.map((arm, index) => {
 
-                    return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} />
+                    return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>
 
 
                   })
@@ -210,7 +210,7 @@ const HomeMain = () => {
 
                   tshirt.map((arm, index) => {
 
-                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} />
+                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>
 
 
                   })
@@ -279,7 +279,7 @@ const HomeMain = () => {
 
                   jeans.map((arm, index) => {
 
-                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} />
+                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>
 
 
                   })

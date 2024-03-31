@@ -16,14 +16,13 @@ const SingleProduct = () => {
   const [color,setColor]=useState(null)
   const [size,setSize]=useState(null)
   const [sold,setSold]=useState("none")
-
   const [quantity,setQuantity]=useState(1)
   const [alreadyAdded, setAlreadyAdded] =useState(false)
   const [mainImage,setMainImage]=useState("")
   const [btnDisable,setBtnDisable]=useState(false)
   const navigate=useNavigate()
   const singleProductState=useSelector((state)=>state?.product?.getSingleProduct)
-  const cartState=useSelector((state)=>state?.auth?.cartProducts)
+  const cart=JSON.parse(localStorage.getItem("cart"))
   const location =useLocation()
   const getProductId=location.pathname.split("/")[2];
   const collectionName=singleProductState?.collectionName
@@ -47,13 +46,18 @@ const SingleProduct = () => {
    const customer=JSON.parse(localStorage.getItem("customer"))
 
   useEffect(()=>{
-    for (let index = 0; index < cartState?.length; index++) {
-      if(getProductId===cartState[index]?.productId?._id){
+    for (let index = 0; index < cart?.length; index++) {
+      if(getProductId===cart[index]?.productId?._id){
         setAlreadyAdded(true)
       }
       
     }
   })
+  const addProductToCartLocalStorage = (product) => {
+    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const updatedCart = [...existingCart, product];
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
   const addTocart=async()=>{
     if(color===null){
       toast.error("Please Select Color")
@@ -63,13 +67,9 @@ const SingleProduct = () => {
       toast.error("Please Select Size")
       return false
     }
-    if(customer==null){
-      toast.error("Please Login First to Add to Cart")
-      navigate("/login")
-    }
-    
     else{
-      await dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price,size}))
+      await addProductToCartLocalStorage({productId:getProductId,color,quantity,price:singleProductState?.price,size,product:singleProductState})
+          toast.success("Added To Cart")
       window.fbq('track', 'AddToCart', {
         content_name:`${singleProductState?.title}`,
         content_category:`${singleProductState?.category}`,
@@ -96,16 +96,12 @@ const buyNow=async()=>{
     toast.error("Please Select Size")
     return false
   } 
-  if(customer==null){
-   toast.error("Please Login First to Buy")
-   navigate("/login")
-
- }
  
 
   else{
-    await dispatch(addToCart({productId:singleProductState?._id,color,quantity,price:singleProductState?.price,size}))
-    window.fbq('track', 'Purchase', {
+    await addProductToCartLocalStorage({productId:getProductId,color,quantity,price:singleProductState?.price,size,product:singleProductState})
+    toast.success("Added To Cart")   
+     window.fbq('track', 'Purchase', {
       content_name:`${singleProductState?.title}`,
       content_category:`${singleProductState?.category}`,
       content_ids:`${singleProductState?._id}`,

@@ -10,9 +10,9 @@ const Products = () => {
     const [collectionName,setCollectionName]=useState("")
     const [spinner,setSpinner]=useState("none")
     const [btn,setBtn]=useState("block")
-  const [sort,setSort]=useState("createdAt")
+  const [sort,setSort]=useState("-createdAt")
     const location=useLocation()
-  const [limit,setLimit]=useState(21)
+  const [limit,setLimit]=useState(28)
   const [page,setPage]=useState(1)
   const [loading,setLoading]=useState(true)
 
@@ -287,7 +287,7 @@ useEffect(()=>{
 
 
                 products.map((arm,index)=>{
-                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>    
+                    return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>    
                 })
                 
                     

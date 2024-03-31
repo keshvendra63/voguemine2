@@ -31,22 +31,29 @@ const getUserWishlist=async()=>{
 const getUserCart=async()=>{
     const response= await axios.get(`${base_url}user/cart`,config)
     if(response.data){
-       
-        return response.data
-    }
+            localStorage.getItem("cart", JSON.parse(response.data));
+              }
 }
 const removeProductFromCart=async(cartItemId)=>{
     const response= await axios.delete(`${base_url}user/delete-product-cart/${cartItemId}`,config)
     if(response.data){
        
-        return response.data
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+  const updatedCartItems = cartItems.filter(item => item.productId !== cartItemId);
+
+  // Update cart items in localStorage
+  localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     }
 }
 
 const addToCarts=async(cartData)=>{
     const response= await axios.post(`${base_url}user/cart`,cartData,config)
     if(response.data){
-        return response.data
+            const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+            const updatedCart = [...existingCart, cartData];
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+          
     }
 }
 const updateProductQuantityFromCart=async(cartDetail)=>{
@@ -58,7 +65,7 @@ const updateProductQuantityFromCart=async(cartDetail)=>{
 }
 
 const createOrder=async(orderDetails)=>{
-    const response=await axios.post(`${base_url}user/cart/create-order`,orderDetails,config)
+    const response=await axios.post(`${base_url}user/cart/create-order`,orderDetails)
     if(response.data){
        
         return response.data

@@ -10,26 +10,30 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify'
 import {Link} from 'react-router-dom'
 const Product = (props) => {
-  const customer=JSON.parse(localStorage.getItem("customer"))
+  const addProductToCartLocalStorage = (product) => {
+  const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+  const updatedCart = [...existingCart, product];
+  localStorage.setItem("cart", JSON.stringify(updatedCart));
+};
+const addProductToWishlistLocalStorage = (product) => {
+  const existingCart = JSON.parse(localStorage.getItem("wishlist")) || [];
+  const updatedCart = [...existingCart, product];
+  localStorage.setItem("wishlist", JSON.stringify(updatedCart));
+};
+console.log(props)
   const [fav,setFav]=useState("block")
-  const [fav1,setFav1]=useState("none")
 
     const [sold,setSold]=useState("none")
     const [color,setColor]=useState(null)
-    const [lineThrough,setLineThrough]=useState("none")
     const [size,setSize]=useState(null)
     const [quantity,setQuantity]=useState(1)
     const [alreadyAdded, setAlreadyAdded] =useState(false)
-    const [alreadyAdded1, setAlreadyAdded1] =useState(false)
 
     const navigate=useNavigate()
-    const cartState=useSelector((state)=>state?.auth?.cartProducts)
-    const location =useLocation()
-    const getProductId=location.pathname.split("/")[2];
     const dispatch=useDispatch();
 
    
-    const addTocart=async()=>{
+    const addTocart=async(data)=>{
       if(color===null){
         toast.error("Please Select Color")
         return false
@@ -38,37 +42,37 @@ const Product = (props) => {
         toast.error("Please Select Size")
         return false
       }
-      if(customer==null){
-        toast.error("Please Login First to Add to Cart")
-        navigate("/login")
-      }
-      
-      
       else{
-        await dispatch(addToCart({productId:props.id,color,quantity,price:props.price,size}))
-        window.fbq('track', 'AddToCart', {
-          content_name:`${props?.title}`,
-          content_category: 'Product',
-          content_ids:`${props?.id}`,
-          content_type: 'product',
-          value:`${props?.price}`,
-          currency: 'USD'
-      });
+        
+        if(data && (data===props.prdt.id)){
+          await addProductToCartLocalStorage({productId:data,color,quantity,price:props.price,size,product:props.prdt})
+          toast.success("Added To Cart")
+          window.fbq('track', 'AddToCart', {
+            content_name:`${props?.title}`,
+            content_category: 'Product',
+            content_ids:`${props?.id}`,
+            content_type: 'product',
+            value:`${props?.price}`,
+            currency: 'USD'
+        });
+        }
+
+       
       }
     } 
-    const addToWish=(id)=>{
-      if(customer==null){
-        toast.error("Please Login First to Add to Wishlist")
-      }
- else{
+    const addToWish=async(data)=>{
 
      
-      dispatch(addToWishlist(id))
+      if(data && (data===props.prdt.id)){
+        await addProductToWishlistLocalStorage({productId:data,color,quantity,price:props.price,size,product:props.prdt})
+        toast.success("Added To Wishlist")
+      }
+
       setFav("none")
- }
+ 
   }
 
-  const buyNow=async()=>{
+  const buyNow=async(data)=>{
     if(color===null){
       toast.error("Please Select Color")
       return false
@@ -77,26 +81,26 @@ const Product = (props) => {
       toast.error("Please Select Size")
       return false
     }
-    if(customer==null){
-      toast.error("Please Login First to Buy Now")
-      navigate("/login")
-    }
     
     else{
-      await dispatch(addToCart({productId:props.id,color,quantity,price:props.price,size}))
-      window.fbq('track', 'Purchase', {
-        content_name:`${props?.title}`,
-        content_category: 'Product',
-        content_ids:`${props?.id}`,
-        content_type: 'product',
-        value:`${props?.price}`,
-        currency: 'USD'
-    });
-      
+      if(data && (data===props.prdt.id)){
+        await addProductToCartLocalStorage({productId:data,color,quantity,price:props.price,size,product:props.prdt})
+        toast.success("Added To Cart")
+        window.fbq('track', 'AddToCart', {
+          content_name:`${props?.title}`,
+          content_category: 'Product',
+          content_ids:`${props?.id}`,
+          content_type: 'product',
+          value:`${props?.price}`,
+          currency: 'USD'
+      });
       setTimeout(()=>{
         dispatch(getUserCartProduct())
         navigate('/checkout')
       },1000)
+      }
+      
+     
     }
     
     
@@ -206,7 +210,7 @@ const [imageIndex, setImageIndex] = useState(0);
       </ul>
     </div>
     <div className="btns">
-    <button onClick={buyNow} style={{width:'100%'}} className={btnDisable?'btn-disable':"btn"} disabled={btnDisable}>BUY NOW</button>
+    <button onClick={()=>buyNow(props.id)} style={{width:'100%'}} className={btnDisable?'btn-disable':"btn"} disabled={btnDisable}>BUY NOW</button>
     <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(props.id)}} style={{width:'100%'}} className={btnDisable?'btn-disable':"btn"} disabled={btnDisable}>{
                   alreadyAdded?"GO TO CART":"ADD TO CART"
                 }</button>

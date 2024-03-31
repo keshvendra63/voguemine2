@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import './checkout.css'
 import FormControlLabel from '@mui/material/FormControlLabel';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import AddCardIcon from '@mui/icons-material/AddCard';
@@ -28,6 +29,12 @@ import { toast } from 'react-toastify';
   })
 
 const Checkout = () => {
+    const addProductToOrderLocalStorage = (product) => {
+        const existingOrder = JSON.parse(localStorage.getItem("orders")) || [];
+        const updatedOrder = [...existingOrder, product];
+        localStorage.setItem("orders", JSON.stringify(updatedOrder));
+      };
+    const [cartItems, setCartItems] = useState([]);
     const [totalAmount,setTotalAmount]=useState(null)
     const [orderType,setOrderType]=useState("COD")
     const [shippingCost,setShippingCost]=useState(200)
@@ -36,9 +43,25 @@ const Checkout = () => {
     const [coupon,setCoupon]=useState("")
     const [couponAmount,setCouponAmount]=useState(0)
     const couponState=useSelector((state)=>state?.coupon?.coupon)
-    console.log(couponState)
+    useEffect(() => {
+        // Retrieve cart items from localStorage
+        const cartFromStorage = JSON.parse(localStorage.getItem('cart')) || [];
+        setCartItems(cartFromStorage);
+    }, []);
+    
+    const removeFromCartAndUpdate = (productIdToRemove) => {
+        // Filter out the item to remove
+        const updatedCartItems = cartItems.filter(item => item.productId !== productIdToRemove);
+
+        // Update localStorage with the updated cart items
+        localStorage.setItem('cart', JSON.stringify(updatedCartItems));
+
+        // Update state to reflect the changes
+        setCartItems(updatedCartItems);
+        toast.success("Removed");
+    };
     const applyCoupon=()=>{
-        couponState.map((item)=>{
+        couponState?.map((item)=>{
             if(item?.name===coupon){
                 if(item?.status==="active"){
                     if(item?.discounttype==="freeShip"){
@@ -46,7 +69,7 @@ const Checkout = () => {
                     }
                     if(item?.discounttype==="buyX"){
                         if(item?.minItem<=10){
-                          if(item?.minItem>=cartState?.length){
+                          if(item?.minItem>=cartItems?.length){
                             if(item?.discount?.includes("%")){
                                 const percent=parseFloat(item?.discount)/100
                                 setCouponAmount(percent*totalAmount)
@@ -97,27 +120,19 @@ const Checkout = () => {
         setOrderType("COD")
         setDiscount(0)
     }
-    const finalAmount=shippingCost+totalAmount-discount-couponAmount
+    const finalAmount=shippingCost+totalAmount-couponAmount
     const dispatch=useDispatch();
     const navigate=useNavigate()
-    const cartState=useSelector((state)=>state?.auth?.cartProducts)
-    const authState=useSelector((state)=>state?.auth)
     useEffect (()=> {
         let sum=0;
-        for(let index=0; index < cartState?.length; index++){
-            sum =sum+(Number(cartState[index]?.quantity) *cartState[index]?.price)
+        for(let index=0; index < cartItems?.length; index++){
+            sum =sum+(Number(cartItems[index]?.quantity) *cartItems[index]?.price)
             setTotalAmount(sum)
         }
-    },[cartState])
+    },[cartItems])
     useEffect(()=>{
-        dispatch(getUserCartProduct())
         dispatch(getAllCoupons())
     },[])
-    useEffect(()=>{
-        if(authState?.orderedProduct?.order!==null && authState?.orderedProduct?.success===true){
-            navigate('/profile')
-        }
-    },[authState])
     const formik = useFormik({
         initialValues: {
           firstname: "",
@@ -157,12 +172,12 @@ const loadScript=(src)=>{
 
 useEffect(()=>{
     let items=[]
-    for (let index = 0; index < cartState?.length; index++) {
-        items.push({product:cartState[index].productId._id,quantity:cartState[index].quantity,price:cartState[index].price,color:cartState[index].color,size:cartState[0].size})
+    for (let index = 0; index < cartItems?.length; index++) {
+        items.push({product:cartItems[index]?.product,quantity:cartItems[index].quantity,price:cartItems[index].price,color:cartItems[index].color,size:cartItems[0].size})
         
     }
     setCartProductState(items)
-},[cartState])
+},[cartItems])
 
 const checkOutHandler=async()=>{
     if (orderType === "COD") {
@@ -174,8 +189,11 @@ const checkOutHandler=async()=>{
         };
 
         // Simulating a successful payment verification for COD orders
-        await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: discount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")) }))
-        dispatch(deleteCart())
+        await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")) }))
+        addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")) })
+        localStorage.removeItem('cart');
+        setCartItems([])
+        navigate("/profile")
         window.fbq('track', 'InitiateCheckout', {
             content_name: 'Checkout',
             content_category: 'Page',
@@ -217,8 +235,11 @@ const checkOutHandler=async()=>{
                };
        
                const result = await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/paymentVerification", data,config);
-           await dispatch(createAnOrder({totalPrice:totalAmount,finalAmount:finalAmount,shippingCost:shippingCost,orderType:orderType,discount:discount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address"))}))
-           dispatch(deleteCart())
+           await dispatch(createAnOrder({totalPrice:totalAmount,finalAmount:finalAmount,shippingCost:shippingCost,orderType:orderType,discount:couponAmount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address"))}))
+           addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")) })
+           localStorage.removeItem('cart');
+           setCartItems([])
+           navigate("/profile")
            localStorage.removeItem("address")
            dispatch(resetState())
            window.fbq('track', 'InitiateCheckout', {
@@ -417,15 +438,16 @@ const checkOutHandler=async()=>{
             <div className="right-form">
 
                 {
-                    cartState?.map((item,index)=>{
+                    cartItems?.map((item,index)=>{
                         return(
                             <div className="prdt" key={index}>
                     <div className="detail">
-                        <img src={item?.productId?.images[imageIndex]?.url} alt="" onError={handleImageError}/>
-                        <div><p className="p-name">{item?.productId?.title}</p>
+                        <img src={item?.product?.images[imageIndex]?.url} alt="" onError={handleImageError}/>
+                        <div><p className="p-name">{item?.product?.title}</p>
                         <p className="size"><span>{item?.size}</span><span>/</span><span>{item?.color}</span></p></div>
                     </div>
                     <p className="p-price">&#8377;{(item?.price)*(item?.quantity)}</p>
+                    <p className="delete" onClick={() => removeFromCartAndUpdate(item.productId)}><DeleteIcon className='delete-icon'/></p>
                 </div>
                         )
                     })
@@ -445,13 +467,11 @@ const checkOutHandler=async()=>{
                         <li>Subtotal</li>
                         <li>Shipping</li>
                         <li>Discount</li>
-                        <li>Coupon</li>
                         <li style={{fontSize:'20px',fontWeight:600}}>Total</li>
                     </ul>
                     <ul>
                         <li>&#8377; {totalAmount}</li>
                         <li>&#8377; {shippingCost!==0?shippingCost:`${shippingCost}(Free)`}</li>
-                        <li>&#8377; -{discount}</li>
                         <li>&#8377; -{couponAmount}</li>
                         <li style={{fontSize:'20px',fontWeight:600}}>&#8377; {finalAmount}</li>
                     </ul>

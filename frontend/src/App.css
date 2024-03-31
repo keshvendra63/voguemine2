@@ -8,6 +8,7 @@
     max-width: 100%;
     min-height: 10vh;
     max-height: 50vh;
+    margin-top: 40px;
 }
 .category-banner img{
     width: 100%;
@@ -199,8 +200,7 @@ div a{
     border: 1px solid grey;
     margin-top: 10px;
 }
-.products-listing .product-list .product-card .hover-details ul li:hover{
-}
+
 .products-listing .product-list .product-card .hover-details .size p{
     margin-bottom:5px;
 }

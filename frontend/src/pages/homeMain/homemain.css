@@ -89,7 +89,7 @@
 
     letter-spacing: 1px;
     margin-bottom: 20px;
-    font-family: var(--paragraph-font);
+    font-family: var(--heading-font);
     font-size: 18px;
     text-align: center;
 }

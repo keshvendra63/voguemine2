@@ -3,7 +3,7 @@ import {base_url, config} from '../../utils/axiosConfig'
 
 const getCoupons=async()=>{
     
-    const response =await axios.get(`${base_url}coupon`,config)
+    const response =await axios.get(`${base_url}coupon`)
 
 
         if (response.data) {
@@ -11,7 +11,7 @@ const getCoupons=async()=>{
         }
 }
 const getCoupon=async(id)=>{
-    const response= await axios.get(`${base_url}coupon/${id}`,config)
+    const response= await axios.get(`${base_url}coupon/${id}`)
     if(response.data){
         return response.data
     }

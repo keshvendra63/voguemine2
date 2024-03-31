@@ -6,36 +6,8 @@ import TextField from '@mui/material/TextField';
 import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import {getUserOrders} from '../../features/user/userSlice'
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell,{ tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import {updateProfile} from '../../features/user/userSlice'
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
-
-
 const profileSchema=yup.object({
     firstname:yup.string().required("First Name is required"),
     lastname:yup.string().required("Last Name is required"),
@@ -64,6 +36,7 @@ const config2 = {
     setBg("black")
     setColor("white")
   }
+  const orders=JSON.parse(localStorage.getItem("orders"))
   const dispatch=useDispatch()
     const authState=useSelector(state=>state?.auth?.user)
     const formik = useFormik({
@@ -93,7 +66,9 @@ const config2 = {
 
   return (
     <div className='margin-section profile'>
-      <div className="profile-info">
+      {
+        authState!==null?
+        <div className="profile-info">
         <div className="left-profile">
             <div className="info">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXNauy1n3zSAGCX3pWg1xnKeFOjSgG1MVQwQ&usqp=CAU" alt="" />
@@ -167,32 +142,46 @@ const config2 = {
                 </form>
             </div>
         </div>
-      </div>
+      </div>:
+      <p>Please Login</p>
+      }
       <hr />
       <div className="orders">
         <p className="section-heading">Orders</p>
-        <TableContainer component={Paper}>
-      <Table aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Id</StyledTableCell>
-            <StyledTableCell align="left">Products</StyledTableCell>
-            <StyledTableCell align="right">Amount</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {orderState?.map((row,index) => (
-            <StyledTableRow key={row._id}>
-              <StyledTableCell component="th" scope="row">
-                {index+1}
-              </StyledTableCell>
-              <StyledTableCell align="left">{(row.orderItems.map((ite)=>{return ite.product.title})).join(",")}</StyledTableCell>
-              <StyledTableCell align="right">{row.finalAmount}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          <div className="order-list">
+            {
+              orders.map((item,index)=>{
+               return <div className="order-card">
+                {
+                  item?.orderItems?.map((prdt,idx)=>{
+                    return <div className="prdts">
+                  <img src={prdt?.product?.images[0]?.url} alt="" />
+                  <div className="detail">
+                    <p className="title">{prdt?.product?.title}</p>
+                    <p className="variant"><span>{prdt?.color}</span> / <span>{prdt?.size}</span></p>
+                    <p className="price">&#8377; {prdt?.price}</p>
+                    <p className="qty">Quantity :{prdt?.quantity}</p>
+                  </div>
+                </div>
+                  })
+                }
+                <div className="total">
+                  <div className="left">
+                    <p>Subtotal</p>
+                    <p>Discount</p>
+                    <p>Total</p>
+                  </div>
+                  <div className="right">
+                    <p>&#8377; {item?.totalPrice}</p>
+                    <p>&#8377; {item?.discount}</p>
+                    <p>&#8377; {item?.finalAmount}</p>
+                  </div>
+                </div>
+              </div>
+              })
+            }
+           
+          </div>
       </div>
     </div>
   )
