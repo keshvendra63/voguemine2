@@ -118,6 +118,19 @@ const getAllProduct = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+const reorderProducts = asyncHandler(async (req, res) => {
+  const { productIds } = req.body;
+  try {
+    // Update the order of products in the database
+    for (let i = 0; i < productIds.length; i++) {
+      await Product.findByIdAndUpdate(productIds[i], { order: i });
+    }
+    res.status(200).json({ message: "Products reordered successfully" });
+  } catch (error) {
+    console.error('Error reordering products:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 const addToWishlist = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { prodId } = req.body;
@@ -247,5 +260,6 @@ module.exports = {
   deleteProduct,
   addToWishlist,
   rating,
-  uploadImages
+  uploadImages,
+  reorderProducts
 };
