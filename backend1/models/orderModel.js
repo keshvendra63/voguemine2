@@ -7,6 +7,9 @@ var orderSchema = new mongoose.Schema(
       type:mongoose.Schema.Types.ObjectId,
       ref:"User",
     },
+    tag:{
+      type:String,
+    },
     orderNumber: {
       type: String,
       unique: true,

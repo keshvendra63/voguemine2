@@ -412,10 +412,10 @@ const updateProductQuantityFromCart = asyncHandler(async (req, res) => {
   }
 });
 const createOrder=asyncHandler(async(req,res)=>{
-  const {shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo}=req.body;
+  const {shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo,tag}=req.body;
   try{
     const order=await Order.create({
-      shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo
+      shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo,tag
     })
     res.json({
       order,
