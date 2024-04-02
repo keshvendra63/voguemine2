@@ -159,8 +159,11 @@ const [imageIndex, setImageIndex] = useState(0);
                 <Link to={`/products/${props.handle}`}>
                   <img src={props?.img[imageIndex]?.url} alt="" className="product-img1" onError={handleImageError}/>
                   
-          <img src={props?.img[imageIndex+1]?.url} alt="" className="product-img2" onError={handleImageError}/>
-        
+                  {
+                    props?.img?.length>1 ?           <img src={props?.img[imageIndex+1]?.url} alt="" className="product-img2" onError={handleImageError}/>
+:
+""
+                  }        
                 
                 </Link>
                 <p className="wish-icon" onClick={(e)=>{addToWish(props.id)}}><FavoriteBorderOutlinedIcon className="cart-icon"/></p>

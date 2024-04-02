@@ -171,23 +171,23 @@ const [imageIndex, setImageIndex] = useState(0);
     }
   }
   useEffect(() => {
-    if (singleProductState.metaTitle!=="" || singleProductState.metaTitle!==undefined) {
-        document.title = singleProductState.metaTitle;
+    if (singleProductState?.metaTitle!=="" || singleProductState?.metaTitle!==undefined) {
+        document.title = singleProductState?.metaTitle;
     }
     else{
-      document.title =`${singleProductState.title} - RAMPVALK`;
+      document.title =`${singleProductState?.title} - RAMPVALK`;
     }
 
-}, [metaTitle]);
+}, [singleProductState?.metaTitle]);
 useEffect(() => {
-  if (singleProductState.metaDesc!=="" || singleProductState.metaDesc!==undefined) {
-      document.querySelector('meta[name="description"]').setAttribute('content',singleProductState.metaDesc);
+  if (singleProductState?.metaDesc!=="" || singleProductState?.metaDesc!==undefined) {
+      document.querySelector('meta[name="description"]').setAttribute('content',singleProductState?.metaDesc);
   }
   else{
-    document.querySelector('meta[name="description"]').setAttribute('content',singleProductState.description);
+    document.querySelector('meta[name="description"]').setAttribute('content',singleProductState?.description);
   }
 
-}, [singleProductState.metaDesc]);
+}, [singleProductState?.metaDesc]);
   return (
     <div className='single-product margin-section'>
       <div className="product">
