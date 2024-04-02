@@ -36,7 +36,7 @@ const navigate=useNavigate()
         onSubmit:(values)=>{
           dispatch(registerUser(values))
           setTimeout(()=>{
-              navigate('/')
+              navigate('/home')
             
           },300)
         }
@@ -51,7 +51,7 @@ const navigate=useNavigate()
           dispatch(loginUser(values))
           setTimeout(()=>{
             
-              navigate('/')
+              navigate('/home')
             
           },300)
         

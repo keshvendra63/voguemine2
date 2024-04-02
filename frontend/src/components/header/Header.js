@@ -108,11 +108,11 @@ const loginOpen=()=>{
       
       <div className="headerdiv">
         <div className='head1'>
-            <Link to="/"><img src={logo} alt="" style={{width:'180px'}}/></Link>
+            <Link to="/home"><img src={logo} alt="" style={{width:'180px'}}/></Link>
         </div>
         <div className='head2' style={{textAlign:'center'}}>
             <ul>
-            <li><Link to="/">Home</Link></li>
+            <li><Link to="/home">Home</Link></li>
               <li><Link to="/men">Mens</Link></li>
               <li><Link to="/women">Womens</Link></li>
               <li><Link to="/kids">Kids</Link></li>
@@ -141,7 +141,7 @@ const loginOpen=()=>{
         <MenuOutlinedIcon className='icon' id="hamburger" onClick={hamClick} />
       </div>
         <div className='head1'>
-            <Link to="/"><img src={logo} alt=""/></Link>
+            <Link to="/home"><img src={logo} alt=""/></Link>
         </div>
         
         <div className='head3' style={{textAlign:'right'}}>
@@ -158,13 +158,13 @@ const loginOpen=()=>{
       </div>
       <div className='head2' style={{textAlign:'center'}} id='head2'>
       <div className='head1'>
-            <Link to="/"><img src={logo} alt=""/></Link>
+            <Link to="/home"><img src={logo} alt=""/></Link>
         </div>
             <ClearOutlinedIcon className='cancel-icon' id="close-ham" onClick={closeClick}/>
             <ul>
               
               
-              <li onClick={closeClick}><HomeOutlinedIcon/><Link to="/">Home</Link></li>
+              <li onClick={closeClick}><HomeOutlinedIcon/><Link to="/home">Home</Link></li>
               <li onClick={closeClick}><InfoOutlinedIcon/><Link to="/about">About</Link></li>
               <li onClick={closeClick}><Face6OutlinedIcon/><Link to="/men">Mens</Link></li>
               <li onClick={closeClick}><Face4OutlinedIcon/><Link to="/women">Womens</Link></li>
