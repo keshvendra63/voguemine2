@@ -189,8 +189,8 @@ const checkOutHandler=async()=>{
         };
 
         // Simulating a successful payment verification for COD orders
-        await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" }))
-        addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" })
+        await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }))
+        addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
         localStorage.removeItem('cart');
         setCartItems([])
         navigate("/profile")
@@ -235,8 +235,8 @@ const checkOutHandler=async()=>{
                };
        
                const result = await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/paymentVerification", data,config);
-           await dispatch(createAnOrder({totalPrice:totalAmount,finalAmount:finalAmount,shippingCost:shippingCost,orderType:orderType,discount:couponAmount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address")),tag:"Rampvalk"}))
-           addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" })
+           await dispatch(createAnOrder({totalPrice:totalAmount,finalAmount:finalAmount,shippingCost:shippingCost,orderType:orderType,discount:couponAmount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address")),tag:"Voguemine"}))
+           addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
            localStorage.removeItem('cart');
            setCartItems([])
            navigate("/profile")
