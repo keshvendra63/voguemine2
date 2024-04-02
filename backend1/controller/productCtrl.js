@@ -14,11 +14,12 @@ const createProduct = asyncHandler(async (req, res) => {
 });
 
 const updateProduct = asyncHandler(async (req, res) => {
+  const {id}=req.params
   try {
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
     }
-    const updateProduct = await Product.findOneAndUpdate({handle:req.params.handle} , req.body, {
+    const updateProduct = await Product.findOneAndUpdate(id , req.body, {
       new: true,
     });
     res.json(updateProduct);
@@ -27,9 +28,12 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 });
 
+
 const deleteProduct = asyncHandler(async (req, res) => {
+  const {id}=req.params
+
   try {
-    const deleteProduct = await Product.findOneAndDelete({handle:req.params.handle});
+    const deleteProduct = await Product.findByIdAndDelete(id);
     res.json(deleteProduct);
   } catch (error) {
     throw new Error(error);
@@ -39,6 +43,15 @@ const deleteProduct = asyncHandler(async (req, res) => {
 const getaProduct = asyncHandler(async (req, res) => {
   try {
     const findProduct = await Product.findOne({handle:req.params.handle})
+    res.json(findProduct);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+const getaProductDashboard = asyncHandler(async (req, res) => {
+  const {id}=req.params
+  try {
+    const findProduct = await Product.findById(id)
     res.json(findProduct);
   } catch (error) {
     throw new Error(error);
@@ -261,5 +274,6 @@ module.exports = {
   addToWishlist,
   rating,
   uploadImages,
-  reorderProducts
+  reorderProducts,
+  getaProductDashboard
 };

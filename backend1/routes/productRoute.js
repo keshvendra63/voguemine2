@@ -8,7 +8,8 @@ const {
   addToWishlist,
   rating,
   uploadImages,
-  reorderProducts
+  reorderProducts,
+  getaProductDashboard
 } = require("../controller/productCtrl");
 const { isAdmin, authMiddleware } = require("../middlewares/authMiddleware");
 const { productImgResize, uploadPhoto } = require("../middlewares/uploadImage");
@@ -26,14 +27,15 @@ router.put(
 router.put("/wishlist", authMiddleware, addToWishlist);
 router.put("/rating", authMiddleware, rating);
 
-router.put("/:handle", authMiddleware, isAdmin, updateProduct);
+router.put("/:id", authMiddleware, isAdmin, updateProduct);
 router.get("/:handle", getaProduct);
+router.get("/:id",getaProductDashboard)
 router.put("/reorder", authMiddleware, isAdmin, reorderProducts); // Add the reorder route
 
 router.get("/", getAllProduct);
 router.get("/:collectionName", getAllProduct);
 
-router.delete("/:handle", authMiddleware, isAdmin, deleteProduct);
+router.delete("/:id", authMiddleware, isAdmin, deleteProduct);
 
 
 module.exports = router;
