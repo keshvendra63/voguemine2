@@ -12,7 +12,7 @@ import Face6OutlinedIcon from '@mui/icons-material/Face6Outlined';
 import Face4OutlinedIcon from '@mui/icons-material/Face4Outlined';
 import FaceOutlinedIcon from '@mui/icons-material/FaceOutlined';
 import AutoAwesomeMosaicOutlinedIcon from '@mui/icons-material/AutoAwesomeMosaicOutlined';
-import logo from '../../images/logo.png'
+import logo from '../../images/vlogo.png'
 import {Link,useNavigate} from 'react-router-dom'
 import './header.css'
 import {getProducts} from '../../features/products/productSlice'

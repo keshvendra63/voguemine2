@@ -1,7 +1,7 @@
 import './home.css'
 import home_video from '../../images/mainVideo.mp4'
 import { Link } from 'react-router-dom'
-import logo from '../../images/logo.png'
+import logo from '../../images/vlogo.png'
 const Home = () => {
     
   return (
