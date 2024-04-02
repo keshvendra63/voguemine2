@@ -27,6 +27,7 @@ const SingleProduct = () => {
   const getProductId=location.pathname.split("/")[2];
   const collectionName=singleProductState?.collectionName
   const dispatch=useDispatch();
+
   useEffect(()=>{
       getProduct()
   },[])
@@ -169,6 +170,24 @@ const [imageIndex, setImageIndex] = useState(0);
       setQuantity(quantity - 1);
     }
   }
+  useEffect(() => {
+    if (singleProductState.metaTitle!=="" || singleProductState.metaTitle!==undefined) {
+        document.title = singleProductState.metaTitle;
+    }
+    else{
+      document.title =`${singleProductState.title} - RAMPVALK`;
+    }
+
+}, [metaTitle]);
+useEffect(() => {
+  if (singleProductState.metaDesc!=="" || singleProductState.metaDesc!==undefined) {
+      document.querySelector('meta[name="description"]').setAttribute('content',singleProductState.metaDesc);
+  }
+  else{
+    document.querySelector('meta[name="description"]').setAttribute('content',singleProductState.description);
+  }
+
+}, [singleProductState.metaDesc]);
   return (
     <div className='single-product margin-section'>
       <div className="product">
