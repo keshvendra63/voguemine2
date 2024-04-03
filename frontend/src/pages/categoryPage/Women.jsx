@@ -62,9 +62,9 @@ const Women = () => {
                 <div className="collection-card">
                     <img src={w7} alt="" />
                     <h2>Women's Leggings</h2>
-                </div></Link><Link to="">
+                </div></Link><Link to="/collections/flat-sandals">
                 <div className="collection-card">
-                    <img src={w1} alt="/collections/flat-sandals" />
+                    <img src={w1} alt="" />
                     <h2>Women's Flat Sandals</h2>
                 </div></Link><Link to="/collections/heeled-sandals">
                 <div className="collection-card">

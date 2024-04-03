@@ -133,10 +133,13 @@ const [imageIndex, setImageIndex] = useState(0);
   useEffect(()=>{
     const matchingVariant = findVariant(color, size);
     if (matchingVariant?.quantity===0) {
-        setBtnDisable(true)  
+        setBtnDisable(true)
+        setSold("block")  
     }
     else{
       setBtnDisable(false)
+      setSold("none")
+
     }
   },[color,size])
   useEffect(() => {
