@@ -82,7 +82,6 @@ const SingleProduct = () => {
       
       setTimeout(()=>{
         dispatch(getUserCartProduct())
-        navigate('/cart')
       },1000)
     }
     
@@ -175,7 +174,7 @@ const [imageIndex, setImageIndex] = useState(0);
         document.title = singleProductState?.metaTitle;
     }
     else{
-      document.title =`${singleProductState?.title} - RAMPVALK`;
+      document.title =`${singleProductState?.title}`;
     }
 
 }, [singleProductState?.metaTitle]);

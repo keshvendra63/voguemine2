@@ -15,11 +15,11 @@ import { getAllProducts } from '../../features/products/productSlice';
 import Product from '../../components/Product'
 
 const HomeMain = () => {
-  const collections = ["Men's Premium Shirts", "Men's Premium T Shirts", "Men's Denim Jeans"];
+  const collections = ["Men's Premium Shirts", "Flat Sandals", "Kids Shirts"];
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const page = 1;
-  const limit = 6;
+  const limit = 4;
   const productState = useSelector((state) => state?.product?.product);
   const productStat = useSelector((state) => state?.product);
 
@@ -44,9 +44,9 @@ const HomeMain = () => {
   }, [limit, page]);
   const products = productState ? productState : [];
 
-  const shirts = data.filter(object => object.collectionName && object.collectionName === "Men's Premium Shirts").slice(0, 6);
-  const tshirt = data.filter(object => object.collectionName && object.collectionName === "Men's Premium T Shirts").slice(0, 6);
-  const jeans = data.filter(object => object.collectionName && object.collectionName === "Men's Denim Jeans").slice(0, 6);
+  const shirts = data.filter(object => object.collectionName && object.collectionName === "Men's Premium Shirts").slice(0, 4);
+  const tshirt = data.filter(object => object.collectionName && object.collectionName === "Flat Sandals").slice(0, 4);
+  const jeans = data.filter(object => object.collectionName && object.collectionName === "Kids Shirts").slice(0, 4);
 
 
   useEffect(() => {

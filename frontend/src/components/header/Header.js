@@ -41,6 +41,7 @@ const dispatch=useDispatch()
     setScrolled(false);
 
   }
+  const cart=JSON.parse(localStorage.getItem("cart"))
 const navigate=useNavigate()
   const changePlaceholder = async () => {
     for (let i = 0; ; i = (i + 1) % placeholderText.length) {
@@ -124,7 +125,11 @@ const loginOpen=()=>{
           <ul>
             <li className='li-search'><input type="search" name="" id="" value={svalue} onChange={(e)=>setSvalue(e.target.value)} onKeyDown={handleKeyDown} placeholder={state}/><SearchIcon /></li>
             <li><Link to="/wishlist"><FavoriteBorderIcon/></Link></li>
-            <li><Link to="/cart"><LocalMallIcon/></Link></li>
+            <li className='cart-len'>{
+              cart && cart?.length>=1?<p className='cart-length'>{cart?.length}</p>
+              :
+              ""
+            }<Link to="/cart"><LocalMallIcon/></Link></li>
             <li onClick={loginOpen}>{
               authState?.user==null?<PersonOutlineIcon/>:<p style={{fontWeight:500,fontSize:'11px',marginBottom:0,display:'flex',justifyContent:'center',alignItems:'center',border:'2px solid black',borderRadius:'50%',width:'20px',height:'20px',marginTop:'3px',padding:'2px'}}>{authState?.user?.firstname.charAt(0).toUpperCase()}</p>
             }</li>
@@ -148,7 +153,11 @@ const loginOpen=()=>{
           <ul>
             <li onClick={openSearch}><SearchIcon/></li>
             
-            <li><Link to="/cart"><LocalMallIcon/></Link></li>
+            <li className="cart-len">{
+              cart && cart?.length>=1?<p className='cart-length'>{cart?.length}</p>
+              :
+              ""
+            }<Link to="/cart"><LocalMallIcon/></Link></li>
 
 
           </ul>

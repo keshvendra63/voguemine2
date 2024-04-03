@@ -47,7 +47,7 @@ div a{
 }
 
 .margin-section{
-    margin:50px 150px 20px 150px;
+    margin:50px 100px 20px 100px;
 }
 .section-name{
     font-size: 30px;
@@ -169,9 +169,10 @@ div a{
     justify-content:space-between;
 }
 .products-listing .product-list .product-card .hover-details .title-section .title{
-    font-size:18px;
+    font-size:16px;
     margin-right:30px;
     font-weight:500;
+    margin-bottom: 0;
 }
 .products-listing .product-list .product-card .hover-details .title-section .price{
     font-weight:500;
@@ -183,6 +184,7 @@ div a{
     flex-wrap: wrap;
     padding-left:0;
     grid-gap:5px;
+    margin-bottom: 5px;
 }
 .products-listing .product-list .product-card .hover-details ul li{
     width: auto;
@@ -198,14 +200,17 @@ div a{
     color:grey;
     cursor:pointer;
     border: 1px solid grey;
-    margin-top: 10px;
+    margin-top:5px;
+}
+.products-listing .product-list .product-card .hover-details .size{
+    margin-bottom: 2px;
 }
 
 .products-listing .product-list .product-card .hover-details .size p{
-    margin-bottom:5px;
+    margin-bottom:0px;
 }
 .products-listing .product-list .product-card .hover-details .color p{
-    margin-bottom:5px;
+    margin-bottom:0px;
 }
 
 .products-listing .product-list .product-card .hover-details a{
@@ -220,7 +225,7 @@ div a{
     width: 100%;
 }
 .products-listing .product-list .product-card .hover-details .btns .btn{
-    height: 45px;
+    height: 40px;
 }
 .products-listing .product-list .product-card .hover-details .btns .btn-disable{
     border: 2px solid white;
@@ -341,18 +346,35 @@ div a{
             background-color: rgb(233, 233, 233); /* Ending color */
         }
     }
+    @media screen and (min-width:2100px) {
+        .margin-section{
+            margin:20px 20vw;
+        }
+    }    
+    
 
-
+@media screen and (min-width:1700px) {
+        .margin-section{
+            margin:20px 15vw;
+        }
+    }    
+    
 @media screen and (max-width:1450px) {
     .products-listing .product-list{
-        grid-template-columns:repeat(3, 1fr);
+        /* grid-template-columns:repeat(3, 1fr); */
         grid-gap: 10px;
+    }
+    .products-listing .product-list .product-card .hover-details .btns .btn{
+        font-size: 14px;
     }
     }    
     
 @media screen and (max-width:1200px) {
     .margin-section{
-        margin:20px 80px;
+        margin:20px 60px;
+    }
+    .products-listing .product-list .product-card .hover-details .btns .btn{
+        font-size: 12px;
     }
 }    
 
@@ -377,7 +399,7 @@ div a{
         display: block;
     }
     .margin-section{
-        margin:20px 50px;
+        margin:20px 40px;
     }
     .category-banner{
         margin-top: 105px;

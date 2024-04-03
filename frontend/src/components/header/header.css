@@ -21,6 +21,24 @@ letter-spacing: 1px;
     font-family: 'Montserrat', sans-serif;
     z-index: 4;
 }
+.header .cart-len{
+    position: relative;
+}
+.header .cart-length{
+position: absolute;
+top: -3px;
+right: -3px;
+background-color: red;
+color: white;
+width: 15px;
+height: 15px;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 12px;
+border-radius: 50%;
+
+}
 .search{
     margin: 10px auto;
     justify-content: center;
@@ -103,6 +121,7 @@ letter-spacing: 1px;
 
 .head3 ul{
     list-style: none;
+    width: 100%;
     display: flex;
     justify-content: end;
 }
@@ -111,6 +130,7 @@ letter-spacing: 1px;
     cursor: pointer;
     color: black;
     font-weight: 400;
+    width: ;
 
 }
 .head3 .li-search{
@@ -176,10 +196,12 @@ width: 100px;
     list-style: none;
     text-align: left;
     padding: 50px 15px;
+    width:70vw;
 
 }
 .header1 .head2 ul li{
     margin: 40px 0;
+    width: 100%;
 }
 .cancel-icon{
     position: absolute;
@@ -195,9 +217,11 @@ width: 100px;
     display: flex;
     align-items: center;
     font-weight: 400;
+    width: 100%;
 }
 .header1 .head2 ul li a{
     margin-left: 10px;
+    width: 100%;
 }
 .header1{
     display: none;

@@ -153,23 +153,23 @@ useEffect(()=>{
     }
     
     if(location.pathname==="/collections/no-show"){
-    setCollectionName("Anklet Socks")
+    setCollectionName("Ankle Socks")
     }
     
     if(location.pathname==="/collections/low-ankle"){
-    setCollectionName("Anklet Socks")
+    setCollectionName("Ankle Socks")
     }
     
     if(location.pathname==="/collections/low-cut"){
-    setCollectionName("Anklet Socks")
+    setCollectionName("Ankle Socks")
     }
     
     if(location.pathname==="/collections/anklet"){
-    setCollectionName("Anklet Socks")
+    setCollectionName("Ankle Socks")
     }
     
     if(location.pathname==="/collections/crew"){
-    setCollectionName("Men's Trackpants")
+    setCollectionName("Men's Accessories Socks")
     }
     
     
