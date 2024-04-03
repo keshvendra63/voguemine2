@@ -261,12 +261,16 @@ useEffect(() => {
             </div>
               </>
             }
-            <div className="buy-btn">
+            {
+              sold==="block" ? <p style={{textAlign:'center',margin:"15px auto",color:'red',fontWeight:600}}>This size is not available</p>:
+<div className="buy-btn">
                 <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(singleProductState?._id)}} className={btnDisable?'disabled-btn':"btn"} disabled={btnDisable}>{
                   alreadyAdded?"GO TO CART":"ADD TO CART"
                 }</button>
                 <button className={btnDisable?'disabled-btn':"btn"} onClick={buyNow} disabled={btnDisable}>BUY IT NOW</button>
             </div>
+            }
+            
             <div className="prdt-desc">
                 <p dangerouslySetInnerHTML={{ __html: singleProductState?.description }}/>
               
