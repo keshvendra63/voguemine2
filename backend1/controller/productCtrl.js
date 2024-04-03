@@ -109,7 +109,7 @@ const getAllProduct = asyncHandler(async (req, res) => {
 
     // Pagination
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 21;
+    const limit = parseInt(req.query.limit) || 28;
     const skip = (page - 1) * limit;
     productQuery = productQuery.skip(skip).limit(limit);
 
