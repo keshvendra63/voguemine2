@@ -20,171 +20,160 @@ const Products = () => {
 
 // Get the value of the 'search' parameter
 const searchValue = searchParams.split('=')[1];
-
-
-useEffect(() => {
-  // Set the collection name based on the current path
-  const path = location.pathname;
-  setCollectionName(getCollectionName(path));
-}, [location.pathname]);
-
-const getCollectionName = (path) => {
-    if(path==="/collections/men-premium-shirt"){
-        return("Men's Premium Shirts")
+useEffect(()=>{
+    if(location.pathname==="/collections/men-premium-shirt"){
+        setCollectionName("Men's Premium Shirts")
       }
-      if(path==="/collections/t-shirts"){
-        return("Men's Premium T Shirts")
+      if(location.pathname==="/collections/t-shirts"){
+        setCollectionName("Men's Premium T Shirts")
       }
-      if(path==="/collections/mens-sweatshirts"){
-        return("Men's Sweatshirts")
+      if(location.pathname==="/collections/mens-sweatshirts"){
+        setCollectionName("Men's Sweatshirts")
       }
-      if(path==="/collections/loafers-for-men"){
-        return("Men's Loafers")
+      if(location.pathname==="/collections/loafers-for-men"){
+        setCollectionName("Men's Loafers")
       }
-      if(path==="/collections/floaters-slippers"){
-        return("Men's Premium Slippers")
+      if(location.pathname==="/collections/floaters-slippers"){
+        setCollectionName("Men's Slippers")
       }
-      if(path==="/collections/mens-sneakers"){
-        return("Men's Sneakers")
+      if(location.pathname==="/collections/mens-sneakers"){
+        setCollectionName("Men's Sneakers")
       }
-      if(path==="/collections/mens-denim-jeans"){
-        return("Men's Denim Jeans")
+      if(location.pathname==="/collections/mens-denim-jeans"){
+        setCollectionName("Men's Denim Jeans")
       }
-      if(path==="/collections/mens-hoodies"){
-        return("Men's Hoodies")
+      if(location.pathname==="/collections/mens-hoodies"){
+        setCollectionName("Men's Hoodies")
       }
-      if(path==="/collections/mens-trackpants"){
-        return("Men's Trackpants")
+      if(location.pathname==="/collections/mens-trackpants"){
+        setCollectionName("Men's Trackpants")
       }
-      if(path==="/collections/combos"){
-        return("men,s combos")
+      if(location.pathname==="/collections/combos"){
+        setCollectionName("men,s combos")
       }
-      if(path==="/collections/mens-pullover-jackets"){
-        return("Men's Jackets")
+      if(location.pathname==="/collections/mens-pullover-jackets"){
+        setCollectionName("Men's Jackets")
       }
-      if(path==="/collections/mens-pullover"){
-        return("Men's Pullover")
+      if(location.pathname==="/collections/mens-pullover"){
+        setCollectionName("Men's Pullover")
       }
-      if(path==="/collections/mens-trackset"){
-        return("Men's Track Set")
+      if(location.pathname==="/collections/mens-trackset"){
+        setCollectionName("Men's Track Set")
       }
-      if(path==="/collections/womens-shirt-t-shirts"){
-        return("Women's T-Shirt")
+      if(location.pathname==="/collections/womens-shirt-t-shirts"){
+        setCollectionName("Women's T-Shirt")
     }
     
-    if(path==="/collections/womens-dress"){
-    return("Women's Dresses")
+    if(location.pathname==="/collections/womens-dress"){
+    setCollectionName("Women's Dresses")
     }
     
-    if(path==="/collections/womens-co-ord-set"){
-    return("Women's Co-ord set")
+    if(location.pathname==="/collections/womens-co-ord-set"){
+    setCollectionName("Women's Co-ord set")
     }
     
-    if(path==="/collections/flat-sandals"){
-    return("Flat Sandals")
+    if(location.pathname==="/collections/flat-sandals"){
+    setCollectionName("Flat Sandals")
     }
     
-    if(path==="/collections/heeled-sandals"){
-    return("Heeled Sandals")
+    if(location.pathname==="/collections/heeled-sandals"){
+    setCollectionName("Heeled Sandals")
     }
     
-    if(path==="/collections/womens-legging"){
-    return("Women's Lower & Legging")
+    if(location.pathname==="/collections/womens-legging"){
+    setCollectionName("Women's Lower & Legging")
     }
     
-    if(path==="/collections/womens-sweatshirt"){
-    return("Women's Sweatshirts")
+    if(location.pathname==="/collections/womens-sweatshirt"){
+    setCollectionName("Women's Sweatshirts")
     }
     
-    if(path==="/collections/womens-hoodie"){
-    return("Women's Pullovers")
+    if(location.pathname==="/collections/womens-hoodie"){
+    setCollectionName("Women's Pullovers")
     }
     
-    if(path==="/collections/womens-pullovers"){
-    return("Women's Pullovers")
+    if(location.pathname==="/collections/womens-pullovers"){
+    setCollectionName("Women's Pullovers")
     }
     
-    if(path==="/collections/womens-pullover-jackets"){
-    return("Womens'Jackets")
+    if(location.pathname==="/collections/womens-pullover-jackets"){
+    setCollectionName("Womens'Jackets")
     }
     
-    if(path==="/collections/womens-winter-coats"){
-    return("Women's Winter Coats")
+    if(location.pathname==="/collections/womens-winter-coats"){
+    setCollectionName("Women's Winter Coats")
     }
     
-    if(path==="/collections/womens-track-sets"){
-    return("Women's Track Sets")
+    if(location.pathname==="/collections/womens-track-sets"){
+    setCollectionName("Women's Track Sets")
     }
     
-    if(path==="/collections/kids-tracksuit"){
-    return("Kids Tracksuit")
+    if(location.pathname==="/collections/kids-tracksuit"){
+    setCollectionName("Kids Tracksuit")
     }
     
-    if(path==="/collections/kids-boy-jacket"){
-    return("Kid's Jackets")
+    if(location.pathname==="/collections/kids-boy-jacket"){
+    setCollectionName("Kid's Jackets")
     }
     
-    if(path==="/collections/kids-girl-jacket"){
-    return("Kid's Girl co-ord Set")
+    if(location.pathname==="/collections/kids-girl-jacket"){
+    setCollectionName("Kid's Girl co-ord Set")
     }
     
-    if(path==="/collections/kids-hoodie"){
-    return("Kid's Boy's Cord-Set")
+    if(location.pathname==="/collections/kids-hoodie"){
+    setCollectionName("Kid's Boy's Cord-Set")
     }
     
-    if(path==="/collections/kids-co-ord-set"){
-    return("Kid's Girl co-ord Set")
+    if(location.pathname==="/collections/kids-co-ord-set"){
+    setCollectionName("Kid's Girl co-ord Set")
     }
     
-    if(path==="/collections/kids-shirt"){
-    return("Kids Shirts")
+    if(location.pathname==="/collections/kids-shirt"){
+    setCollectionName("Kids Shirts")
     }
     
-    if(path==="/collections/kid-girls-dress"){
-    return("Kid Girl's Dress")
+    if(location.pathname==="/collections/kid-girls-dress"){
+    setCollectionName("Kid Girl's Dress")
     }
     
-    if(path==="/collections/kids-t-shirts"){
-    return("Kid's T-Shirts")
+    if(location.pathname==="/collections/kids-t-shirts"){
+    setCollectionName("Kid's T-Shirts")
     }
     
-    if(path==="/collections/belts"){
-    return("Men's Belt")
+    if(location.pathname==="/collections/belts"){
+    setCollectionName("Men's Belt")
     }
     
-    if(path==="/collections/towels"){
-    return("Accessories Towel for Men and Women" || "Towels for Men & Women")
+    if(location.pathname==="/collections/towels"){
+    setCollectionName("Accessories Towel for Men and Women" || "Towels for Men & Women")
     }
     
-    if(path==="/collections/under-garment"){
-    return("Men's Accessories Under Garments" || "Men's Under Garments")
+    if(location.pathname==="/collections/under-garment"){
+    setCollectionName("Men's Accessories Under Garments" || "Men's Under Garments")
     }
     
-    if(path==="/collections/no-show"){
-    return("Ankle Socks")
+    if(location.pathname==="/collections/no-show"){
+    setCollectionName("Ankle Socks")
     }
     
-    if(path==="/collections/low-ankle"){
-    return("Ankle Socks")
+    if(location.pathname==="/collections/low-ankle"){
+    setCollectionName("Ankle Socks")
     }
     
-    if(path==="/collections/low-cut"){
-    return("Ankle Socks")
+    if(location.pathname==="/collections/low-cut"){
+    setCollectionName("Ankle Socks")
     }
     
-    if(path==="/collections/anklet"){
-    return("Ankle Socks")
+    if(location.pathname==="/collections/anklet"){
+    setCollectionName("Ankle Socks")
     }
     
-    if(path==="/collections/crew"){
-    return("Men's Accessories Socks")
-    }
-    else{
-      return ''
+    if(location.pathname==="/collections/crew"){
+    setCollectionName("Men's Accessories Socks")
     }
     
     
-}
+},[location])
     const productState=useSelector((state)=>state?.product?.product)
     const productState1=useSelector((state)=>state?.product?.prdt)
     const productStat = useSelector((state) => state?.product);
@@ -200,7 +189,7 @@ const getCollectionName = (path) => {
     else{
         dispatch(getProducts({searchValue,limit,sort,page}))
     }
-    },[collectionName,searchValue,page,limit,sort])
+    },[collectionName,searchValue,page,limit])
     const products=searchValue===undefined?(productState? productState:[]):(productState1? productState1:[])
       
     const [loadings, setLoadings] = useState([]);
@@ -220,7 +209,7 @@ const getCollectionName = (path) => {
     };
     const loadMore=()=>{
     
-      setLimit(limit+21)
+      setLimit(limit+28)
       enterLoading(0)
     }
     
