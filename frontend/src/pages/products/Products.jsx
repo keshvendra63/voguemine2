@@ -36,7 +36,7 @@ useEffect(()=>{
       if(location.pathname==="/collections/floaters-slippers"){
         setCollectionName("Men's Slippers")
       }
-      if(location.pathname==="/collections/mens-sneakers"){
+      if(location.pathname==="/collections/mens-sneakers-firstcopyshoes"){
         setCollectionName("Men's Sneakers")
       }
       if(location.pathname==="/collections/mens-denim-jeans"){

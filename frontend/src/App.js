@@ -50,7 +50,7 @@ function App() {
         <Route path="/collections/mens-sweatshirts" element={<Products/>}/>
         <Route path="/collections/loafers-for-men" element={<Products/>}/>
         <Route path="/collections/floaters-slippers" element={<Products/>}/>
-        <Route path="/collections/mens-sneakers" element={<Products/>}/>
+        <Route path="/collections/mens-sneakers-firstcopyshoes" element={<Products/>}/>
         <Route path="/collections/mens-denim-jeans" element={<Products/>}/>
         <Route path="/collections/mens-hoodies" element={<Products/>}/>
         <Route path="/collections/mens-trackpants" element={<Products/>}/>

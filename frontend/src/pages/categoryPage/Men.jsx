@@ -46,7 +46,7 @@ const Men = () => {
             <h2>Men's Loafers</h2>
         </div>
         </Link>
-        <Link to="/collections/mens-sneakers">
+        <Link to="/collections/mens-sneakers-firstcopyshoes">
 
         <div className="collection-card">
             <img src={img5} alt="" />

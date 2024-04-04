@@ -48,7 +48,7 @@ const Checkout = () => {
         const cartFromStorage = JSON.parse(localStorage.getItem('cart')) || [];
         setCartItems(cartFromStorage);
 
-    }, [totalAmount]);
+    }, []);
     
     const removeFromCartAndUpdate = (productIdToRemove) => {
         // Filter out the item to remove
@@ -84,7 +84,6 @@ const Checkout = () => {
                           }
                         }
                         else{
-                            if(item?.minItem>=totalAmount){
                                 if(item?.discount?.includes("%")){
                                     const percent=parseFloat(item?.discount)/100
                                     setCouponAmount(percent*totalAmount)
@@ -92,7 +91,7 @@ const Checkout = () => {
                                 else{
                                     setCouponAmount(parseInt(item?.discount))
                                 }
-                              }
+                              
                         }
                     }
                     if(item?.discounttype==="order"){
