@@ -69,7 +69,6 @@ const HomeMain = () => {
           autoplay
           autoplaySpeed={5}
           speed={4}
-          onReady={() => console.log('I am ready')}
         >
           <Link to="/men">
             <div className="cate">

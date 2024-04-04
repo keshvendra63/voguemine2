@@ -486,7 +486,6 @@ const getMonthWiseOrderIncome=asyncHandler(async(req,res)=>{
     
     
   }
-  console.log(endDate)
   const data=await Order.aggregate([
     {
       $match:{

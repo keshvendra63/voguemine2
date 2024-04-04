@@ -258,7 +258,7 @@ useEffect(()=>{
                         <div className="filter">
                             <p>Filter</p>
                         </div>
-                        <p style={{fontWeight:'bold'}}>{limit} Products</p>
+                        <p style={{fontWeight:'bold'}}>{productState?.length} Products</p>
                         <div className="sort">
                             <select name="" id="" style={{fontWeight:'bold'}} onChange={sortChange} value={sort} defaultValue="-createdAt">
                                 <option value="title">Alphabet A-Z</option>

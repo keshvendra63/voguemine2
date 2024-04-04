@@ -52,7 +52,6 @@ const config2 = {
           setEdit(true)
           setBg("white")
           setColor("black")
-          console.log(values)
 
         }
       });

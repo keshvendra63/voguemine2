@@ -20,7 +20,6 @@ const addProductToWishlistLocalStorage = (product) => {
   const updatedCart = [...existingCart, product];
   localStorage.setItem("wishlist", JSON.stringify(updatedCart));
 };
-console.log(props)
   const [fav,setFav]=useState("block")
 
     const [sold,setSold]=useState("none")

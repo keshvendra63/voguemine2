@@ -7,7 +7,6 @@ import {getABlog } from '../../features/blogs/blogSlice';
 import { useLocation } from 'react-router-dom';
 const SingleBlog = () => {
     const singleBlogState=useSelector((state)=>state?.blog?.singleBlog)
-    console.log(singleBlogState)
     const location =useLocation()
     const getBlogId=location.pathname.split("/")[2];
     const dispatch=useDispatch();
