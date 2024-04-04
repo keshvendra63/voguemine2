@@ -15,7 +15,7 @@ import { getAllProducts } from '../../features/products/productSlice';
 import Product from '../../components/Product'
 
 const HomeMain = () => {
-  const collections = ["Men's Premium Shirts", "Flat Sandals", "Kids Shirts"];
+  const collections = ["Men's Premium Shirts", "Flat Sandals", "Men's Belt"];
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const page = 1;
@@ -46,7 +46,7 @@ const HomeMain = () => {
 
   const shirts = data.filter(object => object.collectionName && object.collectionName === "Men's Premium Shirts").slice(0, 4);
   const tshirt = data.filter(object => object.collectionName && object.collectionName === "Flat Sandals").slice(0, 4);
-  const jeans = data.filter(object => object.collectionName && object.collectionName === "Kids Shirts").slice(0, 4);
+  const jeans = data.filter(object => object.collectionName && object.collectionName === "Men's Belt").slice(0, 4);
 
 
   useEffect(() => {
@@ -100,16 +100,16 @@ const HomeMain = () => {
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={1000} slide={false}>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435068/02_1_b3pb1b.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218481/0002_1_rdcrzf.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435064/03_1_vl6zcn.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218482/0002_3_pwfo0h.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435065/01_2_u32eu9.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218482/0002_2_fbbd46.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435057/04_qr04zp.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218482/0002_4_gnxoh8.jpg" alt="" />
               </Carousel.Item>
             </Carousel>
 
@@ -179,16 +179,16 @@ const HomeMain = () => {
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={1000} slide={false}>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435076/5_bectm1.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218481/0001_1_qhast8.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435069/8_elliue.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218481/0001_4_k4dubk.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435069/6_frkrlu.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218481/0001_2_lvri69.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710435065/7_avg0cf.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218484/0001_3_jnt10s.jpg" alt="" />
               </Carousel.Item>
             </Carousel>
 
@@ -247,13 +247,13 @@ const HomeMain = () => {
                 <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558912/louis-vuitton-premium-quality-towel-set-of-2-523_yasoy7.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558912/gucci-premium-quality-loafer-socks-pack-of-5-643_uze4fs.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218482/011_jkqmn8.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558905/gucci-black-premium-quality-belt-512_cvsizj.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218482/09_hkve1u.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558906/21_u8hfyb.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218481/0003_1_xoyymr.jpg" alt="" />
               </Carousel.Item>
             </Carousel>
 

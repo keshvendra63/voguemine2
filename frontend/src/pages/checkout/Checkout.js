@@ -154,9 +154,12 @@ const Checkout = () => {
         validationSchema: shippingSchema,
         onSubmit:(values) => {
            localStorage.setItem("address",JSON.stringify(values))
+           if(cartItems?.length>=1){
             setTimeout(()=>{
                 checkOutHandler()
             },300)
+           }
+           
         }
       });
 
