@@ -428,8 +428,9 @@ const checkOutHandler=async()=>{
             <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" />
             </div>
             <div className="bottom">
-                <AddCardIcon style={{fontSize:'80px'}}/>
+                <AddCardIcon style={{fontSize:'50px'}}/>
                 <p>After clicking “Pay now”, you will be redirected to Razorpay Secure (UPI, Cards, Wallets, NetBanking) to complete your purchase securely.</p>
+                <p style={{color:'red',marginTop:'10px',fontWeight:500}}>* Due to some Banking issues, we are unable to capture paid orders. Please continue shopping with Cash on Delivery. Sorry for the inconvenience</p>
             </div>
         </div>
 

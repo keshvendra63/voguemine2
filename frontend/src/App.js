@@ -98,7 +98,6 @@ function App() {
         <Route path='/pages/terms-of-service' element={<Policies/>}/>
         <Route path='/pages/privacy-policy' element={<Policies/>}/>
         <Route path='/pages/contact' element={<Contact/>}/>
-        <Route path='*' element={<Navigate to="/home" />} />
 
       </Routes>
       <Footer/>
