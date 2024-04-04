@@ -50,17 +50,7 @@ const About = () => {
     <h2>Meet Our Team</h2>
    </div>
     <div className='teams'>
-        <div className="team">
-          <img src="https://images.unsplash.com/photo-1527689368864-3a821dbccc34?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8d2ViJTIwZGV2bG9wZXJ8ZW58MHx8MHx8fDA%3D" alt="" />
-          <p className='name'>Raj Bisht</p>
-          <p className='detail'>Managing Director</p>
-          <div className="icons">
-          <FacebookIcon  className='icon'/> 
-          <InstagramIcon className='icon'/>
-          <LinkedInIcon className='icon'/>
-
-          </div>
-        </div>
+       
         <div className="team">
           <img src="https://media.istockphoto.com/id/960588036/photo/thinking.jpg?s=1024x1024&w=is&k=20&c=Qf5bxGaqNWwEnyvZppQqWjj9PyGwM3S5yt_5GVtXNQs=" alt="" />
           <p className='name'>Mohinder Bisht</p>
@@ -92,6 +82,17 @@ const About = () => {
           <InstagramIcon className='icon'/>
           <LinkedInIcon className='icon'/>
 
+
+          </div>
+        </div>
+        <div className="team">
+          <img src="https://images.unsplash.com/photo-1527689368864-3a821dbccc34?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8d2ViJTIwZGV2bG9wZXJ8ZW58MHx8MHx8fDA%3D" alt="" />
+          <p className='name'>Mukhtesh Rawat</p>
+          <p className='detail'></p>
+          <div className="icons">
+          <FacebookIcon  className='icon'/> 
+          <InstagramIcon className='icon'/>
+          <LinkedInIcon className='icon'/>
 
           </div>
         </div>

@@ -47,7 +47,8 @@ const Checkout = () => {
         // Retrieve cart items from localStorage
         const cartFromStorage = JSON.parse(localStorage.getItem('cart')) || [];
         setCartItems(cartFromStorage);
-    }, []);
+
+    }, [totalAmount]);
     
     const removeFromCartAndUpdate = (productIdToRemove) => {
         // Filter out the item to remove
@@ -113,13 +114,19 @@ const Checkout = () => {
     const standardClick=()=>{
         setShippingCost(0)
         setOrderType("Prepaid")
-        setDiscount((totalAmount)/10)
+        setCouponAmount((totalAmount)/10)
+    }
+    const upiClick=()=>{
+        setShippingCost(0)
+        setOrderType("Prepaid")
+        setCouponAmount((totalAmount)/10)
     }
     const codClick=()=>{
         setShippingCost(200)
         setOrderType("COD")
-        setDiscount(0)
+        setCouponAmount(0)
     }
+
     const finalAmount=shippingCost+totalAmount-couponAmount
     const dispatch=useDispatch();
     const navigate=useNavigate()
@@ -178,7 +185,12 @@ useEffect(()=>{
     }
     setCartProductState(items)
 },[cartItems])
+const [imageIndex, setImageIndex] = useState(0);
 
+const handleImageError = () => {
+  // Increment the image index to load the next image URL
+  setImageIndex(prevIndex => prevIndex + 1);
+};
 const checkOutHandler=async()=>{
     if (orderType === "COD") {
         // If order type is COD, proceed with placing the order without opening Razorpay
@@ -206,76 +218,93 @@ const checkOutHandler=async()=>{
         dispatch(resetState())
     }
     else{
-        const res=await loadScript("https://checkout.razorpay.com/v1/checkout.js")
-        if(!res){
-           alert("Razorpay SDK failed to load")
-           return
-        }
-        const result=await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/checkout",{amount:finalAmount},config)
-        if(!result){
-           alert("Something went wrong")
-           return
-        }
+    //     const res=await loadScript("https://checkout.razorpay.com/v1/checkout.js")
+    //     if(!res){
+    //        alert("Razorpay SDK failed to load")
+    //        return
+    //     }
+    //     const result=await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/checkout",{amount:finalAmount},config)
+    //     if(!result){
+    //        alert("Something went wrong")
+    //        return
+    //     }
        
-        const {amount,id:order_id,currency}=result.data.order
-        const options = {
-           key: "rzp_test_DeWbJCwx392j0T", // Enter the Key ID generated from the Dashboard
-           amount: amount,
-           currency: currency,
-           name: "Voguemine",
-           description: "Voguemine Payment",
-           image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKfisT9A6XILZ3k7Gdg8hsJ1Xds88qRlXTbhc8AtBsng&s",
-           order_id: order_id,
-           handler: async function (response) {
-               const data = {
-                   orderCreationId: order_id,
-                   razorpayPaymentId: response.razorpay_payment_id,
-                   razorpayOrderId: response.razorpay_order_id,
+    //     const {amount,id:order_id,currency}=result.data.order
+    //     const options = {
+    //        key: "rzp_test_DeWbJCwx392j0T", // Enter the Key ID generated from the Dashboard
+    //        amount: amount,
+    //        currency: currency,
+    //        name: "Voguemine",
+    //        description: "Voguemine Payment",
+    //        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKfisT9A6XILZ3k7Gdg8hsJ1Xds88qRlXTbhc8AtBsng&s",
+    //        order_id: order_id,
+    //        handler: async function (response) {
+    //            const data = {
+    //                orderCreationId: order_id,
+    //                razorpayPaymentId: response.razorpay_payment_id,
+    //                razorpayOrderId: response.razorpay_order_id,
        
-               };
+    //            };
        
-               const result = await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/paymentVerification", data,config);
-           await dispatch(createAnOrder({totalPrice:totalAmount,finalAmount:finalAmount,shippingCost:shippingCost,orderType:orderType,discount:couponAmount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address")),tag:"Voguemine"}))
-           addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
-           localStorage.removeItem('cart');
-           setCartItems([])
-           navigate("/profile")
-           localStorage.removeItem("address")
-           dispatch(resetState())
-           window.fbq('track', 'InitiateCheckout', {
-            content_name: 'Checkout',
-            content_category: 'Page',
-            content_ids: 'Checkout Page',
-            content_type: 'page',
-            value:`${finalAmount}`,
-            currency: 'USD'
-        });
+    //            const result = await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/paymentVerification", data,config);
+    //        await dispatch(createAnOrder({totalPrice:totalAmount,finalAmount:finalAmount,shippingCost:shippingCost,orderType:orderType,discount:couponAmount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address")),tag:"Voguemine"}))
+    //        addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
+    //        localStorage.removeItem('cart');
+    //        setCartItems([])
+    //        navigate("/profile")
+    //        localStorage.removeItem("address")
+    //        dispatch(resetState())
+    //        window.fbq('track', 'InitiateCheckout', {
+    //         content_name: 'Checkout',
+    //         content_category: 'Page',
+    //         content_ids: 'Checkout Page',
+    //         content_type: 'page',
+    //         value:`${finalAmount}`,
+    //         currency: 'USD'
+    //     });
        
-           },
-           prefill: {
-               name: "Voguemine",
-               email: "info@voguemine.com",
-               contact: "6306492433",
-           },
-           notes: {
-               address: "Voguemine Premium Quality Clothes",
-           },
-           theme: {
-               color: "#61dafb",
-           },
-       };
+    //        },
+    //        prefill: {
+    //            name: "Voguemine",
+    //            email: "info@voguemine.com",
+    //            contact: "6306492433",
+    //        },
+    //        notes: {
+    //            address: "Voguemine Premium Quality Clothes",
+    //        },
+    //        theme: {
+    //            color: "#61dafb",
+    //        },
+    //    };
        
-       const paymentObject = new window.Razorpay(options);
-       paymentObject.open();
-       }
+    //    const paymentObject = new window.Razorpay(options);
+    //    paymentObject.open();
+    //    }
+    const data = {
+        orderCreationId: "Prepaid", // Set a placeholder value for order creation ID for COD orders
+        razorpayPaymentId: "Preapid", // Set a placeholder value for Razorpay payment ID for COD orders
+        razorpayOrderId: "Prepaid", // Set a placeholder value for Razorpay order ID for COD orders
+    };
+
+    // Simulating a successful payment verification for COD orders
+    await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }))
+    addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
+    localStorage.removeItem('cart');
+    setCartItems([])
+    navigate("/profile")
+    window.fbq('track', 'InitiateCheckout', {
+        content_name: 'Checkout',
+        content_category: 'Page',
+        content_ids: 'Checkout Page',
+        content_type: 'page',
+        value:`${finalAmount}`,
+        currency: 'USD'
+    });
+    localStorage.removeItem("address")
+    dispatch(resetState())
     }
-    const [imageIndex, setImageIndex] = useState(0);
 
-  const handleImageError = () => {
-    // Increment the image index to load the next image URL
-    setImageIndex(prevIndex => prevIndex + 1);
-  };
-
+}
     return (
         <div className='margin-section checkout'>
             <div className="left-form">
@@ -427,11 +456,26 @@ const checkOutHandler=async()=>{
                 <p>After clicking “Pay now”, you will be redirected to Razorpay Secure (UPI, Cards, Wallets, NetBanking) to complete your purchase securely.</p>
             </div>
         </div>
+
+<div className="upi-payments">
+    <p style={{fontWeight:600,color:'black'}}>Pay Using UPI and get 10% instant Discount</p>
+    <a href={`paytmmp://pay?pa=vyapar.170171846732@hdfcbank&pn=Paytm&tn=Voguemine-Payment&am=1&mode=02&cu=INR&tr=90123`} >
+    <div className="phonepe" value="phonepe" control={<Radio />} onClick={upiClick} >
+        <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712205113/UPI_logo_PNG_lyp5s5_mjqdsn.png" alt="" />
+    </div>
+    </a>
+    <div className="qrcode">
+
+    </div>
+</div>
+
+
         <FormControlLabel  value="cod" control={<Radio />} label="Cash on Delivery (Rs. 200)" onClick={codClick}/>
       </RadioGroup>
                     </div>
                     <div>
                     <input type="submit" value="Pay Now" className='pay'/>
+                    
                     </div>
                 </form>
             </div>

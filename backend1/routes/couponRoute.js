@@ -9,7 +9,7 @@ const {
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const router = express.Router();
 
-router.post("/", authMiddleware, isAdmin, createCoupon);
+router.post("/",isAdmin, createCoupon);
 router.get("/", getAllCoupons);
 router.get("/:id", getCoupon);
 router.put("/:id", authMiddleware, isAdmin, updateCoupon);
