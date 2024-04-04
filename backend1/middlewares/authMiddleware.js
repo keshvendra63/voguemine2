@@ -27,10 +27,8 @@ const authMiddleware=asyncHandler(async(req,res,next)=>{
 const isAdmin = async (req, res, next) => {
     try {
         if (req.user && req.user.role === 'admin') {
-            // User is an admin, allow access
             next();
         } else {
-            // User is not an admin, deny access
             throw new Error('You are not authorized to access this resource');
         }
     } catch (error) {
