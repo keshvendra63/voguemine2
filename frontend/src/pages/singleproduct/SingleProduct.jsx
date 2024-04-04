@@ -30,6 +30,8 @@ const SingleProduct = () => {
 
   useEffect(()=>{
       getProduct()
+      dispatch(getAProduct({handle:""}))
+      
   },[])
   const getProduct=()=>{
       

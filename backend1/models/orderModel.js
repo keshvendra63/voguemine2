@@ -60,7 +60,10 @@ var orderSchema = new mongoose.Schema(
       razorpayPaymentId:{
         type:String,
         required:true,
-      }
+      },
+      paymentId:{
+        type:String,
+      },
     },
     orderItems:[{
       product:{
