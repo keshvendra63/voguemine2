@@ -1,7 +1,7 @@
 import './App.css';
 import React,{useEffect} from 'react';
 import Home from './pages/home/Home'
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route,Navigate} from 'react-router-dom'
 import HomeMain from './pages/homeMain/HomeMain'
 import Header from '../src/components/header/Header'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -98,6 +98,7 @@ function App() {
         <Route path='/pages/terms-of-service' element={<Policies/>}/>
         <Route path='/pages/privacy-policy' element={<Policies/>}/>
         <Route path='/pages/contact' element={<Contact/>}/>
+        <Route path='*' element={<Navigate to="/home" />} />
 
       </Routes>
       <Footer/>
