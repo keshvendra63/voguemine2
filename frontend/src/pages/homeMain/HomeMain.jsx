@@ -19,7 +19,7 @@ const HomeMain = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const page = 1;
-  const limit = 4;
+  const limit = 20;
   const productState = useSelector((state) => state?.product?.product);
   const productStat = useSelector((state) => state?.product);
 
