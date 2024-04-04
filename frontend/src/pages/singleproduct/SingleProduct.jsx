@@ -29,9 +29,7 @@ const SingleProduct = () => {
   const dispatch=useDispatch();
 
   useEffect(()=>{
-      getProduct()
-      dispatch(getAProduct({handle:""}))
-      
+      getProduct()      
   },[])
   const getProduct=()=>{
       

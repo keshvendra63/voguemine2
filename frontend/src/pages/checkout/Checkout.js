@@ -16,6 +16,7 @@ import {config} from '../../utils/axiosConfig'
 import {createAnOrder, deleteCart, getUserCartProduct, resetState} from '../../features/user/userSlice'
 import {getAllCoupons,getACoupon} from '../../features/coupon/couponSlice'
 import { toast } from 'react-toastify';
+import QR from '../../images/qr.jpg'
   const shippingSchema=yup.object({
     firstname:yup.string().required("First Name is required"),
     lastname:yup.string().required("Last Name is required"),
@@ -110,15 +111,21 @@ const Checkout = () => {
             // }
         })
     }
-    const standardClick=()=>{
-        setShippingCost(0)
-        setOrderType("Prepaid")
-        setCouponAmount((totalAmount)/10)
-    }
+    // const standardClick=()=>{
+    //     setShippingCost(0)
+    //     setOrderType("Prepaid")
+    //     setCouponAmount((totalAmount)/10)
+    // }
     const codClick=()=>{
         setShippingCost(200)
         setOrderType("COD")
         setCouponAmount(0)
+    }
+    const bankClick=()=>{
+        setShippingCost(0)
+        setOrderType("Prepaid")
+        setCouponAmount((totalAmount)/10)
+
     }
 
     const finalAmount=shippingCost+totalAmount-couponAmount
@@ -215,67 +222,95 @@ const checkOutHandler=async()=>{
         dispatch(resetState())
     }
     else{
-        const res=await loadScript("https://checkout.razorpay.com/v1/checkout.js")
-        if(!res){
-           alert("Razorpay SDK failed to load")
-           return
-        }
-        const result=await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/checkout",{amount:finalAmount},config)
-        if(!result){
-           alert("Something went wrong")
-           return
-        }
+    //     const res=await loadScript("https://checkout.razorpay.com/v1/checkout.js")
+    //     if(!res){
+    //        alert("Razorpay SDK failed to load")
+    //        return
+    //     }
+    //     const result=await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/checkout",{amount:finalAmount},config)
+    //     if(!result){
+    //        alert("Something went wrong")
+    //        return
+    //     }
        
-        const {amount,id:order_id,currency}=result.data.order
-        const options = {
-           key: "rzp_test_DeWbJCwx392j0T", // Enter the Key ID generated from the Dashboard
-           amount: amount,
-           currency: currency,
-           name: "Voguemine",
-           description: "Voguemine Payment",
-           image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKfisT9A6XILZ3k7Gdg8hsJ1Xds88qRlXTbhc8AtBsng&s",
-           order_id: order_id,
-           handler: async function (response) {
-               const data = {
-                   orderCreationId: order_id,
-                   razorpayPaymentId: response.razorpay_payment_id,
-                   razorpayOrderId: response.razorpay_order_id,
+    //     const {amount,id:order_id,currency}=result.data.order
+    //     const options = {
+    //        key: "rzp_test_DeWbJCwx392j0T", // Enter the Key ID generated from the Dashboard
+    //        amount: amount,
+    //        currency: currency,
+    //        name: "Voguemine",
+    //        description: "Voguemine Payment",
+    //        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKfisT9A6XILZ3k7Gdg8hsJ1Xds88qRlXTbhc8AtBsng&s",
+    //        order_id: order_id,
+    //        handler: async function (response) {
+    //            const data = {
+    //                orderCreationId: order_id,
+    //                razorpayPaymentId: response.razorpay_payment_id,
+    //                razorpayOrderId: response.razorpay_order_id,
        
-               };
+    //            };
        
-               const result = await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/paymentVerification", data,config);
-           await dispatch(createAnOrder({totalPrice:totalAmount,finalAmount:finalAmount,shippingCost:shippingCost,orderType:orderType,discount:couponAmount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address")),tag:"Voguemine"}))
-           addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
-           localStorage.removeItem('cart');
-           setCartItems([])
-           navigate("/profile")
-           localStorage.removeItem("address")
-           dispatch(resetState())
-           window.fbq('track', 'InitiateCheckout', {
-            content_name: 'Checkout',
-            content_category: 'Page',
-            content_ids: 'Checkout Page',
-            content_type: 'page',
-            value:`${finalAmount}`,
-            currency: 'USD'
-        });
+    //            const result = await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.preview.app.github.dev/api/user/order/paymentVerification", data,config);
+    //        await dispatch(createAnOrder({totalPrice:totalAmount,finalAmount:finalAmount,shippingCost:shippingCost,orderType:orderType,discount:couponAmount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address")),tag:"Voguemine"}))
+    //        addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
+    //        localStorage.removeItem('cart');
+    //        setCartItems([])
+    //        navigate("/profile")
+    //        localStorage.removeItem("address")
+    //        dispatch(resetState())
+    //        window.fbq('track', 'InitiateCheckout', {
+    //         content_name: 'Checkout',
+    //         content_category: 'Page',
+    //         content_ids: 'Checkout Page',
+    //         content_type: 'page',
+    //         value:`${finalAmount}`,
+    //         currency: 'USD'
+    //     });
        
-           },
-           prefill: {
-               name: "Voguemine",
-               email: "info@voguemine.com",
-               contact: "6306492433",
-           },
-           notes: {
-               address: "Voguemine Premium Quality Clothes",
-           },
-           theme: {
-               color: "#61dafb",
-           },
-       };
+    //        },
+    //        prefill: {
+    //            name: "Voguemine",
+    //            email: "info@voguemine.com",
+    //            contact: "6306492433",
+    //        },
+    //        notes: {
+    //            address: "Voguemine Premium Quality Clothes",
+    //        },
+    //        theme: {
+    //            color: "#61dafb",
+    //        },
+    //    };
        
-       const paymentObject = new window.Razorpay(options);
-       paymentObject.open();
+    //    const paymentObject = new window.Razorpay(options);
+    //    paymentObject.open();
+
+
+
+
+    const data = {
+        orderCreationId: "Prepaid", // Set a placeholder value for order creation ID for COD orders
+        razorpayPaymentId: "Prepaid", // Set a placeholder value for Razorpay payment ID for COD orders
+        razorpayOrderId: "Prepaid", // Set a placeholder value for Razorpay order ID for COD orders
+    };
+
+    // Simulating a successful payment verification for COD orders
+    await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }))
+    addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
+    localStorage.removeItem('cart');
+    setCartItems([])
+    navigate("/profile")
+    window.fbq('track', 'InitiateCheckout', {
+        content_name: 'Checkout',
+        content_category: 'Page',
+        content_ids: 'Checkout Page',
+        content_type: 'page',
+        value:`${finalAmount}`,
+        currency: 'USD'
+    });
+    localStorage.removeItem("address")
+    dispatch(resetState())
+
+
        }
    
     
@@ -424,7 +459,7 @@ const checkOutHandler=async()=>{
       >
         <div className="razorpay">
             <div className="up">
-            <FormControlLabel value="razorpay" control={<Radio />} label="Razorpay Secure (UPI, Cards, Wallets, NetBanking)" onClick={standardClick} disabled={true}/>
+            <FormControlLabel value="razorpay" control={<Radio />} label="Razorpay Secure (UPI, Cards, Wallets, NetBanking)" disabled={true}/>
             <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" />
             </div>
             <div className="bottom">
@@ -435,13 +470,30 @@ const checkOutHandler=async()=>{
         </div>
 
 
+        <div className="banking">
+            <p style={{color:'black',fontWeight:600,fontSize:'19px'}}>Scan QR or Pay using Bank Account details given below and  get Instant 10% Discount</p>
+            <div className="qr">
+                <img src={QR} alt="" />
+            </div>
+            <p style={{color:'red',marginTop:'10px',fontWeight:500,textAlign:'center',fontSize:'25px'}}>Payable: &#8377; {totalAmount-(totalAmount/10)}</p>
+            <div className="bank">
+                <p style={{fontWeight:600}}>Bank Details:</p>
+                <p>Account Number: <span>50200091104371</span></p>
+                <p>IFSC: <span>HDFC0000003</span></p>
+            </div>
+            <FormControlLabel  value="paid" control={<Radio />} label="Check If You Have Made Payment" onClick={bankClick} style={{fontWeight:500,margin:'5px 0'}}/>
+
+
+        </div>
+
+
 
 
         <FormControlLabel  value="cod" control={<Radio />} label="Cash on Delivery (Rs. 200)" onClick={codClick}/>
       </RadioGroup>
                     </div>
                     <div>
-                    <input type="submit" value="Pay Now" className='pay'/>
+                    <input type="submit" value="Place Order" className='pay'/>
                     
                     </div>
                 </form>

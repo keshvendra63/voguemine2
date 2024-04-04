@@ -14,22 +14,39 @@
     width: 100%;
     height: 100%;
 }
-.checkout .upi-payments{
+.checkout .banking{
     padding: 10px;
     margin: 10px 0;
     border: 1px solid rgb(233, 233, 233);
     border-radius: 5px;
 
 }
-.checkout .upi-payments .phonepe{
-    border: 1px solid grey;
+.checkout .banking .qr{
+    border: 1px solid rgb(202, 202, 202);
+    border-radius: 5px;
+    padding: 8px;
+    width: 100%;
+    text-align: center;
+
+
+
+}
+.checkout .banking .bank{
+    border: 1px solid rgb(202, 202, 202);
     border-radius: 5px;
     padding: 8px;
 
 }
-.checkout .upi-payments .phonepe img{
-    width:100px;
-    height: 30px;
+.checkout .banking .bank p span{
+    margin-left: 6px;
+    color: black;
+    font-weight: 600;
+    font-size: 15px;
+}
+.checkout .banking .qr img{
+    margin: auto;
+    width:380px;
+    aspect-ratio: 1/1;
 }
 .checkout .left-form{
     padding-right: 20px;
@@ -174,6 +191,11 @@
         border-left: none;
         padding: 50px 20px;
     
+    }
+    .checkout .banking .qr img{
+        margin: auto;
+        width:250px;
+        aspect-ratio: 1/1;
     }
 
 }

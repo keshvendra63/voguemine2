@@ -17,9 +17,11 @@ const Products = () => {
   const [loading,setLoading]=useState(true)
 
   const searchParams =location.search
+  const dispatch=useDispatch();
 
 // Get the value of the 'search' parameter
 const searchValue = searchParams.split('=')[1];
+
 useEffect(()=>{
     if(location.pathname==="/collections/men-premium-shirt"){
         setCollectionName("Men's Premium Shirts")
@@ -179,7 +181,6 @@ useEffect(()=>{
     const productStat = useSelector((state) => state?.product);
 
     const {isError,isLoading,isSuccess}=productStat
-    const dispatch=useDispatch();
     
     useEffect(()=>{
       if(searchValue===undefined){
@@ -272,7 +273,7 @@ useEffect(()=>{
                     </div>
                     <hr />
                     <div className="products-listing">
-        <p className="section-heading">Featured Products</p>
+        <p className="section-heading">{collectionName}</p>
         {
           loading? <div className="skeleton">
           <div></div>
