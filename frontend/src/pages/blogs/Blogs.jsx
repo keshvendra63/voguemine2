@@ -32,22 +32,20 @@ const Blog = () => {
         <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
-        alt="green iguana"
+        alt={item?.title}
         height="140"
-        image={img}
+        image={item?.images[0]?.url}
       />
       <p>{moment(item?.createdAt).format("MMMM Do YYYY, h:mm a")}</p>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {item?.title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+        <Typography variant="body2" color="text.secondary" style={{height:'100px',overflow:'hidden',textOverflow:'ellipsis'}} dangerouslySetInnerHTML={{ __html: item?.description }}>
         </Typography>
       </CardContent>
       <CardActions>
-        <Link to={`/blog/${item?._id}`}><Button size="small">Learn More</Button></Link>
+        <Link to={`/blogs/news/${item?.handle}`}><Button size="small">Learn More</Button></Link>
         
       </CardActions>
     </Card>

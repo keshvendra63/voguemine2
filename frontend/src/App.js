@@ -89,7 +89,7 @@ function App() {
         <Route path="/products/:handle" element={<SingleProduct/>}/>
         <Route path="/wishlist" element={<Wishlist/>}/>
         <Route path='/blogs' element={<Blogs/>}/>
-        <Route path="/blog/:id" element={<SingleBlog/>}/>
+        <Route path="/blogs/news/:handle" element={<SingleBlog/>}/>
         <Route path="checkout" element={<Checkout/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/testing' element={<Testing/>}/>

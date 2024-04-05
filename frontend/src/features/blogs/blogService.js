@@ -7,8 +7,8 @@ const getBlogs=async()=>{
         return response.data
     }
 }
-const getBlog=async(id)=>{
-    const response= await axios.get(`${base_url}blog/${id}`)
+const getBlog=async(handle)=>{
+    const response= await axios.get(`${base_url}blog/web/${handle}`)
     if(response.data){
         return response.data
     }

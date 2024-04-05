@@ -10,9 +10,9 @@ export const getAllBlogs=createAsyncThunk("blogs/get",async(thunkAPI)=>{
         return thunkAPI.rejectWithValue(error)
     }
 })
-export const getABlog=createAsyncThunk("blog/get",async(id,thunkAPI)=>{
+export const getABlog=createAsyncThunk("blog/get",async(handle,thunkAPI)=>{
     try{
-        return await blogService.getBlog(id)
+        return await blogService.getBlog(handle)
     }catch(error){
         return thunkAPI.rejectWithValue(error)
     }
