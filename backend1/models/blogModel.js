@@ -7,6 +7,9 @@ var blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    handle:{
+      type:String,
+    },
     metaTitle:{
       type:String
     },
