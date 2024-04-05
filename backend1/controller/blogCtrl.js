@@ -31,8 +31,16 @@ const getBlog = asyncHandler(async (req, res) => {
   validateMongoDbId(id);
   try {
     const getBlog = await Blog.findById(id)
-    const updateViews = await Blog.findByIdAndUpdate(
-      id,
+    res.json(getBlog);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+const getBlogWeb = asyncHandler(async (req, res) => {
+  try {
+    const getBlog = await Blog.findOne({handle:req.params.handle})
+    const updateViews = await Blog.findOneAndUpdate(
+      {handle:req.params.handle},
       {
         $inc: { numViews: 1 },
       },
@@ -101,4 +109,5 @@ module.exports = {
   getAllBlogs,
   deleteBlog,
   uploadImages,
+  getBlogWeb
 };

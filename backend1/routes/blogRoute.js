@@ -5,9 +5,8 @@ const {
   getBlog,
   getAllBlogs,
   deleteBlog,
-  liketheBlog,
-  disliketheBlog,
   uploadImages,
+  getBlogWeb,
 } = require("../controller/blogCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const { blogImgResize, uploadPhoto } = require("../middlewares/uploadImage");
@@ -26,6 +25,8 @@ router.put(
 router.put("/:id", authMiddleware, isAdmin, updateBlog);
 
 router.get("/:id", getBlog);
+router.get("/web/:handle", getBlogWeb);
+
 router.get("/", getAllBlogs);
 
 router.delete("/:id", authMiddleware, isAdmin, deleteBlog);
