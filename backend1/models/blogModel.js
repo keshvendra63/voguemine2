@@ -7,39 +7,45 @@ var blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    metaTitle:{
+      type:String
+    },
+    metaDesc:{
+      type:String
+    },
     description: {
       type: String,
       required: true,
     },
-    category: {
+    state: {
       type: String,
-      required: true,
     },
     numViews: {
       type: Number,
       default: 0,
     },
-    isLiked: {
-      type: Boolean,
-      default: false,
-    },
-    isDisliked: {
-      type: Boolean,
-      default: false,
-    },
-    likes: [
+    comment:[
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    dislikes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-
+        email:{
+          type:String,
+        },
+        name:{
+          type:String,
+          required:true
+        },
+        msg:{
+          type:String,
+          required:true,
+        },
+        time:{
+          type:Date,
+      default:Date.now()
+        }
+        
+        
+      }
+    ]
+,
     author: {
       type: String,
       default: "Admin",
