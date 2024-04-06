@@ -74,6 +74,8 @@ const getAllProduct = asyncHandler(async (req, res) => {
           { title: { $regex: searchRegex } },
           { sku: { $regex: searchRegex } },
           { 'variants.color': { $in: keywords } },
+          { 'variants.size': { $in: keywords } },
+          { category: { $regex: searchRegex } },
           { description: { $regex: searchRegex } }
       ];
     }
