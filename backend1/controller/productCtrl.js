@@ -69,7 +69,7 @@ const getAllProduct = asyncHandler(async (req, res) => {
 
     if (req.query.search) {
       const searchRegex = new RegExp(req.query.search, "i");
-      const keywords = req.query.search.toLowerCase().split(' ');
+      const keywords = req.query.search.toLowerCase().split('');
       query.$or = [
           { title: { $regex: searchRegex } },
           { sku: { $regex: searchRegex } },
