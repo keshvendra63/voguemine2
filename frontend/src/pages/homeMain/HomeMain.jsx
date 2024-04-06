@@ -97,7 +97,7 @@ const HomeMain = () => {
       <div className="margin-section">
         <div className="shoes-section">
           <div className="shoe-left">
-            <Carousel controls={false} indicators={false} interval={1000} slide={false}>
+            <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
                 <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218481/0002_1_rdcrzf.jpg" alt="" />
               </Carousel.Item>
@@ -176,7 +176,7 @@ const HomeMain = () => {
             <Link to="/collections/heeled-sandals" className='btn'>BUY NOW</Link>
           </div>
           <div className="shoe-left">
-            <Carousel controls={false} indicators={false} interval={1000} slide={false}>
+            <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
                 <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218481/0001_1_qhast8.jpg" alt="" />
               </Carousel.Item>
@@ -241,7 +241,7 @@ const HomeMain = () => {
         </div>
         <div className="shoes-section">
           <div className="shoe-left">
-            <Carousel controls={false} indicators={false} interval={1000} slide={false}>
+            <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
                 <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558912/louis-vuitton-premium-quality-towel-set-of-2-523_yasoy7.jpg" alt="" />
               </Carousel.Item>

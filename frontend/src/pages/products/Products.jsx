@@ -250,7 +250,7 @@ useEffect(()=>{
     return (
         <div className='Products'>
             <div className="category-banner">
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710505437/a36_ba131u.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712382538/a36_f0eblb.jpg" alt="" />
             </div>
             <div className="products-box margin-section">
  
