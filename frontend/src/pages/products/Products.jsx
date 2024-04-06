@@ -40,6 +40,9 @@ useEffect(()=>{
       }
       if(location.pathname==="/collections/mens-sneakers-firstcopyshoes"){
         setCollectionName("Men's Sneakers")
+        document.title = "Buy Premium First Copy Shoes: Best Brands & Latest Trends - Vogue Mine"
+        document.querySelector('meta[name="description"]').setAttribute('content',"Shop first copy shoes from Vogue Mine: Get premium, top-quality designs from brands like Dior, Gucci, & more. Latest trends await you!");
+
       }
       if(location.pathname==="/collections/mens-denim-jeans"){
         setCollectionName("Men's Denim Jeans")
@@ -83,7 +86,7 @@ useEffect(()=>{
     }
     
     if(location.pathname==="/collections/womens-legging"){
-    setCollectionName("Women's Lower & Legging")
+    setCollectionName("Women's Legging")
     }
     
     if(location.pathname==="/collections/womens-sweatshirt"){
