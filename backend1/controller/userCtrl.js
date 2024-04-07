@@ -559,17 +559,21 @@ const getYearlyTotalOrders=asyncHandler(async(req,res)=>{
   res.json(data)
 })
 const getTodaysOrderIncome = asyncHandler(async (req, res) => {
-  // Get today's date
-  const today =new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
-  const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0); // Start of today
-  const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59); // End of today
+  // Get current date in Indian Standard Time (IST)
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
 
+  const startOfDay = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 18, 30, 0); // Start of yesterday
+// Set time to 11:59:59.999 PM IST
+const startOfDayIST = new Date(today);
+  startOfDayIST.setHours(18, 29, 59, 999)
   const data = await Order.aggregate([
     {
       $match: {
         createdAt: {
           $gte: startOfDay,
-          $lte: endOfDay
+          $lte: startOfDayIST
         }
       }
     },
@@ -578,7 +582,7 @@ const getTodaysOrderIncome = asyncHandler(async (req, res) => {
         _id: null,
         totalIncome: { $sum: "$finalAmount" },
         totalCount: { $sum: 1 },
-        items: { $push: "$orderItems" } // Accumulate all items in orders
+        items: { $push: "$orderItems" }
       }
     },
     {
@@ -587,13 +591,14 @@ const getTodaysOrderIncome = asyncHandler(async (req, res) => {
         totalIncome: 1,
         totalCount: 1,
         items: 1,
-        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
+        orderItemCount: { $sum: { $size: "$items" } }
       }
     }
   ]);
 
   res.json(data);
 });
+
 const getWeekWiseOrderIncome = asyncHandler(async (req, res) => {
   // Get the start and end dates for the current week
   const today = new Date();
