@@ -73,18 +73,23 @@ const getAllProduct = asyncHandler(async (req, res) => {
 
     if (req.query.search) {
       const searchKeywords = req.query.search.toLowerCase().split(' ');
-      const searchRegex = new RegExp(searchKeywords.join('|'), 'i');
-      const categoryQuery = {
-        $or: [
-          { category: { $regex: searchRegex } }, // Match category based on search keywords
-          { 'variants.color': { $in: searchKeywords } }, // Match color based on search keywords
-          { title: { $regex: searchRegex } }, // Match title based on search keywords
-          { brand: { $in: searchKeywords } }, // Match brand based on search keywords
-          { sku: { $in: searchKeywords } }, // Match sku based on search keywords
-          { 'variants.size': { $in: searchKeywords } } // Match size based on search keywords
-        ]
-      };
-      query.$and = [categoryQuery]; // Ensure all search conditions are met
+      const searchConditions = [];
+
+      // Add conditions for each search keyword
+      searchKeywords.forEach(keyword => {
+        searchConditions.push({
+          $or: [
+            { category: { $regex: new RegExp(keyword, 'i') } }, // Match category based on keyword
+            { 'variants.color': { $in: [keyword] } }, // Match color based on keyword
+            { title: { $regex: new RegExp(keyword, 'i') } }, // Match title based on keyword
+            { brand: { $in: [keyword] } }, // Match brand based on keyword
+            { sku: { $in: [keyword] } }, // Match sku based on keyword
+            { 'variants.size': { $in: [keyword] } } // Match size based on keyword
+          ]
+        });
+      });
+
+      query.$and = searchConditions; // Ensure all search conditions are met
     }
 
 
