@@ -19,7 +19,7 @@ const Footer = () => {
     <div className='footer'>
         <Container>
       <Row>
-        <Col className='my-2 mx-2'>
+        <Col className=''>
         <h2>Collection</h2>
         <ul>
             <li><Link to="/men">Men</Link></li>
@@ -28,7 +28,7 @@ const Footer = () => {
             <li><Link to="/accessories">Accessories</Link></li>
         </ul>
         </Col>
-        <Col className='my-2 mx-2'>
+        <Col className=''>
         <h2>Useful Links</h2>
         <ul>
             <li><Link to="/about">About</Link></li>
@@ -37,7 +37,7 @@ const Footer = () => {
             <li><Link to="#">Exchange Order</Link></li> */}
         </ul>
         </Col>
-        <Col className='my-2 mx-2'>
+        <Col className=''>
         <h2>Policies</h2>
         <ul>
             <li><Link to="/pages/shipping-policy">Shipping Policy</Link></li>
@@ -46,7 +46,7 @@ const Footer = () => {
             <li><Link to="/pages/privacy-policy">Privacy Policy</Link></li>
         </ul>
         </Col>
-        <Col className='my-2 mx-2'>
+        <Col className=''>
         <h2>Contact Information</h2>
         <ul>
             <li>Phone: <Link to="tel:+919899202079">+91 9899202079</Link></li>
