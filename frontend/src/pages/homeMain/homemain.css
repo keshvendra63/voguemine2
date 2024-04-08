@@ -104,7 +104,23 @@
     font-weight: 600;
 }
 
-
+.icon-footer{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    text-align: center;
+}
+.icon-footer div{
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px 0;
+    text-transform: uppercase;
+}
+.icon-footer img{
+    width: 100px;
+    height: 100px;
+}
 @media screen and (max-width:1200px) {
     /* .homeMain .hero-section img {
         width: 170%;
@@ -174,5 +190,11 @@
     .shoes-section .shoe-right p:nth-child(2) {
     
         font-size: 16px;
+    }
+    .icon-footer{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 10px;
+        text-align: center;
     }
 }

@@ -44,10 +44,16 @@ const getProduct=async(handle)=>{
         return response.data
     }
 }
-
+const rating=async()=>{
+    const response= await axios.put(`${base_url}product/rating`)
+    if(response.data){
+        return response.data
+    }
+}
 export const productService={
     getProducts,
     addToWishList,
     getProduct,
-    getAllProducts
+    getAllProducts,
+    rating
 }

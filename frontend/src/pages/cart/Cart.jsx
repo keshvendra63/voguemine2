@@ -16,25 +16,46 @@ const [productUpdateDetail,setproductUpdateDetail]=useState(null)
         setCartItems(cartFromStorage);
     }, []);
 
-    const handleQuantityChange = (productId, newQuantity) => {
+    const handleQuantityChange = (productId, color, size, newQuantity) => {
         // Update the quantity for the item in the cart
-        const updatedCartItems = cartItems.map(item => {
-            if (item.productId === productId) {
-                return { ...item, quantity: newQuantity };
+        const updatedCartItems = cartItems?.map(item => {
+            if (item?.productId === productId && item?.color === color && item?.size === size) {
+                // Find the variant matching the color and size
+                const updatedVariants = item?.product?.variants.map(variant => {
+                    if (variant?.color === color && variant?.size === size) {
+                        // If the new quantity is less than or equal to the variant quantity, update the quantity
+                        if (newQuantity <= variant?.quantity) {
+                            return { ...variant, quantity: newQuantity };
+                        } else {
+                            // If the new quantity exceeds the variant quantity, keep the quantity unchanged
+                            return { ...variant };
+                        }
+                    }
+                    return variant;
+                });
+    
+                // Update the product variants with the updated variants
+                return {
+                    ...item,
+                    product: {
+                        ...item?.product,
+                        variants: updatedVariants
+                    }
+                };
             }
             return item;
         });
-
+    
         // Update localStorage with the updated cart items
         localStorage.setItem('cart', JSON.stringify(updatedCartItems));
-
+    
         // Update state to reflect the changes
         setCartItems(updatedCartItems);
     };
 
     const removeFromCartAndUpdate = (productIdToRemove) => {
         // Filter out the item to remove
-        const updatedCartItems = cartItems.filter(item => item.productId !== productIdToRemove);
+        const updatedCartItems = cartItems?.filter(item => item?.productId !== productIdToRemove);
 
         // Update localStorage with the updated cart items
         localStorage.setItem('cart', JSON.stringify(updatedCartItems));
@@ -67,7 +88,7 @@ useEffect (()=> {
                     <div className="cart-item" key={index}>
                         <div className="cartItem-left">
                             <div className="prdt-img">
-                                <img src={item?.product?.images[1]?.url} alt="" />
+                                <img src={item?.product?.images[0]?.url} alt="" />
                             </div>
                         </div>
                         <div className="cartItem-right">
@@ -81,15 +102,15 @@ useEffect (()=> {
                                 <p style={{fontWeight:500}}>Color:</p>
                                 <p>{item?.color}</p>
                             </div>
-                            <div className="quantity">
+                            {/* <div className="quantity">
                                 <p style={{fontWeight:500}}>Qty:</p>
-                                <input type="number" name="" min={1} max={10} id=""  value={item.quantity}
-                                                onChange={(e) => handleQuantityChange(item.productId, e.target.value)}/>
-                            </div>
+                                <input type="number" name="" min={1} max={10} id=""  value={item?.quantity}
+                                                onChange={(e) => handleQuantityChange(item?.productId,item?.color,item?.color, e.target.value)}/>
+                            </div> */}
                             </div>
                             <p className="price" style={{marginTop:'20px',fontWeight:'bold'}}>Rs. {item?.price}</p>
                             <hr />
-                            <p className='remove' onClick={() => removeFromCartAndUpdate(item.productId)}>Remove</p>
+                            <p className='remove' onClick={() => removeFromCartAndUpdate(item?.productId)}>Remove</p>
                         </div>
                         
                     </div>

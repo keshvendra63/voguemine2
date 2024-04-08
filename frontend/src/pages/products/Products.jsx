@@ -14,10 +14,10 @@ const Products = () => {
     const [btn,setBtn]=useState("block")
   const [sort,setSort]=useState("-createdAt")
     const location=useLocation()
-  const [limit,setLimit]=useState(28)
+  const [limit,setLimit]=useState(700)
   const [page,setPage]=useState(1)
   const [loading,setLoading]=useState(true)
-
+const [load,setLoad]=useState(28)
   const searchParams =location.search
   const dispatch=useDispatch();
 
@@ -216,8 +216,8 @@ useEffect(()=>{
       }, 3000);
     };
     const loadMore=()=>{
-    
-      setLimit(limit+28)
+    setLoad(load+28)
+      // setLimit(limit+28)
       enterLoading(0)
     }
     
@@ -243,7 +243,7 @@ useEffect(()=>{
   },[isLoading,isSuccess])
 
 useEffect(()=>{
-    if(products?.length<limit){
+    if(products?.length<load){
       setTimeout(()=>{
         setBtn("none")
       },3000)
@@ -268,7 +268,7 @@ useEffect(()=>{
                         <div className="filter">
                             <p>Filter</p>
                         </div>
-                        <p style={{fontWeight:'bold'}}>{productState?.length} Products</p>
+                        <p style={{fontWeight:'bold'}}>{products?.length} Products</p>
                         <div className="sort">
                             <select name="" id="" style={{fontWeight:'bold'}} onChange={sortChange} value={sort} defaultValue="-createdAt">
                                 <option value="title">Alphabet A-Z</option>
@@ -297,7 +297,7 @@ useEffect(()=>{
 
 
 
-                products.map((arm,index)=>{
+                products?.slice(0,load)?.map((arm,index)=>{
                     return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>    
                 })
                 

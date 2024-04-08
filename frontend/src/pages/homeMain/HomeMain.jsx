@@ -313,6 +313,24 @@ const HomeMain = () => {
 
         </div>
 
+<p style={{textAlign:'center',fontSize:'30px',fontWeight:500}}>Secure With Voguemine</p>
+
+        <div className="icon-footer">
+          <div>
+          <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712582661/FREE_FAST_SHIPPING_IN_INDIA_qug5zj.png" alt="" />
+<p>Fast Shipping</p>
+          </div>
+          <div>
+          <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712582661/SECURE_PAYMENT_eblv7s.png" alt="" />
+<p>Secure Payment</p>
+          </div>
+          <div>
+          <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712582665/Easy_Exchange_gfloux.png" alt="" />
+
+<p>Easy Exchange</p>
+          </div>
+        </div>
+
 
 
 

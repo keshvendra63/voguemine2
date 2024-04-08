@@ -42,6 +42,7 @@ const dispatch=useDispatch()
 
   }
   const cart=JSON.parse(localStorage.getItem("cart"))
+  const wishlist=JSON.parse(localStorage.getItem("wishlist"))
 const navigate=useNavigate()
   const changePlaceholder = async () => {
     for (let i = 0; ; i = (i + 1) % placeholderText.length) {
@@ -124,7 +125,11 @@ const loginOpen=()=>{
         <div className='head3' style={{textAlign:'right'}}>
           <ul>
             <li className='li-search'><input type="search" name="" id="" value={svalue} onChange={(e)=>setSvalue(e.target.value)} onKeyDown={handleKeyDown} placeholder={state}/><SearchIcon className='s-icon'/></li>
-            <li><Link to="/wishlist"><FavoriteBorderIcon/></Link></li>
+            <li className='cart-len'>{
+              wishlist && wishlist?.length>=1?<p className='cart-length'>{wishlist?.length}</p>
+              :
+              ""
+            }<Link to="/wishlist"><FavoriteBorderIcon/></Link></li>
             <li className='cart-len'>{
               cart && cart?.length>=1?<p className='cart-length'>{cart?.length}</p>
               :
@@ -179,7 +184,7 @@ const loginOpen=()=>{
               <li onClick={closeClick}><Face4OutlinedIcon/><Link to="/women">Womens</Link></li>
               <li onClick={closeClick}><FaceOutlinedIcon/><Link to="/kids">Kids</Link></li>
               <li onClick={closeClick}><AutoAwesomeMosaicOutlinedIcon/><Link to="/accessories">Accessories</Link></li>
-              <li onClick={closeClick}><FavoriteBorderIcon/><Link to="/wishlist">Wishlist</Link></li>
+              <li onClick={closeClick}><FavoriteBorderIcon/><Link to="/wishlist">Wishlist ( {wishlist?.length} )</Link></li>
               <li onClick={closeClick}><PersonOutlineIcon/><Link to="/profile">Login/Register</Link></li>
               
             </ul>

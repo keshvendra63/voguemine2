@@ -1,18 +1,20 @@
 import React,{useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {getAProduct,getAllProducts } from '../../features/products/productSlice';
+import {getAProduct,getAllProducts,rating } from '../../features/products/productSlice';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import './singleproduct.css'
 import { addToCart, getUserCartProduct } from '../../features/user/userSlice'
 import Product from '../../components/Product'
-
+import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
 import {toast} from 'react-toastify'
 const SingleProduct = () => {
   const { handle } = useParams()
   const limit=4
   const page=1
+  const [pQuantity,setPQuantity]=useState()
   const [color,setColor]=useState(null)
   const [size,setSize]=useState(null)
   const [sold,setSold]=useState("none")
@@ -20,6 +22,11 @@ const SingleProduct = () => {
   const [alreadyAdded, setAlreadyAdded] =useState(false)
   const [mainImage,setMainImage]=useState("")
   const [btnDisable,setBtnDisable]=useState(false)
+  const [name,setName]=useState("")
+  const [email,setEmail]=useState("")
+  const [msg,setMsg]=useState("")
+  const [star,setStar]=useState(5)
+
   const navigate=useNavigate()
   const singleProductState=useSelector((state)=>state?.product?.getSingleProduct)
   const cart=JSON.parse(localStorage.getItem("cart"))
@@ -132,9 +139,11 @@ const [imageIndex, setImageIndex] = useState(0);
   };
   useEffect(()=>{
     const matchingVariant = findVariant(color, size);
+    setPQuantity(matchingVariant?.quantity) 
     if (matchingVariant?.quantity===0) {
         setBtnDisable(true)
-        setSold("block")  
+        setSold("block")
+         
     }
     else{
       setBtnDisable(false)
@@ -162,7 +171,7 @@ const [imageIndex, setImageIndex] = useState(0);
     }
   }, [singleProductState?.variants]);
   const incrementQuantity = () => {
-    if (quantity < 10) {
+    if (quantity < pQuantity) {
       setQuantity(quantity + 1);
     }
   };
@@ -190,6 +199,15 @@ useEffect(() => {
   }
 
 }, [singleProductState?.metaDesc]);
+
+const commentPost=()=>{
+  if(name==="" || email ==="" || msg===""){
+    toast.info("Please Fill all the Fields")
+  }
+  else{
+dispatch(rating({name:name,email:email,comment:msg,star:star,prodId:singleProductState?._id}))
+  }
+}
   return (
     <div className='single-product margin-section'>
       <div className="product">
@@ -226,7 +244,7 @@ useEffect(() => {
                 <ul>
                 {
   singleProductState?.variants?.filter((item, index, arr) => arr.findIndex(i => i.size === item.size) === index)
-                .map((item, index) => <li onClick={() => setSize(item.size)} key={index} style={{border:item.size===size?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.size}</li>)
+                .map((item, index) => <li onClick={() => (setSize(item.size),setQuantity(0))} key={index} style={{border:item.size===size?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.size}</li>)
 }
                 </ul>
             </div>
@@ -235,16 +253,9 @@ useEffect(() => {
               <div className="color prdt-variation">
                 <p>COLOR :</p>
                 <ul>
-                  {/* {
-                    singleProductState?.map((item,index)=>{
-                      return(
-                        <li onClick={()=>setColor(item?._id)} style={{backgroundColor:'red'}} key={index}></li>
-                      )
-                    })
-                  } */}
                                            {
   singleProductState?.variants?.filter((item, index, arr) => arr.findIndex(i => i.color === item.color) === index)
-                .map((item, index) => <li onClick={() => setColor(item.color)} key={index} style={{border:item.color===color?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.color}</li>)
+                .map((item, index) => <li onClick={() => (setColor(item.color),setQuantity(0))} key={index} style={{border:item.color===color?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.color}</li>)
 }
 
                     
@@ -279,6 +290,47 @@ useEffect(() => {
 
         </div>
       </div>
+<div className="ratings">
+  <p style={{fontSize:'20px',fontWeight:500}}>Ratings</p>
+  <div className="rating">
+    <input type="text" onChange={(e)=>setName(e.target.value)} placeholder='Enter Name'/>
+    <input type="email" onChange={(e)=>setEmail(e.target.value)} placeholder='Enter Email'/>
+    <Stack spacing={1} className="stars">
+          <Rating name="size-small" value={star} size="medium" onChange={(e)=>setStar(e.target.value)}/>
+        </Stack>
+    <div className="msg">
+<textarea name="" id="" onChange={(e)=>setMsg(e.target.value)} placeholder='Enter Message'></textarea>
+    </div>
+    <button onClick={commentPost}>Post</button>
+  </div>
+  <hr />
+
+  {
+    singleProductState?.ratings?.length>0 ?
+<div className="ratingCount">
+    <p style={{fontSize:'20px',fontWeight:500}}>What Our Customers Says.</p>
+    {
+      singleProductState?.ratings?.map((item,index)=>{
+        return(
+          <div className="rate">
+      <div className="name">
+      <p style={{fontWeight:500,marginBottom:0}}>{item?.name}</p>
+      <Stack spacing={1} className="star" style={{fontSize:'25px',marginLeft:'20px'}}>
+          <Rating name="size-small" value={item?.star} size="medium" onChange={(e)=>setStar(e.target.value)}/>
+        </Stack>
+      </div>
+      <p style={{color:'grey',marginTop:'15px',fontSize:'14px'}}>{item?.comment}</p>
+    </div>
+        )
+      })
+    }
+  </div>
+  :
+  ""
+  }
+  
+</div>
+
       <p className='you-like'>YOU MAY ALSO LIKE</p>
       
       <div className="products-listing ">                

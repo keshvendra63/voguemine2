@@ -21,7 +21,7 @@ const addProductToWishlistLocalStorage = (product) => {
   localStorage.setItem("wishlist", JSON.stringify(updatedCart));
 };
   const [fav,setFav]=useState("block")
-
+const [red,setRed]=useState("")
     const [sold,setSold]=useState("none")
     const [color,setColor]=useState(null)
     const [size,setSize]=useState(null)
@@ -31,7 +31,16 @@ const addProductToWishlistLocalStorage = (product) => {
     const navigate=useNavigate()
     const dispatch=useDispatch();
 
-   
+    const wishlist=JSON.parse(localStorage.getItem("wishlist"))
+
+useEffect(()=>{
+  wishlist?.map((item)=>{
+    if(item?.productId===props.id){
+      setRed("h")
+    }
+  })
+},[wishlist])
+
     const addTocart=async(data)=>{
       if(color===null){
         toast.error("Please Select Color")
@@ -165,7 +174,13 @@ const [imageIndex, setImageIndex] = useState(0);
                   }        
                 
                 </Link>
-                <p className="wish-icon" onClick={(e)=>{addToWish(props.id)}}><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
+                {
+                  red===""?                <p className="wish-icon" onClick={(e)=>{addToWish(props.id)}}><FavoriteBorderOutlinedIcon className="cart-icon"/></p>
+:
+<p className="wish-icon"><FavoriteIcon className="cart-icon" style={{color:'red'}}/></p>
+
+                }
+
 
                 <p className='sold' style={{display:sold}}>Sold out</p>
                 </div>
@@ -181,7 +196,12 @@ const [imageIndex, setImageIndex] = useState(0);
         <p className="sale-price">&#8377;{(props.price)*2}</p>
         </div>
         <div>
-    <FavoriteBorderOutlinedIcon className="cart-icon" onClick={(e)=>{addToWish(props.id)}}/>
+          {
+            red===""?<FavoriteBorderOutlinedIcon className="cart-icon" onClick={(e)=>{addToWish(props.id)}}/>
+            :
+            <FavoriteIcon className="cart-icon" style={{color:'red'}}/>
+          }
+    
     {/* <AddShoppingCartOutlinedIcon className="cart-icon" onClick={(e)=>{addTocart(props.id)}}/> */}
         </div>
         </div>
