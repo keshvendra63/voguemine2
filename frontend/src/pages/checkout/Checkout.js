@@ -26,7 +26,7 @@ import QR from '../../images/qr.jpg'
     city:yup.string().required("City Name is required"),
     state:yup.string().required("State Name is required"),
     pincode:yup.number().required("Pin Code Name is required"),
-    phone:yup.number().required("Alternative Phone Name is required"),
+    phone:yup.number(),
   })
 
 const Checkout = () => {
@@ -184,7 +184,7 @@ const loadScript=(src)=>{
 useEffect(()=>{
     let items=[]
     for (let index = 0; index < cartItems?.length; index++) {
-        items.push({product:cartItems[index]?.product,quantity:cartItems[index].quantity,price:cartItems[index].price,color:cartItems[index].color,size:cartItems[0].size})
+        items.push({product:cartItems[index]?.product,quantity:cartItems[index].quantity,price:cartItems[index].price,color:cartItems[index].color,size:cartItems[index].size})
         
     }
     setCartProductState(items)
@@ -205,10 +205,9 @@ const checkOutHandler=async()=>{
         };
 
         // Simulating a successful payment verification for COD orders
+                localStorage.removeItem('cart');
         await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }))
         addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
-        localStorage.removeItem('cart');
-        setCartItems([])
         navigate("/profile")
         window.fbq('track', 'Purchase', {
             content_name: 'Checkout',
@@ -294,10 +293,10 @@ const checkOutHandler=async()=>{
     };
 
     // Simulating a successful payment verification for COD orders
+            localStorage.removeItem('cart');
+
     await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }))
     addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
-    localStorage.removeItem('cart');
-    setCartItems([])
     navigate("/profile")
     window.fbq('track', 'Purchase', {
         content_name: 'Checkout',

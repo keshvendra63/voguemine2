@@ -102,11 +102,11 @@ useEffect (()=> {
                                 <p style={{fontWeight:500}}>Color:</p>
                                 <p>{item?.color}</p>
                             </div>
-                            {/* <div className="quantity">
+                            <div className="quantity">
                                 <p style={{fontWeight:500}}>Qty:</p>
                                 <input type="number" name="" min={1} max={10} id=""  value={item?.quantity}
                                                 onChange={(e) => handleQuantityChange(item?.productId,item?.color,item?.color, e.target.value)}/>
-                            </div> */}
+                            </div>
                             </div>
                             <p className="price" style={{marginTop:'20px',fontWeight:'bold'}}>Rs. {item?.price}</p>
                             <hr />

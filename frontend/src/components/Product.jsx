@@ -185,7 +185,7 @@ const [imageIndex, setImageIndex] = useState(0);
                 <p className='sold' style={{display:sold}}>Sold out</p>
                 </div>
                 <div className="product-content">
-                  <p className="title">{props.title}</p>
+                  <Link to={`/products/${props.handle}`} className="title" style={{color:'black'}}><p >{props.title}</p></Link>
                   <Stack spacing={1} className="stars">
           <Rating name="size-small" defaultValue={5} size="small" />
     

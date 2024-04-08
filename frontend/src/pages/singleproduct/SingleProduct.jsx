@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {getAProduct,getAllProducts,rating } from '../../features/products/productSlice';
+import {getAProduct,getAllProducts,rating, resetState } from '../../features/products/productSlice';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
@@ -38,6 +38,9 @@ const SingleProduct = () => {
   useEffect(()=>{
       getProduct()      
   },[])
+  useEffect(()=>{
+    dispatch(resetState())
+  },[resetState])
   const getProduct=()=>{
       
       dispatch(getUserCartProduct())
@@ -48,7 +51,7 @@ const SingleProduct = () => {
       getProducts()
   },[limit,page,collectionName,handle])
   const getProducts=()=>{
-      dispatch(getAllProducts({limit,page,collectionName}))
+      dispatch(getAllProducts({limit,page,collectionName,sort:"-createdAt"}))
   }
   const products=productState? productState:[]
    const customer=JSON.parse(localStorage.getItem("customer"))
@@ -244,7 +247,7 @@ dispatch(rating({name:name,email:email,comment:msg,star:star,prodId:singleProduc
                 <ul>
                 {
   singleProductState?.variants?.filter((item, index, arr) => arr.findIndex(i => i.size === item.size) === index)
-                .map((item, index) => <li onClick={() => (setSize(item.size),setQuantity(0))} key={index} style={{border:item.size===size?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.size}</li>)
+                .map((item, index) => <li onClick={() => (setSize(item.size),setQuantity(1))} key={index} style={{border:item.size===size?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.size}</li>)
 }
                 </ul>
             </div>
@@ -255,7 +258,7 @@ dispatch(rating({name:name,email:email,comment:msg,star:star,prodId:singleProduc
                 <ul>
                                            {
   singleProductState?.variants?.filter((item, index, arr) => arr.findIndex(i => i.color === item.color) === index)
-                .map((item, index) => <li onClick={() => (setColor(item.color),setQuantity(0))} key={index} style={{border:item.color===color?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.color}</li>)
+                .map((item, index) => <li onClick={() => (setColor(item.color),setQuantity(1))} key={index} style={{border:item.color===color?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.color}</li>)
 }
 
                     

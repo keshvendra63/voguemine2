@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './product.css'
-import {useLocation} from 'react-router-dom'
+import {useLocation,useNavigate} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {getAllProducts,getProducts, resetState } from '../../features/products/productSlice';
 import {getUserWishlistProduct} from '../../features/user/userSlice'
@@ -17,6 +17,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 const Products = () => {
+  const navigate=useNavigate()
   const [filter,setFilter]=useState(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
     const [collectionName,setCollectionName]=useState("")
     const [spinner,setSpinner]=useState("none")
@@ -29,12 +30,18 @@ const Products = () => {
 const [load,setLoad]=useState(28)
   const searchParams =location.search
   const dispatch=useDispatch();
-
+  const queryParams = new URLSearchParams(location.search);
+  let size = parseInt(queryParams.get('size')) || "";
 // Get the value of the 'search' parameter
 const searchValue = searchParams.split('=')[1];
 useEffect(()=>{
   dispatch(resetState())
 },[resetState])
+const updateURL = (sizeNumber) => {
+  const searchParams = new URLSearchParams();
+  searchParams.set('size', sizeNumber);
+  navigate(`${location.pathname}?${searchParams.toString()}`);
+};
 useEffect(()=>{
     if(location.pathname==="/collections/men-premium-shirt"){
         setCollectionName("Men's Premium Shirts")
@@ -322,6 +329,7 @@ const toggleDrawer = (newOpen) => () => {
 };
 const liItem=(text)=>{
   dispatch(getAllProducts({collectionName,size:text,sort,limit,page}))
+
 }
 
 const DrawerList = (
