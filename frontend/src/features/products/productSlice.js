@@ -29,15 +29,16 @@ export const addToWishlist=createAsyncThunk("product/wishlist",async(prodId,thun
         return thunkAPI.rejectWithValue(error)
     }
 })
-export const rating=createAsyncThunk("product/rating",async(thunkAPI)=>{
-    try{
-        return await productService.rating()
-    }catch(error){
-        return thunkAPI.rejectWithValue(error)
+export const rating = createAsyncThunk(
+    "product/rateProduct",
+    async ({ prodId, star, comment, name, email }, thunkAPI) => {
+        try {
+            return await productService.rateProduct(prodId, star, comment, name, email);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
     }
-})
-
-
+);
 export const getAProduct=createAsyncThunk("product/getSingleProduct",async(handle,thunkAPI)=>{
     try{
         return await productService.getProduct(handle)

@@ -185,45 +185,44 @@ const addToWishlist = asyncHandler(async (req, res) => {
 });
 
 const rating = asyncHandler(async (req, res) => {
-  // const { _id } = req.user;
-  const { star, prodId, comment,name,email } = req.body;
   try {
+      const { star, prodId, comment, name, email } = req.body;
+
+      // Update product with new rating and comment
       const rateProduct = await Product.findByIdAndUpdate(
-        prodId,
-        {
-          $push: {
-            ratings: {
-              star: star,
-              name:name,
-              email:email,
-              comment: comment,
-            },
+          prodId,
+          {
+              $push: {
+                  ratings: {
+                      star: star,
+                      name: name,
+                      email: email,
+                      comment: comment,
+                  },
+              },
           },
-        },
-        {
-          new: true,
-        }
+          { new: true }
       );
-    
-    const getallratings = await Product.findById(prodId);
-    let totalRating = getallratings.ratings.length;
-    let ratingsum = getallratings.ratings
-      .map((item) => item.star)
-      .reduce((prev, curr) => prev + curr, 0);
-    let actualRating = Math.round(ratingsum / totalRating);
-    let finalproduct = await Product.findByIdAndUpdate(
-      prodId,
-      {
-        totalrating: actualRating,
-      },
-      { new: true }
-    );
-    res.json(finalproduct);
+
+      // Calculate new average rating for the product
+      const product = await Product.findById(prodId);
+      const totalRating = product.ratings.length;
+      const ratingSum = product.ratings.reduce((prev, curr) => prev + curr.star, 0);
+      const averageRating = Math.round(ratingSum / totalRating);
+
+      // Update product with new average rating
+      const updatedProduct = await Product.findByIdAndUpdate(
+          prodId,
+          { totalrating: averageRating },
+          { new: true }
+      );
+
+      res.json(updatedProduct);
   } catch (error) {
-    throw new Error(error);
+      console.error("Error while updating rating:", error);
+      res.status(500).json({ message: "Internal server error" });
   }
 });
-
 const uploadImages = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);

@@ -44,10 +44,16 @@ const getProduct=async(handle)=>{
         return response.data
     }
 }
-const rating=async()=>{
-    const response= await axios.put(`${base_url}product/rating`)
-    if(response.data){
-        return response.data
+const rateProduct = async (prodId, star, comment, name, email) => {
+    try {
+        const response = await axios.put(`${base_url}product/rating`, { prodId, star, comment, name, email });
+        if (response.data) {
+            return response.data;
+        }
+    } catch (error) {
+        console.error("Error rating product:", error);
+        // Handle error appropriately
+        throw error;
     }
 }
 export const productService={
@@ -55,5 +61,5 @@ export const productService={
     addToWishList,
     getProduct,
     getAllProducts,
-    rating
+    rateProduct
 }
