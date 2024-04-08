@@ -101,7 +101,7 @@ const buyNow=async()=>{
   else{
     await addProductToCartLocalStorage({productId:getProductId,color,quantity,price:singleProductState?.price,size,product:singleProductState})
     toast.success("Added To Cart")   
-     window.fbq('track', 'Purchase', {
+     window.fbq('track', 'InitiateCheckout', {
       content_name:`${singleProductState?.title}`,
       content_category:`${singleProductState?.category}`,
       content_ids:`${singleProductState?._id}`,

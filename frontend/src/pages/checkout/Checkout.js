@@ -210,7 +210,7 @@ const checkOutHandler=async()=>{
         localStorage.removeItem('cart');
         setCartItems([])
         navigate("/profile")
-        window.fbq('track', 'InitiateCheckout', {
+        window.fbq('track', 'Purchase', {
             content_name: 'Checkout',
             content_category: 'Page',
             content_ids: 'Checkout Page',
@@ -299,7 +299,7 @@ const checkOutHandler=async()=>{
     localStorage.removeItem('cart');
     setCartItems([])
     navigate("/profile")
-    window.fbq('track', 'InitiateCheckout', {
+    window.fbq('track', 'Purchase', {
         content_name: 'Checkout',
         content_category: 'Page',
         content_ids: 'Checkout Page',

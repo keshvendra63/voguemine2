@@ -12,8 +12,8 @@ const ScrollToTop = () => {
     element.style.scrollBehavior = 'auto'; // Disable smooth scrolling
     element.scrollTop = 0; // Scroll to the top instantly
     element.style.scrollBehavior = 'auto'; // Re-enable smooth scrolling (optional)
-    dispatch(getAllProducts({collectionName:''}))
-    dispatch(getAProduct({handle:""}))
+    // dispatch(getAllProducts({collectionName:''}))
+    // dispatch(getAProduct({handle:""}))
   }, [pathname]);
 
   return null;

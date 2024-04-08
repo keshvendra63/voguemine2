@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import ScrollCarousel from 'scroll-carousel-react';
 import Carousel from 'react-bootstrap/Carousel';
 import home_benner from '../../images/home-banner.jpg'
-
+import Carousel1 from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import { Link } from 'react-router-dom'
 import './homemain.css'
 import Rating from '@mui/material/Rating';
@@ -15,6 +16,25 @@ import { getAllProducts } from '../../features/products/productSlice';
 import Product from '../../components/Product'
 
 const HomeMain = () => {
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1
+    }
+  };
   const collections = ["Men's Premium Shirts", "Flat Sandals", "Men's Belt"];
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
@@ -131,10 +151,10 @@ const HomeMain = () => {
               <div></div>
             </div>
               :
-              <div className="product-list">
+              <div className="product-list pl1">
 
 
-                {
+{
                   shirts.map((arm, index) => {
 
                     return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>
@@ -142,6 +162,8 @@ const HomeMain = () => {
 
                   })
                 }
+
+               
 
               </div>
           }
@@ -243,16 +265,16 @@ const HomeMain = () => {
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709558912/louis-vuitton-premium-quality-towel-set-of-2-523_yasoy7.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712578479/09_k8f2tm.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218482/011_jkqmn8.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/011_njreib.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218482/09_hkve1u.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/010_czuutf.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218481/0003_1_xoyymr.jpg" alt="" />
+                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/louis-vuitton-premium-quality-towel-set-of-2-523.jpeg_u0z0bw.jpg" alt="" />
               </Carousel.Item>
             </Carousel>
 

@@ -123,7 +123,7 @@ const loginOpen=()=>{
         </div>
         <div className='head3' style={{textAlign:'right'}}>
           <ul>
-            <li className='li-search'><input type="search" name="" id="" value={svalue} onChange={(e)=>setSvalue(e.target.value)} onKeyDown={handleKeyDown} placeholder={state}/><SearchIcon /></li>
+            <li className='li-search'><input type="search" name="" id="" value={svalue} onChange={(e)=>setSvalue(e.target.value)} onKeyDown={handleKeyDown} placeholder={state}/><SearchIcon className='s-icon'/></li>
             <li><Link to="/wishlist"><FavoriteBorderIcon/></Link></li>
             <li className='cart-len'>{
               cart && cart?.length>=1?<p className='cart-length'>{cart?.length}</p>
@@ -151,13 +151,13 @@ const loginOpen=()=>{
         
         <div className='head3' style={{textAlign:'right'}}>
           <ul>
-            <li onClick={openSearch}><SearchIcon/></li>
+            <li onClick={openSearch}><SearchIcon className='mob-s'/></li>
             
             <li className="cart-len">{
               cart && cart?.length>=1?<p className='cart-length'>{cart?.length}</p>
               :
               ""
-            }<Link to="/cart"><LocalMallIcon/></Link></li>
+            }<Link to="/cart"><LocalMallIcon className='cart-i'/></Link></li>
 
 
           </ul>
@@ -180,7 +180,7 @@ const loginOpen=()=>{
               <li onClick={closeClick}><FaceOutlinedIcon/><Link to="/kids">Kids</Link></li>
               <li onClick={closeClick}><AutoAwesomeMosaicOutlinedIcon/><Link to="/accessories">Accessories</Link></li>
               <li onClick={closeClick}><FavoriteBorderIcon/><Link to="/wishlist">Wishlist</Link></li>
-              <li onClick={closeClick}><PersonOutlineIcon/><p onClick={loginOpen}>Login/Register</p></li>
+              <li onClick={closeClick}><PersonOutlineIcon/><Link to="/profile">Login/Register</Link></li>
               
             </ul>
         </div>

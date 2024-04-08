@@ -1,4 +1,4 @@
-import { createSlice,createAsyncThunk} from "@reduxjs/toolkit";
+import { createSlice,createAsyncThunk,createAction} from "@reduxjs/toolkit";
 import {productService} from './productService'
 import {toast} from 'react-toastify'
 
@@ -37,6 +37,8 @@ export const getAProduct=createAsyncThunk("product/getSingleProduct",async(handl
         return thunkAPI.rejectWithValue(error)
     }
 })
+export const resetState = createAction("Reset_all");
+
 const productState={
     product:"",
     isError:false,
@@ -44,18 +46,22 @@ const productState={
     isSuccess:false,
     message:""
 }
+
 export const productSlice=createSlice({
     name:"product",
     initialState:productState,
     reducers:{},
+    
     extraReducers:(builder)=>{
-        builder.addCase(getAllProducts.pending,(state)=>{
-            state.isLoading=true;
-        }).addCase(getAllProducts.fulfilled,(state,action)=>{
+        builder.
+        addCase(getAllProducts.fulfilled,(state,action)=>{
             state.isLoading=false;
             state.isError=false;
             state.isSuccess=true;
             state.product=action.payload;
+        })
+        .addCase(getAllProducts.pending,(state)=>{
+            state.isLoading=true;
         }).addCase(getAllProducts.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;
@@ -104,6 +110,8 @@ export const productSlice=createSlice({
             state.isSuccess=false;
             state.message=action.error;
         })
+        .addCase(resetState, () => productState);
+
     }
 })
 

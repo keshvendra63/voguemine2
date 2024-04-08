@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import './product.css'
 import {useLocation} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import {getAllProducts,getProducts } from '../../features/products/productSlice';
+import {getAllProducts,getProducts, resetState } from '../../features/products/productSlice';
 import {getUserWishlistProduct} from '../../features/user/userSlice'
 import Product from '../../components/Product'
 import { Button} from 'antd';
+
 const Products = () => {
+  
     const [collectionName,setCollectionName]=useState("")
     const [spinner,setSpinner]=useState("none")
     const [btn,setBtn]=useState("block")
@@ -21,7 +23,9 @@ const Products = () => {
 
 // Get the value of the 'search' parameter
 const searchValue = searchParams.split('=')[1];
-
+useEffect(()=>{
+  dispatch(resetState())
+},[resetState])
 useEffect(()=>{
     if(location.pathname==="/collections/men-premium-shirt"){
         setCollectionName("Men's Premium Shirts")
@@ -232,7 +236,9 @@ useEffect(()=>{
       setLoading(true)
     }
     if(isSuccess && products){
-      setLoading(false)
+      setTimeout(()=>{
+        setLoading(false)
+      },1000)
     }
   },[isLoading,isSuccess])
 
@@ -286,6 +292,7 @@ useEffect(()=>{
         </div>
         :
         <div className="product-list">
+
             {
 
 
@@ -301,7 +308,7 @@ useEffect(()=>{
         </div>
 }
 
-        
+
 
       </div>
                     <div className="pages">

@@ -44,6 +44,7 @@ const getProduct=async(handle)=>{
         return response.data
     }
 }
+
 export const productService={
     getProducts,
     addToWishList,

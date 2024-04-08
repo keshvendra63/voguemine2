@@ -79,7 +79,9 @@ const getAllProduct = asyncHandler(async (req, res) => {
           { description: { $regex: searchRegex } }
       ];
     }
-    
+    if (req.query.size) {
+      query['variants.size'] = req.query.size;
+  }
     // Filtering
     const queryObj = { ...req.query };
     const excludeFields = ["page", "sort", "limit", "fields","search"];

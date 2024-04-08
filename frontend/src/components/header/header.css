@@ -20,6 +20,8 @@ letter-spacing: 1px;
     padding: 10px 30px;
     font-family: 'Montserrat', sans-serif;
     z-index: 4;
+
+
 }
 .header .cart-len{
     position: relative;
@@ -130,7 +132,6 @@ border-radius: 50%;
     cursor: pointer;
     color: black;
     font-weight: 400;
-    width: ;
 
 }
 .head3 .li-search{
@@ -138,11 +139,20 @@ border-radius: 50%;
     align-items: center;
     border-bottom: 2px solid black;
 }
+.header .mob-s,.header .cart-i{
+    font-size: 38px;
+    margin-right: 10px;
+
+}
+.head3 .li-search .s-icon{
+color: rgb(52, 52, 52);
+font-size: 30px;
+}
 .head3 .li-search input{
     border:none;
     outline: none;
     background-color: transparent;
-width: 100px;    
+width: 120px;    
 }
 .head3 .li-search input::placeholder{
     font-size: 10px;
@@ -231,9 +241,13 @@ width: 100px;
     color: red;
     font-size: 10px;
 }
+
+.head3 ul{
+    margin-bottom: 0;
+}
 @media screen and (max-width:950px) {
     .header{
-        padding: 12px 15px;
+        padding: 18px 15px;
         background-color: white;    
 
     }
@@ -251,4 +265,10 @@ width: 100px;
     
 
 
+}
+@media screen and (max-width:650px) {
+    .header .mob-s,.header .cart-i{
+        font-size: 30px;
+        margin-right: 5px;
+    }
 }

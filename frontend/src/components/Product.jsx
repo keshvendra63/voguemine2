@@ -85,7 +85,7 @@ const addProductToWishlistLocalStorage = (product) => {
       if(data && (data===props.prdt.id)){
         await addProductToCartLocalStorage({productId:data,color,quantity,price:props.price,size,product:props.prdt})
         toast.success("Added To Cart")
-        window.fbq('track', 'AddToCart', {
+        window.fbq('track', 'InitiateCheckout', {
           content_name:`${props?.title}`,
           content_category: 'Product',
           content_ids:`${props?.id}`,
