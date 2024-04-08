@@ -10,9 +10,7 @@
     grid-template-columns: 1fr 4fr;
     grid-gap: 20px; */
 }
-.Products .products-box .filter{
-    border: 1px solid black;
-}
+
 .Products .products-box .filter div{
     margin-bottom: 10px;
 }
@@ -37,13 +35,14 @@
 .Products .products-box .products-page .sorting{
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .Products .products-box .products-page hr{
     margin:5px 0;
 }
 
 .Products .products-box .products-page .sorting .filter{
-    display: none;
+    /* display: none; */
 }
 .Products .products-box .products-page .sorting .sort select{
     padding: 10px 10px;

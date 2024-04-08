@@ -9,6 +9,9 @@ const getProducts=async(data)=>{
     if (data && data.collectionName) {
         url += ``;
     }
+    if (data && data.size) {
+        url += `&size=${data.size}`;
+    }
 
     // Add pagination parameters
 

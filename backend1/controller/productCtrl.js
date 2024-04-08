@@ -74,14 +74,17 @@ const getAllProduct = asyncHandler(async (req, res) => {
     if (req.query.search) {
       const searchKeywords = req.query.search.toLowerCase().split(' ');
       const searchRegex = new RegExp(searchKeywords.join('|'), 'i');
-      query.$or = [
-          { title: { $regex: searchRegex } },
-          { sku: { $regex: searchRegex } },
-          { 'variants.color': { $in: searchKeywords } },
-          { 'variants.size': { $in: searchKeywords } },
-          { category: { $regex: searchRegex } },
-          { description: { $regex: searchRegex } }
-      ];
+      const categoryQuery = {
+        $or: [
+          { category: { $regex: searchRegex } }, // Match category based on search keywords
+          { 'variants.color': { $in: searchKeywords } }, // Match color based on search keywords
+          { title: { $regex: searchRegex } }, // Match title based on search keywords
+          { brand: { $in: searchKeywords } }, // Match brand based on search keywords
+          { sku: { $in: searchKeywords } }, // Match sku based on search keywords
+          { 'variants.size': { $in: searchKeywords } } // Match size based on search keywords
+        ]
+      };
+      query.$and = [categoryQuery]; // Ensure all search conditions are met
     }
 
 

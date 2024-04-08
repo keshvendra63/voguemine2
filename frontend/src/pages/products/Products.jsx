@@ -4,11 +4,20 @@ import {useLocation} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {getAllProducts,getProducts, resetState } from '../../features/products/productSlice';
 import {getUserWishlistProduct} from '../../features/user/userSlice'
+import {Button} from 'antd'
 import Product from '../../components/Product'
-import { Button} from 'antd';
-
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
 const Products = () => {
-  
+  const [filter,setFilter]=useState(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
     const [collectionName,setCollectionName]=useState("")
     const [spinner,setSpinner]=useState("none")
     const [btn,setBtn]=useState("block")
@@ -29,64 +38,93 @@ useEffect(()=>{
 useEffect(()=>{
     if(location.pathname==="/collections/men-premium-shirt"){
         setCollectionName("Men's Premium Shirts")
+        setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
       }
       if(location.pathname==="/collections/t-shirts"){
         setCollectionName("Men's Premium T Shirts")
+        setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46"])
+
       }
       if(location.pathname==="/collections/mens-sweatshirts"){
         setCollectionName("Men's Sweatshirts")
+        setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46"])
+
       }
       if(location.pathname==="/collections/loafers-for-men"){
         setCollectionName("Men's Loafers")
+        setFilter(["UK-6","UK-7","UK-8","UK-9","UK-10","UK-11"])
+
       }
       if(location.pathname==="/collections/floaters-slippers"){
         setCollectionName("Men's Slippers")
+        setFilter(["UK-6","UK-7","UK-8","UK-9","UK-10","UK-11"])
       }
       if(location.pathname==="/collections/mens-sneakers-firstcopyshoes"){
         setCollectionName("Men's Sneakers")
         document.title = "Buy Premium First Copy Shoes: Best Brands & Latest Trends - Vogue Mine"
         document.querySelector('meta[name="description"]').setAttribute('content',"Shop first copy shoes from Vogue Mine: Get premium, top-quality designs from brands like Dior, Gucci, & more. Latest trends await you!");
-
+        setFilter(["UK-6","UK-7","UK-8","UK-9","UK-10","UK-11"])
       }
       if(location.pathname==="/collections/mens-denim-jeans"){
         setCollectionName("Men's Denim Jeans")
+        setFilter(["30","32","34","36","38","40","42"])
+
       }
       if(location.pathname==="/collections/mens-hoodies"){
         setCollectionName("Men's Hoodies")
+        setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46"])
+
       }
       if(location.pathname==="/collections/mens-trackpants"){
         setCollectionName("Men's Trackpants")
+        setFilter(["L-40","XL-42","XXL-44","3XL-46"])
       }
       if(location.pathname==="/collections/combos"){
         setCollectionName("men,s combos")
+        setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46"])
       }
       if(location.pathname==="/collections/mens-pullover-jackets"){
         setCollectionName("Men's Jackets")
+        setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
+
       }
       if(location.pathname==="/collections/mens-pullover"){
         setCollectionName("Men's Pullover")
+        setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
+
       }
       if(location.pathname==="/collections/mens-trackset"){
         setCollectionName("Men's Track Set")
+        setFilter(["L-40","XL-42","XXL-44","3XL-46"])
+
       }
       if(location.pathname==="/collections/womens-shirt-t-shirts"){
         setCollectionName("Women's T-Shirt")
+        setFilter(["S 31-32","M 33-34","L 35-36","XL 37-38","XXl 39-40"])
+
     }
     
     if(location.pathname==="/collections/womens-dress"){
     setCollectionName("Women's Dresses")
+    setFilter(["S 33-34","M 35-36","L 37-38","XL 39-40","XXl 41-42"])
+
     }
     
     if(location.pathname==="/collections/womens-co-ord-set"){
     setCollectionName("Women's Co-ord set")
+    setFilter(["S 35-36","M 37-38","L 39-40","XL 41-42","XXl 43-44"])
+
     }
     
     if(location.pathname==="/collections/flat-sandals"){
     setCollectionName("Flat Sandals")
+    setFilter(["37","38","39","40","41"])
     }
     
     if(location.pathname==="/collections/heeled-sandals"){
     setCollectionName("Heeled Sandals")
+    setFilter(["37","38","39","40","41"])
+
     }
     
     if(location.pathname==="/collections/womens-legging"){
@@ -131,54 +169,78 @@ useEffect(()=>{
     
     if(location.pathname==="/collections/kids-hoodie"){
     setCollectionName("Kid's Boy's Cord-Set")
+    setFilter(["2-90","4-100","6-110","8-120","10-130","12-140","14-150","16-160"])
+
     }
     
     if(location.pathname==="/collections/kids-co-ord-set"){
     setCollectionName("Kid's Girl co-ord Set")
+    setFilter(["110-26","120-28","130-30","140-32","150-34","160-36"])
+
     }
     
     if(location.pathname==="/collections/kids-shirt"){
     setCollectionName("Kids Shirts")
+    setFilter(["6-26","8-28","10-30","12-32","14-34","16-36"])
+
     }
     
     if(location.pathname==="/collections/kid-girls-dress"){
     setCollectionName("Kid Girl's Dress")
+    setFilter(["6-110","8-120","10-130","12-140","14-150","16-160","4-100"])
     }
     
     if(location.pathname==="/collections/kids-t-shirts"){
     setCollectionName("Kid's T-Shirts")
+    setFilter(["4-100","6-110","8-120","10-130","12-140","14-150","2-22","4-24","6-26","8-28","10-30","12-32","14-34","16-36"])
+
     }
     
     if(location.pathname==="/collections/belts"){
     setCollectionName("Men's Belt")
+    setFilter(["85-30","90-32","95-34","100-36","105-38","110-40"])
+
     }
     
     if(location.pathname==="/collections/towels"){
     setCollectionName("Accessories Towel for Men and Women" || "Towels for Men & Women")
+    setFilter([""])
+
     }
     
     if(location.pathname==="/collections/under-garment"){
     setCollectionName("Men's Accessories Under Garments" || "Men's Under Garments")
+    setFilter(["L 33-34","XL 35-36","XXL 37-38","3XL 39-40"])
     }
     
     if(location.pathname==="/collections/no-show"){
     setCollectionName("Ankle Socks")
+    setFilter([""])
+
     }
     
     if(location.pathname==="/collections/low-ankle"){
     setCollectionName("Ankle Socks")
+    setFilter([""])
+
     }
     
     if(location.pathname==="/collections/low-cut"){
     setCollectionName("Ankle Socks")
+    setFilter([""])
+
     }
     
     if(location.pathname==="/collections/anklet"){
     setCollectionName("Ankle Socks")
+    setFilter([""])
+
     }
     
     if(location.pathname==="/collections/crew"){
     setCollectionName("Men's Accessories Socks")
+    setFilter([""])
+
     }
     
     
@@ -253,6 +315,30 @@ useEffect(()=>{
     }
   
 })
+const [open, setOpen] = React.useState(false);
+
+const toggleDrawer = (newOpen) => () => {
+  setOpen(newOpen);
+};
+const liItem=(text)=>{
+  dispatch(getAllProducts({collectionName,size:text,sort,limit,page}))
+}
+
+const DrawerList = (
+  <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+    <p style={{fontSize:'20px',marginBottom:'20px',fontWeight:500}}>Select Size</p>
+    <List>
+      {filter?.map((text) => (
+        <ListItem key={text} disablePadding onClick={()=>liItem(text)}>
+          <ListItemButton>
+            <ListItemText primary={text} />
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </List>
+  </Box>
+);
+
 
 
 
@@ -266,9 +352,12 @@ useEffect(()=>{
                 <div className="products-page">
                     <div className="sorting">
                         <div className="filter">
-                            <p>Filter</p>
+                            <p style={{fontWeight:500,cursor:'pointer'}} onClick={toggleDrawer(true)}>Filter</p>
+                            <Drawer open={open} onClose={toggleDrawer(false)}>
+        {DrawerList}
+      </Drawer>
                         </div>
-                        <p style={{fontWeight:'bold'}}>{products?.length} Products</p>
+                        <p style={{fontWeight:'bold',marginBottom:0}}>{products?.length} Products</p>
                         <div className="sort">
                             <select name="" id="" style={{fontWeight:'bold'}} onChange={sortChange} value={sort} defaultValue="-createdAt">
                                 <option value="title">Alphabet A-Z</option>
