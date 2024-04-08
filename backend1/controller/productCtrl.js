@@ -66,6 +66,10 @@ const getAllProduct = asyncHandler(async (req, res) => {
     if (req.params.collectionName) {
       query = { collectionName: req.params.collectionName};
     }
+    if (req.query.size) {
+      query['variants.size'] = { $eq: req.query.size }; // Ensure exact match for size
+    }
+
 
     if (req.query.search) {
       const searchRegex = new RegExp(req.query.search, "i");
@@ -79,9 +83,7 @@ const getAllProduct = asyncHandler(async (req, res) => {
           { description: { $regex: searchRegex } }
       ];
     }
-    if (req.query.size) {
-      query['variants.size'] = req.query.size;
-  }
+
     // Filtering
     const queryObj = { ...req.query };
     const excludeFields = ["page", "sort", "limit", "fields","search"];
