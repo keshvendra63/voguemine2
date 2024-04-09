@@ -124,14 +124,14 @@ var orderSchema = new mongoose.Schema(
       {
         name:String,
         message:String,
-        time:new Date()
+        time:Date,
       }
     ],
     orderHistory:[
       {
         name:String,
         message:String,
-        time:new Date()
+        time:Date,
       }
     ]
   },
