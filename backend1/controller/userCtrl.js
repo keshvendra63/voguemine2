@@ -364,6 +364,43 @@ const userCart = asyncHandler(async (req, res) => {
   }
 });
 
+
+
+const orderComment = asyncHandler(async (req, res) => {
+  try {
+      const { name, message, time,orderId } = req.body;
+
+      // Update product with new rating and comment
+      const rateProduct = await Order.findByIdAndUpdate(
+          orderId,
+          {
+              $push: {
+                  orderComment: {
+                      name: star,
+                      message: name,
+                      time: email,
+                      orderId: comment,
+                  },
+              },
+          },
+          { new: true }
+      );
+
+      // Calculate new average rating for the product
+
+      // Update product with new average rating
+      const updatedOrder = await Order.findByIdAndUpdate(
+          orderId,
+          { new: true }
+      );
+
+      res.json(updateOrder);
+  } catch (error) {
+      console.error("Error while updating comment:", error);
+      res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 const getUserCart = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
@@ -710,5 +747,6 @@ module.exports = {
   emptyCart,
   getTodaysOrderIncome,
   getWeekWiseOrderIncome,
-  getYesterdayOrderIncome
+  getYesterdayOrderIncome,
+  orderComment
 };

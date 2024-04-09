@@ -31,6 +31,7 @@ const {
   getTodaysOrderIncome,
   getWeekWiseOrderIncome,
   getYesterdayOrderIncome,
+  orderComment,
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const {checkout,paymentVerification}=require("../controller/paymentCtrl")
@@ -39,7 +40,7 @@ router.post("/register", createUser);
 router.post("/forgot-password-token", forgotPasswordToken);
 
 router.put("/reset-password/:token", resetPassword);
-
+router.put("/message", rating);
 router.put("/password", authMiddleware, updatePassword);
 router.post("/login", loginUserCtrl);
 router.post("/admin-login", loginAdmin);
@@ -53,6 +54,7 @@ router.get("/getmyorders", authMiddleware, getMyOrders);
 router.get("/getallorders", authMiddleware, isAdmin, getAllOrders);
 router.get("/getaOrder/:id", authMiddleware, isAdmin, getSingleOrder);
 router.put("/updateOrder/:id",authMiddleware,isAdmin,updateOrder)
+router.put("/order/message",authMiddleware,isAdmin, orderComment);
 
 // router.post("/getorderbyuser/:id", authMiddleware, isAdmin, getAllOrders);
 router.get("/getMonthWiseOrderIncome",authMiddleware,getMonthWiseOrderIncome)
