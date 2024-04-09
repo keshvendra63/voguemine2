@@ -32,6 +32,7 @@ const {
   getWeekWiseOrderIncome,
   getYesterdayOrderIncome,
   orderComment,
+  orderHistory,
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const {checkout,paymentVerification}=require("../controller/paymentCtrl")
@@ -54,6 +55,7 @@ router.get("/getallorders", authMiddleware, isAdmin, getAllOrders);
 router.get("/getaOrder/:id", authMiddleware, isAdmin, getSingleOrder);
 router.put("/updateOrder/:id",authMiddleware,isAdmin,updateOrder)
 router.put("/message",authMiddleware,isAdmin, orderComment);
+router.put("/history",authMiddleware,isAdmin, orderHistory);
 
 // router.post("/getorderbyuser/:id", authMiddleware, isAdmin, getAllOrders);
 router.get("/getMonthWiseOrderIncome",authMiddleware,getMonthWiseOrderIncome)

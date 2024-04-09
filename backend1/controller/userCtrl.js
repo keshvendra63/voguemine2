@@ -400,6 +400,40 @@ const orderComment = asyncHandler(async (req, res) => {
       res.status(500).json({ message: "Internal server error" });
   }
 });
+const orderHistory = asyncHandler(async (req, res) => {
+  try {
+      const { name, message, time,orderId } = req.body;
+
+      // Update product with new rating and comment
+      const messageOrder = await Order.findByIdAndUpdate(
+          orderId,
+          {
+              $push: {
+                  orderComment: {
+                      name: name,
+                      message: message,
+                      time: time,
+                      orderId: orderId,
+                  },
+              },
+          },
+          { new: true }
+      );
+
+      // Calculate new average rating for the product
+
+      // Update product with new average rating
+      const updatedOrder = await Order.findByIdAndUpdate(
+          orderId,
+          { new: true }
+      );
+
+      res.json(updatedOrder);
+  } catch (error) {
+      console.error("Error while updating comment:", error);
+      res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 const getUserCart = asyncHandler(async (req, res) => {
   const { _id } = req.user;
@@ -748,5 +782,6 @@ module.exports = {
   getTodaysOrderIncome,
   getWeekWiseOrderIncome,
   getYesterdayOrderIncome,
-  orderComment
+  orderComment,
+  orderHistory
 };
