@@ -53,7 +53,7 @@ router.get("/getmyorders", authMiddleware, getMyOrders);
 router.get("/getallorders", authMiddleware, isAdmin, getAllOrders);
 router.get("/getaOrder/:id", authMiddleware, isAdmin, getSingleOrder);
 router.put("/updateOrder/:id",authMiddleware,isAdmin,updateOrder)
-router.put("/order/message",authMiddleware,isAdmin, orderComment);
+router.put("/message",authMiddleware,isAdmin, orderComment);
 
 // router.post("/getorderbyuser/:id", authMiddleware, isAdmin, getAllOrders);
 router.get("/getMonthWiseOrderIncome",authMiddleware,getMonthWiseOrderIncome)

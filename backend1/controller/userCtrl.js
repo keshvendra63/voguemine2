@@ -371,15 +371,15 @@ const orderComment = asyncHandler(async (req, res) => {
       const { name, message, time,orderId } = req.body;
 
       // Update product with new rating and comment
-      const rateProduct = await Order.findByIdAndUpdate(
+      const messageOrder = await Order.findByIdAndUpdate(
           orderId,
           {
               $push: {
                   orderComment: {
-                      name: star,
-                      message: name,
-                      time: email,
-                      orderId: comment,
+                      name: name,
+                      message: message,
+                      time: time,
+                      orderId: orderId,
                   },
               },
           },
@@ -394,7 +394,7 @@ const orderComment = asyncHandler(async (req, res) => {
           { new: true }
       );
 
-      res.json(updateOrder);
+      res.json(updatedOrder);
   } catch (error) {
       console.error("Error while updating comment:", error);
       res.status(500).json({ message: "Internal server error" });
