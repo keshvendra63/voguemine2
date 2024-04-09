@@ -409,7 +409,7 @@ const orderHistory = asyncHandler(async (req, res) => {
           orderId,
           {
               $push: {
-                  orderComment: {
+                  orderHistory: {
                       name: name,
                       message: message,
                       time: time,
