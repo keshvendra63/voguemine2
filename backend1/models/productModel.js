@@ -84,19 +84,15 @@ var productSchema = new mongoose.Schema(
     },
     metaDesc:{
       type:String,
-      unique:true
     },
     metaTitle:{
       type:String,
-      unique:true
     },
     metaDesc1:{
       type:String,
-      unique:true
     },
     metaTitle1:{
       type:String,
-      unique:true
     },
     
   },
