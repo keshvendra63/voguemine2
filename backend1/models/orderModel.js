@@ -132,10 +132,11 @@ orderSchema.pre("save", async function (next) {
       let latestOrderNumber = 0;
 
       if (latestOrder && latestOrder.orderNumber) {
-        latestOrderNumber = parseInt(latestOrder.orderNumber.replace('VM', ''), 10);
+        latestOrderNumber = parseInt(latestOrder.orderNumber.replace(/[^\d]/g, ''), 10);
       }
 
-      const newOrderNumber = `VM${latestOrderNumber + 1}`;
+      const tagPrefix = this.tag === "Voguemine" ? "VM" : "RV";
+      const newOrderNumber = `${tagPrefix}${latestOrderNumber + 1}`;
       this.orderNumber = newOrderNumber;
     }
     next();

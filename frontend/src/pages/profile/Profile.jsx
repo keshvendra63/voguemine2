@@ -149,7 +149,7 @@ const config2 = {
         <p className="section-heading">Orders</p>
           <div className="order-list">
             {
-              orders.map((item,index)=>{
+              orders && orders?.map((item,index)=>{
                return <div className="order-card">
                 {
                   item?.orderItems?.map((prdt,idx)=>{
