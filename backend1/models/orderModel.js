@@ -120,6 +120,13 @@ var orderSchema = new mongoose.Schema(
       type:String,
       default:"Ordered"
     },
+    orderComment:[
+      {
+        name:String,
+        message:String,
+        time:new Date()
+      }
+    ]
   },
   {
     timestamps: true,
