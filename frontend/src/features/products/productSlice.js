@@ -126,6 +126,9 @@ export const productSlice=createSlice({
             state.isError=false;
             state.isSuccess=true;
             state.postRating=action.payload;
+            if(state.isSuccess===true){
+                toast.success("Rating Posted")
+            }
         }).addCase(rating.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;

@@ -209,6 +209,11 @@ const commentPost=()=>{
   }
   else{
 dispatch(rating({name:name,email:email,comment:msg,star:star,prodId:singleProductState?._id}))
+setTimeout(()=>{
+setMsg("")
+setName("")
+setEmail("")
+},1000)
   }
 }
   return (
@@ -296,13 +301,13 @@ dispatch(rating({name:name,email:email,comment:msg,star:star,prodId:singleProduc
 <div className="ratings">
   <p style={{fontSize:'20px',fontWeight:500}}>Ratings</p>
   <div className="rating">
-    <input type="text" onChange={(e)=>setName(e.target.value)} placeholder='Enter Name'/>
-    <input type="email" onChange={(e)=>setEmail(e.target.value)} placeholder='Enter Email'/>
+    <input type="text" value={name} onChange={(e)=>setName(e.target.value)} placeholder='Enter Name'/>
+    <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder='Enter Email'/>
     <Stack spacing={1} className="stars">
           <Rating name="size-small" value={star} size="medium" onChange={(e)=>setStar(e.target.value)}/>
         </Stack>
     <div className="msg">
-<textarea name="" id="" onChange={(e)=>setMsg(e.target.value)} placeholder='Enter Message'></textarea>
+<textarea name="" id="" value={msg} onChange={(e)=>setMsg(e.target.value)} placeholder='Enter Message'></textarea>
     </div>
     <button onClick={commentPost}>Post</button>
   </div>
