@@ -241,6 +241,14 @@ export const authSlice=createSlice({
             state.orderedProduct=action.payload;
             if(state.isSuccess===true){
                 toast.success("Order Placed")
+                window.fbq('track', 'Purchase', {
+                    content_name: 'Checkout',
+                    content_category: 'Page',
+                    content_ids: 'purchase',
+                    content_type: 'page',
+                    value:``,
+                    currency: 'USD'
+                });
             }
         }).addCase(createAnOrder.rejected,(state,action)=>{
             state.isLoading=false;

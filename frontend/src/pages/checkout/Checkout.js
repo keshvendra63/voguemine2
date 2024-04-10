@@ -209,14 +209,7 @@ const checkOutHandler=async()=>{
         await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }))
         addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
         navigate("/profile")
-        window.fbq('track', 'Purchase', {
-            content_name: 'Checkout',
-            content_category: 'Page',
-            content_ids: 'Checkout Page',
-            content_type: 'page',
-            value:`${finalAmount}`,
-            currency: 'USD'
-        });
+       
         localStorage.removeItem("address")
         dispatch(resetState())
     }
@@ -298,14 +291,7 @@ const checkOutHandler=async()=>{
     await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }))
     addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
     navigate("/profile")
-    window.fbq('track', 'Purchase', {
-        content_name: 'Checkout',
-        content_category: 'Page',
-        content_ids: 'Checkout Page',
-        content_type: 'page',
-        value:`${finalAmount}`,
-        currency: 'USD'
-    });
+    
     localStorage.removeItem("address")
     dispatch(resetState())
 
@@ -492,7 +478,7 @@ const checkOutHandler=async()=>{
       </RadioGroup>
                     </div>
                     <div>
-                    <input type="submit" value="Place Order" className='pay'/>
+                    <input type="submit" value="Complete" className='pay'/>
                     
                     </div>
                 </form>
