@@ -44,6 +44,8 @@ const Footer = () => {
             <li><Link to="/pages/refund-and-return-policy">Exchange Policy</Link></li>
             <li><Link to="/pages/terms-of-service">Terms of Service</Link></li>
             <li><Link to="/pages/privacy-policy">Privacy Policy</Link></li>
+            <li><Link to="/blogs">Blogs</Link></li>
+
         </ul>
         </Col>
         <Col className=''>
