@@ -305,9 +305,7 @@ useEffect(()=>{
       setLoading(true)
     }
     if(isSuccess && products){
-      setTimeout(()=>{
         setLoading(false)
-      },1000)
     }
   },[isLoading,isSuccess])
 
@@ -347,6 +345,34 @@ const DrawerList = (
   </Box>
 );
 
+
+const fetchProducts = async () => {
+  try {
+    let fetchedProducts = [];
+    while (fetchedProducts.length < 700) {
+      const batch = await dispatch(getAllProducts({ sort, limit: 20, page, collectionName:"Men's Premium Shirts" }));
+      if (!Array.isArray(batch)) {
+        console.error('Error fetching products: Received non-array response');
+        break;
+      }
+      fetchedProducts = [...fetchedProducts, ...batch];
+      displayProducts(batch);
+      if (fetchedProducts.length >= 700) break;
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+};
+// Function to display products to the user
+const displayProducts = (prdts) => {
+  console.log('Displayed products:', prdts);
+  // Implement your logic to display products in the UI
+};
+
+useEffect(() => {
+  fetchProducts();
+}, []);
 
 
 

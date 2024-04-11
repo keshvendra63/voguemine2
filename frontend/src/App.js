@@ -22,7 +22,7 @@ import Profile from './pages/profile/Profile';
 import { useDispatch, useSelector } from 'react-redux'
 import {getAllProducts } from './features/products/productSlice';
 import ScrollToTop from './components/ScrollToTop';
-import Testing from './pages/Testing';
+import RedirectUri from './pages/Testing';
 import Login from './pages/login/Login';
 import Policies from './pages/policies/Policies';
 import Contact from './pages/contact/Contact';
@@ -92,7 +92,7 @@ function App() {
         <Route path="/blogs/news/:handle" element={<SingleBlog/>}/>
         <Route path="checkout" element={<Checkout/>}/>
         <Route path='/profile' element={<Profile/>}/>
-        <Route path='/testing' element={<Testing/>}/>
+        <Route path='/redirect-url/:merchantTransactionId' element={<RedirectUri/>}/>
         <Route path='/pages/shipping-policy' element={<Policies/>}/>
         <Route path='/pages/refund-and-return-policy' element={<Policies/>}/>
         <Route path='/pages/terms-of-service' element={<Policies/>}/>

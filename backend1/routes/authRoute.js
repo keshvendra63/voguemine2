@@ -35,7 +35,7 @@ const {
   orderHistory,
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
-const {checkout,paymentVerification}=require("../controller/paymentCtrl")
+const {checkout,paymentVerification, phonePe, redirectUri}=require("../controller/paymentCtrl")
 const router = express.Router();
 router.post("/register", createUser);
 router.post("/forgot-password-token", forgotPasswordToken);
@@ -45,8 +45,8 @@ router.put("/password", authMiddleware, updatePassword);
 router.post("/login", loginUserCtrl);
 router.post("/admin-login", loginAdmin);
 router.post("/cart", authMiddleware, userCart);
-router.post("/order/checkout",authMiddleware,checkout)
-router.post("/order/paymentVerification",authMiddleware,paymentVerification)
+router.post("/order/checkout",phonePe)
+router.get("/redirect-url/:merchantTransactionId",redirectUri)
 // router.post("/cart/applycoupon", authMiddleware, applyCoupon);
 router.post("/cart/create-order", createOrder);
 router.get("/all-users", getallUser);
