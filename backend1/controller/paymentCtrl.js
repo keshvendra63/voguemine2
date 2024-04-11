@@ -17,7 +17,7 @@ const phonePe = async (req, res) => {
         merchantUserId: userId,
         amount: 100,
         redirectUrl: `https://probable-halibut-r94v5r7gwjrhxgvj-3000.app.github.dev/redirect-url/${merchantTransactionId}`,
-        redirectMode: "POST",
+        redirectMode: "REDIRECT",
         mobileNumber:number || "99999999",
         paymentInstrument: {
             type: "PAY_PAGE"
