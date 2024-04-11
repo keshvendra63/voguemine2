@@ -46,7 +46,7 @@ router.post("/login", loginUserCtrl);
 router.post("/admin-login", loginAdmin);
 router.post("/cart", authMiddleware, userCart);
 router.post("/order/checkout",phonePe)
-router.get("/redirect-url/:merchantTransactionId",redirectUri)
+router.post("/redirect-url/:merchantTransactionId",redirectUri)
 // router.post("/cart/applycoupon", authMiddleware, applyCoupon);
 router.post("/cart/create-order", createOrder);
 router.get("/all-users", getallUser);

@@ -237,7 +237,7 @@ const checkOutHandler=async(e)=>{
 
 try{
     const response=await axios.post("https://voguemine2.onrender.com/api/user/order/checkout",{amount:finalAmount,number:formik.values.phone})
-    window.location.href(response.data.data.instrumentResponse.redirectInfo.url)
+    window.location.href=response.data.data.instrumentResponse.redirectInfo.url
 }catch(error){
     console.log(error)
 }
