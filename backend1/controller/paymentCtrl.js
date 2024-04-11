@@ -42,9 +42,9 @@ const phonePe = async (req, res) => {
     axios
         .request(options)
         .then(function (response) {
-            return res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
+            // return res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
             // res.redirect(url)
-            // res.send(response.data)
+            res.send(response.data)
         })
         .catch(function (error) {
             console.error(error);
