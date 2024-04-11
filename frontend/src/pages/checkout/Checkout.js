@@ -235,10 +235,14 @@ const checkOutHandler=async(e)=>{
         };
         localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }));
 
+try{
+    axios.post("https://voguemine2.onrender.com/api/user/order/checkout",{amount:finalAmount,number:formik.values.phone})
 
-        const result= await axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.app.github.dev/api/user/order/checkout",{amount:finalAmount,number:formik.values.phone})
-        console.log(result)
-window.location.href=result.data.data.instrumentResponse.redirectInfo.url
+}catch(error){
+    console.log(error)
+}
+        // console.log(result)
+// window.location.href=result.data.data.instrumentResponse.redirectInfo.url
 
        }
        if(payMethod==="bank"){

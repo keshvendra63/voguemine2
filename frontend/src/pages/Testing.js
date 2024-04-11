@@ -5,46 +5,42 @@ import { SHA256 } from 'crypto-js';
 
 const RedirectUri = () => {
   const navigate = useNavigate();
-  const { merchantTransactionId } = useParams();
   const recentOrder = JSON.parse(localStorage.getItem("recentOrder"));
-  const [status, setStatus] = useState(null);
+  const { merchantTransactionId } = useParams();
+  console.log(merchantTransactionId)
+  const [status, setStatus] = useState({});
+  const pmId = "M227ILLLXU0TX"
+  const phonepeHost = "https://api.phonepe.com/apis/hermes"
 console.log(status)
-  useEffect(() => {
-    const checkStatus = async () => {
-      try {
-        const psaltIndex = 1;
-        const pmId = "M227ILLLXU0TX";
-        const phonepeHost = "https://api.phonepe.com/apis/hermes";
-        const psalt = "b5efa4e8-7baf-49ec-b4d7-d059de7517ee";
-        const xverify = SHA256(`/pg/v1/status/${pmId}/${merchantTransactionId}` + psalt) + "###" + psaltIndex;
+useEffect(() => {
+  const checkStatus = async () => {
+    try {
+      // Perform SHA256 encryption for X-VERIFY header
+      const psaltIndex = 1;
+      const psalt = "b5efa4e8-7baf-49ec-b4d7-d059de7517ee";
+      const xverify = SHA256(`/pg/v1/status/${pmId}/${merchantTransactionId}` + psalt) + "###" + psaltIndex;
 
-        const response = await axios.get(`${phonepeHost}/pg/v1/status/${pmId}/${merchantTransactionId}`, {
-          headers: {
-            accept: 'application/json',
-            'Content-Type': 'application/json',
-            "X-MERCHANT-ID": pmId,
-            "X-VERIFY": xverify
-          }
-        });
+      // Make a GET request to check transaction status
+      const response = await axios.get(`${phonepeHost}/pg/v1/status/${pmId}/${merchantTransactionId}`, {
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          "X-VERIFY": xverify,
+          "X-MERCHANT-ID": pmId,
 
-        setStatus(response.data);
-      } catch (error) {
-        console.error('Error checking status:', error);
-        setStatus({ error: error.message }); // Set an error message in status state
-      }
-    };
-
-    if (merchantTransactionId) {
-      checkStatus();
+        }
+      });
+      
+      // Update the status state with the response data
+      setStatus(response.data);
+    } catch (error) {
+      console.error('Error checking status:', error);
     }
-  }, [merchantTransactionId]);
+  };
 
-  useEffect(() => {
-    if (status && status.code === "PAYMENT_SUCCESS") {
-      console.log(recentOrder);
-      navigate("/profile");
-    }
-  }, [status, recentOrder, navigate]);
+  checkStatus(); // Call the function to check transaction status
+}, [merchantTransactionId]); // Add merchantTransactionId to dependencies array
+
 
   return (
     <div className='margin-section' style={{ marginTop: '150px' }}>

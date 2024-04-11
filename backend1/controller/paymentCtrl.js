@@ -6,18 +6,18 @@ const psaltIndex = 1
 const psalt = "b5efa4e8-7baf-49ec-b4d7-d059de7517ee"
 const uniqid = require("uniqid")
 const phonePe = async (req, res) => {
+   try{
     const payEndpoint = '/pg/v1/pay';
     const merchantTransactionId = uniqid()
     const userId = "MUID"+uniqid()
     const {amount,number}=req.body
-    console.log(amount,number)
     const payload = {
         merchantId: pmId,
         merchantTransactionId: merchantTransactionId,
         merchantUserId: userId,
         amount: 100,
-        redirectUrl: `https://flipkaart.shop/redirect-url/${merchantTransactionId}`,
-        redirectMode: "REDIRECT",
+        redirectUrl: `https://voguemine2.onrender.com/api/user/redirect-url/${merchantTransactionId}`,
+        redirectMode: "POST",
         mobileNumber:number || "99999999",
         paymentInstrument: {
             type: "PAY_PAGE"
@@ -42,19 +42,26 @@ const phonePe = async (req, res) => {
     axios
         .request(options)
         .then(function (response) {
-            const url = response.data.data.instrumentResponse.redirectInfo.url
+            return res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
             // res.redirect(url)
-            res.send(response.data)
+            // res.send(response.data)
         })
         .catch(function (error) {
             console.error(error);
         });
+   }
+   catch(error){
+    console.log(error)
+   }
 }
 
 
 
 const redirectUri = async (req, res) => {
     const { merchantTransactionId } = req.params;
+    const payEndpoint = '/pg/v1/pay';
+    const bufferObj = Buffer.from(JSON.stringify(payload), "utf8")
+    const base63EncodedPayload = bufferObj.toString("base64")
     if (merchantTransactionId) {
         const xverify=SHA256(`/pg/v1/status/${pmId}/${merchantTransactionId}` + psalt) + "###" + psaltIndex
         const options = {
@@ -63,15 +70,22 @@ const redirectUri = async (req, res) => {
             headers: {
                 accept: 'application/json',
                 'Content-Type': 'application/json',
-                "X-MERCHANT-ID":merchantTransactionId,
-                "X-VERIFY":xverify
+                "X-VERIFY":xverify,
+                "X-MERCHANT-ID":pmId
             },
 
         };
         axios
             .request(options)
             .then(function (response) {
-                res.send(response.data.code);
+                if(res.data.code==="PAYMENT_SUCCESS"){
+                    const url=`https://flipkaart.shop/success`
+                    return res.redirect(url)
+                }
+                else{
+                    const url=`https://flipkaart.shop/checkout`
+                    return res.redirect(url)
+                }
             })
             .catch(function (error) {
                 console.error(error);
