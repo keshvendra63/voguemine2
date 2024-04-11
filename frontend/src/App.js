@@ -92,7 +92,7 @@ function App() {
         <Route path="/blogs/news/:handle" element={<SingleBlog/>}/>
         <Route path="checkout" element={<Checkout/>}/>
         <Route path='/profile' element={<Profile/>}/>
-        <Route path='/redirect-url/:merchantTransactionId' element={<RedirectUri/>}/>
+        <Route path='/success' element={<RedirectUri/>}/>
         <Route path='/pages/shipping-policy' element={<Policies/>}/>
         <Route path='/pages/refund-and-return-policy' element={<Policies/>}/>
         <Route path='/pages/terms-of-service' element={<Policies/>}/>
