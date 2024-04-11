@@ -79,7 +79,7 @@ const redirectUri = async (req, res) => {
             .request(options)
             .then(function (response) {
                 if(res.data.code==="PAYMENT_SUCCESS"){
-                    const url=`https://flipkaart.shop/success`
+                    const url=`https://flipkaart.shop/profile`
                     return res.redirect(url)
                 }
                 else{
