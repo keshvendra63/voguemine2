@@ -2,16 +2,6 @@ import React from 'react'
 import './category.css'
 import {Link} from 'react-router-dom'
 import banner from '../../images/A18.jpg'
-import img1 from '../../images/mens-premium-shirts.jpeg'
-import img2 from '../../images/mens-t-shirts.jpeg'
-import img3 from '../../images/mens-combos.jpeg'
-import img4 from '../../images/mens-loafers.jpeg'
-import img5 from '../../images/mens-sneakers.jpeg'
-import img6 from '../../images/men-slippers.jpg'
-import img7 from '../../images/mens-hoodies.jpeg'
-import img8 from '../../images/mens-sweatshirts.jpeg'
-import img9 from '../../images/mens-pullover.jpeg'
-import img10 from '../../images/mens-denim-jeans.jpeg'
 import img11 from '../../images/mens-track-set.jpeg'
 import img12 from '../../images/mens-jackets.jpg'
 const Men = () => {
@@ -24,72 +14,81 @@ const Men = () => {
       <Link to="/collections/men-premium-shirt">
         <div className="collection-card">
             
-            <img src={img1} alt="" className='col-img'/>
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902115/shirt_qniodl.jpg" alt="" className='col-img'/>
             <h2>Men's Premium Shirts</h2>
         </div>
         </Link>
         <Link to="/collections/t-shirts">
         <div className="collection-card">
-            <img src={img2} alt="" />
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902079/t_shirt_wzguwp.jpg" alt="" />
             <h2>Men's T-Shirt</h2>
         </div>
         </Link>
         <Link to="/collections/combos">
         <div className="collection-card">
-            <img src={img3} alt="" />
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902099/combo_cyftbh.jpg" alt="" />
             <h2>Men's Combos</h2>
         </div>
         </Link>
         <Link to="/collections/loafers-for-men">
         <div className="collection-card">
-            <img src={img4} alt="" />
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902105/loafers_suldb8.jpg" alt="" />
             <h2>Men's Loafers</h2>
         </div>
         </Link>
         <Link to="/collections/mens-sneakers-firstcopyshoes">
 
         <div className="collection-card">
-            <img src={img5} alt="" />
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902081/sneaker_twwejr.jpg" alt="" />
             <h2>Men's Sneakers</h2>
         </div>
         </Link>
         <Link to="/collections/floaters-slippers">
 
         <div className="collection-card">
-            <img src={img6} alt="" />
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902079/flipflop_fp4mgz.jpg" alt="" />
             <h2>Men's Slippers</h2>
+        </div>
+        </Link>
+        <Link to="/collections/mens-denim-jeans">
+        <div className="collection-card">
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902106/jeans_dtflbu.jpg" alt="" />
+            <h2>Men's Denim Jeans</h2>
+        </div>
+        </Link>
+        <Link to="/collections/mens-trackpants">
+        <div className="collection-card">
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902072/track_pant_zuxcpj.jpg" alt="" />
+            <h2>Men's Trackpants</h2>
+        </div>
+        </Link>
+        <Link to="/collections/mens-premium-shorts">
+        <div className="collection-card">
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902093/shorts_cm2unp.jpg" alt="" />
+            <h2>Men's Premium Shorts</h2>
         </div>
         </Link>
         <Link to="/collections/mens-hoodies">
         <div className="collection-card">
-            <img src={img7} alt="" />
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902090/hoody_k8jth2.jpg" alt="" />
             <h2>Men's Hoodie</h2>
         </div>
         </Link>
         <Link to="/collections/mens-sweatshirts">
         <div className="collection-card">
-            <img src={img8} alt="" />
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902078/swetshirt_c7ojeh.jpg" alt="" />
             <h2>Men's Sweatshirt</h2>
         </div>
         </Link>
-        <Link to="/collections/mens-pullover">
-        <div className="collection-card">
-            <img src={img9} alt="" />
-            <h2>Men's Pullover</h2>
-        </div>
-        </Link>
-        <Link to="/collections/mens-denim-jeans">
-        <div className="collection-card">
-            <img src={img10} alt="" />
-            <h2>Men's Denim Jeans</h2>
-        </div>
-        </Link>
+
+
         <Link to="/collections/mens-trackset">
         <div className="collection-card">
             <img src={img11} alt="" />
             <h2>Men's Tracksets</h2>
         </div>
         </Link>
+
         <Link to="/collections/mens-pullover-jackets">
         <div className="collection-card">
             <img src={img12} alt="" />

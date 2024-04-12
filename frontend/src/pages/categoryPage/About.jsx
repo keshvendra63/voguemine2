@@ -52,7 +52,7 @@ const About = () => {
     <div className='teams'>
        
         <div className="team">
-          <img src="https://media.istockphoto.com/id/960588036/photo/thinking.jpg?s=1024x1024&w=is&k=20&c=Qf5bxGaqNWwEnyvZppQqWjj9PyGwM3S5yt_5GVtXNQs=" alt="" />
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXNauy1n3zSAGCX3pWg1xnKeFOjSgG1MVQwQ&usqp=CAU" alt="" />
           <p className='name'>Mohinder Bisht</p>
           <p className='detail'>CEO</p>
           <div className="icons">
@@ -63,7 +63,7 @@ const About = () => {
           </div>
         </div>
         <div className="team">
-          <img src="https://media.istockphoto.com/id/1450969750/photo/colleagues-working-over-new-software.jpg?s=1024x1024&w=is&k=20&c=WTt54WE6FR8DOHQYWpdL9inxIEELJ32VKjKV2QSy8fc=" alt="" />
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXNauy1n3zSAGCX3pWg1xnKeFOjSgG1MVQwQ&usqp=CAU" alt="" />
           <p className='name'>Monika Bisht</p>
           <p className='detail'>Co-founder</p>
           <div className="icons">
@@ -74,7 +74,7 @@ const About = () => {
           </div>
         </div>
         <div className="team">
-          <img src="https://images.unsplash.com/photo-1530268729831-4b0b9e170218?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8b2ZmaWNlJTIwYm95fGVufDB8fDB8fHww" alt="" />
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXNauy1n3zSAGCX3pWg1xnKeFOjSgG1MVQwQ&usqp=CAU" alt="" />
           <p className='name'>Daljeet Kaur</p>
           <p className='detail'>HR Manager</p>
           <div className="icons">
@@ -86,7 +86,7 @@ const About = () => {
           </div>
         </div>
         <div className="team">
-          <img src="https://images.unsplash.com/photo-1527689368864-3a821dbccc34?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8d2ViJTIwZGV2bG9wZXJ8ZW58MHx8MHx8fDA%3D" alt="" />
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXNauy1n3zSAGCX3pWg1xnKeFOjSgG1MVQwQ&usqp=CAU" alt="" />
           <p className='name'>Mukhtesh Rawat</p>
           <p className='detail'></p>
           <div className="icons">

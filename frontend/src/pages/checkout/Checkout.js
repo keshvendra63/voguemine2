@@ -5,7 +5,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import AddCardIcon from '@mui/icons-material/AddCard';
-import img from '../../images/mens-premium-shirts.jpeg'
 import CircularProgress from '@mui/material/CircularProgress';
 import {useFormik} from 'formik'
 import * as yup from 'yup'

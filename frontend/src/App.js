@@ -56,7 +56,7 @@ function App() {
         <Route path="/collections/mens-trackpants" element={<Products/>}/>
         <Route path="/collections/combos" element={<Products/>}/>
         <Route path="/collections/mens-pullover-jackets" element={<Products/>}/>
-        <Route path="/collections/mens-pullover" element={<Products/>}/>
+        <Route path="/collections/mens-premium-shorts" element={<Products/>}/>
         <Route path="/collections/mens-trackset" element={<Products/>}/>
         <Route path="/collections/womens-shirt-t-shirts" element={<Products/>}/>
         <Route path="/collections/womens-dress" element={<Products/>}/>
