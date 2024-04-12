@@ -13,7 +13,7 @@ import {useLocation, useNavigate} from 'react-router-dom'
 import { TextField } from '@mui/material';
 import axios from 'axios'
 import {config} from '../../utils/axiosConfig'  
-import {createAnOrder, deleteCart, getUserCartProduct, resetState} from '../../features/user/userSlice'
+import {createAnOrder, deleteCart, getUserCartProduct, resetState,createAbondend} from '../../features/user/userSlice'
 import {getAllCoupons,getACoupon} from '../../features/coupon/couponSlice'
 import { toast } from 'react-toastify';
 import QR from '../../images/qr.jpg'
@@ -30,13 +30,17 @@ import QR from '../../images/qr.jpg'
   })
 
 const Checkout = () => {
+    const [cartItems, setCartItems] = useState([]);
+
+    const location = useLocation();
+    const navigate=useNavigate()
+
     const addProductToOrderLocalStorage = (product) => {
         const existingOrder = JSON.parse(localStorage.getItem("orders")) || [];
         const updatedOrder = [...existingOrder, product];
         localStorage.setItem("orders", JSON.stringify(updatedOrder));
       };
       const [paySpin,setPaySpin]=useState(false)
-    const [cartItems, setCartItems] = useState([]);
     const [totalAmount,setTotalAmount]=useState(null)
     const [orderType,setOrderType]=useState("COD")
     const [shippingCost,setShippingCost]=useState(200)
@@ -139,7 +143,6 @@ const Checkout = () => {
 
     const finalAmount=shippingCost+totalAmount-couponAmount
     const dispatch=useDispatch();
-    const navigate=useNavigate()
     useEffect (()=> {
         let sum=0;
         for(let index=0; index < cartItems?.length; index++){
@@ -271,6 +274,40 @@ const data = {
     
 
 }
+
+
+useEffect(() => {
+    return () => {
+        if (location.pathname!=='/profile') {
+            if(cartItems?.length>=0){
+                dispatch(createAbondend(
+                    {
+                        tag:"Voguemine",
+                        shippingInfo:{
+                            firstname:formik?.values?.firstname,
+                            lastname:formik?.values?.lastname,
+                            email:formik?.values?.email,
+                            phone:formik?.values?.phone,
+                            address:formik?.values?.address,
+                            city:formik?.values?.city,
+                            state:formik?.values?.state,
+                            pincode:formik?.values?.pincode,
+                            mobile:formik?.values?.mobile,
+                },
+                orderItems:cartProductState,
+                totalPrice:totalAmount,
+                shippingCost:shippingCost,
+                orderType:orderType,
+                discount:couponAmount,
+                finalAmount:finalAmount
+            }))
+            }
+        }
+    };
+}, [location]);
+
+
+
     return (
         <div className='margin-section checkout'>
             <div className="left-form">

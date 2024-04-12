@@ -44,23 +44,18 @@ var abondendSchema = new mongoose.Schema(
       product:{
         type:mongoose.Schema.Types.ObjectId,
       ref:"Product",
-      required:true
       },
       color:{
         type:String,
-      required:true
       },
       size:{
         type:String,
-      required:true
       },
       quantity:{
         type:Number,
-        required:true
       },
       price:{
         type:Number,
-        required:true
       },
     }],
     month:{
@@ -69,23 +64,18 @@ var abondendSchema = new mongoose.Schema(
     },
     totalPrice:{
       type:Number,
-      required:true
     },
     shippingCost:{
       type:Number,
-      required:true
     },
     orderType:{
       type:String,
-      required:true
     },
     discount:{
       type:Number,
-      required:true,
     },
     finalAmount:{
       type:Number,
-      required:true
     },
   },
   {
