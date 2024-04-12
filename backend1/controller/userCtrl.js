@@ -3,6 +3,7 @@ const Product = require("../models/productModel");
 const Cart = require("../models/cartModel");
 const Coupon = require("../models/couponModel");
 const Order = require("../models/orderModel");
+const Abondend=require("../models/abondendModel")
 const uniqid = require("uniqid");
 const asyncHandler = require("express-async-handler");
 const { generateToken } = require("../config/jwtToken");
@@ -497,6 +498,21 @@ const createOrder=asyncHandler(async(req,res)=>{
     throw new Error(error)
   }
 })
+const createAbondend=asyncHandler(async(req,res)=>{
+  const {shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,tag}=req.body;
+  try{
+    const abondend=await Abondend.create({
+      shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,tag
+    })
+    res.json({
+      abondend,
+      success:true
+    })
+  }
+  catch(error){
+    throw new Error(error)
+  }
+})
 
 const getMyOrders=asyncHandler(async(req,res)=>{
   const {_id}=req.user
@@ -783,5 +799,6 @@ module.exports = {
   getWeekWiseOrderIncome,
   getYesterdayOrderIncome,
   orderComment,
-  orderHistory
+  orderHistory,
+  createAbondend
 };

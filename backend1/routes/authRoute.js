@@ -33,6 +33,7 @@ const {
   getYesterdayOrderIncome,
   orderComment,
   orderHistory,
+  createAbondend
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const {checkout,paymentVerification, phonePe, redirectUri}=require("../controller/paymentCtrl")
@@ -49,6 +50,7 @@ router.post("/order/checkout",phonePe)
 router.post("/redirect-url/:merchantTransactionId",redirectUri)
 // router.post("/cart/applycoupon", authMiddleware, applyCoupon);
 router.post("/cart/create-order", createOrder);
+router.post("/create-abondend", createAbondend);
 router.get("/all-users", getallUser);
 router.get("/getmyorders", authMiddleware, getMyOrders);
 router.get("/getallorders", authMiddleware, isAdmin, getAllOrders);

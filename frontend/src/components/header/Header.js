@@ -184,6 +184,7 @@ const loginOpen=()=>{
               <li onClick={closeClick}><Face4OutlinedIcon/><Link to="/women">Womens</Link></li>
               <li onClick={closeClick}><FaceOutlinedIcon/><Link to="/kids">Kids</Link></li>
               <li onClick={closeClick}><AutoAwesomeMosaicOutlinedIcon/><Link to="/accessories">Accessories</Link></li>
+              <li onClick={closeClick}><FaceOutlinedIcon/><Link to="/blogs">Blogs</Link></li>
               <li onClick={closeClick}><FavoriteBorderIcon/><Link to="/wishlist">Wishlist ( {wishlist?.length} )</Link></li>
               <li onClick={closeClick}><PersonOutlineIcon/><Link to="/profile">Login/Register</Link></li>
               

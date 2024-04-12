@@ -29,14 +29,14 @@ const Blog = () => {
          blogs?.map((item,index)=>{
             return(
               <div className="blog" key={index}>
-        <Card sx={{ maxWidth: 345 }}>
+        <Card style={{width:'250px'}}>
       <CardMedia
         component="img"
         alt={item?.title}
         height="140"
         image={item?.images[0]?.url}
       />
-      <p>{moment(item?.createdAt).format("MMMM Do YYYY, h:mm a")}</p>
+      {/* <p>{moment(item?.createdAt).format("MMMM Do YYYY, h:mm a")}</p> */}
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {item?.title}

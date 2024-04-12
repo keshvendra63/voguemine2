@@ -45,6 +45,14 @@ export const createAnOrder=createAsyncThunk("auth/cart/create-order",async(order
         return thunkAPI.rejectWithValue(error)
     }
 })
+export const createAbondend=createAsyncThunk("auth/create-abondend",async(abondendDetails,thunkAPI)=>{
+    try{
+        return await authService.createOrder(abondendDetails)
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
 export const getUserOrders=createAsyncThunk("auth/order/get",async(thunkAPI)=>{
     try{
         return await authService.getOrders()
@@ -258,6 +266,19 @@ export const authSlice=createSlice({
             if(state.isError===true){
                 toast.error(action.error)
             }
+        })
+        .addCase(createAbondend.pending,(state)=>{
+            state.isLoading=true;
+        }).addCase(createAbondend.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.abondendProduct=action.payload;
+        }).addCase(createAbondend.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
         })
         .addCase(getUserOrders.pending,(state)=>{
             state.isLoading=true;

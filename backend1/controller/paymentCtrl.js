@@ -77,11 +77,11 @@ const redirectUri = async (req, res) => {
             .request(options)
             .then(function (response) {
                 if(res.data.code==="PAYMENT_SUCCESS"){
-                    const url=`https://flipkaart.shop/success`
+                    const url=`https://voguemine.com/success`
                     return res.redirect(url)
                 }
                 else{
-                    const url=`https://flipkaart.shop/checkout`
+                    const url=`https://voguemine.com/success`
                     return res.redirect(url)
                 }
             })

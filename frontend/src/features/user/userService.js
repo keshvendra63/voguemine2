@@ -72,6 +72,13 @@ const createOrder=async(orderDetails)=>{
     }
 }
 
+const createAbondend=async(abondendDetails)=>{
+    const response=await axios.post(`${base_url}user/create-abondend`,abondendDetails)
+    if(response.data){
+       
+        return response.data
+    }
+}
 
 const getOrders=async()=>{
     const response=await axios.get(`${base_url}user/getmyorders`,config)
@@ -116,5 +123,6 @@ export const authService={
     getOrders,
     updateUser,
     forgotPassToken,
-    emptyCart
+    emptyCart,
+    createAbondend
 }
