@@ -418,7 +418,7 @@ useEffect(() => {
                     </div>
                     <hr />
                     <div className="products-listing">
-        <p className="section-heading">{collectionName}</p>
+        <h1 className="section-heading">{collectionName}</h1>
         {
           loading? <div className="skeleton">
           <div></div>

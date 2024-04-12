@@ -146,7 +146,7 @@ const config2 = {
       }
       <hr />
       <div className="orders">
-        <p className="section-heading">Orders</p>
+        <p className="section-heading" style={{textTransform:'capitalize',color:"green",fontSize:'20px'}}>your order has been placed. thank you for shopping.</p>
           <div className="order-list">
             {
               orders && orders?.map((item,index)=>{

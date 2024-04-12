@@ -258,7 +258,7 @@ const productStat = useSelector((state) => state?.product);
           }
        
         <div className="prdt-right">
-            <p className="product-name">{singleProductState?.title}</p>
+            <h1 className="product-name">{singleProductState?.title}</h1>
             <div style={{display:'flex',alignItems:'center'}}>
             <p className="prdt-price">&#8377;{singleProductState?.price}</p>
             <p style={{color:'grey',fontSize:'13px',textDecoration:'line-through',margin:'0 10px 0 10px'}}>{(singleProductState?.price)*2}</p>
