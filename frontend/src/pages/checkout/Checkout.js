@@ -27,7 +27,7 @@ import QR from '../../images/qr.jpg'
     city:yup.string().required("City Name is required"),
     state:yup.string().required("State Name is required"),
     pincode:yup.number().required("Pin Code Name is required"),
-    phone:yup.number(),
+    phone:yup.number().required("Phone is required"),
   })
 
 const Checkout = () => {
@@ -165,6 +165,7 @@ const Checkout = () => {
         },
         validationSchema: shippingSchema,
         onSubmit:(values) => {
+
             setPaySpin(true)
            localStorage.setItem("address",JSON.stringify(values))
            if(cartItems?.length>=1){
@@ -278,7 +279,7 @@ const data = {
                 <form action="" onSubmit={formik.handleSubmit} >
                     <div className="email input">
                         <TextField
-                            label="Email"
+                            label="Email*"
                             type="email"
                             name='email'
                             value={formik.values.email} onChange={formik.handleChange("email")} onBlur={formik.handleBlur("email")}
@@ -291,7 +292,7 @@ const data = {
                     <div className="name input">
                         <div>
                         <TextField
-                            label="First Name"
+                            label="First Name*"
                             type="text"
                             name='firstname'
                             value={formik.values.firstname} onChange={formik.handleChange("firstname")} onBlur={formik.handleBlur("firstname")}
@@ -301,7 +302,7 @@ const data = {
                 </div>
                         </div>                    
                     <div><TextField
-                            label="Last Name"
+                            label="Last Name*"
                             type="text"
                             name='lastname'
                             value={formik.values.lastname} onChange={formik.handleChange("lastname")} onBlur={formik.handleBlur("lastname")}
@@ -311,7 +312,7 @@ const data = {
                     </div>
                     <div className="address input">
                     <TextField
-                            label="Address"
+                            label="Address*"
                             type="text"
                             name='address'
                             value={formik.values.address} onChange={formik.handleChange("address")} onBlur={formik.handleBlur("address")}
@@ -323,7 +324,7 @@ const data = {
                     <div className="city input">
                     <div>
                     <TextField
-                            label="City"
+                            label="City*"
                             type="text"
                             name='city'
                             value={formik.values.city} onChange={formik.handleChange("city")} onBlur={formik.handleBlur("city")}
@@ -375,7 +376,7 @@ const data = {
                 </div>
                         </div>
                         <div><TextField
-                            label="Pin Code"
+                            label="Pin Code*"
                             type="number"
                             name='pincode'
                             value={formik.values.pincode} onChange={formik.handleChange("pincode")} onBlur={formik.handleBlur("pincode")}
@@ -385,7 +386,7 @@ const data = {
                     </div>
                     <div className="mobile input">
                     <TextField
-                            label="Phone"
+                            label="Phone*"
                             type="number"
                             name='phone'
                             value={formik.values.phone} onChange={formik.handleChange("phone")} onBlur={formik.handleBlur("phone")}
@@ -396,7 +397,7 @@ const data = {
                     </div>
                     <div className="alter-mobile input">
                     <TextField
-                            label="Alternative Phone"
+                            label="Alternative Phone*"
                             type="number"
                             name='mobile'
                             value={formik.values.mobile} onChange={formik.handleChange("mobile")} onBlur={formik.handleBlur("mobile")}
@@ -413,7 +414,7 @@ const data = {
         name="radio-buttons-group"
       >
         <div className="razorpay">
-            <FormControlLabel value="razorpay" control={<Radio />} label="PhonePe Secure (UPI, Cards, Wallets, NetBanking)" disabled={false} onClick={phonepeClick}/>
+            <FormControlLabel value="razorpay" control={<Radio />} label="PhonePe Secure (UPI, Cards, Wallets, NetBanking)" disabled={true} onClick={phonepeClick}/>
             {/* <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" /> */}
             {/* <div className="bottom">
                 <AddCardIcon style={{fontSize:'50px'}}/>

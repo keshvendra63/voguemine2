@@ -16,6 +16,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import CircularProgress from '@mui/material/CircularProgress';
+
 const Products = () => {
   const navigate=useNavigate()
   const [filter,setFilter]=useState(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
@@ -305,9 +307,12 @@ useEffect(()=>{
       setLoading(true)
     }
     if(isSuccess && products){
+      setTimeout(()=>{
         setLoading(false)
+
+      },1500)
     }
-  },[isLoading,isSuccess])
+  },[isLoading,isSuccess,products])
 
 useEffect(()=>{
     if(products?.length<load){
@@ -349,16 +354,17 @@ const DrawerList = (
 const fetchProducts = async () => {
   try {
     let fetchedProducts = [];
-    while (fetchedProducts.length < 700) {
-      const batch = await dispatch(getAllProducts({ sort, limit: 20, page, collectionName:"Men's Premium Shirts" }));
+    let totalFetched = 0;
+    while (totalFetched < 700) {
+      const batch = await dispatch(getAllProducts({ sort, limit: 20, page, collectionName }));
       if (!Array.isArray(batch)) {
         console.error('Error fetching products: Received non-array response');
         break;
       }
       fetchedProducts = [...fetchedProducts, ...batch];
+      totalFetched += batch.length;
       displayProducts(batch);
-      if (fetchedProducts.length >= 700) break;
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second before fetching next batch
     }
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -372,7 +378,7 @@ const displayProducts = (prdts) => {
 
 useEffect(() => {
   fetchProducts();
-}, []);
+}, [collectionName,limit,sort]);
 
 
 
@@ -391,7 +397,14 @@ useEffect(() => {
         {DrawerList}
       </Drawer>
                         </div>
-                        <p style={{fontWeight:'bold',marginBottom:0}}>{products?.length} Products</p>
+                        {
+                          loading===true? <p style={{marginBottom:0}}>
+                          Loading.....</p>:
+                           <p style={{marginBottom:0}}>
+                           {products?.length} Products</p>
+                        }
+                        {/* <p style={{fontWeight:'bold',marginBottom:0}}>
+                          {products?.length} Products</p> */}
                         <div className="sort">
                             <select name="" id="" style={{fontWeight:'bold'}} onChange={sortChange} value={sort} defaultValue="-createdAt">
                                 <option value="title">Alphabet A-Z</option>
@@ -434,10 +447,17 @@ useEffect(() => {
 
 
       </div>
+
+
+
                     <div className="pages">
-                    <Button type="primary" loading={loadings[0]} onClick={loadMore} style={{display:btn}}>
+                      {
+                        loading===true? <CircularProgress/>:
+                        <Button type="primary" loading={loadings[0]} onClick={loadMore} style={{display:btn}}>
           Load More
         </Button>
+                      }
+                    
                     </div>
                 </div>
             </div>

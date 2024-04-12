@@ -59,9 +59,7 @@ const phonePe = async (req, res) => {
 
 const redirectUri = async (req, res) => {
     const { merchantTransactionId } = req.params;
-    const payEndpoint = '/pg/v1/pay';
     const bufferObj = Buffer.from(JSON.stringify(payload), "utf8")
-    const base63EncodedPayload = bufferObj.toString("base64")
     if (merchantTransactionId) {
         const xverify=SHA256(`/pg/v1/status/${pmId}/${merchantTransactionId}` + psalt) + "###" + psaltIndex
         const options = {

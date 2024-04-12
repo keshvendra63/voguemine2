@@ -216,10 +216,30 @@ setEmail("")
 },1000)
   }
 }
+const [loading,setLoading]=useState(true)
+const productStat = useSelector((state) => state?.product);
+
+    const {isError,isLoading,isSuccess}=productStat
+    useEffect(()=>{
+      if(isLoading && singleProductState){
+        setLoading(true)
+      }
+      if(isSuccess && singleProductState){
+        setTimeout(()=>{
+          setLoading(false)
+  
+        },1500)
+      }
+    },[isLoading,isSuccess,singleProductState])
   return (
     <div className='single-product margin-section'>
       <div className="product">
-        <div className="prdt-left">
+      {
+            loading===true ? <p style={{width:'100%',height:'400px',backgroundColor:'rgb(228, 228, 228)',borderRadius:'10px'}} className='prdt-left'></p>:
+            <div className="prdt-left">
+
+
+         
 
             <div className="main">
             <img src={mainImage==""?singleProductState?.images[imageIndex]?.url : mainImage} alt="" onError={handleImageError}/>
@@ -234,6 +254,9 @@ setEmail("")
                 }
             </div>
         </div>
+            
+          }
+       
         <div className="prdt-right">
             <p className="product-name">{singleProductState?.title}</p>
             <div style={{display:'flex',alignItems:'center'}}>

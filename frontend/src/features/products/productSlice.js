@@ -2,7 +2,6 @@ import { createSlice,createAsyncThunk,createAction} from "@reduxjs/toolkit";
 import {productService} from './productService'
 import {toast} from 'react-toastify'
 
-
 export const getAllProducts=createAsyncThunk("product/get",async(data,thunkAPI)=>{
     try{
         return await productService.getProducts(data)
@@ -108,11 +107,13 @@ export const productSlice=createSlice({
         })
         .addCase(getAProduct.pending,(state)=>{
             state.isLoading=true;
+
         }).addCase(getAProduct.fulfilled,(state,action)=>{
             state.isLoading=false;
             state.isError=false;
             state.isSuccess=true;
             state.getSingleProduct=action.payload;
+
         }).addCase(getAProduct.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;
