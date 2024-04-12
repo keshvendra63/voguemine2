@@ -41,9 +41,6 @@
     margin:5px 0;
 }
 
-.Products .products-box .products-page .sorting .filter{
-    /* display: none; */
-}
 .Products .products-box .products-page .sorting .sort select{
     padding: 5px 10px;
 }
