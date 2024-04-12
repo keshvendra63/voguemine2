@@ -104,4 +104,4 @@ abondendSchema.pre("save", async function (next) {
 
 const Abondend = mongoose.model("Abondend", abondendSchema);
 
-module.exports = Order;
+module.exports = Abondend;
