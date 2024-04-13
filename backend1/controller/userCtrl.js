@@ -529,17 +529,30 @@ const getMyOrders=asyncHandler(async(req,res)=>{
 
 
 
-const getAllAbandoned=asyncHandler(async(req,res)=>{
-  try{
-    const abondend=await Abondend.find().populate("orderItems.product")
+const getAllAbandoned = asyncHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // default page is 1 if not provided
+  const limit = parseInt(req.query.limit) || 10; // default limit is 10 if not provided
+
+  try {
+    const count = await Abondend.countDocuments(); // Count total documents
+
+    const abondend = await Abondend.find()
+      .populate("orderItems.product")
+      .skip((page - 1) * limit) // Skip documents
+      .limit(limit); // Limit documents per page
+
     res.json({
-      abondend
-    })
+      abondend,
+      currentPage: page,
+      totalPages: Math.ceil(count / limit),
+      totalOrders: count
+    });
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
   }
-  catch(error){
-    throw new Error(error)
-  }
-})
+});
 const getSingleAbandoned=asyncHandler(async(req,res)=>{
   const {id}=req.params
   try{
@@ -554,17 +567,31 @@ const getSingleAbandoned=asyncHandler(async(req,res)=>{
 })
 
 
-const getAllOrders=asyncHandler(async(req,res)=>{
-  try{
-    const orders=await Order.find().populate("user").populate("orderItems.product")
+const getAllOrders = asyncHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // default page is 1 if not provided
+  const limit = parseInt(req.query.limit) || 50; // default limit is 10 if not provided
+
+  try {
+    const count = await Order.countDocuments(); // Count total documents
+
+    const orders = await Order.find()
+      .populate("user")
+      .populate("orderItems.product")
+      .skip((page - 1) * limit) // Skip documents
+      .limit(limit); // Limit documents per page
+
     res.json({
-      orders
-    })
+      orders,
+      currentPage: page,
+      totalPages: Math.ceil(count / limit),
+      totalOrders: count
+    });
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
   }
-  catch(error){
-    throw new Error(error)
-  }
-})
+});
 const getSingleOrder=asyncHandler(async(req,res)=>{
   const {id}=req.params
   try{
