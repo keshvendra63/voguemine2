@@ -35,11 +35,8 @@ const SingleBlog = () => {
   }, [singleBlogState?.metaDesc]);  
   return (
     <div className='margin-section' style={{marginTop:'100px'}}>
-        <Link to="/blogs">Go Back</Link>
-      <p className="section-heading">Blog</p>
+      <p className="section-heading">{singleBlogState?.title}</p>
       <div className="blog">
-        <img src={singleBlogState?.images[0]?.url} alt={singleBlogState?.title} />
-        <p className="blog-title">{singleBlogState?.title}</p>
         <p className="desc" dangerouslySetInnerHTML={{ __html: singleBlogState?.description }}></p>
       </div>
     </div>

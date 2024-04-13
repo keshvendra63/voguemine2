@@ -28,28 +28,18 @@ const Blog = () => {
         {
          blogs?.map((item,index)=>{
             return(
+              <Link to={`/blogs/news/${item?.handle}`} className='blog-card'>
+
               <div className="blog" key={index}>
-        <Card style={{width:'250px'}}>
-      <CardMedia
-        component="img"
-        alt={item?.title}
-        height="140"
-        image={item?.images[0]?.url}
-      />
-      {/* <p>{moment(item?.createdAt).format("MMMM Do YYYY, h:mm a")}</p> */}
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {item?.title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" style={{height:'100px',overflow:'hidden',textOverflow:'ellipsis'}} dangerouslySetInnerHTML={{ __html: item?.description }}>
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Link to={`/blogs/news/${item?.handle}`}><Button size="small">Learn More</Button></Link>
-        
-      </CardActions>
-    </Card>
-        </div>
+                <img src={item?.images[0]?.url} alt={item?.title} />
+                <p className='title'> {item?.title}</p>
+        <p className='desc' variant="body2" color="text.secondary" style={{height:'100px',overflow:'hidden',textOverflow:'ellipsis'}} dangerouslySetInnerHTML={{ __html: item?.description }}>
+        </p>
+       <button size="small">Learn More</button>
+                </div>
+                </Link>
+
+                
             )
           })
         }
@@ -57,7 +47,9 @@ const Blog = () => {
 
 
       </div>
+      
     </div>
+
   )
 }
 
