@@ -527,6 +527,33 @@ const getMyOrders=asyncHandler(async(req,res)=>{
   }
 })
 
+
+
+const getAllAbandoned=asyncHandler(async(req,res)=>{
+  try{
+    const abondend=await Abondend.find().populate("orderItems.product")
+    res.json({
+      abondend
+    })
+  }
+  catch(error){
+    throw new Error(error)
+  }
+})
+const getSingleAbandoned=asyncHandler(async(req,res)=>{
+  const {id}=req.params
+  try{
+    const abondend=await Abondend.findOne({_id:id}).populate("orderItems.product")
+    res.json({
+      abondend
+    })
+  }
+  catch(error){
+    throw new Error(error)
+  }
+})
+
+
 const getAllOrders=asyncHandler(async(req,res)=>{
   try{
     const orders=await Order.find().populate("user").populate("orderItems.product")
@@ -800,5 +827,7 @@ module.exports = {
   getYesterdayOrderIncome,
   orderComment,
   orderHistory,
-  createAbondend
+  createAbondend,
+  getAllAbandoned,
+  getSingleAbandoned
 };
