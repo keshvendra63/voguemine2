@@ -441,7 +441,7 @@ const fetchProducts = async () => {
     let fetchedProducts = [];
     let totalFetched = 0;
     while (totalFetched < 700) {
-      const batch = await dispatch(getAllProducts({ sort, limit: 20, page, collectionName }));
+      const batch = await dispatch(getAllProducts({ sort, limit:56, page, collectionName }));
       if (!Array.isArray(batch)) {
         console.error('Error fetching products: Received non-array response');
         break;
@@ -449,7 +449,7 @@ const fetchProducts = async () => {
       fetchedProducts = [...fetchedProducts, ...batch];
       totalFetched += batch.length;
       displayProducts(batch);
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second before fetching next batch
+      await new Promise(resolve => setTimeout(resolve, 200)); // Wait for 1 second before fetching next batch
     }
   } catch (error) {
     console.error('Error fetching products:', error);

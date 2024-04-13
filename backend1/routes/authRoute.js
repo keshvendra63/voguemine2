@@ -49,7 +49,7 @@ router.post("/login", loginUserCtrl);
 router.post("/admin-login", loginAdmin);
 router.post("/cart", authMiddleware, userCart);
 router.post("/order/checkout",phonePe)
-router.post("/redirect-url/:merchantTransactionId",redirectUri)
+router.post("/status/:merchantTransactionId",redirectUri)
 // router.post("/cart/applycoupon", authMiddleware, applyCoupon);
 router.post("/cart/create-order", createOrder);
 router.post("/create-abondend", createAbondend);

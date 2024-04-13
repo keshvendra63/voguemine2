@@ -15,10 +15,10 @@ const phonePe = async (req, res) => {
         merchantId: pmId,
         merchantTransactionId: merchantTransactionId,
         merchantUserId: userId,
-        amount: 100,
-        redirectUrl: `https://voguemine2.onrender.com/api/user/redirect-url/${merchantTransactionId}`,
+        amount: amount*100,
+        redirectUrl: `https://probable-halibut-r94v5r7gwjrhxgvj-5000.app.github.dev/api/user/status/${merchantTransactionId}`,
         redirectMode: "POST",
-        mobileNumber:number || "99999999",
+        mobileNumber:number,
         paymentInstrument: {
             type: "PAY_PAGE"
         }
@@ -42,25 +42,26 @@ const phonePe = async (req, res) => {
     axios
         .request(options)
         .then(function (response) {
-            // return res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
+            return res.status(200).send(response.data.data.instrumentResponse.redirectInfo.url)
             // res.redirect(url)
-            res.send(response.data)
         })
         .catch(function (error) {
             console.error(error);
         });
    }
    catch(error){
-    console.log(error)
+    res.status(500).send({
+        message:error.message,
+        success:false
+    })
    }
 }
 
 
 
 const redirectUri = async (req, res) => {
-    const { merchantTransactionId } = req.params;
-    const bufferObj = Buffer.from(JSON.stringify(payload), "utf8")
-    if (merchantTransactionId) {
+    // return console.log(res.req.body)
+    const {merchantTransactionId} =req.params
         const xverify=SHA256(`/pg/v1/status/${pmId}/${merchantTransactionId}` + psalt) + "###" + psaltIndex
         const options = {
             method: 'GET',
@@ -75,23 +76,17 @@ const redirectUri = async (req, res) => {
         };
         axios
             .request(options)
-            .then(function (response) {
-                if(res.data.code==="PAYMENT_SUCCESS"){
-                    const url=`https://voguemine.com/success`
-                    return res.redirect(url)
-                }
-                else{
-                    const url=`https://voguemine.com/success`
-                    return res.redirect(url)
-                }
+            .then(async (response) =>{
+               if(response.data.code==="PAYMENT_SUCCESS"){
+                return res.redirect("https://probable-halibut-r94v5r7gwjrhxgvj-3000.app.github.dev/success")
+                // window.location.href=""
+               }
             })
             .catch(function (error) {
                 console.error(error);
             });
         // res.send({ merchantTransactionId })
-    } else {
-        res.send({ error: "Error" })
-    }
+
 }
 
 

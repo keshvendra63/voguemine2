@@ -239,12 +239,15 @@ const checkOutHandler=async(e)=>{
         };
         localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }));
 
-try{
-    const response=await axios.post("https://voguemine2.onrender.com/api/user/order/checkout",{amount:finalAmount,number:formik.values.phone})
-    window.location.href=response.data.data.instrumentResponse.redirectInfo.url
-}catch(error){
-    console.log(error)
-}
+    axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.app.github.dev/api/user/order/checkout",{amount:finalAmount,number:formik.values.phone})
+    .then(response=>{
+        window.location.href=response.data
+    })
+    .catch(error=>{
+        console.log(error)
+    })
+
+
         // console.log(result)
 // window.location.href=result.data.data.instrumentResponse.redirectInfo.url
 
@@ -457,7 +460,7 @@ useEffect(() => {
         name="radio-buttons-group"
       >
         <div className="razorpay">
-            <FormControlLabel value="razorpay" control={<Radio />} label="PhonePe Secure (UPI, Cards, Wallets, NetBanking)" disabled={true} onClick={phonepeClick}/>
+            <FormControlLabel value="razorpay" control={<Radio />} label="PhonePe Secure (UPI, Cards, Wallets, NetBanking)" disabled={false} onClick={phonepeClick}/>
             {/* <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" /> */}
             {/* <div className="bottom">
                 <AddCardIcon style={{fontSize:'50px'}}/>
