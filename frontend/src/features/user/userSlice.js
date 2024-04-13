@@ -47,7 +47,7 @@ export const createAnOrder=createAsyncThunk("auth/cart/create-order",async(order
 })
 export const createAbondend=createAsyncThunk("auth/create-abondend",async(abondendDetails,thunkAPI)=>{
     try{
-        return await authService.createOrder(abondendDetails)
+        return await authService.createAbondend(abondendDetails)
     }catch(error){
         return thunkAPI.rejectWithValue(error)
     }

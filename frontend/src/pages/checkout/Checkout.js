@@ -31,6 +31,7 @@ import QR from '../../images/qr.jpg'
 
 const Checkout = () => {
     const [cartItems, setCartItems] = useState([]);
+const [ship,setShip]=useState({})
 
     const location = useLocation();
     const navigate=useNavigate()
@@ -276,31 +277,37 @@ const data = {
 }
 
 
-useEffect(() => {
-    return () => {
-        if (location.pathname!=='/profile') {
-            if(cartItems?.length>=0){
-                dispatch(createAbondend(
-                    {
-                        tag:"Voguemine",
-                        shippingInfo:{
-                            firstname:formik?.values?.firstname,
-                            lastname:formik?.values?.lastname,
-                            email:formik?.values?.email,
-                            phone:formik?.values?.phone,
-                            address:formik?.values?.address,
-                            city:formik?.values?.city,
-                            state:formik?.values?.state,
-                            pincode:formik?.values?.pincode,
-                            mobile:formik?.values?.mobile,
-                },
+useEffect(()=>{
+    localStorage.setItem("temp",JSON.stringify(
+        {
+            shippingInfo:{
+        firstname:formik?.values?.firstname,
+        lastname:formik?.values?.lastname,
+        email:formik?.values?.email,
+        phone:formik?.values?.phone,
+        address:formik?.values?.address,
+        city:formik?.values?.city,
+        state:formik?.values?.state,
+        pincode:formik?.values?.pincode,
+        mobile:formik?.values?.mobile,},
+        tag:"Voguemine",
                 orderItems:cartProductState,
                 totalPrice:totalAmount,
                 shippingCost:shippingCost,
                 orderType:orderType,
                 discount:couponAmount,
                 finalAmount:finalAmount
-            }))
+    }))
+},[formik?.values])
+console.log(ship)
+useEffect(() => {
+    return () => {
+        if (location.pathname!=='/profile') {
+            console.log(ship)
+
+            if(cartItems?.length>=0){
+                const addr=JSON.parse(localStorage.getItem("temp"))
+                dispatch(createAbondend(addr))
             }
         }
     };
