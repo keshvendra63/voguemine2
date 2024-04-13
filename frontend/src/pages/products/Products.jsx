@@ -51,6 +51,12 @@ useEffect(()=>{
 
         setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
       }
+      if(location.pathname==="/collections/men-premium-half-sleeve-shirt"){
+        setCollectionName("Men's Premium Half Sleeve Shirt")
+        document.title=collectionName
+
+        setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
+      }
       if(location.pathname==="/collections/t-shirts"){
         setCollectionName("Men's Premium T Shirts")
         document.title=collectionName
@@ -395,7 +401,7 @@ useEffect(()=>{
       setTimeout(()=>{
         setLoading(false)
 
-      },1500)
+      },2000)
     }
   },[isLoading,isSuccess,products])
 

@@ -46,6 +46,7 @@ function App() {
         <Route path='/cart' element={<Cart/>}/>
         <Route path="/products" element={<Products/>}/>
         <Route path="/collections/men-premium-shirt" element={<Products/>}/>
+        <Route path="/collections/men-premium-half-sleeve-shirt" element={<Products/>}/>
         <Route path="/collections/t-shirts" element={<Products/>}/>
         <Route path="/collections/mens-sweatshirts" element={<Products/>}/>
         <Route path="/collections/loafers-for-men" element={<Products/>}/>

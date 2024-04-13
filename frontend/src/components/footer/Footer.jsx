@@ -33,6 +33,8 @@ const Footer = () => {
         <ul>
             <li><Link to="/about">About</Link></li>
             <li><Link to="/pages/contact">Contact Us</Link></li>
+            <li><Link to="/blogs">Blogs</Link></li>
+
             {/* <li><Link to="#">Track Order</Link></li>
             <li><Link to="#">Exchange Order</Link></li> */}
         </ul>
@@ -44,7 +46,6 @@ const Footer = () => {
             <li><Link to="/pages/refund-and-return-policy">Exchange Policy</Link></li>
             <li><Link to="/pages/terms-of-service">Terms of Service</Link></li>
             <li><Link to="/pages/privacy-policy">Privacy Policy</Link></li>
-            <li><Link to="/blogs">Blogs</Link></li>
 
         </ul>
         </Col>

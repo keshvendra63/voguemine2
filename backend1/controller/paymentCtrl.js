@@ -78,7 +78,7 @@ const redirectUri = async (req, res) => {
             .request(options)
             .then(async (response) =>{
                if(response.data.code==="PAYMENT_SUCCESS"){
-                return res.redirect("https://probable-halibut-r94v5r7gwjrhxgvj-3000.app.github.dev/success")
+                return res.redirect("https://voguemine.com/success")
                 // window.location.href=""
                }
             })

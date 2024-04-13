@@ -24,6 +24,12 @@ const Men = () => {
             <h2>Men's T-Shirt</h2>
         </div>
         </Link>
+        <Link to="/collections/men-premium-half-sleeve-shirt">
+        <div className="collection-card">
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713028400/WhatsApp_Image_2024-04-13_at_16.41.36_4da1adcf_rkwgco.jpg" alt="" />
+            <h2>Men's Premium Half Sleeve Shirt</h2>
+        </div>
+        </Link>
         <Link to="/collections/combos">
         <div className="collection-card">
             <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902099/combo_cyftbh.jpg" alt="" />
