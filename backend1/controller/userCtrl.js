@@ -528,18 +528,21 @@ const getMyOrders=asyncHandler(async(req,res)=>{
 })
 
 
-
 const getAllAbandoned = asyncHandler(async (req, res) => {
-  const page = parseInt(req.query.page) || 1; // default page is 1 if not provided
-  const limit = parseInt(req.query.limit) || 10; // default limit is 10 if not provided
+  const limit = 50; // Number of items per page
+  const page = parseInt(req.query.page) || 1; // Current page, default is 1
 
   try {
-    const count = await Abondend.countDocuments(); // Count total documents
+    const count = await Abondend.countDocuments(); // Total number of orders
 
+    // Calculate the skipping value based on the current page
+    const skip = count - (page * limit);
+
+    // Query orders with reverse pagination
     const abondend = await Abondend.find()
       .populate("orderItems.product")
-      .skip((page - 1) * limit) // Skip documents
-      .limit(limit); // Limit documents per page
+      .skip(Math.max(skip, 0)) // Ensure skip is non-negative
+      .limit(limit);
 
     res.json({
       abondend,
@@ -568,17 +571,21 @@ const getSingleAbandoned=asyncHandler(async(req,res)=>{
 
 
 const getAllOrders = asyncHandler(async (req, res) => {
-  const page = parseInt(req.query.page) || 1; // default page is 1 if not provided
-  const limit = parseInt(req.query.limit) || 50; // default limit is 10 if not provided
+  const limit = 50; // Number of items per page
+  const page = parseInt(req.query.page) || 1; // Current page, default is 1
 
   try {
-    const count = await Order.countDocuments(); // Count total documents
+    const count = await Order.countDocuments(); // Total number of orders
 
+    // Calculate the skipping value based on the current page
+    const skip = count - (page * limit);
+
+    // Query orders with reverse pagination
     const orders = await Order.find()
       .populate("user")
       .populate("orderItems.product")
-      .skip((page - 1) * limit) // Skip documents
-      .limit(limit); // Limit documents per page
+      .skip(Math.max(skip, 0)) // Ensure skip is non-negative
+      .limit(limit);
 
     res.json({
       orders,
