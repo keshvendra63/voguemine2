@@ -16,7 +16,7 @@ const phonePe = async (req, res) => {
         merchantTransactionId: merchantTransactionId,
         merchantUserId: userId,
         amount: amount*100,
-        redirectUrl: `https://probable-halibut-r94v5r7gwjrhxgvj-5000.app.github.dev/api/user/status/${merchantTransactionId}`,
+        redirectUrl: `https://voguemine2.onrender.com/api/user/status/${merchantTransactionId}`,
         redirectMode: "POST",
         mobileNumber:number,
         paymentInstrument: {
