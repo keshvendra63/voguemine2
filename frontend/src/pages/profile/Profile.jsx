@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './profile.css'
+import {useNavigate} from 'react-router-dom'
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import {useFormik} from 'formik'
 import TextField from '@mui/material/TextField';
@@ -16,6 +17,7 @@ const profileSchema=yup.object({
   })
 
 const Profile = () => {
+  const navigate=useNavigate()
   const getTokenFromLocalStorage = localStorage.getItem("customer")
   ? JSON.parse(localStorage.getItem("customer"))
   : null;
@@ -146,7 +148,9 @@ const config2 = {
       }
       <hr />
       <div className="orders">
+
         <p className="section-heading" style={{textTransform:'capitalize',color:"green",fontSize:'20px'}}>your order has been placed. thank you for shopping.</p>
+        <button style={{color:'white',backgroundColor:'black',fontWeight:500,margin:'15px 0',border:'none',padding:'8px 15px'}} onClick={()=>navigate("/home")}>Continue Shopping</button>
           <div className="order-list">
             {
               orders && orders?.map((item,index)=>{

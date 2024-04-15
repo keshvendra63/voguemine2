@@ -216,6 +216,13 @@ setEmail("")
 },1000)
   }
 }
+useEffect(()=>{
+  cart?.map((item)=>{
+    if(item?.productId===singleProductState?._id){
+      setAlreadyAdded(true)
+    }
+  })
+},[cart])
 const [loading,setLoading]=useState(true)
 const productStat = useSelector((state) => state?.product);
 
@@ -309,7 +316,11 @@ const productStat = useSelector((state) => state?.product);
                 <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(singleProductState?._id)}} className={btnDisable?'disabled-btn':"btn"} disabled={btnDisable}>{
                   alreadyAdded?"GO TO CART":"ADD TO CART"
                 }</button>
-                <button className={btnDisable?'disabled-btn':"btn"} onClick={buyNow} disabled={btnDisable}>BUY IT NOW</button>
+                <button className={btnDisable?'disabled-btn':"btn"} onClick={()=>{alreadyAdded?navigate('/checkout'):buyNow(singleProductState?._id)}} disabled={btnDisable}>
+                {
+                  alreadyAdded?"COMPLETE PURCHASE":"BUY IT NOW"
+                }
+                </button>
             </div>
             }
             

@@ -25,7 +25,7 @@ const About = () => {
 
 
 </p>
-<p>Our team of fashion experts has scoured the globe to curate a stunning selection of authentic, pre-owned luxury products, from high-end designer apparel, accessories and footwear. Each piece has been carefully inspected to ensure that it meets our attentive standards of quality and authenticity.</p>
+<p>Our team of fashion experts has carefully handpicked a stunning collection of authentic store articles of luxury high-end designer apparel, accessories, and footwear. Each piece has been carefully inspected to ensure that it meets our attentive standards of quality and authenticity.</p>
 {/* <div className='about-content'>
                 <div>
                     <h4>Customers</h4>

@@ -239,7 +239,7 @@ const checkOutHandler=async(e)=>{
         };
         localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }));
 
-    axios.post("https://voguemine2.onrender.com/api/user/order/checkout",{amount:1,number:formik.values.phone})
+    axios.post("https://voguemine2.onrender.com/api/user/order/checkout",{amount:finalAmount,number:formik.values.phone})
     .then(response=>{
         window.location.href=response.data
     })

@@ -32,7 +32,7 @@ const [red,setRed]=useState("")
     const dispatch=useDispatch();
 
     const wishlist=JSON.parse(localStorage.getItem("wishlist"))
-
+    const cart=JSON.parse(localStorage?.getItem("cart"))
 useEffect(()=>{
   wishlist?.map((item)=>{
     if(item?.productId===props.id){
@@ -40,7 +40,13 @@ useEffect(()=>{
     }
   })
 },[wishlist])
-
+useEffect(()=>{
+  cart?.map((item)=>{
+    if(item?.productId===props.id){
+      setAlreadyAdded(true)
+    }
+  })
+},[cart])
     const addTocart=async(data)=>{
       if(color===null){
         toast.error("Please Select Color")
@@ -232,7 +238,9 @@ const [imageIndex, setImageIndex] = useState(0);
       </ul>
     </div>
     <div className="btns">
-    <button onClick={()=>buyNow(props.id)} style={{width:'100%'}} className={btnDisable?'btn-disable':"btn"} disabled={btnDisable}>BUY NOW</button>
+    <button onClick={()=>{alreadyAdded?navigate('/checkout'):buyNow(props.id)}} style={{width:'100%'}} className={btnDisable?'btn-disable':"btn"} disabled={btnDisable}>{
+                  alreadyAdded?"CHECKOUT":"BUY NOW"
+                }</button>
     <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(props.id)}} style={{width:'100%'}} className={btnDisable?'btn-disable':"btn"} disabled={btnDisable}>{
                   alreadyAdded?"GO TO CART":"ADD TO CART"
                 }</button>
