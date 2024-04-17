@@ -81,9 +81,10 @@ const getAllProduct = asyncHandler(async (req, res) => {
           $or: [
             { category: { $regex: new RegExp(keyword, 'i') } }, // Match category based on keyword
             { 'variants.color': { $in: [keyword] } }, // Match color based on keyword
-            { title: { $regex: new RegExp(keyword, 'i') } }, // Match title based on keyword
             { brand: { $regex: new RegExp(keyword, 'i') } }, // Match brand based on keyword
             { sku: {$regex: new RegExp(keyword, 'i') } }, // Match sku based on keyword
+            { title: { $regex: new RegExp(`\\b${keyword}\\b`, 'i') } }, // Match title based on keyword with word boundary
+
             { 'variants.size': { $in: [keyword] } } // Match size based on keyword
           ]
         });
