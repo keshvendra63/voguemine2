@@ -40,13 +40,26 @@ useEffect(()=>{
     }
   })
 },[wishlist])
-useEffect(()=>{
-  cart?.map((item)=>{
-    if(item?.productId===props.id){
-      setAlreadyAdded(true)
-    }
-  })
-},[cart])
+useEffect(() => {
+  if (!color || !size) {
+    // If color or size is not selected, set alreadyAdded to false
+    setAlreadyAdded(false);
+    return;
+  }
+
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const matchingCartItem = cart.find(item => {
+    return item?.productId === props?.id && item?.color === color && item?.size === size;
+  });
+
+  if (matchingCartItem) {
+    // If a matching cart item is found, set alreadyAdded to true
+    setAlreadyAdded(true);
+  } else {
+    // If no matching cart item is found, set alreadyAdded to false
+    setAlreadyAdded(false);
+  }
+}, [color, size, props?.id]);
     const addTocart=async(data)=>{
       if(color===null){
         toast.error("Please Select Color")
@@ -69,6 +82,8 @@ useEffect(()=>{
             value:`${props?.price}`,
             currency: 'USD'
         });
+        setAlreadyAdded(true)
+
         }
 
        

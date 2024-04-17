@@ -3,7 +3,6 @@ import './product.css'
 import {useLocation,useNavigate} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {getAllProducts,getProducts, resetState } from '../../features/products/productSlice';
-import {getUserWishlistProduct} from '../../features/user/userSlice'
 import {Button} from 'antd'
 import Product from '../../components/Product'
 import Box from '@mui/material/Box';

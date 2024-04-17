@@ -29,7 +29,6 @@ const SingleProduct = () => {
 
   const navigate=useNavigate()
   const singleProductState=useSelector((state)=>state?.product?.getSingleProduct)
-  const cart=JSON.parse(localStorage.getItem("cart"))
   const location =useLocation()
   const getProductId=location.pathname.split("/")[2];
   const collectionName=singleProductState?.collectionName
@@ -56,20 +55,13 @@ const SingleProduct = () => {
   const products=productState? productState:[]
    const customer=JSON.parse(localStorage.getItem("customer"))
 
-  useEffect(()=>{
-    for (let index = 0; index < cart?.length; index++) {
-      if(getProductId===cart[index]?.productId?._id){
-        setAlreadyAdded(true)
-      }
-      
-    }
-  })
+
   const addProductToCartLocalStorage = (product) => {
     const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
     const updatedCart = [...existingCart, product];
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
-  const addTocart=async()=>{
+  const addTocart=async(data)=>{
     if(color===null){
       toast.error("Please Select Color")
       return false
@@ -79,7 +71,7 @@ const SingleProduct = () => {
       return false
     }
     else{
-      await addProductToCartLocalStorage({productId:getProductId,color,quantity,price:singleProductState?.price,size,product:singleProductState})
+      await addProductToCartLocalStorage({productId:data,color,quantity,price:singleProductState?.price,size,product:singleProductState})
           toast.success("Added To Cart")
       window.fbq('track', 'AddToCart', {
         content_name:`${singleProductState?.title}`,
@@ -89,6 +81,7 @@ const SingleProduct = () => {
         value:`${singleProductState?.price}`,
         currency: 'USD'
     });
+    setAlreadyAdded(true)
       
       setTimeout(()=>{
         dispatch(getUserCartProduct())
@@ -216,13 +209,27 @@ setEmail("")
 },1000)
   }
 }
-useEffect(()=>{
-  cart?.map((item)=>{
-    if(item?.productId===singleProductState?._id){
-      setAlreadyAdded(true)
-    }
-  })
-},[cart])
+const cart=JSON.parse(localStorage.getItem("cart"))
+useEffect(() => {
+  if (!color || !size) {
+    // If color or size is not selected, set alreadyAdded to false
+    setAlreadyAdded(false);
+    return;
+  }
+
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const matchingCartItem = cart.find(item => {
+    return item.productId === singleProductState?._id && item.color === color && item.size === size;
+  });
+
+  if (matchingCartItem) {
+    // If a matching cart item is found, set alreadyAdded to true
+    setAlreadyAdded(true);
+  } else {
+    // If no matching cart item is found, set alreadyAdded to false
+    setAlreadyAdded(false);
+  }
+}, [color, size, singleProductState]);
 const [loading,setLoading]=useState(true)
 const productStat = useSelector((state) => state?.product);
 
@@ -286,8 +293,6 @@ const productStat = useSelector((state) => state?.product);
 }
                 </ul>
             </div>
-            {
-              alreadyAdded===false && <>
               <div className="color prdt-variation">
                 <p>COLOR :</p>
                 <ul>
@@ -299,18 +304,22 @@ const productStat = useSelector((state) => state?.product);
                     
                 </ul>
             </div>
-              </>
-            }
-            {
-              alreadyAdded===false && <>
+ 
+
               <div className="quantity">
 <p onClick={decrementQuantity}><RemoveIcon className='qty-icon'/></p>
 <p>{quantity}</p>
 <p onClick={incrementQuantity}><AddIcon className='qty-icon'/></p>
             </div>
-              </>
-            }
             {
+              pQuantity<3?            <p style={{color:'red',textAlign:'center',marginTop:'15px'}}>Only {pQuantity} Available</p>
+:
+""
+            }
+
+
+            {
+              
               sold==="block" ? <p style={{textAlign:'center',margin:"15px auto",color:'red',fontWeight:600,fontSize:'20px'}}>This size is not available</p>:
 <div className="buy-btn">
                 <button onClick={()=>{alreadyAdded?navigate('/cart'):addTocart(singleProductState?._id)}} className={btnDisable?'disabled-btn':"btn"} disabled={btnDisable}>{

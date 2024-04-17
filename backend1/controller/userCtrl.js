@@ -571,7 +571,7 @@ const getSingleAbandoned=asyncHandler(async(req,res)=>{
 
 
 const getAllOrders = asyncHandler(async (req, res) => {
-  const limit = 50; // Number of items per page
+  const limit = parseInt(req.query.limit) || 50; // Number of items per page
   const page = parseInt(req.query.page) || 1; // Current page, default is 1
 
   try {

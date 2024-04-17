@@ -58,9 +58,12 @@ const [ship,setShip]=useState({})
 
     }, []);
     
-    const removeFromCartAndUpdate = (productIdToRemove) => {
-        // Filter out the item to remove
-        const updatedCartItems = cartItems.filter(item => item.productId !== productIdToRemove);
+
+    const removeFromCartAndUpdate = (productIdToRemove, colorToRemove, sizeToRemove) => {
+        // Filter out the item to remove based on productId, color, and size
+        const updatedCartItems = cartItems.filter(item => {
+            return !(item.productId === productIdToRemove && item.color === colorToRemove && item.size === sizeToRemove);
+        });
 
         // Update localStorage with the updated cart items
         localStorage.setItem('cart', JSON.stringify(updatedCartItems));
@@ -524,7 +527,7 @@ useEffect(() => {
                         <p className="size"><span>{item?.size}</span><span>/</span><span>{item?.color}</span></p></div>
                     </div>
                     <p className="p-price">&#8377;{(item?.price)*(item?.quantity)}</p>
-                    <p className="delete" onClick={() => removeFromCartAndUpdate(item.productId)}><DeleteIcon className='delete-icon'/></p>
+                    <p className="delete" onClick={() => removeFromCartAndUpdate(item.productId, item.color, item.size)}><DeleteIcon className='delete-icon'/></p>
                 </div>
                         )
                     })
