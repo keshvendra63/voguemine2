@@ -19,8 +19,8 @@ const About = () => {
             
         </div>
         <div className="right-about">
-            <h1>ABOUT VOGUEMINE</h1>
-            <p>At the Voguemine, we understand, style is not just about what you wear, it's about how you feel. That's why we go above and beyond to provide an exceptional shopping experience, with attentive customer service and a user-friendly online platform that makes it easy to find the perfect addition of collection to your luxurious wardrobe.
+            <h1>ABOUT RAMPVALK</h1>
+            <p>At Rampvalk by Voguemine, we understand, style is not just about what you wear, it's about how you feel. That's why we go above and beyond to provide an exceptional shopping experience, with attentive customer service and a user-friendly online platform that makes it easy to find the perfect addition of collection to your luxurious wardrobe.
 
 
 

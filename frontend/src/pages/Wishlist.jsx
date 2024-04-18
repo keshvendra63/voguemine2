@@ -51,6 +51,7 @@ const [wishlist,setWishlist]=useState([])
   wishlist?.map((item,index)=>{
     return(
       <div className="product-card" key={index}>
+      <Link to={`/products/${item?.product?.handle}`}>
       <div className="product-img">
         <img src={item?.product?.images[1]?.url} alt="" className="product-img1"/>
         {
@@ -58,9 +59,12 @@ const [wishlist,setWishlist]=useState([])
           "" alt="" className="product-img2"/>
         }
       </div>
+      </Link>
       <p className="wish-icon" onClick={()=>{removeFromWishlist(item?.product?._id)}}><CloseIcon className="cart-icon"/></p>
       <div className="product-content">
+        <Link to={`/products/${item?.product?.handle}`}>
         <p className="title">{item?.title}</p>
+        </Link>
         <Stack spacing={1} className="stars">
 <Rating name="size-small" defaultValue={5} size="small" />
 

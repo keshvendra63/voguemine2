@@ -148,8 +148,6 @@ const [imageIndex, setImageIndex] = useState(0);
 
 
 
-
-
   useEffect(()=>{
     const matchingVariant = findVariant(color, size);
     if (matchingVariant?.quantity===0) {
@@ -234,14 +232,34 @@ const [imageIndex, setImageIndex] = useState(0);
     <p className="price">&#8377;{props.price}</p>
     </div>
     <div className="size">
-      <p>Sizes</p>
-      <ul>
-      {
-  props.variants.filter((item, index, arr) => arr.findIndex(i => i.size === item.size) === index)
-                .map((item, index) => <li onClick={() => setSize(item.size)} key={index} style={{border:item.size===size?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.size}</li>)
-}
-      </ul>
-    </div>
+  <p>Sizes</p>
+  <ul>
+    {props.variants
+      .filter(variant => variant.color === color) // Filter variants based on selected color
+      .map((variant, index) => (
+        <li
+          key={index}
+          onClick={() => {
+            if (variant.quantity > 0) {
+              setSize(variant.size);
+            }
+          }}
+          style={{
+            border: variant.size === size ? '2px solid black' : '1px solid grey',
+            color: variant.size === size ? 'black' : 'rgb(122, 122, 122)',
+            opacity:variant.quantity === 0 ? 0.5 : 1,
+            textDecoration: variant.quantity === 0 ? 'line-through' : 'none' ,
+            textDecorationThickness: variant.quantity === 0 ? '1px' : 'auto',
+            pointerEvents: variant.quantity === 0 ? 'none' : 'auto', // Disable pointer events if quantity is 0
+            // Make the line bold if quantity is 0
+            // Apply line-through if quantity is 0
+          }}
+        >
+          {variant.size}
+        </li>
+      ))}
+  </ul>
+</div>
     <div className="color">
       <p>Colors</p>
       <ul>

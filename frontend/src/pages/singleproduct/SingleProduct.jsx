@@ -242,7 +242,7 @@ const productStat = useSelector((state) => state?.product);
         setTimeout(()=>{
           setLoading(false)
   
-        },1500)
+        },1000)
       }
     },[isLoading,isSuccess,singleProductState])
   return (
@@ -275,7 +275,7 @@ const productStat = useSelector((state) => state?.product);
             <h1 className="product-name">{singleProductState?.title}</h1>
             <div style={{display:'flex',alignItems:'center'}}>
             <p className="prdt-price">&#8377;{singleProductState?.price}</p>
-            <p style={{color:'grey',fontSize:'13px',textDecoration:'line-through',margin:'0 10px 0 10px'}}>{(singleProductState?.price)*2}</p>
+            <p style={{color:'grey',fontSize:'18px',textDecoration:'line-through',margin:'0 10px 6px 15px'}}>&#8377;{(singleProductState?.price)*2}</p>
             <p style={{display:sold,
             margin:'0 10px', 
             backgroundColor: 'rgb(37, 37, 37)',
@@ -287,11 +287,31 @@ const productStat = useSelector((state) => state?.product);
             <div className="size prdt-variation">
                 <p>SIZE :</p>
                 <ul>
-                {
-  singleProductState?.variants?.filter((item, index, arr) => arr.findIndex(i => i.size === item.size) === index)
-                .map((item, index) => <li onClick={() => (setSize(item.size),setQuantity(1))} key={index} style={{border:item.size===size?'2px solid black':'1px solid grey',color:item.size===size?'black':'rgb(122, 122, 122)'}}>{item.size}</li>)
-}
-                </ul>
+    {singleProductState?.variants
+      .filter(variant => variant.color === color) // Filter variants based on selected color
+      .map((variant, index) => (
+        <li
+          key={index}
+          onClick={() => {
+            if (variant.quantity > 0) {
+              setSize(variant.size);
+            }
+          }}
+          style={{
+            border: variant.size === size ? '2px solid black' : '1px solid grey',
+            color: variant.size === size ? 'black' : 'rgb(122, 122, 122)',
+            opacity:variant.quantity === 0 ? 0.5 : 1,
+            textDecoration: variant.quantity === 0 ? 'line-through' : 'none' ,
+            textDecorationThickness: variant.quantity === 0 ? '1px' : 'auto',
+            pointerEvents: variant.quantity === 0 ? 'none' : 'auto', // Disable pointer events if quantity is 0
+            // Make the line bold if quantity is 0
+            // Apply line-through if quantity is 0
+          }}
+        >
+          {variant.size}
+        </li>
+      ))}
+  </ul>
             </div>
               <div className="color prdt-variation">
                 <p>COLOR :</p>
@@ -309,7 +329,7 @@ const productStat = useSelector((state) => state?.product);
               <div className="quantity">
 <p onClick={decrementQuantity}><RemoveIcon className='qty-icon'/></p>
 <p>{quantity}</p>
-<p onClick={incrementQuantity}><AddIcon className='qty-icon'/></p>
+<p onClick={incrementQuantity} style={{opacity:pQuantity===quantity? 0:1}}><AddIcon className='qty-icon'/></p>
             </div>
             {
               pQuantity<3?            <p style={{color:'red',textAlign:'center',marginTop:'15px'}}>Only {pQuantity} Available</p>

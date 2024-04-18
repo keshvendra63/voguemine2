@@ -17,22 +17,37 @@ import {createAnOrder, deleteCart, getUserCartProduct, resetState,createAbondend
 import {getAllCoupons,getACoupon} from '../../features/coupon/couponSlice'
 import { toast } from 'react-toastify';
 import QR from '../../images/qr.jpg'
-  const shippingSchema=yup.object({
-    firstname:yup.string().required("First Name is required"),
-    lastname:yup.string().required("Last Name is required"),
-    email:yup.string().required("Email is Required"),
-    mobile:yup.number().required("Mobile number is required"),
-    address:yup.string().required("Address Name is required"),
-    city:yup.string().required("City Name is required"),
-    state:yup.string().required("State Name is required"),
-    pincode:yup.number().required("Pin Code Name is required"),
-    phone:yup.number().required("Phone is required"),
-  })
+
 
 const Checkout = () => {
+
+    const [firstname,setFirstname]=useState("")
+    const [lastname,setLastname]=useState("")
+
+    const [email,setEmail]=useState("")
+
+    const [phone,setPhone]=useState("")
+    const [mobile,setMobile]=useState("")
+    const [address,setAddress]=useState("")
+    const [city,setCity]=useState("")
+    const [state,setState]=useState("")
+    const [pincode,setPincode]=useState("")
+
     const [cartItems, setCartItems] = useState([]);
 const [ship,setShip]=useState({})
+const address1=JSON.parse(localStorage.getItem("address"))
+useEffect(()=>{
+    setFirstname(address1?.firstname)
+    setLastname(address1?.lastname)
+    setEmail(address1?.email)
+    setAddress(address1?.address)
+    setPhone(address1?.phone)
+    setMobile(address1?.mobile)
+    setCity(address1?.city)
+    setState(address1?.state)
+    setPincode(address1?.pincode)
 
+},[address1])
     const location = useLocation();
     const navigate=useNavigate()
 
@@ -157,23 +172,24 @@ const [ship,setShip]=useState({})
     useEffect(()=>{
         dispatch(getAllCoupons())
     },[])
-    const formik = useFormik({
-        initialValues: {
-          firstname: "",
-          lastname: "",
-          email: "",
-          mobile: "",
-          address: "",
-          city: "",
-          state: "",
-          pincode: "",
-          phone: ""
-        },
-        validationSchema: shippingSchema,
-        onSubmit:(values) => {
-
+  
+const completeOrder=()=>{
+    if(firstname==="" || lastname==="" || email==="" || phone==="" || mobile==="" || address==="" || city==="" || state==="" || pincode===""){
+        toast.info("Please Fill All Information")
+    }
+    else{
             setPaySpin(true)
-           localStorage.setItem("address",JSON.stringify(values))
+           localStorage.setItem("address",JSON.stringify({
+            firstname:firstname,
+            lastname:lastname,
+            email:email,
+            address:address,
+            phone:phone,
+            mobile:mobile,
+            city:city,
+            state:state,
+            pincode:pincode,
+           }))
            if(cartItems?.length>=1){
             setTimeout(()=>{
                 checkOutHandler()
@@ -181,7 +197,7 @@ const [ship,setShip]=useState({})
            }
            
         }
-      });
+    }
 
 
 
@@ -229,7 +245,6 @@ const checkOutHandler=async(e)=>{
         navigate("/profile")
         setPaySpin(false)
        
-        localStorage.removeItem("address")
         dispatch(resetState())
     }
     else{
@@ -242,7 +257,7 @@ const checkOutHandler=async(e)=>{
         };
         localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }));
 
-    axios.post("https://voguemine2.onrender.com/api/user/order/checkout",{amount:finalAmount,number:formik.values.phone})
+    axios.post("https://voguemine2.onrender.com/api/user/order/checkout",{amount:finalAmount,number:phone})
     .then(response=>{
         window.location.href=response.data
     })
@@ -270,7 +285,6 @@ const data = {
     navigate("/profile")
     setPaySpin(false)
 
-    localStorage.removeItem("address")
     dispatch(resetState())
        }
     
@@ -287,15 +301,15 @@ useEffect(()=>{
     localStorage.setItem("temp",JSON.stringify(
         {
             shippingInfo:{
-        firstname:formik?.values?.firstname,
-        lastname:formik?.values?.lastname,
-        email:formik?.values?.email,
-        phone:formik?.values?.phone,
-        address:formik?.values?.address,
-        city:formik?.values?.city,
-        state:formik?.values?.state,
-        pincode:formik?.values?.pincode,
-        mobile:formik?.values?.mobile,},
+        firstname:firstname,
+        lastname:lastname,
+        email:email,
+        phone:phone,
+        address:address,
+        city:city,
+        state:state,
+        pincode:pincode,
+        mobile:mobile,},
         tag:"Voguemine",
                 orderItems:cartProductState,
                 totalPrice:totalAmount,
@@ -304,7 +318,7 @@ useEffect(()=>{
                 discount:couponAmount,
                 finalAmount:finalAmount
     }))
-},[formik?.values])
+},[firstname,lastname,email,phone,mobile,address,city,state,pincode])
 console.log(ship)
 useEffect(() => {
     return () => {
@@ -313,7 +327,10 @@ useEffect(() => {
 
             if(cartItems?.length>=0){
                 const addr=JSON.parse(localStorage.getItem("temp"))
-                dispatch(createAbondend(addr))
+                if(addr?.firstname!=="" && addr?.phone!==""){
+                    dispatch(createAbondend(addr))
+
+                }
             }
         }
     };
@@ -325,17 +342,14 @@ useEffect(() => {
         <div className='margin-section checkout'>
             <div className="left-form">
                 <p className='section-heading'>Contact</p>
-                <form action="" onSubmit={formik.handleSubmit} >
                     <div className="email input">
                         <TextField
                             label="Email*"
                             type="email"
                             name='email'
-                            value={formik.values.email} onChange={formik.handleChange("email")} onBlur={formik.handleBlur("email")}
+                            value={email} onChange={(e)=>setEmail(e.target.value)} 
                         />
-                        <div className="error">
-                  {formik.touched.email && formik.errors.email}
-                </div>
+                       
                     </div>
                     <p className="section-heading">Delivery</p>
                     <div className="name input">
@@ -344,31 +358,25 @@ useEffect(() => {
                             label="First Name*"
                             type="text"
                             name='firstname'
-                            value={formik.values.firstname} onChange={formik.handleChange("firstname")} onBlur={formik.handleBlur("firstname")}
+                            value={firstname} onChange={(e)=>setFirstname(e.target.value)}
                         />
-                        <div className="error">
-                  {formik.touched.firstname && formik.errors.firstname}
-                </div>
+                       
                         </div>                    
                     <div><TextField
                             label="Last Name*"
                             type="text"
                             name='lastname'
-                            value={formik.values.lastname} onChange={formik.handleChange("lastname")} onBlur={formik.handleBlur("lastname")}
-                        /> <div className="error">
-                        {formik.touched.lastname && formik.errors.lastname}
-                      </div></div> 
+                            value={lastname} onChange={(e)=>setLastname(e.target.value)}
+                        /> </div> 
                     </div>
                     <div className="address input">
                     <TextField
                             label="Address*"
                             type="text"
                             name='address'
-                            value={formik.values.address} onChange={formik.handleChange("address")} onBlur={formik.handleBlur("address")}
+                            value={address} onChange={(e)=>setAddress(e.target.value)}
                         /> 
-                        <div className="error">
-                  {formik.touched.address && formik.errors.address}
-                </div>
+                       
                     </div>
                     <div className="city input">
                     <div>
@@ -376,13 +384,11 @@ useEffect(() => {
                             label="City*"
                             type="text"
                             name='city'
-                            value={formik.values.city} onChange={formik.handleChange("city")} onBlur={formik.handleBlur("city")}
+                            value={city} onChange={(e)=>setCity(e.target.value)}
                         /> 
-                        <div className="error">
-                  {formik.touched.city && formik.errors.city}
-                </div>
+                        
                     </div>
-                        <div><select name="state" placeholder="State"  value={formik.values.state} onChange={formik.handleChange("state")} onBlur={formik.handleBlur("state")}>
+                        <div><select name="state" placeholder="State"  value={state} onChange={(e)=>setState(e.target.value)}>
                             <option value="">State</option>
                             <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
                             <option value="Andhra Pradesh">Andhra Pradesh</option>
@@ -415,33 +421,28 @@ useEffect(() => {
                             <option value="Rajasthan">Rajasthan</option>
                             <option value="Sikkim">Sikkim</option>
                             <option value="Tamil Nadu">Tamil Nadu</option>
+                            <option value="Telangana">Telangana</option>
                             <option value="Tripura">Tripura</option>
                             <option value="Uttaranchal">Uttaranchal</option>
                             <option value="Uttar Pradesh">Uttar Pradesh</option>
                             <option value="West Bengal">West Bengal</option>
                         </select>
-                        <div className="error">
-                  {formik.touched.state && formik.errors.state}
-                </div>
+                       
                         </div>
                         <div><TextField
                             label="Pin Code*"
                             type="number"
                             name='pincode'
-                            value={formik.values.pincode} onChange={formik.handleChange("pincode")} onBlur={formik.handleBlur("pincode")}
-                        /> <div className="error">
-                        {formik.touched.pincode && formik.errors.pincode}
-                      </div></div>
+                            value={pincode} onChange={(e)=>setPincode(e.target.value)}
+                        /></div>
                     </div>
                     <div className="mobile input">
                     <TextField
                             label="Phone*"
                             type="number"
                             name='phone'
-                            value={formik.values.phone} onChange={formik.handleChange("phone")} onBlur={formik.handleBlur("phone")}
-                        /> <div className="error">
-                        {formik.touched.phone && formik.errors.phone}
-                      </div>
+                            value={phone} onChange={(e)=>setPhone(e.target.value)}
+                        /> 
 
                     </div>
                     <div className="alter-mobile input">
@@ -449,11 +450,9 @@ useEffect(() => {
                             label="Alternative Phone*"
                             type="number"
                             name='mobile'
-                            value={formik.values.mobile} onChange={formik.handleChange("mobile")} onBlur={formik.handleBlur("mobile")}
+                            value={mobile} onChange={(e)=>setMobile(e.target.value)}
                         /> 
-                        <div className="error">
-                  {formik.touched.mobile && formik.errors.mobile}
-                </div>
+                       
                     </div>
                     <div className="payment" style={{margin:'50px 0'}}>
                         <p className="section-heading">Payment</p>
@@ -508,12 +507,11 @@ useEffect(() => {
                     <div style={{display:'flex',justifyContent:'center',alignItems:'center',textAlign:'center'}}>
                         {
                             paySpin===true?<CircularProgress />:
-                            <input type="submit" value="Complete" className='pay' disabled={paySpin}/>
+                            <button className='pay' disabled={paySpin} onClick={completeOrder}>Complete</button>
 
                         }
                     
                     </div>
-                </form>
             </div>
             <div className="right-form">
 

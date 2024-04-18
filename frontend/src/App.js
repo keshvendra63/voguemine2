@@ -26,7 +26,6 @@ import RedirectUri from './pages/Testing';
 import Login from './pages/login/Login';
 import Policies from './pages/policies/Policies';
 import Contact from './pages/contact/Contact';
-
 function App() {
 
   return (

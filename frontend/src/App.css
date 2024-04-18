@@ -74,8 +74,10 @@ div a{
     position:relative;
     overflow:hidden;
 }
-.products-listing .product-list .product-card:hover{
-    scale: 0.99;
+
+.products-listing .product-list .product-card:active{
+    scale: 1.02;
+
 }
 .products-listing .product-list .product-card .product-img{
     position: relative;
@@ -229,6 +231,9 @@ div a{
 }
 .products-listing .product-list .product-card .hover-details .btns .btn{
     height: 40px;
+}
+.products-listing .product-list .product-card .hover-details .btns .btn:active{
+    scale: 1.01;
 }
 .products-listing .product-list .product-card .hover-details .btns .btn-disable{
     border: 2px solid white;
