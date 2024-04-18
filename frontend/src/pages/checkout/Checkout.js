@@ -37,17 +37,19 @@ const Checkout = () => {
 const [ship,setShip]=useState({})
 const address1=JSON.parse(localStorage.getItem("address"))
 useEffect(()=>{
-    setFirstname(address1?.firstname)
-    setLastname(address1?.lastname)
-    setEmail(address1?.email)
-    setAddress(address1?.address)
-    setPhone(address1?.phone)
-    setMobile(address1?.mobile)
-    setCity(address1?.city)
-    setState(address1?.state)
-    setPincode(address1?.pincode)
-
-},[address1])
+    if (!firstname && !lastname && !email && !address && !phone && !mobile && !city && !state && !pincode) {
+        // Populate fields only if they're empty
+        setFirstname(address1?.firstname || "")
+        setLastname(address1?.lastname || "")
+        setEmail(address1?.email || "")
+        setAddress(address1?.address || "")
+        setPhone(address1?.phone || "")
+        setMobile(address1?.mobile || "")
+        setCity(address1?.city || "")
+        setState(address1?.state || "")
+        setPincode(address1?.pincode || "")
+    }
+},[address1, firstname, lastname, email, address, phone, mobile, city, state, pincode])
     const location = useLocation();
     const navigate=useNavigate()
 
