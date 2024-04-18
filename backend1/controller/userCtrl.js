@@ -483,16 +483,49 @@ const updateProductQuantityFromCart = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+const processOrder = async (orderItems) => {
+  for (const orderItem of orderItems) {
+    const { productId, color, size, quantity } = orderItem;
+
+    try {
+      // Find the product
+      const product = await Product.findById(productId);
+
+      // Find the variant matching color and size
+      const variantToUpdate = product.variants.find(
+        (variant) => variant.color === color && variant.size === size
+      );
+
+      if (variantToUpdate) {
+        // Update inventory
+        variantToUpdate.quantity -= quantity;
+        
+        // Save the product with updated inventory
+        await product.save();
+      } else {
+        // Handle variant not found
+        console.error(`Variant not found for product with ID ${productId}`);
+      }
+    } catch (error) {
+      // Handle errors
+      console.error("Error processing order item:", error);
+    }
+  }
+};
+
+
 const createOrder=asyncHandler(async(req,res)=>{
   const {shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo,tag}=req.body;
   try{
+    await processOrder(orderItems);
+
     const order=await Order.create({
       shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo,tag
     })
     res.json({
       order,
       success:true
-    })
+    })  
   }
   catch(error){
     throw new Error(error)
