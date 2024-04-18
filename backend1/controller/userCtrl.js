@@ -484,32 +484,36 @@ const updateProductQuantityFromCart = asyncHandler(async (req, res) => {
   }
 });
 const processOrder = async (orderItems) => {
-  for (const orderItem of orderItems) {
-    const { productId, color, size, quantity } = orderItem;
+  try {
+    // Iterate through each order item
+    for (const orderItem of orderItems) {
+      const { product, color, size, quantity } = orderItem;
+      const productId = product._id;
 
-    try {
-      // Find the product
-      const product = await Product.findById(productId);
+      // Find the product in the database
+      const foundProduct = await Product.findById(productId);
 
-      // Find the variant matching color and size
-      const variantToUpdate = product.variants.find(
+      // Find the variant matching the color and size
+      const variant = foundProduct.variants.find(
         (variant) => variant.color === color && variant.size === size
       );
 
-      if (variantToUpdate) {
-        // Update inventory
-        variantToUpdate.quantity -= quantity;
-        
-        // Save the product with updated inventory
-        await product.save();
+      if (variant) {
+        // Check if there is enough quantity available
+        if (variant.quantity >= quantity) {
+          // Subtract the ordered quantity from the variant's quantity
+          variant.quantity -= quantity;
+          await foundProduct.save();
+        } else {
+          throw new Error(`Not enough quantity available for ${color} - ${size}`);
+        }
       } else {
-        // Handle variant not found
-        console.error(`Variant not found for product with ID ${productId}`);
+        throw new Error(`Variant not found for ${color} - ${size}`);
       }
-    } catch (error) {
-      // Handle errors
-      console.error("Error processing order item:", error);
     }
+    console.log("Inventory updated successfully");
+  } catch (error) {
+    console.error("Error updating inventory:", error.message);
   }
 };
 
