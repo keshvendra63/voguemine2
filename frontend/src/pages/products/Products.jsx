@@ -4,6 +4,8 @@ import {useLocation,useNavigate} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {getAllProducts,getProducts, resetState } from '../../features/products/productSlice';
 import {Button} from 'antd'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Product from '../../components/Product'
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -22,27 +24,38 @@ const Products = () => {
   const [filter,setFilter]=useState(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
     const [collectionName,setCollectionName]=useState("")
     const [spinner,setSpinner]=useState("none")
-    const [btn,setBtn]=useState("block")
+    const [btn,setBtn]=useState("flex")
   const [sort,setSort]=useState("-createdAt")
     const location=useLocation()
   const [limit,setLimit]=useState(700)
   const [page,setPage]=useState(1)
   const [loading,setLoading]=useState(true)
-const [load,setLoad]=useState(28)
+  const [searchValue,setSearchvalue]=useState(undefined)
+  const [load, setLoad] = useState(28)
+  const [fload,setFload]=useState(0)
   const searchParams =location.search
   const dispatch=useDispatch();
   const queryParams = new URLSearchParams(location.search);
-  let size = parseInt(queryParams.get('size')) || "";
+  let slace = parseInt(queryParams.get('slace')) || 0;
 // Get the value of the 'search' parameter
-const searchValue = searchParams.split('=')[1];
+const search = JSON.parse(localStorage.getItem("search"))
+useEffect(()=>{
+if(search){
+  setSearchvalue(search.mysearch)
+}
+},[search])
+useEffect(()=>{
+localStorage.removeItem("search")
+},[location.pathname])
 useEffect(()=>{
   dispatch(resetState())
 },[resetState])
 const updateURL = (sizeNumber) => {
   const searchParams = new URLSearchParams();
-  searchParams.set('size', sizeNumber);
+  searchParams.set('slace', sizeNumber);
   navigate(`${location.pathname}?${searchParams.toString()}`);
 };
+console.log(location.pathname)
 useEffect(()=>{
     if(location.pathname==="/collections/men-premium-shirt"){
         setCollectionName("Men's Premium Shirts")
@@ -357,7 +370,6 @@ useEffect(()=>{
       if(searchValue===undefined){
           dispatch(getAllProducts({sort,limit,page,collectionName}))
       }
-    
     else{
         dispatch(getProducts({searchValue,limit,sort,page}))
     }
@@ -379,10 +391,46 @@ useEffect(()=>{
         });
       }, 3000);
     };
+ 
+  
+    // Effect to reset load to 28 when the pathname changes
+ 
+    useEffect(() => {
+      const slaceFromURL = parseInt(queryParams.get('slace')) || 0;
+      setFload(slaceFromURL * 28);
+      setLoad((slaceFromURL+1) * 28);
+
+    }, []);
+    
+    // Effect to update fload when slace changes
+    useEffect(() => {
+      setFload(slace * 28);
+      setLoad((slace+1) * 28);
+
+    }, [slace]);
     const loadMore=()=>{
-    setLoad(load+28)
+      if(slace>0){
+        slace--
+      updateURL(slace)
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Optional: Smooth scrolling animation
+      });
+
       // setLimit(limit+28)
       enterLoading(0)
+      }
+    }
+    const loadMore1=()=>{
+      slace++
+      updateURL(slace)
+
+      // setLimit(limit+28)
+      enterLoading(0)
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Optional: Smooth scrolling animation
+      });
     }
     
 
@@ -418,7 +466,7 @@ useEffect(()=>{
       },3000)
     }
     else{
-      setBtn("block")
+      setBtn("flex")
     }
   
 })
@@ -530,7 +578,7 @@ useEffect(() => {
 
 
 
-                products?.slice(0,load)?.map((arm,index)=>{
+                products?.slice(fload,load)?.map((arm,index)=>{
                     return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>    
                 })
                 
@@ -550,9 +598,17 @@ useEffect(() => {
                     <div className="pages">
                       {
                         loading===true? <CircularProgress/>:
-                        <Button type="primary" loading={loadings[0]} onClick={loadMore} style={{display:btn}}>
-          Load More
+                        <div className='handle-buttons'>
+                           <Button type="primary" loading={loadings[0]} onClick={loadMore} style={{backgroundColor:slace===0?"black":"",cursor:'auto'}}>
+          <ArrowBackIosIcon/>
         </Button>
+        <p>{slace+1}</p>
+        <Button type="primary" loading={loadings[0]} onClick={loadMore1} style={{display:btn}}>
+          <ArrowForwardIosIcon/>
+        </Button>
+                        </div>
+                       
+        
                       }
                     
                     </div>

@@ -14,6 +14,27 @@
     font-family: var(--heading-font);
 
 }
+.Products .handle-buttons{
+    display: flex;
+    align-items: center;
+}
+.Products .handle-buttons p{
+    margin: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+.Products .handle-buttons button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 30px;
+}
 .Products .products-box{
     position: relative;
     margin-top: 30px;

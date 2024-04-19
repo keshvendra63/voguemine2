@@ -94,19 +94,19 @@ const HomeMain = () => {
         >
           <Link to="/men">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/0006_u5fiek.jpg" alt="" />
+              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713558263/01_hwvjvv.jpg" alt="" />
             </div>
           </Link><Link to="/women">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/0007_bld8nf.jpg" alt="" />
+              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713558263/02_v6acp2.jpg" alt="" />
             </div>
           </Link><Link to="/kids">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/0008_w3hlql.jpg" alt="" />
+              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713558265/03_dncxwq.jpg" alt="" />
             </div>
           </Link><Link to="/accessories">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/00009_kwerwy.jpg" alt="" />
+              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713558266/05_jatmmj.jpg" alt="" />
             </div>
           </Link>
 
@@ -327,9 +327,9 @@ const HomeMain = () => {
 
         </div>
 
-        <div className="ratings">
+        {/* <div className="ratings">
           <Reviews/>
-        </div>
+        </div> */}
 
 <p style={{textAlign:'center',fontSize:'30px',fontWeight:500}}>Secure With Voguemine</p>
 

@@ -99,14 +99,20 @@ const loginOpen=()=>{
   }, [scrolled]);
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-        navigate(`/products?search=${svalue}`)
+      localStorage.setItem("search",JSON.stringify({
+        mysearch:svalue
+      }))
+        navigate(`/products`)
         setSearch("none")
     setScrolled(false);
     }
     
 };
 const handleKeyDown1 = (event) => {
-      navigate(`/products?search=${svalue}`)
+  localStorage.setItem("search",JSON.stringify({
+    mysearch:svalue
+  }))
+      navigate(`/products`)
       setSearch("none")
   setScrolled(false);
   
