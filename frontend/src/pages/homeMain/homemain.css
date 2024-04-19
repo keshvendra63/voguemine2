@@ -52,6 +52,7 @@
     align-items: center;
     grid-template-columns: 1fr 1fr;
     background-color: white;
+    padding: 10px 0;
 
 }
 
@@ -143,7 +144,7 @@
 }
 @media screen and (max-width:650px) {
     .homeMain .hero-section {
-        min-height: 20vh;
+        min-height: 25vh;
     }
     .homeMain .categories .cate{
         width:200px;

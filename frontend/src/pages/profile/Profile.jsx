@@ -72,7 +72,7 @@ const config2 = {
         <div className="profile-info">
         <div className="left-profile">
             <div className="info">
-                <img src="https://static.vecteezy.com/system/resources/previews/015/412/213/non_2x/elegant-man-in-business-suit-with-badge-man-business-avatar-profile-picture-illustration-isolated-vector.jpg" alt="" />
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713513706/Ghim_c%E1%BB%A7a_Vanessa_Soares_tr%C3%AAn_hajgdhv___Avatar_%E1%BA%A2nh_t%C6%B0%E1%BB%9Dng_cho_%C4%91i%E1%BB%87n_tho%E1%BA%A1i_%C4%90%E1%BB%99ng_v%E1%BA%ADt.jpeg_mhfwka.jpg" alt="" />
                 <p className="name" style={{fontWeight:600}}>{authState?.firstname+" "+authState?.lastname}</p>
                 <p className="email">{authState?.email}</p>
             </div>

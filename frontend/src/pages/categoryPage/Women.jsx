@@ -37,16 +37,17 @@ const Women = () => {
                     <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712903479/flat_sandels_dqimu2.jpg" alt="" />
                     <h2>Women's Flat Sandals</h2>
                 </div></Link>
-                <Link to="/collections/womens-legging">
-                <div className="collection-card">
-                    <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712903478/leggings_yknect.jpg" alt="" />
-                    <h2>Women's Leggings</h2>
-                </div></Link>
                 <Link to="/collections/womens-track-sets">
                 <div className="collection-card">
                     <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712903478/track_suit_yqkvfe.jpg" alt="" />
                     <h2>Women' Tracksets</h2>
                 </div></Link>
+                <Link to="/collections/womens-legging">
+                <div className="collection-card">
+                    <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712903478/leggings_yknect.jpg" alt="" />
+                    <h2>Women's Leggings</h2>
+                </div></Link>
+                
                 <Link to="/collections/womens-sweatshirt">
                 <div className="collection-card">
                     <img src={w10} alt="" />

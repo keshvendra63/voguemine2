@@ -19,8 +19,8 @@ const About = () => {
             
         </div>
         <div className="right-about">
-            <h1>ABOUT RAMPVALK</h1>
-            <p>At Rampvalk by Voguemine, we understand, style is not just about what you wear, it's about how you feel. That's why we go above and beyond to provide an exceptional shopping experience, with attentive customer service and a user-friendly online platform that makes it easy to find the perfect addition of collection to your luxurious wardrobe.
+            <h1>ABOUT VOGUEMINE</h1>
+            <p>At Voguemine, we understand, style is not just about what you wear, it's about how you feel. That's why we go above and beyond to provide an exceptional shopping experience, with attentive customer service and a user-friendly online platform that makes it easy to find the perfect addition of collection to your luxurious wardrobe.
 
 
 
@@ -46,13 +46,18 @@ const About = () => {
             </div> */}
         </div>
       </div>
+
+<div className="c-banner" style={{marginBottom:'50px'}}>
+  <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514549/00005_qdvxte.jpg" alt="" style={{width:'100%'}}/>
+</div>
+
       <div className="ourteam">
     <h2>Meet Our Team</h2>
    </div>
     <div className='teams'>
        
         <div className="team">
-          <img src="https://static.vecteezy.com/system/resources/previews/015/412/213/non_2x/elegant-man-in-business-suit-with-badge-man-business-avatar-profile-picture-illustration-isolated-vector.jpg" alt="" />
+          <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713513971/0003_dadj7d.jpg" alt="" />
           <p className='name'>Mohinder Bisht</p>
           <p className='detail'>CEO</p>
           <div className="icons">
@@ -63,7 +68,7 @@ const About = () => {
           </div>
         </div>
         <div className="team">
-          <img src="https://static.vecteezy.com/system/resources/previews/015/412/213/non_2x/elegant-man-in-business-suit-with-badge-man-business-avatar-profile-picture-illustration-isolated-vector.jpg" alt="" />
+          <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713513971/0002_kucqzz.jpg" alt="" />
           <p className='name'>Monika Bisht</p>
           <p className='detail'>Co-founder</p>
           <div className="icons">
@@ -74,7 +79,7 @@ const About = () => {
           </div>
         </div>
         <div className="team">
-          <img src="https://static.vecteezy.com/system/resources/previews/015/412/213/non_2x/elegant-man-in-business-suit-with-badge-man-business-avatar-profile-picture-illustration-isolated-vector.jpg" alt="" />
+          <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713513971/001_ppofc5.jpg" alt="" />
           <p className='name'>Daljeet Kaur</p>
           <p className='detail'>HR Manager</p>
           <div className="icons">
@@ -86,7 +91,7 @@ const About = () => {
           </div>
         </div>
         <div className="team">
-          <img src="https://static.vecteezy.com/system/resources/previews/015/412/213/non_2x/elegant-man-in-business-suit-with-badge-man-business-avatar-profile-picture-illustration-isolated-vector.jpg" alt="" />
+          <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713513971/00004_hxog8e.jpg" alt="" />
           <p className='name'>Mukhtesh Rawat</p>
           <p className='detail'>Logistic Manager</p>
           <p className='detail'></p>

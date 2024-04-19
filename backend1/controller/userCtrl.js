@@ -12,6 +12,7 @@ const { generateRefreshToken } = require("../config/refreshtoken");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("./emailCtrl");
+const Oldorder = require("../models/oldOrderModel");
 
 // Create a User ----------------------------------------------
 
@@ -563,6 +564,18 @@ const getMyOrders=asyncHandler(async(req,res)=>{
     throw new Error(error)
   }
 })
+const getOldOrders=asyncHandler(async(req,res)=>{
+  try{
+    const orders=await Oldorder.find()
+    res.json({
+      orders
+    })
+  }
+  catch(error){
+    throw new Error(error)
+  }
+})
+
 
 
 const getAllAbandoned = asyncHandler(async (req, res) => {
@@ -900,5 +913,6 @@ module.exports = {
   orderHistory,
   createAbondend,
   getAllAbandoned,
-  getSingleAbandoned
+  getSingleAbandoned,
+  getOldOrders
 };

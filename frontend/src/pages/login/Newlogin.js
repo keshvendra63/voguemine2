@@ -11,6 +11,7 @@ import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUser,loginUser} from '../../features/user/userSlice';
 import {Link,useNavigate} from 'react-router-dom'
+import logo from '../../images/logo.png'
 const signupSchema=yup.object({
   firstname:yup.string().required("First Name is required"),
   lastname:yup.string().required("Last Name is required"),
@@ -72,13 +73,10 @@ const [login,setLogin]=useState(true)
     <div className='newlogin'>
       <div className="loginpage">
         <div className='background'>
-            <img src="https://img.freepik.com/free-photo/man-work_144627-24907.jpg" alt="" />
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516920/00010_fwk3rg.jpg" alt="" />
           <div className="icon">
-            <p className='logo'>Your logo</p>
-            <p className="login-message">Please login here</p>
             <div className="welcome">
-            <p className='title'>Hey! Welcome</p>
-            <p>Join us and give information to people</p>
+            <p className='title' style={{fontSize:'30px',fontWeight:'600'}}>Welcome to Voguemine</p>
           </div>
           </div>
           

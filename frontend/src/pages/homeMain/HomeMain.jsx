@@ -4,7 +4,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import home_benner from '../../images/home-banner.jpg'
 import Carousel1 from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { Link } from 'react-router-dom'
+import { Link, Navigate,useNavigate } from 'react-router-dom'
 import './homemain.css'
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
@@ -16,6 +16,7 @@ import { getAllProducts } from '../../features/products/productSlice';
 import Product from '../../components/Product'
 
 const HomeMain = () => {
+  const navigate=useNavigate()
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -82,7 +83,7 @@ const HomeMain = () => {
   return (
     <div className='homeMain'>
       <div className="hero-section">
-        <img src={home_benner} alt="" />
+      <img src={home_benner} alt="" />
       </div>
       <div className="categories">
         <ScrollCarousel
@@ -92,19 +93,19 @@ const HomeMain = () => {
         >
           <Link to="/men">
             <div className="cate">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709559213/01_1_w4dkso.jpg" alt="" />
+              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/0006_u5fiek.jpg" alt="" />
             </div>
           </Link><Link to="/women">
             <div className="cate">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709559213/02_k9jteu.jpg" alt="" />
+              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/0007_bld8nf.jpg" alt="" />
             </div>
           </Link><Link to="/kids">
             <div className="cate">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709559217/03_uxilkl.jpg" alt="" />
+              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/0008_w3hlql.jpg" alt="" />
             </div>
           </Link><Link to="/accessories">
             <div className="cate">
-              <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1709559212/05_ba3kea.jpg" alt="" />
+              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/00009_kwerwy.jpg" alt="" />
             </div>
           </Link>
 
@@ -119,16 +120,22 @@ const HomeMain = () => {
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218481/0002_1_rdcrzf.jpg" alt="" />
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514808/413_o7fvvx.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218482/0002_3_pwfo0h.jpg" alt="" />
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514808/360_pjxrdj.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218482/0002_2_fbbd46.jpg" alt="" />
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514809/431_dg5dmr.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218482/0002_4_gnxoh8.jpg" alt="" />
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514807/330_dxuvta.jpg" alt="" />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514812/443_ajzh9b.jpg" alt="" />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514807/310_gblgew.jpg" alt="" />
               </Carousel.Item>
             </Carousel>
 
@@ -200,16 +207,22 @@ const HomeMain = () => {
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218481/0001_1_qhast8.jpg" alt="" />
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516021/90_ouuogk.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218481/0001_4_k4dubk.jpg" alt="" />
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516022/95_o6hsau.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218481/0001_2_lvri69.jpg" alt="" />
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516023/37_dxuah4.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712218484/0001_3_jnt10s.jpg" alt="" />
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516021/67_nkoy08.jpg" alt="" />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516026/107_ybacx7.jpg" alt="" />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516025/137_gna4np.jpg" alt="" />
               </Carousel.Item>
             </Carousel>
 
@@ -274,7 +287,7 @@ const HomeMain = () => {
                 <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/010_czuutf.jpg" alt="" />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/louis-vuitton-premium-quality-towel-set-of-2-523.jpeg_u0z0bw.jpg" alt="" />
+                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516029/towel_wpf5nn.jpg" alt="" />
               </Carousel.Item>
             </Carousel>
 
