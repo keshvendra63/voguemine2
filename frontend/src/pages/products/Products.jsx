@@ -122,6 +122,13 @@ useEffect(()=>{
         setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
 
       }
+      if(location.pathname==="/collections/mens-pullover"){
+        setCollectionName("Men's Pullover")
+        document.title=collectionName
+
+        setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
+
+      }
       if(location.pathname==="/collections/mens-premium-shorts"){
         setCollectionName("Men's Premium Shorts")
         document.title=collectionName
@@ -298,7 +305,7 @@ useEffect(()=>{
     }
     
     if(location.pathname==="/collections/no-show"){
-    setCollectionName("Ankle Socks")
+    setCollectionName("No Show")
     document.title=collectionName
 
     setFilter([""])
@@ -306,7 +313,7 @@ useEffect(()=>{
     }
     
     if(location.pathname==="/collections/low-ankle"){
-    setCollectionName("Ankle Socks") 
+    setCollectionName("Low Ankle") 
      document.title=collectionName
 
 
@@ -315,7 +322,7 @@ useEffect(()=>{
     }
     
     if(location.pathname==="/collections/low-cut"){
-    setCollectionName("Ankle Socks")
+    setCollectionName("Low Cut")
     document.title=collectionName
 
     setFilter([""])
@@ -323,7 +330,7 @@ useEffect(()=>{
     }
     
     if(location.pathname==="/collections/anklet"){
-    setCollectionName("Ankle Socks")
+    setCollectionName("Anklet")
     document.title=collectionName
 
     setFilter([""])
@@ -331,7 +338,7 @@ useEffect(()=>{
     }
     
     if(location.pathname==="/collections/crew"){
-    setCollectionName("Men's Accessories Socks")
+    setCollectionName("Crew")
     document.title=collectionName
 
     setFilter([""])
@@ -426,7 +433,7 @@ const liItem=(text)=>{
 }
 
 const DrawerList = (
-  <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+  <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)} className="filter-box">
     <p style={{fontSize:'20px',marginBottom:'20px',fontWeight:500}}>Select Size</p>
     <List>
       {filter?.map((text) => (

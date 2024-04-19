@@ -354,7 +354,7 @@ const productStat = useSelector((state) => state?.product);
             }
             
             <div className="prdt-desc">
-                <p dangerouslySetInnerHTML={{ __html: singleProductState?.description }}/>
+                <p dangerouslySetInnerHTML={{ __html: singleProductState?.description }} style={{userSelect:'none'}}/>
               
                 
             </div>

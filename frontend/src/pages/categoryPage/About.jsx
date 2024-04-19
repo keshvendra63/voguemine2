@@ -52,7 +52,7 @@ const About = () => {
     <div className='teams'>
        
         <div className="team">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXNauy1n3zSAGCX3pWg1xnKeFOjSgG1MVQwQ&usqp=CAU" alt="" />
+          <img src="https://static.vecteezy.com/system/resources/previews/015/412/213/non_2x/elegant-man-in-business-suit-with-badge-man-business-avatar-profile-picture-illustration-isolated-vector.jpg" alt="" />
           <p className='name'>Mohinder Bisht</p>
           <p className='detail'>CEO</p>
           <div className="icons">
@@ -63,7 +63,7 @@ const About = () => {
           </div>
         </div>
         <div className="team">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXNauy1n3zSAGCX3pWg1xnKeFOjSgG1MVQwQ&usqp=CAU" alt="" />
+          <img src="https://static.vecteezy.com/system/resources/previews/015/412/213/non_2x/elegant-man-in-business-suit-with-badge-man-business-avatar-profile-picture-illustration-isolated-vector.jpg" alt="" />
           <p className='name'>Monika Bisht</p>
           <p className='detail'>Co-founder</p>
           <div className="icons">
@@ -74,7 +74,7 @@ const About = () => {
           </div>
         </div>
         <div className="team">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXNauy1n3zSAGCX3pWg1xnKeFOjSgG1MVQwQ&usqp=CAU" alt="" />
+          <img src="https://static.vecteezy.com/system/resources/previews/015/412/213/non_2x/elegant-man-in-business-suit-with-badge-man-business-avatar-profile-picture-illustration-isolated-vector.jpg" alt="" />
           <p className='name'>Daljeet Kaur</p>
           <p className='detail'>HR Manager</p>
           <div className="icons">
@@ -86,8 +86,9 @@ const About = () => {
           </div>
         </div>
         <div className="team">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXNauy1n3zSAGCX3pWg1xnKeFOjSgG1MVQwQ&usqp=CAU" alt="" />
+          <img src="https://static.vecteezy.com/system/resources/previews/015/412/213/non_2x/elegant-man-in-business-suit-with-badge-man-business-avatar-profile-picture-illustration-isolated-vector.jpg" alt="" />
           <p className='name'>Mukhtesh Rawat</p>
+          <p className='detail'>Logistic Manager</p>
           <p className='detail'></p>
           <div className="icons">
           <FacebookIcon  className='icon'/> 

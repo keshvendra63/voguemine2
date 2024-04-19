@@ -30,12 +30,7 @@ const Men = () => {
             <h2>Men's Premium Half Sleeve Shirt</h2>
         </div>
         </Link>
-        <Link to="/collections/combos">
-        <div className="collection-card">
-            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902099/combo_cyftbh.jpg" alt="" />
-            <h2>Men's Combos</h2>
-        </div>
-        </Link>
+       
         <Link to="/collections/loafers-for-men">
         <div className="collection-card">
             <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902105/loafers_suldb8.jpg" alt="" />
@@ -62,24 +57,26 @@ const Men = () => {
             <h2>Men's Denim Jeans</h2>
         </div>
         </Link>
-        <Link to="/collections/mens-trackpants">
-        <div className="collection-card">
-            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902072/track_pant_zuxcpj.jpg" alt="" />
-            <h2>Men's Trackpants</h2>
-        </div>
-        </Link>
+        
         <Link to="/collections/mens-premium-shorts">
         <div className="collection-card">
             <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902093/shorts_cm2unp.jpg" alt="" />
             <h2>Men's Premium Shorts</h2>
         </div>
         </Link>
-        <Link to="/collections/mens-hoodies">
+        <Link to="/collections/mens-trackpants">
         <div className="collection-card">
-            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902090/hoody_k8jth2.jpg" alt="" />
-            <h2>Men's Hoodie</h2>
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902072/track_pant_zuxcpj.jpg" alt="" />
+            <h2>Men's Trackpants</h2>
         </div>
         </Link>
+        <Link to="/collections/combos">
+        <div className="collection-card">
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902099/combo_cyftbh.jpg" alt="" />
+            <h2>Men's Combos</h2>
+        </div>
+        </Link>
+       
         <Link to="/collections/mens-sweatshirts">
         <div className="collection-card">
             <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902078/swetshirt_c7ojeh.jpg" alt="" />
@@ -94,11 +91,22 @@ const Men = () => {
             <h2>Men's Tracksets</h2>
         </div>
         </Link>
-
+        <Link to="/collections/mens-hoodies">
+        <div className="collection-card">
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1712902090/hoody_k8jth2.jpg" alt="" />
+            <h2>Men's Hoodie</h2>
+        </div>
+        </Link>
         <Link to="/collections/mens-pullover-jackets">
         <div className="collection-card">
             <img src={img12} alt="" />
             <h2>Men's Jackets</h2>
+        </div>
+        </Link>
+        <Link to="/collections/mens-pullover">
+        <div className="collection-card">
+            <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713512952/pullover-_cqzzw1.jpg" alt="" />
+            <h2>Men's Pullover</h2>
         </div>
         </Link>
       </div>

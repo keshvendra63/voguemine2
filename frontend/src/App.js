@@ -23,9 +23,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import {getAllProducts } from './features/products/productSlice';
 import ScrollToTop from './components/ScrollToTop';
 import RedirectUri from './pages/Testing';
-import Login from './pages/login/Login';
 import Policies from './pages/policies/Policies';
 import Contact from './pages/contact/Contact';
+import Newlogin from './pages/login/Newlogin';
 function App() {
 
   return (
@@ -35,7 +35,7 @@ function App() {
     <ScrollToTop />
       <Routes>
         <Route path='/' element={<Home/>}/>
-        <Route path='/login' element={<Login/>}/>
+        <Route path='/login' element={<Newlogin/>}/>
         <Route path='/home' element={<HomeMain/>}/>
         <Route path='/about' element={<About/>}/>
         <Route path='/men' element={<Men/>}/>
@@ -56,6 +56,7 @@ function App() {
         <Route path="/collections/mens-trackpants" element={<Products/>}/>
         <Route path="/collections/combos" element={<Products/>}/>
         <Route path="/collections/mens-pullover-jackets" element={<Products/>}/>
+        <Route path="/collections/mens-pullover" element={<Products/>}/>
         <Route path="/collections/mens-premium-shorts" element={<Products/>}/>
         <Route path="/collections/mens-trackset" element={<Products/>}/>
         <Route path="/collections/womens-shirt-t-shirts" element={<Products/>}/>

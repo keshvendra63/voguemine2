@@ -72,7 +72,7 @@ const config2 = {
         <div className="profile-info">
         <div className="left-profile">
             <div className="info">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXNauy1n3zSAGCX3pWg1xnKeFOjSgG1MVQwQ&usqp=CAU" alt="" />
+                <img src="https://static.vecteezy.com/system/resources/previews/015/412/213/non_2x/elegant-man-in-business-suit-with-badge-man-business-avatar-profile-picture-illustration-isolated-vector.jpg" alt="" />
                 <p className="name" style={{fontWeight:600}}>{authState?.firstname+" "+authState?.lastname}</p>
                 <p className="email">{authState?.email}</p>
             </div>
@@ -144,7 +144,7 @@ const config2 = {
             </div>
         </div>
       </div>:
-      <p>Please Login</p>
+      <p>Please Login to View or Edit your Profile</p>
       }
       <hr />
       <div className="orders">

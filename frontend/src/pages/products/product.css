@@ -1,7 +1,19 @@
 .Products{
     max-width: 100vw;
 }
+.filter-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 30px;
+    font-family: var(--heading-font);
+}
+.filter-box li{
+    color: gray;
+    font-family: var(--heading-font);
 
+}
 .Products .products-box{
     position: relative;
     margin-top: 30px;
