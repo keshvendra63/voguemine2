@@ -9,7 +9,8 @@ const {
   rating,
   uploadImages,
   reorderProducts,
-  getaProductDashboard
+  getaProductDashboard,
+  getAllRatings
 } = require("../controller/productCtrl");
 const { isAdmin, authMiddleware } = require("../middlewares/authMiddleware");
 const { productImgResize, uploadPhoto } = require("../middlewares/uploadImage");
@@ -33,6 +34,8 @@ router.get("/dashboard/:id",getaProductDashboard)
 router.put("/reorder", authMiddleware, isAdmin, reorderProducts); // Add the reorder route
 
 router.get("/", getAllProduct);
+router.get("/getallratings", getAllRatings);
+
 router.get("/:collectionName", getAllProduct);
 
 router.delete("/:id", authMiddleware, isAdmin, deleteProduct);

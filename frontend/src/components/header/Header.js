@@ -29,6 +29,7 @@ const Header = () => {
   const [state, setState] = useState("");
   const [search,setSearch] =useState("none")
   const [svalue,setSvalue]=useState("")
+  const [isHead2Open, setIsHead2Open] = useState(false); // Define isHead2Open state variable
 
 const dispatch=useDispatch()
 
@@ -59,9 +60,15 @@ useEffect(()=>{
 },[])
   const hamClick=()=>{
     document.getElementById("head2").style.left=0
+    setIsHead2Open(true)
+    document.body.classList.add('no-scroll'); // Add class to prevent scrolling
+
   }
   const closeClick=()=>{
     document.getElementById("head2").style.left="-100%"
+    setIsHead2Open(false)
+    document.body.classList.remove('no-scroll'); // Remove class to enable scrolling
+
   }
 const authState=useSelector(state=>state?.auth)
 const loginOpen=()=>{
@@ -114,7 +121,7 @@ const handleKeyDown1 = (event) => {
 
     </div>
     <div className={`header ${scrolled ? 'scrolled' : ''}`}>
-      
+    {isHead2Open && <div className="overlay" onClick={closeClick}></div>}
       <div className="headerdiv">
         <div className='head1'>
             <Link to="/home"><img src={logo} alt="" style={{width:'180px'}}/></Link>
@@ -136,12 +143,12 @@ const handleKeyDown1 = (event) => {
               wishlist && wishlist?.length>=1?<p className='cart-length'>{wishlist?.length}</p>
               :
               ""
-            }<Link to="/wishlist"><FavoriteBorderIcon/></Link></li>
+            }<Link to="/wishlist"><FavoriteBorderIcon className='back-ic'/></Link></li>
             <li className='cart-len'>{
               cart && cart?.length>=1?<p className='cart-length'>{cart?.length}</p>
               :
               ""
-            }<Link to="/cart"><LocalMallIcon/></Link></li>
+            }<Link to="/cart"><LocalMallIcon className='back-ic'/></Link></li>
             <li onClick={loginOpen}>{
               authState?.user==null?<PersonOutlineIcon/>:<p style={{fontWeight:500,fontSize:'11px',marginBottom:0,display:'flex',justifyContent:'center',alignItems:'center',border:'2px solid black',borderRadius:'50%',width:'20px',height:'20px',marginTop:'3px',padding:'2px'}}>{authState?.user?.firstname.charAt(0).toUpperCase()}</p>
             }</li>
@@ -169,7 +176,7 @@ const handleKeyDown1 = (event) => {
               cart && cart?.length>=1?<p className='cart-length'>{cart?.length}</p>
               :
               ""
-            }<Link to="/cart"><LocalMallIcon className='cart-i'/></Link></li>
+            }<Link to="/cart"><LocalMallIcon className='cart-i back-ic'/></Link></li>
 
 
           </ul>

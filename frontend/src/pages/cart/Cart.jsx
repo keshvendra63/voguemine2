@@ -89,9 +89,11 @@ useEffect (()=> {
     return(
                     <div className="cart-item" key={index}>
                         <div className="cartItem-left">
+                            <Link to={`/products/${item?.product?.handle}`}>
                             <div className="prdt-img">
                                 <img src={item?.product?.images[0]?.url} alt="" />
                             </div>
+                            </Link>
                         </div>
                         <div className="cartItem-right">
                             <p className="prdt-name" style={{fontWeight:'bold'}}>{item?.product?.title}</p>

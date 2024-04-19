@@ -232,6 +232,36 @@ const rating = asyncHandler(async (req, res) => {
       res.status(500).json({ message: "Internal server error" });
   }
 });
+const getAllRatings = asyncHandler(async (req, res) => {
+  try {
+    // Fetch all products from the database
+    const products = await Product.find();
+
+    // Initialize an empty array to store all ratings
+    let allRatings = [];
+
+    // Iterate through each product
+    products.forEach(product => {
+      // Extract the ratings array from the current product
+      const ratings = product.ratings.map(rating => ({
+        productId: product._id, // Include productId for reference if needed
+        star: rating.star,
+        name: rating.name,
+        email: rating.email,
+        comment: rating.comment
+      }));
+
+      // Concatenate the ratings array to the allRatings array
+      allRatings = allRatings.concat(ratings);
+    });
+
+    // Send the aggregated ratings array as the response
+    res.json(allRatings);
+  } catch (error) {
+    console.error("Error while fetching all ratings:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 const uploadImages = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
@@ -272,5 +302,6 @@ module.exports = {
   rating,
   uploadImages,
   reorderProducts,
-  getaProductDashboard
+  getaProductDashboard,
+  getAllRatings
 };
