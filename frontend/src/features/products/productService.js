@@ -47,6 +47,12 @@ const getProduct=async(handle)=>{
         return response.data
     }
 }
+const getAllRatings=async()=>{
+    const response= await axios.get(`${base_url}product/getallratings`)
+    if(response.data){
+        return response.data
+    }
+}
 const rateProduct = async (prodId, star, comment, name, email) => {
     try {
         const response = await axios.put(`${base_url}product/rating`, { prodId, star, comment, name, email });
@@ -64,5 +70,6 @@ export const productService={
     addToWishList,
     getProduct,
     getAllProducts,
-    rateProduct
+    rateProduct,
+    getAllRatings
 }

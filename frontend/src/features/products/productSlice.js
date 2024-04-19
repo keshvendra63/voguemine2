@@ -45,6 +45,13 @@ export const getAProduct=createAsyncThunk("product/getSingleProduct",async(handl
         return thunkAPI.rejectWithValue(error)
     }
 })
+export const getallratings=createAsyncThunk("product/getratings",async(thunkAPI)=>{
+    try{
+        return await productService.getAllRatings()
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
 export const resetState = createAction("Reset_all");
 
 const productState={
@@ -115,6 +122,21 @@ export const productSlice=createSlice({
             state.getSingleProduct=action.payload;
 
         }).addCase(getAProduct.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
+        })
+        .addCase(getallratings.pending,(state)=>{
+            state.isLoading=true;
+
+        }).addCase(getallratings.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.getratings=action.payload;
+
+        }).addCase(getallratings.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;
             state.isSuccess=false;

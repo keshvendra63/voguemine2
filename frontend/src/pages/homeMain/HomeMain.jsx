@@ -14,6 +14,7 @@ import { useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllProducts } from '../../features/products/productSlice';
 import Product from '../../components/Product'
+import Reviews from './Reviews';
 
 const HomeMain = () => {
   const navigate=useNavigate()
@@ -324,6 +325,10 @@ const HomeMain = () => {
 
 
 
+        </div>
+
+        <div className="ratings">
+          <Reviews/>
         </div>
 
 <p style={{textAlign:'center',fontSize:'30px',fontWeight:500}}>Secure With Voguemine</p>

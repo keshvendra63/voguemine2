@@ -237,11 +237,15 @@ const getAllRatings = asyncHandler(async (req, res) => {
     // Fetch all products from the database
     const products = await Product.find();
 
+    console.log('Products:', products); // Log products to see if they are fetched correctly
+
     // Initialize an empty array to store all ratings
     let allRatings = [];
 
     // Iterate through each product
     products.forEach(product => {
+      console.log('Product:', product); // Log each product to see its structure
+
       // Extract the ratings array from the current product
       const ratings = product.ratings.map(rating => ({
         productId: product._id, // Include productId for reference if needed
@@ -250,6 +254,8 @@ const getAllRatings = asyncHandler(async (req, res) => {
         email: rating.email,
         comment: rating.comment
       }));
+
+      console.log('Ratings:', ratings); // Log ratings to see if they are extracted correctly
 
       // Concatenate the ratings array to the allRatings array
       allRatings = allRatings.concat(ratings);
