@@ -327,7 +327,7 @@ useEffect(() => {
         if (location.pathname!=='/profile') {
             console.log(ship)
 
-            if(cartItems?.length>=0){
+            if(cartItems?.length>0){
                 const addr=JSON.parse(localStorage.getItem("temp"))
                 if(addr?.firstname!=="" && addr?.phone!==""){
                     dispatch(createAbondend(addr))

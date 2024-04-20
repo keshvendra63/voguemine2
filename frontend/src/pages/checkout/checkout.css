@@ -64,6 +64,7 @@
 }
 .checkout select{
     padding: 16px 0;
+    width: 100%;
 }
 .checkout .name{
     display: grid;
@@ -72,7 +73,7 @@
 }
 .checkout .city{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
     grid-gap: 10px;
 }
 .checkout .razorpay{

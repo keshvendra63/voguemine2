@@ -536,19 +536,37 @@ const createOrder=asyncHandler(async(req,res)=>{
     throw new Error(error)
   }
 })
-const createAbondend=asyncHandler(async(req,res)=>{
-  const {shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,tag}=req.body;
-  try{
-    const abondend=await Abondend.create({
-      shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,tag
-    })
-    res.json({
-      abondend,
-      success:true
-    })
-  }
-  catch(error){
-    throw new Error(error)
+const createAbondend = asyncHandler(async (req, res) => {
+  const { shippingInfo, orderItems, totalPrice, finalAmount, shippingCost, orderType, discount, tag } = req.body;
+
+  try {
+    // Check if orderItems length is greater than 0 and shippingInfo.firstname and shippingInfo.phone are not empty
+    if (orderItems.length > 0 && shippingInfo.firstname !== "" && shippingInfo.phone !== "") {
+      const abandoned = await Abondend.create({
+        shippingInfo,
+        orderItems,
+        totalPrice,
+        finalAmount,
+        shippingCost,
+        orderType,
+        discount,
+        tag
+      });
+      
+      res.json({
+        abandoned,
+        success: true
+      });
+    } else {
+      // If conditions are not met, do not create abandoned and send an error response
+      res.status(400).json({
+        success: false,
+        message: "Order items must have length greater than 0 and shipping info's firstname and phone must not be empty."
+      });
+    }
+  } catch (error) {
+    // Handle any errors
+    throw new Error(error);
   }
 })
 
