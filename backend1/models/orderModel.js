@@ -127,6 +127,9 @@ var orderSchema = new mongoose.Schema(
         time:Date,
       }
     ],
+    orderCalled:{
+      type:String,
+    },
     orderHistory:[
       {
         name:String,
