@@ -241,8 +241,8 @@ const checkOutHandler=async(e)=>{
         };
 
         // Simulating a successful payment verification for COD orders
-        await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }))
-        addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
+        await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" }))
+        addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" })
         localStorage.removeItem('cart');
 
         navigate("/profile")
@@ -258,7 +258,7 @@ const checkOutHandler=async(e)=>{
             razorpayPaymentId: "Phonepe", // Set a placeholder value for Razorpay payment ID for COD orders
             razorpayOrderId: "Phonepe", // Set a placeholder value for Razorpay order ID for COD orders
         };
-        localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }));
+        localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" }));
 
     axios.post("https://voguemine2.onrender.com/api/user/order/checkout",{amount:finalAmount,number:phone})
     .then(response=>{
@@ -282,8 +282,8 @@ const data = {
 
     // Simulating a successful payment verification for COD orders
 
-    await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }))
-    addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
+    await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" }))
+    addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" })
     localStorage.removeItem('cart');
 
     navigate("/profile")
@@ -314,7 +314,7 @@ useEffect(()=>{
         state:state,
         pincode:pincode,
         mobile:mobile,},
-        tag:"Voguemine",
+        tag:"Rampvalk",
                 orderItems:cartProductState,
                 totalPrice:totalAmount,
                 shippingCost:shippingCost,
@@ -466,7 +466,7 @@ useEffect(() => {
         name="radio-buttons-group"
       >
         <div className="razorpay">
-            <FormControlLabel value="razorpay" control={<Radio />} label="PhonePe Secure (UPI, Cards, Wallets, NetBanking)" disabled={false} onClick={phonepeClick}/>
+            <FormControlLabel value="razorpay" control={<Radio />} label="PhonePe Secure (UPI, Cards, Wallets, NetBanking)" disabled={true} onClick={phonepeClick}/>
             {/* <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" /> */}
             {/* <div className="bottom">
                 <AddCardIcon style={{fontSize:'50px'}}/>

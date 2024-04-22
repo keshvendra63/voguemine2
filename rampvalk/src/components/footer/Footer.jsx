@@ -52,8 +52,8 @@ const Footer = () => {
         <Col className=''>
         <h2>Contact Information</h2>
         <ul>
-            <li>Phone: <Link to="tel:+919899202079">+91 9899202079</Link></li>
-            <li>Email: <Link to="mailto:customersupport@voguemine.com">customersupport@voguemine.com</Link></li>
+            <li>Phone: <Link to="tel:+919899202079">+91 9811363784</Link></li>
+            <li>Email: <Link to="mailto:customersupport@rampvalk.com">customersupport@rampvalk.com</Link></li>
             <li>Address: H-119, Sector 63, Noida, U.P, 201301</li>
             <ul>
                 <li><Link to="https://www.instagram.com/voguemine_fashion/"><InstagramIcon/></Link></li>
@@ -64,7 +64,7 @@ const Footer = () => {
       </Row>
     </Container>
     <hr style={{color:'white'}}/>
-    <p>&copy; 2024, Voguemine</p>
+    <p>&copy; 2024, Rampvalk</p>
     <div className="arrow-top">
       <ArrowUpwardIcon onClick={handleButtonClick} style={{fontSize:'25px'}}/>
       </div>

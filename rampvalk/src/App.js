@@ -1,6 +1,5 @@
 import './App.css';
 import React,{useEffect} from 'react';
-import Home from './pages/home/Home'
 import {BrowserRouter as Router, Routes, Route,Navigate} from 'react-router-dom'
 import HomeMain from './pages/homeMain/HomeMain'
 import Header from '../src/components/header/Header'
@@ -34,9 +33,8 @@ function App() {
     <Header/>
     <ScrollToTop />
       <Routes>
-        <Route path='/' element={<Home/>}/>
         <Route path='/login' element={<Newlogin/>}/>
-        <Route path='/home' element={<HomeMain/>}/>
+        <Route path='/' element={<HomeMain/>}/>
         <Route path='/about' element={<About/>}/>
         <Route path='/men' element={<Men/>}/>
         <Route path='/women' element={<Women/>}/>

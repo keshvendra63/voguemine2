@@ -12,7 +12,7 @@ import Face6OutlinedIcon from '@mui/icons-material/Face6Outlined';
 import Face4OutlinedIcon from '@mui/icons-material/Face4Outlined';
 import FaceOutlinedIcon from '@mui/icons-material/FaceOutlined';
 import AutoAwesomeMosaicOutlinedIcon from '@mui/icons-material/AutoAwesomeMosaicOutlined';
-import logo from '../../images/vlogo.png'
+import logo from '../../images/logo.png'
 import {Link,useNavigate} from 'react-router-dom'
 import './header.css'
 import {getProducts} from '../../features/products/productSlice'
@@ -130,11 +130,11 @@ const handleKeyDown1 = (event) => {
     {isHead2Open && <div className="overlay" onClick={closeClick}></div>}
       <div className="headerdiv">
         <div className='head1'>
-            <Link to="/home"><img src={logo} alt="" style={{width:'180px'}}/></Link>
+            <Link to="/"><img src={logo} alt="" style={{width:'180px'}}/></Link>
         </div>
         <div className='head2' style={{textAlign:'center'}}>
             <ul>
-            <li><Link to="/home">Home</Link></li>
+            <li><Link to="/">Home</Link></li>
               <li><Link to="/men">Mens</Link></li>
               <li><Link to="/women">Womens</Link></li>
               <li><Link to="/kids">Kids</Link></li>
@@ -171,7 +171,7 @@ const handleKeyDown1 = (event) => {
         <MenuOutlinedIcon className='icon' id="hamburger" onClick={hamClick} />
       </div>
         <div className='head1'>
-            <Link to="/home"><img src={logo} alt=""/></Link>
+            <Link to="/"><img src={logo} alt=""/></Link>
         </div>
         
         <div className='head3' style={{textAlign:'right'}}>
@@ -192,13 +192,13 @@ const handleKeyDown1 = (event) => {
       </div>
       <div className='head2' style={{textAlign:'center'}} id='head2'>
       <div className='head1'>
-            <Link to="/home"><img src={logo} alt=""/></Link>
+            <Link to="/"><img src={logo} alt=""/></Link>
         </div>
             <ClearOutlinedIcon className='cancel-icon' id="close-ham" onClick={closeClick}/>
             <ul>
               
               
-              <li onClick={closeClick}><HomeOutlinedIcon/><Link to="/home">Home</Link></li>
+              <li onClick={closeClick}><HomeOutlinedIcon/><Link to="/">Home</Link></li>
               <li onClick={closeClick}><InfoOutlinedIcon/><Link to="/about">About</Link></li>
               <li onClick={closeClick}><Face6OutlinedIcon/><Link to="/men">Mens</Link></li>
               <li onClick={closeClick}><Face4OutlinedIcon/><Link to="/women">Womens</Link></li>

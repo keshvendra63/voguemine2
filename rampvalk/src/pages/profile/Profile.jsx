@@ -150,7 +150,7 @@ const config2 = {
       <div className="orders">
 
         <p className="section-heading" style={{textTransform:'capitalize',color:"green",fontSize:'20px'}}>your order has been placed. thank you for shopping.</p>
-        <button style={{color:'white',backgroundColor:'black',fontWeight:500,margin:'15px 0',border:'none',padding:'8px 15px'}} onClick={()=>navigate("/home")}>Continue Shopping</button>
+        <button style={{color:'white',backgroundColor:'black',fontWeight:500,margin:'15px 0',border:'none',padding:'8px 15px'}} onClick={()=>navigate("/")}>Continue Shopping</button>
           <div className="order-list">
             {
               orders && orders?.map((item,index)=>{

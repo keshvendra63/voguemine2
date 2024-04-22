@@ -47,7 +47,7 @@ const [login,setLogin]=useState(true)
             onSubmit:(values)=>{
               dispatch(registerUser(values))
               setTimeout(()=>{
-                  navigate('/home')
+                  navigate('/')
                 
               },300)
             }
@@ -62,7 +62,7 @@ const [login,setLogin]=useState(true)
               dispatch(loginUser(values))
               setTimeout(()=>{
                 
-                  navigate('/home')
+                  navigate('/')
                 
               },300)
             
@@ -76,7 +76,7 @@ const [login,setLogin]=useState(true)
             <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516920/00010_fwk3rg.jpg" alt="" />
           <div className="icon">
             <div className="welcome">
-            <p className='title' style={{fontSize:'30px',fontWeight:'600'}}>Welcome to Voguemine</p>
+            <p className='title' style={{fontSize:'30px',fontWeight:'600'}}>Welcome to Rampvalk</p>
           </div>
           </div>
           
