@@ -52,8 +52,8 @@ const Footer = () => {
         <Col className=''>
         <h2>Contact Information</h2>
         <ul>
-            <li>Phone: <Link to="tel:+919899202079">+91 9811363784</Link></li>
-            <li>Email: <Link to="mailto:customersupport@rampvalk.com">customersupport@rampvalk.com</Link></li>
+            <li>Phone: <Link to="tel:+919811363784">+91 9811363784</Link></li>
+            <li>Email: <Link to="mailto:rampvalk@gmail.com">rampvalk@gmail.com</Link></li>
             <li>Address: H-119, Sector 63, Noida, U.P, 201301</li>
             <ul>
                 <li><Link to="https://www.instagram.com/voguemine_fashion/"><InstagramIcon/></Link></li>

@@ -33,7 +33,7 @@ const Contact = () => {
         <div className="contact-right">
                 <p>Contact Us</p>
                 <div><LocationCityIcon/><p>H-119, Sector 63, Noida, U.P, 201301, India</p></div>
-                <div><EmailIcon/><p>customersupport@rampvalk.com</p></div>
+                <div><EmailIcon/><p>rampvalk@gmail.com</p></div>
                 <div><PermPhoneMsgIcon/><p>+91 9811363784</p></div>
         </div>
       </div>

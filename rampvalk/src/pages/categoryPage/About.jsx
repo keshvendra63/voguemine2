@@ -47,9 +47,9 @@ const About = () => {
         </div>
       </div>
 
-<div className="c-banner" style={{marginBottom:'50px'}}>
+{/* <div className="c-banner" style={{marginBottom:'50px'}}>
   <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514549/00005_qdvxte.jpg" alt="" style={{width:'100%'}}/>
-</div>
+</div> */}
 
       <div className="ourteam">
     <h2>Meet Our Team</h2>

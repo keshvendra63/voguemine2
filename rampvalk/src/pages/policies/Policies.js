@@ -95,7 +95,7 @@ const Policies = () => {
 <p style={{fontWeight:600}}>7. Contact Information
 </p>
 <p>If you have any questions about these terms and conditions,
-please contact us at <Link to="mailto:info@voguemine.com">info@voguemine.com</Link> and <Link to="tel:+919811363784">+91 9811363784</Link></p>
+please contact us at <Link to="mailto:rampvalk@gmail.com">rampvalk@gmail.com</Link> and <Link to="tel:+919811363784">+91 9811363784</Link></p>
  </p>
       </div>
       :
@@ -114,7 +114,7 @@ When you browse our store, we also automatically receive your computer’s inter
 </p>
 <p>When you provide us with personal information to complete a transaction, verify your credit card, place an order, arrange for a delivery, we imply that you consent to our collecting it and using it for that specific reason only.
 If we ask for your personal information for a secondary reason, like marketing, we will either ask you directly for your expressed consent, or provide you with an opportunity to say no.</p>
-<p>If after you opt-in, you change your mind, you may withdraw your consent for us to contact you, for the continued collection, use or disclosure of your information, at any time, by Contacting us at <Link to="mailto:info@voguemine.com">info@voguemine.com</Link></p>
+<p>If after you opt-in, you change your mind, you may withdraw your consent for us to contact you, for the continued collection, use or disclosure of your information, at any time, by Contacting us at <Link to="mailto:rampvalk@gmail.com">rampvalk@gmail.com</Link></p>
 <p style={{fontWeight:600}}>SECTION 3 – DISCLOSURE
 
 </p>
@@ -165,7 +165,7 @@ _secure_session_id, unique token, sessional storefront digest, unique token, ind
 
 </p>
 <p>If you would like to: access, correct, amend or delete any personal information we have about you, register a complaint, or simply want more information contact our Privacy Compliance Officer at
-<Link to="mailto:info@voguemine.com">info@voguemine.com</Link>
+<Link to="mailto:rampvalk@gmail.com"> rampvalk@gmail.com</Link>
 
 </p>
  </p>

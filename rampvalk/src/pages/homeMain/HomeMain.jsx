@@ -84,7 +84,7 @@ const HomeMain = () => {
   return (
     <div className='homeMain'>
       <div className="hero-section">
-      <img src={home_benner} alt="" />
+      <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713512957/a51_aqkymn.jpg" alt="" />
       </div>
       <div className="categories">
         <ScrollCarousel
@@ -94,19 +94,19 @@ const HomeMain = () => {
         >
           <Link to="/men">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713558263/01_hwvjvv.jpg" alt="" />
+              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/0006_u5fiek.jpg" alt="" />
             </div>
           </Link><Link to="/women">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713558263/02_v6acp2.jpg" alt="" />
+              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/0007_bld8nf.jpg" alt="" />
             </div>
           </Link><Link to="/kids">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713558265/03_dncxwq.jpg" alt="" />
+              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/0008_w3hlql.jpg" alt="" />
             </div>
           </Link><Link to="/accessories">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713558266/05_jatmmj.jpg" alt="" />
+              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/00009_kwerwy.jpg" alt="" />
             </div>
           </Link>
 

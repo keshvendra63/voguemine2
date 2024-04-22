@@ -178,23 +178,23 @@ const [imageIndex, setImageIndex] = useState(0);
     }
   }
   useEffect(() => {
-    if (singleProductState?.metaTitle!=="" || singleProductState?.metaTitle!==undefined) {
-        document.title = singleProductState?.metaTitle;
+    if (singleProductState?.metaTitle1!=="" || singleProductState?.metaTitle1!==undefined) {
+        document.title = singleProductState?.metaTitle1;
     }
     else{
       document.title =`${singleProductState?.title}`;
     }
 
-}, [singleProductState?.metaTitle]);
+}, [singleProductState?.metaTitle1]);
 useEffect(() => {
-  if (singleProductState?.metaDesc!=="" || singleProductState?.metaDesc!==undefined) {
-      document.querySelector('meta[name="description"]').setAttribute('content',singleProductState?.metaDesc);
+  if (singleProductState?.metaDesc1!=="" || singleProductState?.metaDesc1!==undefined) {
+      document.querySelector('meta[name="description"]').setAttribute('content',singleProductState?.metaDesc1);
   }
   else{
     document.querySelector('meta[name="description"]').setAttribute('content',singleProductState?.description);
   }
 
-}, [singleProductState?.metaDesc]);
+}, [singleProductState?.metaDesc1]);
 
 const commentPost=()=>{
   if(name==="" || email ==="" || msg===""){
