@@ -1,0 +1,46 @@
+.blogs{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 30px;
+}
+
+
+.blog-card{
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: white;
+}
+.blog-card:hover{
+    scale: 1.02;
+    box-shadow: 0 2px 1px 0.6px rgba(37, 35, 35, 0.2), 0 1px 3px 0 rgba(34, 32, 32, 0.19);
+
+}
+.blog-card img{
+    width: 100%;
+    aspect-ratio: 1/1;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+
+.blog-card .title{
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: black;
+}
+.blog-card button{
+    background-color: black;
+    color: white;
+    font-weight: 500;
+    border-radius: 5px;
+    padding: 5px 10px;
+    border: none;
+}
+.blog-card .desc{
+    color: rgb(93, 93, 93);
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+

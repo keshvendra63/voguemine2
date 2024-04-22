@@ -1,0 +1,109 @@
+.profile{
+    margin-top: 120px;
+    padding: 20px;
+}
+.profile .profile-info{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: white;
+    padding: 10px;
+
+
+}
+.profile .profile-info .left-profile{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.profile .profile-info .left-profile img{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+.profile .profile-info .left-profile p{
+    margin-bottom: 5px;
+}
+.profile .profile-info .right-profile form div{
+    width: 100%;
+}
+.profile .profile-info .right-profile form .input{
+    margin-bottom: 15px;
+}
+
+.profile .orders{
+    margin-top: 20px;
+}
+.profile .orders .order-list{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 15px;
+    
+}
+.profile .orders .order-list .order-card{
+    border-radius: 5px;
+    background-color: white;
+    padding: 10px;
+}
+.profile .orders .order-list .order-card .prdts{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 15px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgb(212, 212, 212);
+    padding: 10px 0;
+}
+
+.profile .orders .order-list .order-card p{
+    margin-bottom: 0px;
+}
+.profile .orders .order-list .order-card .prdts img{
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 5px;
+    border: 1px solid rgb(192, 192, 192);
+}
+.profile .orders .order-list .order-card .prdts .title{
+    color: rgb(33, 33, 33);
+    font-size: 14px;
+    font-weight: 500;
+}
+.profile .orders .order-list .order-card .prdts .variant{
+    color: rgb(111, 111, 111);
+    font-size: 14px;
+}
+.profile .orders .order-list .order-card .prdts .price{
+    color: rgb(111, 111, 111);
+    font-size: 14px;
+    font-weight: 500;
+}
+.profile .orders .order-list .order-card .prdts .qty{
+    color: rgb(111, 111, 111);
+    font-size: 14px;
+}
+.profile .orders .order-list .order-card .total{
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+}
+
+.profile .orders .order-list .order-card .total .right{
+    text-align: right;
+}
+@media screen and (max-width:950px){
+    .profile .orders .order-list{
+        grid-template-columns:1fr;
+    }
+} 
+@media screen and (max-width:650px) {
+    .profile .profile-info{
+        grid-template-columns: 1fr;
+    
+    }
+    .profile .profile-info .left-profile img{
+        width: 150px;
+        height: 150px;
+    }
+}

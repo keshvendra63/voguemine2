@@ -42,12 +42,12 @@ const Policies = () => {
       location.pathname==="/pages/refund-and-return-policy"?
       <div className="margin-section">
           <p className="policy-heading">
-            Refund and Return Policy
+            Refund and Exchange Policy
           </p>
           <p className="policy">
 <p>         At Voguemine, customer satisfaction is our top priority. If you are not completely satisfied with your purchase, please contact us within 7 days of receiving your order to make arrangements for a replacement.
 </p>
-<p>We do not offer refunds under any circumstances. In the event that you receive a defective product, we will make arrangements for a replacement at no additional cost to you. If we are unable to offer a replacement, we will issue a store credit or refund at our discretion within 3 working days.
+<p>We do not offer refunds under any circumstances. In the event that you receive a defective product, we will make arrangements for a replacement at no additional cost to you. If we are unable to offer a replacement.
 </p>
 <p>All returns must be authorized by Voguemine and must be returned in their original, unused condition with all tags and packaging intact. Any unauthorized returns or items that are not in their original condition will not be accepted and will be returned to the sender at their expense.
 </p>

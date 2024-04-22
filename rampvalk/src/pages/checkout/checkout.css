@@ -1,0 +1,230 @@
+.checkout{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: white;
+    padding: 0 20px;
+    margin-top:105px;
+}
+.checkout .left-form form select{
+    width: 100%;
+    padding: 15px 0;
+    border-radius: 5px;
+}
+.checkout div{
+    width: 100%;
+    margin-bottom: 5px;
+}
+.checkout .banking{
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid rgb(233, 233, 233);
+    border-radius: 5px;
+
+}
+.checkout .banking .qr{
+    border: 1px solid rgb(202, 202, 202);
+    border-radius: 5px;
+    padding: 8px;
+    width: 100%;
+    text-align: center;
+
+
+
+}
+.checkout .banking .bank{
+    border: 1px solid rgb(202, 202, 202);
+    border-radius: 5px;
+    padding: 8px;
+
+}
+.checkout .banking .bank p span{
+    margin-left: 6px;
+    color: black;
+    font-weight: 600;
+    font-size: 15px;
+}
+.checkout .banking .qr img{
+    margin: auto;
+    width:380px;
+    aspect-ratio: 1/1;
+}
+.checkout .left-form{
+    padding-right: 20px;
+    margin: 50px 0;
+}
+
+.checkout div{
+    width: 100%;
+}
+.checkout div input{
+    width: 100%;
+}
+.checkout .input{
+    margin-bottom: 10px;
+}
+.checkout select{
+    padding: 16px 0;
+    width: 100%;
+}
+.checkout .name{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+}
+.checkout .city{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+}
+.checkout .razorpay{
+    border: 1px solid rgb(233, 233, 233);
+    padding: 10px;
+}
+.checkout .razorpay .up{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 20px 0;
+    grid-gap: 10px;
+    border: 1px solid rgb(233, 233, 233);
+}
+.checkout .razorpay .up img{
+    width: 100%;
+}
+.checkout .razorpay .bottom{
+    text-align: center;
+    padding: 20px 50px;
+}
+.checkout .pay{
+    width: 100%;
+    padding: 10px 0;
+    font-weight: 500;
+    color: white;
+    background-color:var(--price-color);
+    border: none;
+    border-radius: 5px;
+}
+.checkout .pay:active{
+    scale: 1.01;
+}
+.checkout .right-form{
+    border-left: 1px solid grey;
+    padding: 50px 30px;
+
+}
+.checkout .right-form .prdt{
+    display: grid;
+    grid-template-columns: 3fr 1fr 0.3fr;
+    justify-content: center;
+    height: 100px;
+    margin-bottom: 10px;
+}
+.checkout .right-form .prdt .detail{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-gap: 10px;
+    justify-content: center;
+}
+.checkout .right-form .prdt .detail img{
+    width: 80px;
+    aspect-ratio: 1/1;
+    border: 1px solid red;
+    border-radius: 10px;
+}
+.checkout .right-form .p-price{
+    text-align: right;
+    font-weight: 500;
+}
+.checkout .right-form .p-name{
+    font-weight: 500;
+    font-size: 14px;
+}
+.checkout .right-form .size{
+    font-weight: 400;
+    font-size: 11px;
+    margin-top: 2px;
+}
+.checkout .right-form p{
+    margin-bottom: 0;
+}
+.checkout .right-form .delete{
+    margin-left: 10px;
+
+}
+.checkout .right-form .delete .delete-icon{
+    color: gray;
+    font-size: 17px;
+    cursor: pointer;
+}
+.checkout .right-form .coupon{
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    height: 50px;
+    grid-gap: 10px;
+}
+.checkout .right-form .coupon button{
+    border-radius: 10px;
+    border: none;
+    background-color:var(--price-color);
+    color: white;
+    font-weight: 500;
+}
+.checkout .right-form .total{
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+.checkout .right-form .total ul{
+    padding-left: 0;
+}
+.checkout .right-form .total ul li{
+    margin-bottom: 10px;
+
+}
+.checkout .right-form .total ul:nth-child(2){
+    text-align: right;
+    font-weight: 500;
+}
+
+@media screen and (max-width:950px) {
+    .checkout{
+        grid-template-columns: 1fr;
+    }
+    .checkout .left-form{
+        padding:0 20px;
+    }
+    .checkout .right-form{
+        border-left: none;
+        padding: 50px 20px;
+    
+    }
+    .checkout .banking .qr img{
+        margin: auto;
+        width:250px;
+        aspect-ratio: 1/1;
+    }
+
+}
+@media screen and (max-width:650px){
+    .checkout .left-form form div{
+        display: block;
+    }
+    .checkout .left-form form div input{
+        margin-bottom: 15px;
+    }
+    .checkout .left-form form div select{
+        margin-bottom: 15px;
+        padding: 13px 0;
+        border-radius: 5px;
+    }
+    .checkout form .razorpay .up{
+        display: block;
+        padding: 20px 0;
+        border: 1px solid rgb(233, 233, 233);
+    }
+    .checkout form .razorpay .up img{
+        display: none;
+    }
+    .checkout form .razorpay .bottom{
+        padding: 20px 10px;
+    }
+}

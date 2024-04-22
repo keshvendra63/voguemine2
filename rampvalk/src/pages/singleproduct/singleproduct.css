@@ -1,0 +1,309 @@
+.single-product{
+    margin-top: 120px;
+}
+.single-product .product{
+    max-width: 100vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.single-product .product .prdt-left{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+}
+.single-product .product .prdt-left .thumbs{
+    margin:20px 0;
+    display: flex;  
+    grid-gap: 0 10px;
+    width: 100%;
+    grid-template-columns: repeat(6, 1fr);
+    padding: 0 10px;
+    overflow-x: scroll;
+}
+.single-product .product .prdt-left .thumbs img{
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+    margin: 5px;
+    border: 1px solid rgb(179, 179, 179);
+    border-radius: 5px;
+
+}
+.single-product .product .prdt-left .main{
+    max-height:100%;
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+}
+.single-product .product .prdt-left .main img{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+
+}
+.single-product .product .prdt-right{
+padding: 0 50px;
+}
+.single-product .product .prdt-right .product-name{
+    font-size: 28px;
+    word-spacing: 5px;
+    letter-spacing: 0px;
+    font-weight: 400;
+    line-height: 1.2;
+    font-family: var(--heading-font);
+}
+.single-product .product .prdt-right .prdt-price{
+    font-size: 25px;
+    letter-spacing: 1px;
+    margin-top: 8px;
+    color: var(--price-color);
+    font-weight: 500;
+}
+.single-product .product .prdt-right .prdt-variation{
+    margin-top: 8px;
+}
+.single-product .product .prdt-right .prdt-variation ul{
+    display: flex;
+    padding: 0;
+    flex-wrap: wrap;
+
+}
+.single-product .product .prdt-right .prdt-desc {
+    margin-top: 20px;
+}
+.single-product .product .prdt-right .prdt-desc br{
+    display: none;
+}
+.single-product .product .prdt-right .prdt-variation ul li{
+margin-right: 20px;
+width: auto;
+height: 30px;
+border: 1px solid rgb(194, 194, 194);
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 0 5px;
+cursor: pointer;
+margin-top: 10px;
+color: rgb(122, 122, 122);
+border-radius: 5px;
+}
+.single-product .product .prdt-right .prdt-variation ul li:hover{
+    border: 2px solid black;
+    /* box-shadow: 0 4px 8px 0 rgba(85, 85, 85, 0.2), 0 6px 20px 0 rgba(91, 91, 91, 0.19); */
+
+}
+.single-product .product .prdt-right .quantity{
+    display: flex;
+    justify-content:start;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.single-product .product .prdt-right .quantity p{
+    margin-right: 10px;
+font-size: 20px;
+margin-bottom: 0;
+
+}
+.single-product .product .prdt-right .quantity p .qty-icon{
+    color: grey;
+    margin-bottom: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+.single-product .product .prdt-right .quantity p .qty-icon:hover{
+    scale: 1.02;
+}
+.single-product .product .prdt-right .quantity p:nth-child(2){
+    border: 1px solid rgb(101, 101, 101);
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    text-align: center;
+    border-radius: 50%;
+}
+.single-product .product .prdt-right .buy-btn{
+    margin-top: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.single-product .product .prdt-right .size{
+    margin-bottom: 30px;
+}
+.single-product .product .prdt-right .size p{
+    margin-bottom: 0.5px;
+}
+.single-product .product .prdt-right .color p{
+    margin-bottom: 1px;
+}
+.single-product .product .prdt-right .buy-btn .btn{
+    padding: 7px 0;
+    margin-bottom: 10px;
+    color: black;
+    border: 3px solid black;
+    background: none;
+    transition: all 0.5s;
+
+}
+.single-product .product .prdt-right .buy-btn .btn:active{
+    scale: 1.01;
+}
+.single-product .product .prdt-right .buy-btn .btn:hover{
+    color: White;
+    background-color: black;
+}
+
+.single-product .you-like{
+    margin-top: 100px;
+    text-align: center;
+    font-size: 30px;
+    color: grey;
+}
+.prdt-suggesstions {
+    margin-top: 20px;
+    max-width: 100vw;
+    min-height: 50vh;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+
+}
+
+.prdt-suggesstions .product {
+    width: 100%;
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.prdt-suggesstions .product img{
+    aspect-ratio: 1/1;
+    width: 100%;
+}
+.prdt-suggesstions .product .product-content{
+    padding: 20px 0;
+}
+.prdt-suggesstions .product .product-content .title{
+    font-weight: bold;
+    font-size: 19px;
+}
+.prdt-suggesstions .product .product-content .price{
+    line-height: 20px;
+    margin-top: 10px;
+    color: rgb(150, 6, 6);
+    font-weight: bold;
+}
+.single-product .ratings{
+    margin: 30px 0;
+    background-color: white;
+    padding: 20px 10px;
+}
+.single-product .ratings button{
+    padding: 7px 15px;
+    background-color: black;
+    border: none;
+    color: white;
+    font-size: 18px;
+    letter-spacing: 1px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.single-product .ratings .stars{
+    margin-bottom: 10px;
+}
+.ratings .ratingCount{
+    margin-top: 20px;
+
+}
+.ratings .ratingCount .rate{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: rgba(242, 242, 242, 0.829);
+    padding: 10px 5px;
+    
+}
+.ratings .ratingCount .rate .name{
+    display: flex;
+    align-items: center;
+}
+.single-product .ratings input,.ratings textarea{
+    background-color: rgb(242, 242, 242);
+    width: 100%;
+    margin-bottom: 15px;
+    outline: none;
+    border: none;
+    padding: 10px 5px;
+    border-radius: 8px;
+}
+
+@media screen and (max-width:950px) {
+    .single-product .product{
+        grid-template-columns: 1fr;
+    }
+    .single-product .product .prdt-right{
+        padding:0;
+        margin-top: 50px;
+        }
+        .prdt-suggesstions {
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 20px;
+        
+        }
+        /* .single-product .product .prdt-left .main{
+        height:400px;
+        } */
+        .single-product .product .prdt-left .main img{
+            width: 100%;
+            max-height: 100%;
+        }
+
+}
+
+@media screen and (max-width:500px) {
+
+    .single-product .product .prdt-right .product-name{
+        font-size: 30px;
+        word-spacing: 0px;
+        letter-spacing: 1px;
+    }
+    .single-product .product .prdt-right .prdt-price{
+        font-size: 25px;
+        letter-spacing: 1px;
+        margin-top: 10px;
+        color: var(--price-color);
+        font-weight: bold;
+    }
+    .single-product .product .prdt-right .prdt-variation{
+        margin-top: 15px;
+    }
+    .single-product .product .prdt-right .prdt-variation ul{
+        display: flex;
+        padding: 0;
+        flex-wrap: wrap;
+    
+    }
+    .single-product .product .prdt-right .prdt-variation ul li{
+        margin-right: 20px;
+        margin-top: 10px;
+    width:auto;
+    height: 28px;
+    border: 1px solid rgb(194, 194, 194);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    }
+
+}
+
+
+
+

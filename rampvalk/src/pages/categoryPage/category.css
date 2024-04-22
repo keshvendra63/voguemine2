@@ -1,0 +1,271 @@
+.categoryPage{
+    max-width: 100vw;
+}
+.categoryPage .collections{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 30px;
+}
+.categoryPage .collections .collection-card{
+    width: 100%;
+    aspect-ratio:1/1;
+    text-align: center;
+    margin-bottom: 10px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+
+}
+.categoryPage .collections .collection-card:active{
+    scale: 1.02;
+}
+.categoryPage .collections .collection-card img{
+    width: 100%;
+    height: 100%;
+    transition: all 1s;
+}
+.categoryPage .collections .collection-card h2{
+    font-size: 28px;
+    color: white;
+    font-weight: 400;
+    position: absolute;
+    font-family: var(--heading-font);
+    text-transform:uppercase;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(6, 6, 6, 0.342);
+    opacity: 0;
+    transition: all 1s;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: underline;
+    padding:0 15px;
+    
+}
+.categoryPage .collections .collection-card:hover >img{
+    scale: 1.04;
+}
+.categoryPage .collections .collection-card:hover h2{
+    opacity: 1;
+    
+}
+.categoryPage .about{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-family: var(--heading-font);
+    grid-gap: 20px;
+    align-items: center;
+    
+}
+.ourteam h2{
+    text-align: center;
+    font-size: 25px;
+    font-family: "Montserrat", sans-serif;
+    letter-spacing: 1px;
+    margin-top: 10px;
+}
+.teams{
+display: grid;
+grid-template-columns: 1fr 1fr 1fr 1fr ;
+align-items: center;
+grid-gap: 20px;
+justify-content: center;
+margin: 35px 10vw;
+}
+
+.teams .team img{
+    width:60%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);   
+    margin-bottom: 20px;
+}
+
+.teams .team{
+text-align: center;
+padding: 15px 5px;
+border-radius: 5px;
+box-shadow: 1px 0px 2px rgba(0, 0, 0, 0.3);
+background-color:white;
+width:90%;
+transition: transform 0.2s;
+}
+
+.teams .team:hover {
+    transform: scale(1.02);
+  }
+  .teams .team p{
+    margin-bottom: 0;
+  }
+.teams .team .name{
+    font-weight: 700;
+    font-size: 18px;
+    color: black;
+    font-family: "Montserrat", sans-serif;
+    letter-spacing: 1px;
+    margin-top: 25px;
+}
+
+.teams .team .detail{
+    font-size: 13px;
+    font-weight: 600;
+    color: rgb(122, 122, 122);
+    font-family: "Montserrat", sans-serif;
+    margin-top: 10px;
+}
+.teams .team .icons .icon{
+    font-size: 28px;
+    color: rgb(0, 0, 0);
+    border-radius: 50%;
+
+    margin: 10px 6px;
+    background-color: white;
+}
+
+
+.categoryPage .about .left-about{
+    width: 100%;
+}
+.categoryPage .about .left-about img{
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+.categoryPage .about .right-about{
+    padding: 10px;
+}
+.categoryPage .about .right-about h1{
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+.categoryPage .about .right-about p{
+    font-size: 17px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    line-height: 2;
+}
+.categoryPage .about .right-about .about-content{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+}
+.employees{
+    margin: 50px;
+    text-align: center;
+}
+.owners{
+    margin: 50px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 50px;
+    text-align: center;
+}
+.owners img{
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 8px 8px 0 0;
+    padding: 5px;
+}
+.owners .ownercard{
+    border-radius: 8px;
+    border: 1px solid grey;
+}
+.employee{
+    margin: 50px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 50px;
+    text-align: center;
+}
+.employee img{
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    padding: 5px;
+}
+.employee .employee-card{
+    border-radius: 8px;
+}
+
+@media screen and (max-width:950px) {
+    .categoryPage .collections{
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .categoryPage .about{
+        margin: 50px;
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    .categoryPage .about .left-about img{
+        width: 100%;
+        height: 400px;
+    }
+    .employee{
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 50px;
+    }
+    .teams{
+        display: grid;
+        grid-template-columns: 1fr 1fr ;
+        align-items: center;
+        grid-gap: 20px;
+        justify-content: center;
+        margin: 0px 5vw;
+        margin-top: 15px;
+        }
+        .teams .team{
+            text-align: center;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 2px 1px 0.6px rgba(37, 35, 35, 0.2), 0 1px 3px 0 rgba(34, 32, 32, 0.19);
+            width: 100%;
+            }
+}
+@media screen and (max-width:650px) {
+    .categoryPage .collections{
+        margin:50px 20px;
+        grid-gap: 8px;
+    }
+    .categoryPage .collections .collection-card{
+        margin-bottom: 5px;
+    }
+    .categoryPage .about{
+        margin: 50px 25px;
+    }
+    .categoryPage .about .right-about{
+        padding: 0;
+    }
+    .employees{
+        margin: 50px 25px;
+    }
+    .owners{
+        grid-template-columns: 1fr;
+        grid-gap: 50px;
+        text-align: center;
+    }
+    .employee{
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 30px;
+    }
+    .teams{
+        align-items: center;
+        grid-gap: 20px;
+        justify-content: center;
+        margin: 0px 5vw;
+        margin-top: 15px;
+        }
+        .teams .team{
+            text-align: center;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 2px 1px 0.6px rgba(37, 35, 35, 0.2), 0 1px 3px 0 rgba(34, 32, 32, 0.19);
+            width: 100%;
+            }
+            .ourteam h2{
+                font-size: 20px;
+                font-family: "Montserrat", sans-serif;
+                justify-content: center;
+            }
+}
