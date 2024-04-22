@@ -47,7 +47,7 @@ const Policies = () => {
           <p className="policy">
 <p>         At Rampvalk, customer satisfaction is our top priority. If you are not completely satisfied with your purchase, please contact us within 7 days of receiving your order to make arrangements for a replacement.
 </p>
-<p>We do not offer refunds under any circumstances. In the event that you receive a defective product, we will make arrangements for a replacement at no additional cost to you. If we are unable to offer a replacement, we will issue a store credit or refund at our discretion within 3 working days. Refunds will be processed within 7 working days after receiving your product.
+<p>We do not offer refunds under any circumstances. In the event that you receive a defective product, we will make arrangements for a replacement at no additional cost to you. If we are unable to offer a replacement, we will issue a store credit or refund at our discretion within 3 working days. Return will be processed within 7 working days after receiving your product.
 </p>
 <p>All returns must be authorized by Rampvalk and must be returned in their original, unused condition with all tags and packaging intact. Any unauthorized returns or items that are not in their original condition will not be accepted and will be returned to the sender at their expense.
 </p>

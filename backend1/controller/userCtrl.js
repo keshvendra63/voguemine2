@@ -13,7 +13,7 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("./emailCtrl");
 const Oldorder = require("../models/oldOrderModel");
-
+const axios=require("axios")
 // Create a User ----------------------------------------------
 
 const createUser = asyncHandler(async (req, res) => {
@@ -522,11 +522,41 @@ const processOrder = async (orderItems) => {
 const createOrder=asyncHandler(async(req,res)=>{
   const {shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo,tag}=req.body;
   try{
-    await processOrder(orderItems);
 
     const order=await Order.create({
       shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo,tag
     })
+    if (orderType === 'COD') {
+      const orderItemsString = orderItems.map((item) => {
+        return `Name: ${item.product.title}, Color: ${item.color || ""}, Size: ${item.size || ""}`;
+      }).join('\n');
+      // Send confirmation message using DelightChat API
+      const delightChatResponse = await axios.post('https://api.delightchat.io/api/v1/public/message', {
+        country_code: '+91', // Update the country code if necessary
+        phone_number:`${shippingInfo?.phone}`, // Update with the phone number to send the confirmation to
+        automation_id: '98f4a7a2-9ee8-4f1b-a463-2052bd7d3d24', // Update with your DelightChat automation ID
+        message_data: {
+          // Add any data you want to include in the message
+          1: `${shippingInfo.firstname}`,
+          2: `Voguemine`,
+          3: `${order.orderNumber}`,
+          4: `${finalAmount}`,
+          5:orderItemsString,
+          6: `${shippingInfo.address}`,
+
+          // Add more data as needed
+        }
+      }, {
+        headers: {
+          'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // Handle DelightChat response if necessary
+    }
+    await processOrder(orderItems);
+
     res.json({
       order,
       success:true
