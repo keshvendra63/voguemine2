@@ -58,7 +58,7 @@ router.post("/cart/create-order", createOrder);
 router.post("/create-abondend", createAbondend);
 router.get("/all-users", getallUser);
 router.get("/gethistory",authMiddleware,isAdmin,getHistory)
-router.get("/createhistory",authMiddleware,isAdmin,createHistory)
+router.post("/createhistory",authMiddleware,isAdmin,createHistory)
 router.get("/getmyorders", authMiddleware, getMyOrders);
 router.get("/getoldorders", authMiddleware,isAdmin, getOldOrders);
 router.get("/getallorders", authMiddleware, isAdmin, getAllOrders);
