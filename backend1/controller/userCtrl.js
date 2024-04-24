@@ -541,6 +541,7 @@ const processOrder = async (orderItems) => {
         if (variant.quantity >= quantity) {
           // Subtract the ordered quantity from the variant's quantity
           variant.quantity -= quantity;
+          foundProduct.sold += quantity;
           await foundProduct.save();
         } else {
           throw new Error(`Not enough quantity available for ${color} - ${size}`);
