@@ -4,6 +4,7 @@ const Cart = require("../models/cartModel");
 const Coupon = require("../models/couponModel");
 const Order = require("../models/orderModel");
 const Abondend=require("../models/abondendModel")
+const History =require("../models/historyModel")
 const uniqid = require("uniqid");
 const asyncHandler = require("express-async-handler");
 const { generateToken } = require("../config/jwtToken");
@@ -484,6 +485,23 @@ const updateProductQuantityFromCart = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+const createHistory = asyncHandler(async (req, res) => {
+  try {
+    const newHistory = await History.create(req.body);
+    res.json(newHistory);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+const getHistory = asyncHandler(async(req, res) =>{
+  try{
+      const getHistory = await History.find()
+      res.json(getHistory);
+  } catch (error) {
+      throw new Error(error);
+  }
+});
+
 const processOrder = async (orderItems) => {
   try {
     // Iterate through each order item
@@ -965,5 +983,7 @@ module.exports = {
   createAbondend,
   getAllAbandoned,
   getSingleAbandoned,
-  getOldOrders
+  getOldOrders,
+  createHistory,
+  getHistory
 };

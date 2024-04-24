@@ -36,7 +36,9 @@ const {
   createAbondend,
   getAllAbandoned,
   getSingleAbandoned,
-  getOldOrders
+  getOldOrders,
+  getHistory,
+  createHistory
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const {checkout,paymentVerification, phonePe, redirectUri}=require("../controller/paymentCtrl")
@@ -55,6 +57,8 @@ router.post("/status/:merchantTransactionId",redirectUri)
 router.post("/cart/create-order", createOrder);
 router.post("/create-abondend", createAbondend);
 router.get("/all-users", getallUser);
+router.get("/gethistory",authMiddleware,isAdmin,getHistory)
+router.get("/createhistory",authMiddleware,isAdmin,createHistory)
 router.get("/getmyorders", authMiddleware, getMyOrders);
 router.get("/getoldorders", authMiddleware,isAdmin, getOldOrders);
 router.get("/getallorders", authMiddleware, isAdmin, getAllOrders);
