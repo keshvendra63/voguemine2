@@ -494,11 +494,30 @@ const createHistory = asyncHandler(async (req, res) => {
   }
 });
 const getHistory = asyncHandler(async(req, res) =>{
-  try{
-      const getHistory = await History.find()
-      res.json(getHistory);
+  const limit = parseInt(req.query.limit) || 50; // Number of items per page
+  const page = parseInt(req.query.page) || 1; // Current page, default is 1
+
+  try {
+    const count = await History.countDocuments(); // Total number of orders
+
+    // Calculate the skipping value based on the current page
+    const skip = count - (page * limit);
+
+    // Query orders with reverse pagination
+    const history = await History.find()
+      .skip(Math.max(skip, 0)) // Ensure skip is non-negative
+      .limit(limit);
+
+    res.json({
+      history,
+      currentPage: page,
+      totalPages: Math.ceil(count / limit),
+      totalHistory: count
+    });
   } catch (error) {
-      throw new Error(error);
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
