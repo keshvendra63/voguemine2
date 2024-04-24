@@ -79,7 +79,7 @@ const SingleProduct = () => {
         content_ids:`${singleProductState?._id}`,
         content_type: 'product',
         value:`${singleProductState?.price}`,
-        currency: 'USD'
+        currency: 'INR'
     });
     setAlreadyAdded(true)
       
@@ -110,7 +110,7 @@ const buyNow=async()=>{
       content_ids:`${singleProductState?._id}`,
       content_type: 'product',
       value:`${singleProductState?.price}`,
-      currency: 'USD'
+      currency: 'INR'
   });
     setTimeout(()=>{
       dispatch(getUserCartProduct())

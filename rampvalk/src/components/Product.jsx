@@ -80,7 +80,7 @@ useEffect(() => {
             content_ids:`${props?.id}`,
             content_type: 'product',
             value:`${props?.price}`,
-            currency: 'USD'
+            currency: 'INR'
         });
         setAlreadyAdded(true)
 
@@ -121,7 +121,7 @@ useEffect(() => {
           content_ids:`${props?.id}`,
           content_type: 'product',
           value:`${props?.price}`,
-          currency: 'USD'
+          currency: 'INR'
       });
       setTimeout(()=>{
         dispatch(getUserCartProduct())
@@ -212,7 +212,7 @@ const [imageIndex, setImageIndex] = useState(0);
         <div className="wish">
         <div>
         <p className="price">&#8377;{props.price}</p>
-        <p className="sale-price">&#8377;{(props.price)*2}</p>
+        <p className="sale-price">&#8377;{(props.price)*8}</p>
         </div>
         <div>
           {

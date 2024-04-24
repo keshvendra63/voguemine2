@@ -45,6 +45,7 @@ export const getAProduct=createAsyncThunk("product/getSingleProduct",async(handl
         return thunkAPI.rejectWithValue(error)
     }
 })
+
 export const getallratings=createAsyncThunk("product/getratings",async(thunkAPI)=>{
     try{
         return await productService.getAllRatings()

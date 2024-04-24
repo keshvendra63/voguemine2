@@ -255,7 +255,7 @@ export const authSlice=createSlice({
                     content_ids: 'purchase',
                     content_type: 'page',
                     value:``,
-                    currency: 'USD'
+                    currency: 'INR'
                 });
             }
         }).addCase(createAnOrder.rejected,(state,action)=>{

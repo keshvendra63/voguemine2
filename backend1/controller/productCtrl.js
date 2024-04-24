@@ -48,6 +48,7 @@ const getaProduct = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
 const getaProductDashboard = asyncHandler(async (req, res) => {
   const {id}=req.params
   try {
@@ -309,5 +310,6 @@ module.exports = {
   uploadImages,
   reorderProducts,
   getaProductDashboard,
-  getAllRatings
+  getAllRatings,
+
 };

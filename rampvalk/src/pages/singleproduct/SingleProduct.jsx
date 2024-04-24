@@ -79,7 +79,7 @@ const SingleProduct = () => {
         content_ids:`${singleProductState?._id}`,
         content_type: 'product',
         value:`${singleProductState?.price}`,
-        currency: 'USD'
+        currency: 'INR'
     });
     setAlreadyAdded(true)
       
@@ -110,7 +110,7 @@ const buyNow=async()=>{
       content_ids:`${singleProductState?._id}`,
       content_type: 'product',
       value:`${singleProductState?.price}`,
-      currency: 'USD'
+      currency: 'INR'
   });
     setTimeout(()=>{
       dispatch(getUserCartProduct())
@@ -275,7 +275,7 @@ const productStat = useSelector((state) => state?.product);
             <h1 className="product-name">{singleProductState?.title}</h1>
             <div style={{display:'flex',alignItems:'center'}}>
             <p className="prdt-price">&#8377;{singleProductState?.price}</p>
-            <p style={{color:'grey',fontSize:'18px',textDecoration:'line-through',margin:'0 10px 6px 15px'}}>&#8377;{(singleProductState?.price)*2}</p>
+            <p style={{color:'grey',fontSize:'18px',textDecoration:'line-through',margin:'0 10px 6px 15px'}}>&#8377;{(singleProductState?.price)*8}</p>
             <p style={{display:sold,
             margin:'0 10px', 
             backgroundColor: 'rgb(37, 37, 37)',

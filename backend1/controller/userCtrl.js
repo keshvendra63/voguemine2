@@ -820,7 +820,10 @@ const startOfDayIST = new Date(today);
         createdAt: {
           $gte: startOfDay,
           $lte: startOfDayIST
-        }
+        },
+        orderType: { $ne: "Cancelled" } // Exclude orders with the "Cancelled" tag
+
+
       }
     },
     {

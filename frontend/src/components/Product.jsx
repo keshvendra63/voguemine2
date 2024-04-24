@@ -80,7 +80,7 @@ useEffect(() => {
             content_ids:`${props?.id}`,
             content_type: 'product',
             value:`${props?.price}`,
-            currency: 'USD'
+            currency: 'INR'
         });
         setAlreadyAdded(true)
 
@@ -121,7 +121,7 @@ useEffect(() => {
           content_ids:`${props?.id}`,
           content_type: 'product',
           value:`${props?.price}`,
-          currency: 'USD'
+          currency: 'INR'
       });
       setTimeout(()=>{
         dispatch(getUserCartProduct())
