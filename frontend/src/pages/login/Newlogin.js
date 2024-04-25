@@ -46,6 +46,12 @@ const [login,setLogin]=useState(true)
             validationSchema:signupSchema,
             onSubmit:(values)=>{
               dispatch(registerUser(values))
+              window.snaptr('track', 'SIGN_UP', 
+              {'sign_up_method': 'Voguemine', 
+              'uuid_c1':`${formik?.values?.email}`, 
+              'user_email': `${formik?.values?.email}`, 
+              'user_phone_number': `${formik?.values?.mobile}`, 
+             })
               setTimeout(()=>{
                   navigate('/home')
                 
@@ -59,6 +65,11 @@ const [login,setLogin]=useState(true)
             },
             validationSchema:loginSchema,
             onSubmit:(values)=>{
+              window.snaptr('track', 'LOGIN', 
+              {'uuid_c1': `${formik1?.values?.email}${formik1?.values?.password}`, 
+              'user_email': `${formik1?.values?.email}`, 
+              'user_phone_number': `${formik1?.values?.email}`, 
+             })
               dispatch(loginUser(values))
               setTimeout(()=>{
                 

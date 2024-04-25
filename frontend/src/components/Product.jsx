@@ -72,6 +72,14 @@ useEffect(() => {
       else{
         
         if(data && (data===props.prdt.id)){
+          window.snaptr('track', 'ADD_CART', 
+          {'price': props?.price, 
+          'currency': 'INR', 
+          'item_ids': [`${data}`], 
+          'item_category': `${props?.prdt?.category}`, 
+          'number_items': 1, 
+          'uuid_c1': `${data}`, 
+         })
           await addProductToCartLocalStorage({productId:data,color,quantity,price:props.price,size,product:props.prdt})
           toast.success("Added To Cart")
           window.fbq('track', 'AddToCart', {
@@ -113,6 +121,15 @@ useEffect(() => {
     
     else{
       if(data && (data===props.prdt.id)){
+        window.snaptr('track', 'START_CHECKOUT', 
+        {'price': props?.prdt?.price, 
+        'currency': 'INR', 
+        'item_ids': [`${props?.prdt?._id}`], 
+        'item_category': `${props?.prdt?.category}`, 
+        'number_items': quantity, 
+        'payment_info_available': 1, 
+        'uuid_c1': `${props?.prdt?._id}`, 
+        })
         await addProductToCartLocalStorage({productId:data,color,quantity,price:props.price,size,product:props.prdt})
         toast.success("Added To Cart")
         window.fbq('track', 'InitiateCheckout', {
@@ -123,6 +140,7 @@ useEffect(() => {
           value:`${props?.price}`,
           currency: 'INR'
       });
+     
       setTimeout(()=>{
         dispatch(getUserCartProduct())
         navigate('/checkout')

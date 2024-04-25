@@ -73,6 +73,18 @@ useEffect (()=> {
         setTotalAmount(sum)
     }
 },[cartItems])
+
+const checkoutClick=()=>{
+    window.snaptr('track', 'START_CHECKOUT', 
+        {'price':totalAmount, 
+        'currency': 'INR', 
+        'item_ids': [`${cartItems[0]?.product?._id}`], 
+        'item_category': `${cartItems[0]?.product?.category}`, 
+        'number_items': cartItems?.length, 
+        'payment_info_available': 1, 
+        'uuid_c1': `${cartItems[0]?.product?._id}`, 
+       })
+}
     return (
         <div className='cart'>
             <div className="category-banner">
@@ -131,7 +143,7 @@ useEffect (()=> {
                 </div>
                 <div className="checkouts">
                 <p style={{fontWeight:'bold',color:'blue'}}>10% Instant Off on Prepaid Orders</p>
-                <Link to="/checkout" >  <button className='checkout-btn'>CHECKOUT</button></Link>
+                <Link to="/checkout" >  <button className='checkout-btn' onClick={checkoutClick}>CHECKOUT</button></Link>
                 </div>
                 
                     

@@ -90,6 +90,14 @@ const SingleProduct = () => {
       return false
     }
     else{
+      window.snaptr('track', 'ADD_CART', 
+          {'price': singleProductState?.price, 
+          'currency': 'INR', 
+          'item_ids': [`${data}`], 
+          'item_category': `${singleProductState?.category}`, 
+          'number_items': 1, 
+          'uuid_c1': `${data}`, 
+         })
       await addProductToCartLocalStorage({productId:data,color,quantity,price:singleProductState?.price,size,product:singleProductState})
           toast.success("Added To Cart")
       window.fbq('track', 'AddToCart', {
@@ -121,6 +129,15 @@ const buyNow=async(data)=>{
  
 
   else{
+    window.snaptr('track', 'START_CHECKOUT', 
+        {'price': singleProductState?.price, 
+        'currency': 'INR', 
+        'item_ids': [`${singleProductState?._id}`], 
+        'item_category': `${singleProductState?.category}`, 
+        'number_items': quantity, 
+        'payment_info_available': 1, 
+        'uuid_c1': `${singleProductState?._id}`, 
+       })
     await addProductToCartLocalStorage({productId:data,color,quantity,price:singleProductState?.price,size,product:singleProductState})
     toast.success("Added To Cart")   
      window.fbq('track', 'InitiateCheckout', {

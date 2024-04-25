@@ -101,7 +101,12 @@ const loginOpen=()=>{
     if (event.key === 'Enter') {
       localStorage.setItem("search",JSON.stringify({
         mysearch:svalue
+        
       }))
+      window.snaptr('track', 'SEARCH', 
+      { 
+      'search_string':`${svalue}`, 
+      })
         navigate(`/products`)
         setSearch("none")
     setScrolled(false);
