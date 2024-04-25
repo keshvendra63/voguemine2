@@ -55,7 +55,26 @@ const SingleProduct = () => {
   const products=productState? productState:[]
    const customer=JSON.parse(localStorage.getItem("customer"))
 
-
+      useEffect(() => {
+       if (!color || !size) {
+         // If color or size is not selected, set alreadyAdded to false
+         setAlreadyAdded(false);
+         return;
+       }
+     
+       const cart = JSON.parse(localStorage.getItem("cart")) || [];
+       const matchingCartItem = cart.find(item => {
+         return item.product._id === singleProductState?._id && item?.color === color && item?.size === size;
+       });
+     
+       if (matchingCartItem) {
+         // If a matching cart item is found, set alreadyAdded to true
+         setAlreadyAdded(true);
+       } else {
+         // If no matching cart item is found, set alreadyAdded to false
+         setAlreadyAdded(false);
+       }
+     }, [color, size,getProductId]);
   const addProductToCartLocalStorage = (product) => {
     const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
     const updatedCart = [...existingCart, product];
@@ -90,7 +109,7 @@ const SingleProduct = () => {
     
     
 }
-const buyNow=async()=>{
+const buyNow=async(data)=>{
   if(color===null){
     toast.error("Please Select Color")
     return false
@@ -102,7 +121,7 @@ const buyNow=async()=>{
  
 
   else{
-    await addProductToCartLocalStorage({productId:getProductId,color,quantity,price:singleProductState?.price,size,product:singleProductState})
+    await addProductToCartLocalStorage({productId:data,color,quantity,price:singleProductState?.price,size,product:singleProductState})
     toast.success("Added To Cart")   
      window.fbq('track', 'InitiateCheckout', {
       content_name:`${singleProductState?.title}`,

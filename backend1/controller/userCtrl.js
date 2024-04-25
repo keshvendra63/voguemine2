@@ -196,21 +196,31 @@ const saveAddress = asyncHandler(async (req, res, next) => {
 // Get all users
 
 const getallUser = asyncHandler(async (req, res) => {
+  const limit = parseInt(req.query.limit) || 50; // Number of items per page
+  const page = parseInt(req.query.page) || 1; // Current page, default is 1
+
   try {
-    const page = parseInt(req.query.page) || 1; // Get the page number from the query parameter, default to 1
-    const limit = parseInt(req.query.limit) || 10; // Get the limit from the query parameter, default to 10
-    const skip = (page - 1) * limit; // Calculate the number of documents to skip
+    const count = await User.countDocuments(); // Total number of orders
 
-    const getUsers = await User.find()
-      .populate("wishlist")
-      .skip(skip) // Skip the specified number of documents
-      .limit(limit); // Limit the number of documents returned
+    // Calculate the skipping value based on the current page
+    const skip = count - (page * limit);
 
-    res.json(getUsers);
+    // Query orders with reverse pagination
+    const user = await User.find()
+      .skip(Math.max(skip, 0)) // Ensure skip is non-negative
+      .limit(limit);
+
+    res.json({
+      user,
+      currentPage: page,
+      totalPages: Math.ceil(count / limit),
+      totalUser: count
+    });
   } catch (error) {
-    throw new Error(error);
-  }
-});
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+}})
 
 // Get a single user
 
@@ -593,6 +603,21 @@ const createOrder=asyncHandler(async(req,res)=>{
 
       // Handle DelightChat response if necessary
     }
+    const { firstname, lastname, email, mobile, address } = shippingInfo;
+
+    // Check if the user already exists
+    let user = await User.findOne({ email });
+
+    // If the user doesn't exist, create a new user
+    if (!user) {
+      user = await User.create({
+        email,
+        firstname,
+        lastname,
+        mobile,
+        address
+      });
+    }
     await processOrder(orderItems);
 
     res.json({
@@ -758,6 +783,17 @@ const updateOrder=asyncHandler(async(req,res)=>{
     throw new Error(error);
   }
 })
+const updateAbandoned=asyncHandler(async(req,res)=>{
+  const { id } = req.params;
+  try {
+    const updatedAbandoned = await Abondend.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.json(updatedAbandoned);
+  } catch (error) {
+    throw new Error(error);
+  }
+})
 const getMonthWiseOrderIncome=asyncHandler(async(req,res)=>{
   const monthNames=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
 
@@ -776,7 +812,9 @@ const getMonthWiseOrderIncome=asyncHandler(async(req,res)=>{
         createdAt:{
           $lte:new Date(),
           $gte:new Date(endDate)
-        }
+        },
+        orderType: { $ne: "Cancelled" } // Exclude orders with the "Cancelled" tag
+
       }
     },{
       $group: {
@@ -819,7 +857,9 @@ const getYearlyTotalOrders=asyncHandler(async(req,res)=>{
         createdAt:{
           $lte:new Date(),
           $gte:new Date(endDate)
-        }
+        },
+        orderType: { $ne: "Cancelled" } // Exclude orders with the "Cancelled" tag
+
       }
     },
     {
@@ -898,7 +938,8 @@ const getWeekWiseOrderIncome = asyncHandler(async (req, res) => {
         createdAt: {
           $gte: startOfWeek,
           $lte: endOfWeek
-        }
+        },
+        orderType: { $ne: "Cancelled" } // Exclude orders with the "Cancelled" tag
       }
     },
     {
@@ -928,18 +969,22 @@ const getYesterdayOrderIncome = asyncHandler(async (req, res) => {
   // Get yesterday's date
   const today = new Date();
   const yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 1);
-
-  const startOfDay = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0); // Start of yesterday
-  const endOfDay = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59); // End of yesterday
-
+  yesterday.setDate(today.getDate() - 2);
+  today.setDate(today.getDate() - 1);
+  const startOfDayIST = new Date(today);
+  startOfDayIST.setHours(18, 29, 59, 999)
+  const startOfDay = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 18, 30, 0); // Start of yesterday
+  // const endOfDay = new Date(today.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59); // End of yesterday
+console.log(startOfDay,startOfDayIST)
   const data = await Order.aggregate([
     {
       $match: {
         createdAt: {
           $gte: startOfDay,
-          $lte: endOfDay
-        }
+          $lte: startOfDayIST
+        },
+        orderType: { $ne: "Cancelled" } // Exclude orders with the "Cancelled" tag
+
       }
     },
     {
@@ -1005,5 +1050,6 @@ module.exports = {
   getSingleAbandoned,
   getOldOrders,
   createHistory,
-  getHistory
+  getHistory,
+  updateAbandoned
 };

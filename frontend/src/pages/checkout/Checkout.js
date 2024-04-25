@@ -23,6 +23,7 @@ const Checkout = () => {
 
     const [firstname,setFirstname]=useState("")
     const [lastname,setLastname]=useState("")
+    const [success,setSuccess]=useState(false)
 
     const [email,setEmail]=useState("")
 
@@ -193,6 +194,7 @@ const completeOrder=()=>{
             pincode:pincode,
            }))
            if(cartItems?.length>=1){
+            setSuccess(true)
             setTimeout(()=>{
                 checkOutHandler()
             },300)
@@ -326,14 +328,17 @@ useEffect(()=>{
 console.log(ship)
 useEffect(() => {
     return () => {
-        if (location.pathname!=='/profile') {
-            console.log(ship)
+        // Check if the current location is not '/profile'
+        if (location.pathname !== '/profile') {
+            const addr = JSON.parse(localStorage.getItem("temp"));
 
-            if(cartItems?.length>0){
-                const addr=JSON.parse(localStorage.getItem("temp"))
-                if(addr?.firstname!=="" && addr?.phone!==""){
-                    dispatch(createAbondend(addr))
-
+            // Check if there are cart items
+            if (addr?.orderItems?.length > 0) {
+                // Check if the order hasn't been successfully placed
+                    // Create abandoned order
+                    if (addr?.shippingInfo?.firstname !== "" && addr?.shippingInfo?.phone !== "" && addr?.success===false) {
+                        dispatch(createAbondend(addr));
+                    
                 }
             }
         }
