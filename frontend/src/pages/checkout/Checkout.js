@@ -322,10 +322,10 @@ useEffect(()=>{
                 shippingCost:shippingCost,
                 orderType:orderType,
                 discount:couponAmount,
-                finalAmount:finalAmount
+                finalAmount:finalAmount,
+                success:success
     }))
-},[firstname,lastname,email,phone,mobile,address,city,state,pincode])
-console.log(ship)
+},[firstname,lastname,email,phone,mobile,address,city,state,pincode,cartProductState,success])
 useEffect(() => {
     return () => {
         // Check if the current location is not '/profile'
