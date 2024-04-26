@@ -892,6 +892,7 @@ const getTodaysOrderIncome = asyncHandler(async (req, res) => {
 // Set time to 11:59:59.999 PM IST
 const startOfDayIST = new Date(today);
   startOfDayIST.setHours(18, 29, 59, 999)
+  console.log(startOfDay,startOfDayIST)
   const data = await Order.aggregate([
     {
       $match: {
@@ -975,7 +976,6 @@ const getYesterdayOrderIncome = asyncHandler(async (req, res) => {
   startOfDayIST.setHours(18, 29, 59, 999)
   const startOfDay = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 18, 30, 0); // Start of yesterday
   // const endOfDay = new Date(today.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59); // End of yesterday
-console.log(startOfDay,startOfDayIST)
   const data = await Order.aggregate([
     {
       $match: {
