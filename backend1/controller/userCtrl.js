@@ -530,7 +530,133 @@ const getHistory = asyncHandler(async(req, res) =>{
     res.status(500).json({ message: "Server Error" });
   }
 });
+const cancelOrder = asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
 
+  try {
+    // Fetch the order
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Retrieve order items
+    const orderItems = order.orderItems;
+
+    // Increase inventory for each order item
+    for (const orderItem of orderItems) {
+      const { product, color, size, quantity } = orderItem;
+      const productId = product._id;
+
+      // Find the product in the database
+      const foundProduct = await Product.findById(productId);
+
+      // Find the variant matching the color and size
+      const variant = foundProduct.variants.find(
+        (variant) => variant.color === color && variant.size === size
+      );
+
+      if (variant) {
+        // Check if there is enough quantity available
+          // Subtract the ordered quantity from the variant's quantity
+          variant.quantity += quantity;
+          foundProduct.sold -= quantity;
+          await foundProduct.save();
+
+      } else {
+        throw new Error(`Variant not found for ${color} - ${size}`);
+      }
+    }
+
+    // Update order type to 'Cancelled'
+    order.orderType = 'Cancelled';
+    await order.save();
+
+    res.json({ message: "Order cancelled successfully" });
+  } catch (error) {
+    console.error("Error cancelling order:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+const retrieveOrder = asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+
+  try {
+    // Fetch the order
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Retrieve order items
+    const orderItems = order.orderItems;
+
+    // Increase inventory for each order item
+    for (const orderItem of orderItems) {
+      const { product, color, size, quantity } = orderItem;
+      const productId = product._id;
+
+      // Find the product in the database
+      const foundProduct = await Product.findById(productId);
+
+      // Find the variant matching the color and size
+      const variant = foundProduct.variants.find(
+        (variant) => variant.color === color && variant.size === size
+      );
+
+      if (variant) {
+        // Check if there is enough quantity available
+        if (variant.quantity >= quantity) {
+          // Subtract the ordered quantity from the variant's quantity
+          variant.quantity -= quantity;
+          foundProduct.sold += quantity;
+          await foundProduct.save();
+        } else {
+          throw new Error(`Not enough quantity available for ${color} - ${size}`);
+        }
+      } else {
+        throw new Error(`Variant not found for ${color} - ${size}`);
+      }
+    }
+
+    // Update order type to 'Cancelled'
+    order.orderType = 'COD';
+    await order.save();
+
+    res.json({ message: "Order cancelled successfully" });
+  } catch (error) {
+    console.error("Error cancelling order:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+const changeOrderTypeToPrepaid = async (req,res) => {
+  const { orderId } = req.params;
+  try {
+    // Assuming you have a model named Order and Mongoose as the ORM
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, { orderType: 'Prepaid' }, {
+      new: true,
+    });
+    res.json(updatedOrder);
+  } catch (error) {
+    // Handle errors appropriately
+    res.status(500).json({ error: error.message });
+  }
+};
+const changeOrderTypeToCOD = async (req,res) => {
+  const { orderId } = req.params;
+  try {
+    // Assuming you have a model named Order and Mongoose as the ORM
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, { orderType: 'COD' }, {
+      new: true,
+    });
+    res.json(updatedOrder);
+  } catch (error) {
+    // Handle errors appropriately
+    res.status(500).json({ error: error.message });
+  }
+};
 const processOrder = async (orderItems) => {
   try {
     // Iterate through each order item
@@ -797,21 +923,16 @@ const updateAbandoned=asyncHandler(async(req,res)=>{
 const getMonthWiseOrderIncome=asyncHandler(async(req,res)=>{
   const monthNames=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
 
-  let d=new Date();
-  let endDate="";
-  d.setDate(1)
-  for (let index = 0; index < 11; index++) {
-    d.setMonth(d.getMonth()-1)
-    endDate=monthNames[d.getMonth()]+" "+d.getFullYear()
-    
-    
-  }
+ 
+const currentDate = new Date();
+currentDate.setDate(1);
+
   const data=await Order.aggregate([
     {
       $match:{
         createdAt:{
           $lte:new Date(),
-          $gte:new Date(endDate)
+          $gte:currentDate
         },
         orderType: { $ne: "Cancelled" } // Exclude orders with the "Cancelled" tag
 
@@ -1051,5 +1172,9 @@ module.exports = {
   getOldOrders,
   createHistory,
   getHistory,
-  updateAbandoned
+  updateAbandoned,
+  cancelOrder,
+  retrieveOrder,
+  changeOrderTypeToPrepaid,
+  changeOrderTypeToCOD
 };

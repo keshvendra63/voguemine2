@@ -214,23 +214,23 @@ const [imageIndex, setImageIndex] = useState(0);
     }
   }
   useEffect(() => {
-    if (singleProductState?.metaTitle!=="" || singleProductState?.metaTitle!==undefined) {
+    if (singleProductState?.metaTitle!=="") {
         document.title = singleProductState?.metaTitle;
     }
     else{
-      document.title =`${singleProductState?.title}`;
+      document.title =singleProductState?.title;
     }
 
-}, [singleProductState?.metaTitle]);
+}, [singleProductState?.metaTitle,singleProductState?.title]);
 useEffect(() => {
-  if (singleProductState?.metaDesc!=="" || singleProductState?.metaDesc!==undefined) {
+  if (singleProductState?.metaDesc!=="") {
       document.querySelector('meta[name="description"]').setAttribute('content',singleProductState?.metaDesc);
   }
   else{
-    document.querySelector('meta[name="description"]').setAttribute('content',singleProductState?.description);
+    document.querySelector('meta[name="description"]').setAttribute('content',document.createElement('div').innerHTML = singleProductState?.description );
   }
 
-}, [singleProductState?.metaDesc]);
+}, [singleProductState?.metaDesc,singleProductState?.description]);
 
 const commentPost=()=>{
   if(name==="" || email ==="" || msg===""){

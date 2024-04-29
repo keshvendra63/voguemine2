@@ -9,7 +9,12 @@ var collectionSchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
-    img:{
+    images:[],
+    metaTitle:{
+      type:String,
+
+    },
+    metaDesc:{
       type:String,
 
     },

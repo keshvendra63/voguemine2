@@ -5,10 +5,19 @@ const {
   deleteCollection,
   getCollection,
   getallCollection,
+  uploadImages
 } = require("../controller/collectionCtrl");
+const { collectionImgResize, uploadPhoto } = require("../middlewares/uploadImage");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const router = express.Router();
-
+router.put(
+  "/upload/:id",
+  authMiddleware,
+  isAdmin,
+  uploadPhoto.array("images", 1),
+  collectionImgResize,
+  uploadImages
+);
 router.post("/", authMiddleware, isAdmin, createCollection);
 router.put("/:id", authMiddleware, isAdmin, updateCollection);
 router.delete("/:id", authMiddleware, isAdmin, deleteCollection);

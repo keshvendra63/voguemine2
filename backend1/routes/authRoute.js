@@ -39,7 +39,11 @@ const {
   getOldOrders,
   getHistory,
   createHistory,
-  updateAbandoned
+  updateAbandoned,
+  cancelOrder,
+  retrieveOrder,
+  changeOrderTypeToPrepaid,
+  changeOrderTypeToCOD
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const {checkout,paymentVerification, phonePe, redirectUri}=require("../controller/paymentCtrl")
@@ -58,6 +62,10 @@ router.post("/status/:merchantTransactionId",redirectUri)
 router.post("/cart/create-order", createOrder);
 router.post("/create-abondend", createAbondend);
 router.get("/all-users", getallUser);
+router.put("/cancelOrder/:orderId",authMiddleware,isAdmin,cancelOrder)
+router.put("/retrieveOrder/:orderId",authMiddleware,isAdmin,retrieveOrder)
+router.put("/prepaidOrder/:orderId",authMiddleware,isAdmin,changeOrderTypeToPrepaid)
+router.put("/codOrder/:orderId",authMiddleware,isAdmin,changeOrderTypeToCOD)
 router.get("/gethistory",authMiddleware,isAdmin,getHistory)
 router.post("/createhistory",authMiddleware,isAdmin,createHistory)
 router.get("/getmyorders", authMiddleware, getMyOrders);
