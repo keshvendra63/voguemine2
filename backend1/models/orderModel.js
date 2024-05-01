@@ -33,7 +33,6 @@ var orderSchema = new mongoose.Schema(
       },
       isVarified:{
         type:Boolean,
-        required:true,
       },
       address:{
         type:String,
