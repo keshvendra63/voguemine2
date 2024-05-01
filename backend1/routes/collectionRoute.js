@@ -5,7 +5,8 @@ const {
   deleteCollection,
   getCollection,
   getallCollection,
-  uploadImages
+  uploadImages,
+  getaCollection
 } = require("../controller/collectionCtrl");
 const { collectionImgResize, uploadPhoto } = require("../middlewares/uploadImage");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
@@ -18,6 +19,7 @@ router.put(
   collectionImgResize,
   uploadImages
 );
+router.get("/web/:handle", getaCollection);
 router.post("/", authMiddleware, isAdmin, createCollection);
 router.put("/:id", authMiddleware, isAdmin, updateCollection);
 router.delete("/:id", authMiddleware, isAdmin, deleteCollection);

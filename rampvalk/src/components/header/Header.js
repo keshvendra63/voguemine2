@@ -28,7 +28,7 @@ const Header = () => {
   const placeholderText = ["Search Shirts", "Search Loafers", "Search Dresses"];
   const [state, setState] = useState("");
   const [search,setSearch] =useState("none")
-  const [svalue,setSvalue]=useState("")
+  const [svalue,setSvalue]=useState(null)
   const [isHead2Open, setIsHead2Open] = useState(false); // Define isHead2Open state variable
 
 const dispatch=useDispatch()

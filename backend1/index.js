@@ -2,7 +2,6 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const dbConnect = require("./config/dbConnect");
 const { notFound, errorHandler } = require("./middlewares/errorHandler");
-
 const app = express();
 const dotenv = require("dotenv").config();
 const PORT = 5000;
@@ -11,6 +10,7 @@ const productRouter = require("./routes/productRoute");
 const blogRouter = require("./routes/blogRoute");
 const blogcategoryRouter = require("./routes/blogCatRoute");
 const collectionRouter = require("./routes/collectionRoute");
+const bannerRouter=require("./routes/bannerRoutes")
 const enqRouter = require("./routes/enqRoute");
 const couponRouter = require("./routes/couponRoute");
 const uploadRouter = require("./routes/uploadRoute");
@@ -29,10 +29,12 @@ app.use("/api/blog", blogRouter);
 app.use("/api/blogcategory", blogcategoryRouter);
 app.use("/api/coupon", couponRouter);
 app.use("/api/collection", collectionRouter);
+app.use("/api/banner", bannerRouter);
 app.use("/api/enquiry", enqRouter);
 app.use("/api/upload", uploadRouter);
 app.use(notFound);
 app.use(errorHandler);
+
 app.listen(PORT, () => {
   console.log(`Server is running  at PORT ${PORT}`);
 });

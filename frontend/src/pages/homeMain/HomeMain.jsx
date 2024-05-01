@@ -18,6 +18,7 @@ import Reviews from './Reviews';
 
 const HomeMain = () => {
   const navigate=useNavigate()
+  const bannerState=useSelector((state)=>state?.banner?.banner)
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -84,7 +85,7 @@ const HomeMain = () => {
   return (
     <div className='homeMain'>
       <div className="hero-section">
-      <img src={home_benner} alt="" />
+      <img src={bannerState[0]?.images[0]?.url || home_benner} alt={bannerState[0]?.alt} />
       </div>
       <div className="categories">
         <ScrollCarousel
@@ -94,19 +95,19 @@ const HomeMain = () => {
         >
           <Link to="/men">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713558263/01_hwvjvv.jpg" alt="" />
+              <img src={bannerState[1]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713558263/01_hwvjvv.jpg"} alt={bannerState[1]?.alt} />
             </div>
           </Link><Link to="/women">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713558263/02_v6acp2.jpg" alt="" />
+              <img src={bannerState[2]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713558263/02_v6acp2.jpg"} alt={bannerState[2]?.alt} />
             </div>
           </Link><Link to="/kids">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713558265/03_dncxwq.jpg" alt="" />
+              <img src={bannerState[3]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713558265/03_dncxwq.jpg"} alt={bannerState[3]?.alt} />
             </div>
           </Link><Link to="/accessories">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713558266/05_jatmmj.jpg" alt="" />
+              <img src={bannerState[4]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713558266/05_jatmmj.jpg"} alt={bannerState[4]?.alt} />
             </div>
           </Link>
 

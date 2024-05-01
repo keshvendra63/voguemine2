@@ -27,8 +27,7 @@ const Products = () => {
     const [btn,setBtn]=useState("flex")
   const [sort,setSort]=useState("-createdAt")
     const location=useLocation()
-  const [limit,setLimit]=useState(700)
-  const [page,setPage]=useState(1)
+  const [limit,setLimit]=useState(28)
   const [loading,setLoading]=useState(true)
   const [searchValue,setSearchvalue]=useState(undefined)
   const [load, setLoad] = useState(28)
@@ -36,8 +35,7 @@ const Products = () => {
   const searchParams =location.search
   const dispatch=useDispatch();
   const queryParams = new URLSearchParams(location.search);
-  let slace = parseInt(queryParams.get('slace')) || 0;
-// Get the value of the 'search' parameter
+  let page = parseInt(queryParams.get('page')) || 1;
 const search = JSON.parse(localStorage.getItem("search"))
 useEffect(()=>{
 if(search){
@@ -46,13 +44,13 @@ if(search){
 },[search])
 useEffect(()=>{
 localStorage.removeItem("search")
-},[location.pathname])
+},[location])
 useEffect(()=>{
   dispatch(resetState())
 },[resetState])
 const updateURL = (sizeNumber) => {
   const searchParams = new URLSearchParams();
-  searchParams.set('slace', sizeNumber);
+  searchParams.set('page', sizeNumber);
   navigate(`${location.pathname}?${searchParams.toString()}`);
 };
 console.log(location.pathname)
@@ -395,23 +393,11 @@ useEffect(()=>{
   
     // Effect to reset load to 28 when the pathname changes
  
-    useEffect(() => {
-      const slaceFromURL = parseInt(queryParams.get('slace')) || 0;
-      setFload(slaceFromURL * 28);
-      setLoad((slaceFromURL+1) * 28);
 
-    }, []);
-    
-    // Effect to update fload when slace changes
-    useEffect(() => {
-      setFload(slace * 28);
-      setLoad((slace+1) * 28);
-
-    }, [slace]);
     const loadMore=()=>{
-      if(slace>0){
-        slace--
-      updateURL(slace)
+      if(page>0){
+        page--
+      updateURL(page)
       window.scrollTo({
         top: 0,
         behavior: 'smooth' // Optional: Smooth scrolling animation
@@ -422,8 +408,8 @@ useEffect(()=>{
       }
     }
     const loadMore1=()=>{
-      slace++
-      updateURL(slace)
+      page++
+      updateURL(page)
 
       // setLimit(limit+28)
       enterLoading(0)
@@ -496,34 +482,34 @@ const DrawerList = (
 );
 
 
-const fetchProducts = async () => {
-  try {
-    let fetchedProducts = [];
-    let totalFetched = 0;
-    while (totalFetched < 700) {
-      const batch = await dispatch(getAllProducts({ sort, limit:56, page, collectionName }));
-      if (!Array.isArray(batch)) {
-        console.error('Error fetching products: Received non-array response');
-        break;
-      }
-      fetchedProducts = [...fetchedProducts, ...batch];
-      totalFetched += batch.length;
-      displayProducts(batch);
-      await new Promise(resolve => setTimeout(resolve, 200)); // Wait for 1 second before fetching next batch
-    }
-  } catch (error) {
-    console.error('Error fetching products:', error);
-  }
-};
-// Function to display products to the user
-const displayProducts = (prdts) => {
-  console.log('Displayed products:', prdts);
-  // Implement your logic to display products in the UI
-};
+// const fetchProducts = async () => {
+//   try {
+//     let fetchedProducts = [];
+//     let totalFetched = 0;
+//     while (totalFetched < 700) {
+//       const batch = await dispatch(getAllProducts({ sort, limit:56, page, collectionName }));
+//       if (!Array.isArray(batch)) {
+//         console.error('Error fetching products: Received non-array response');
+//         break;
+//       }
+//       fetchedProducts = [...fetchedProducts, ...batch];
+//       totalFetched += batch.length;
+//       displayProducts(batch);
+//       await new Promise(resolve => setTimeout(resolve, 200)); // Wait for 1 second before fetching next batch
+//     }
+//   } catch (error) {
+//     console.error('Error fetching products:', error);
+//   }
+// };
+// // Function to display products to the user
+// const displayProducts = (prdts) => {
+//   console.log('Displayed products:', prdts);
+//   // Implement your logic to display products in the UI
+// };
 
-useEffect(() => {
-  fetchProducts();
-}, [collectionName,limit,sort]);
+// useEffect(() => {
+//   fetchProducts();
+// }, [collectionName,limit,sort]);
 
 
 
@@ -578,7 +564,7 @@ useEffect(() => {
 
 
 
-                products?.slice(fload,load)?.map((arm,index)=>{
+                products?.map((arm,index)=>{
                     return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>    
                 })
                 
@@ -599,10 +585,10 @@ useEffect(() => {
                       {
                         loading===true? <CircularProgress/>:
                         <div className='handle-buttons'>
-                           <Button type="primary" loading={loadings[0]} onClick={loadMore} style={{backgroundColor:slace===0?"black":"",cursor:'auto'}}>
+                           <Button type="primary" loading={loadings[0]} onClick={loadMore} style={{backgroundColor:page===1?"black":"",cursor:'auto'}}>
           <ArrowBackIosIcon/>
         </Button>
-        <p>{slace+1}</p>
+        <p>{page}</p>
         <Button type="primary" loading={loadings[0]} onClick={loadMore1} style={{display:btn}}>
           <ArrowForwardIosIcon/>
         </Button>

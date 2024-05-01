@@ -71,6 +71,13 @@ const createOrder=async(orderDetails)=>{
         return response.data
     }
 }
+const getOtp=async(number)=>{
+    const response=await axios.get(`${base_url}user/sendOtp/${number}`)
+    if(response.data){
+       
+        return response.data
+    }
+}
 
 const createAbondend=async(abondendDetails)=>{
     const response=await axios.post(`${base_url}user/create-abondend`,abondendDetails)
@@ -124,5 +131,6 @@ export const authService={
     updateUser,
     forgotPassToken,
     emptyCart,
-    createAbondend
+    createAbondend,
+    getOtp
 }

@@ -78,20 +78,52 @@ const getAllProduct = asyncHandler(async (req, res) => {
 
       // Add conditions for each search keyword
       searchKeywords.forEach(keyword => {
-        searchConditions.push({
-          $or: [
-            { category: { $regex: new RegExp(keyword, 'i') } }, // Match category based on keyword
-            { 'variants.color': { $in: [keyword] } }, // Match color based on keyword
-            { title: { $regex: new RegExp(keyword, 'i') } }, // Match title based on keyword
-            { brand: { $regex: new RegExp(keyword, 'i') } }, // Match brand based on keyword
-            { sku: {$regex: new RegExp(keyword, 'i') } }, // Match sku based on keyword
-            { 'variants.size': { $in: [keyword] } } // Match size based on keyword
-          ]
-        });
+        let regexPattern;
+        if (keyword === "shirt") {
+          // Exclude 't-shirt' explicitly when 'shirt' is searched
+          regexPattern = new RegExp(`^(?!.*t-shirt).*\\b${keyword}\\b.*$`, 'i');
+        } else if (keyword === "tshirt") {
+          // Match 't-shirt' for 'tshirt'
+          regexPattern = new RegExp(`\\bt-shirt\\b`, 'i');
+        }else if (keyword === "tshirts") {
+          // Match 't-shirt' for 'tshirt'
+          regexPattern = new RegExp(`\\bt-shirt\\b`, 'i');}
+          else if (keyword === "t-shirts") {
+            // Match 't-shirt' for 'tshirt'
+            regexPattern = new RegExp(`\\bt-shirt\\b`, 'i');}
+         else if (keyword === "t-shirt") {
+          // Match 't-shirt' explicitly
+          regexPattern = new RegExp(`\\b${keyword}\\b`, 'i');
+        } else if (keyword === "shoes") {
+          // If keyword is 'shoes', search for both 'sneakers' and 'loafers'
+          searchConditions.push({
+            $or: [
+              { title: { $regex: new RegExp("\\bsneakers\\b", 'i') } },
+              { title: { $regex: new RegExp("\\bloafers\\b", 'i') } }
+            ]
+          });
+          return; // Skip the standard search conditions for 'shoes'
+        } else {
+          // General matching for other keywords
+          regexPattern = new RegExp(keyword, 'i');
+        }
+
+        if (regexPattern) {
+          searchConditions.push({
+            $or: [
+              { 'variants.color': { $in: [keyword] } },
+              { title: { $regex: regexPattern } },
+              { brand: { $regex: regexPattern } },
+              { sku: { $regex: regexPattern } },
+              { 'variants.size': { $in: [keyword] } }
+            ]
+          });
+        }
       });
 
-      query.$and = searchConditions; // Ensure all search conditions are met
+      query.$and = searchConditions;
     }
+
 
 
     // Filtering

@@ -223,14 +223,17 @@ const [imageIndex, setImageIndex] = useState(0);
                 </div>
                 <div className="product-content">
                   <Link to={`/products/${props.handle}`} className="title" style={{color:'black'}}><p >{props.title}</p></Link>
+                  <p style={{fontSize:'13px',fontWeight:500}}>{props?.prdt?.sku}</p>
+
                   <Stack spacing={1} className="stars">
           <Rating name="size-small" defaultValue={5} size="small" />
     
         </Stack>
         <div className="wish">
-        <div>
+        <div style={{display:'flex',alignItems:'center',marginTop:'10px'}}>
         <p className="price">&#8377;{props.price}</p>
-        <p className="sale-price">&#8377;{(props.price)*2}</p>
+        <p className="sale-price" style={{margin:'0 10px'}}>&#8377;{(props.price)*2}</p>
+
         </div>
         <div>
           {
@@ -246,7 +249,10 @@ const [imageIndex, setImageIndex] = useState(0);
 
                 <div className="hover-details">
     <div className="title-section">
+    <div>
     <p className="title">{props.title}</p>
+    <p style={{fontSize:'13px',fontWeight:500}}>{props?.prdt?.sku}</p>
+    </div>
     <p className="price">&#8377;{props.price}</p>
     </div>
     <div className="size">

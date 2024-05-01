@@ -89,6 +89,13 @@ export const updateProfile = createAsyncThunk("auth/profile/update", async (data
         return thunkAPI.rejectWithValue(error)
     }
 })
+export const sendOtp = createAsyncThunk("auth/otp", async (number, thunkAPI) => {
+    try {
+        return await authService.getOtp(number)
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+    }
+})
 export const forgotPasswordToken = createAsyncThunk("auth/password/token", async (data, thunkAPI) => {
     try {
         return await authService.forgotPassToken(data)
@@ -194,6 +201,25 @@ export const authSlice = createSlice({
                     toast.success("Add to Cart Successfully")
                 }
             }).addCase(addToCart.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+                if (state.isError === true) {
+                    toast.error(action.error)
+                }
+            })
+            .addCase(sendOtp.pending, (state) => {
+                state.isLoading = true;
+            }).addCase(sendOtp.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.otp = action.payload;
+                if (state.isSuccess === true) {
+                    toast.success("OTP SEND SUCCESSFULLY")
+                }
+            }).addCase(sendOtp.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;

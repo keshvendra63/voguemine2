@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import './checkout.css'
+import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Radio from '@mui/material/Radio';
@@ -8,19 +9,24 @@ import AddCardIcon from '@mui/icons-material/AddCard';
 import CircularProgress from '@mui/material/CircularProgress';
 import {useFormik} from 'formik'
 import * as yup from 'yup'
+import VerifiedIcon from '@mui/icons-material/Verified';
 import { useDispatch,useSelector } from 'react-redux'
 import {useLocation, useNavigate} from 'react-router-dom'
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import InputLabel from '@mui/material/InputLabel';
 import { TextField } from '@mui/material';
 import axios from 'axios'
 import {config} from '../../utils/axiosConfig'  
-import {createAnOrder, deleteCart, getUserCartProduct, resetState,createAbondend} from '../../features/user/userSlice'
+import {createAnOrder, deleteCart, getUserCartProduct, resetState,createAbondend,sendOtp} from '../../features/user/userSlice'
 import {getAllCoupons,getACoupon} from '../../features/coupon/couponSlice'
 import { toast } from 'react-toastify';
 import QR from '../../images/qr.jpg'
 
 
 const Checkout = () => {
-
+const otpState=useSelector((state)=>state?.auth?.otp)
     const [firstname,setFirstname]=useState("")
     const [lastname,setLastname]=useState("")
     const [success,setSuccess]=useState(false)
@@ -33,6 +39,7 @@ const Checkout = () => {
     const [city,setCity]=useState("")
     const [state,setState]=useState("")
     const [pincode,setPincode]=useState("")
+    const [verified,setVerified]=useState(false)
 
     const [cartItems, setCartItems] = useState([]);
 const [ship,setShip]=useState({})
@@ -59,6 +66,9 @@ useEffect(()=>{
         const updatedOrder = [...existingOrder, product];
         localStorage.setItem("orders", JSON.stringify(updatedOrder));
       };
+      const [verify,setVerify]=useState("SEND OTP")
+      const [otp,setOtp]=useState()
+      const [noneOtp,setNoneotp]=useState("none")
       const [paySpin,setPaySpin]=useState(false)
     const [totalAmount,setTotalAmount]=useState(null)
     const [orderType,setOrderType]=useState("COD")
@@ -180,6 +190,9 @@ const completeOrder=()=>{
     if(firstname==="" || lastname==="" || email==="" || phone==="" || mobile==="" || address==="" || city==="" || state==="" || pincode===""){
         toast.info("Please Fill All Information")
     }
+    else if(verified===false){
+        toast.error("Please Verify First")
+    }
     else{
             setPaySpin(true)
            localStorage.setItem("address",JSON.stringify({
@@ -192,6 +205,7 @@ const completeOrder=()=>{
             city:city,
             state:state,
             pincode:pincode,
+            isVarified:verified
            }))
            if(cartItems?.length>=1){
             setSuccess(true)
@@ -344,8 +358,72 @@ useEffect(() => {
         }
     };
 }, [location]);
+const [isRead,setIsread]=useState(false)
+const initialTime = 120;
 
+  // State to keep track of the remaining time
+  const [timeLeft, setTimeLeft] = useState(initialTime);
 
+    // Only set the interval if timeLeft is greater than 0
+   
+
+    const [intervalId, setIntervalId] = useState(null);
+
+const sendOtps=async()=>{
+    if(phone?.length<10){
+        toast.info("Please Fill Correct Number")
+    }
+    else{
+        setVerify("Verify")
+    setNoneotp("block")
+    await dispatch(sendOtp(phone))
+    setTimeLeft(initialTime); // Reset the countdown timer
+
+    // Clear any existing interval (safety check)
+    if (intervalId) clearInterval(intervalId);
+
+    // Start a new countdown timer
+    const id = setInterval(() => {
+        setTimeLeft((prevTime) => {
+            if (prevTime <= 1) {
+                clearInterval(id); // Stop the countdown timer when it reaches zero
+                return 0;
+            }
+            return prevTime - 1;
+        });
+    }, 1000);
+    setIntervalId(id);
+    }
+
+}
+
+const verifyOtp=()=>{
+    console.log(otpState,otp)
+
+if(otpState?.otps===parseInt(otp)){
+    setVerified(true)
+    toast.success("VERIFIED")
+    setIsread(true)
+    
+
+}
+else{
+    setVerified(false)
+    setIsread(true)
+    toast.error("Wrong OTP")
+}
+}
+useEffect(() => {
+    // Cleanup interval on component unmount
+    return () => {
+        if (intervalId) clearInterval(intervalId);
+    };
+}, [intervalId]);
+const formatTime = () => {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+  };
 
     return (
         <div className='margin-section checkout'>
@@ -446,12 +524,51 @@ useEffect(() => {
                         /></div>
                     </div>
                     <div className="mobile input">
-                    <TextField
+
+                    <FormControl>
+                    <InputLabel htmlFor="standard-adornment-password">Phone</InputLabel>
+
+                    <OutlinedInput
+                    
+                    style={{width:'100%',display:'grid',gridTemplateColumns:'11fr 1fr'}}
+           type="number"
+           name='phone'
+           value={phone} onChange={(e)=>setPhone(e.target.value)}
+           readOnly={isRead}
+            endAdornment={
+              <InputAdornment position="end">
+
+                <IconButton
+                style={{display:verified===true?"block":"none"}}
+                  aria-label="toggle password visibility"
+                  edge="end"
+                >
+                <VerifiedIcon className='v-tag'/>
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+                    </FormControl>
+                    {/* <TextField
                             label="Phone*"
                             type="number"
                             name='phone'
                             value={phone} onChange={(e)=>setPhone(e.target.value)}
-                        /> 
+                            
+                        />  */}
+                        <div className='phone-veri' style={{display:verified===true?"none":"flex"}}>
+                            <input type="number" value={otp} placeholder='Enter OTP' onChange={(e)=>setOtp(e.target.value)}  style={{display:noneOtp}} maxLength={6}/>
+                            {
+                                timeLeft>0?                            <button onClick={verify === "SEND OTP" ? sendOtps : verifyOtp} >{verify}</button>
+:
+<button onClick={sendOtps} >SEND AGAIN</button>
+
+                            }
+                            {
+                                timeLeft>0? <p style={{display:verify==="SEND OTP"?"none":"block"}}>Try Again in: {formatTime()}</p>:
+""                            }
+                           
+                        </div>
 
                     </div>
                     <div className="alter-mobile input">

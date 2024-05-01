@@ -31,6 +31,10 @@ var orderSchema = new mongoose.Schema(
         type:Number,
         required:true
       },
+      isVarified:{
+        type:Boolean,
+        required:true,
+      },
       address:{
         type:String,
         required:true

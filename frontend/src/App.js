@@ -44,8 +44,8 @@ function App() {
         <Route path='/accessories' element={<Accessories/>}/>
         <Route path='/cart' element={<Cart/>}/>
         <Route path="/products" element={<Products/>}/>
-        <Route path="/collections/men-premium-shirt" element={<Products/>}/>
-        <Route path="/collections/men-premium-half-sleeve-shirt" element={<Products/>}/>
+        <Route path="/collections/:handle" element={<Products/>}/>
+        {/* <Route path="/collections/men-premium-half-sleeve-shirt" element={<Products/>}/>
         <Route path="/collections/t-shirts" element={<Products/>}/>
         <Route path="/collections/mens-sweatshirts" element={<Products/>}/>
         <Route path="/collections/loafers-for-men" element={<Products/>}/>
@@ -86,7 +86,7 @@ function App() {
         <Route path="/collections/low-ankle" element={<Products/>}/>
         <Route path="/collections/low-cut" element={<Products/>}/>
         <Route path="/collections/anklet" element={<Products/>}/>
-        <Route path="/collections/crew" element={<Products/>}/>
+        <Route path="/collections/crew" element={<Products/>}/> */}
         <Route path="/products/:handle" element={<SingleProduct/>}/>
         <Route path="/wishlist" element={<Wishlist/>}/>
         <Route path='/blogs' element={<Blogs/>}/>
