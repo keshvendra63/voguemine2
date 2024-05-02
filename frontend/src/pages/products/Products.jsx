@@ -22,6 +22,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 const Products = () => {
   const collectionState=useSelector((state)=>state?.collection?.singleCollection)
+  const bannerState=useSelector((state)=>state?.banner?.banner)
   const navigate=useNavigate()
   const [filter,setFilter]=useState(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
     const [collectionName,setCollectionName]=useState("")
@@ -529,7 +530,7 @@ const DrawerList = (
     return (
         <div className='Products'>
             <div className="category-banner">
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712382538/a36_f0eblb.jpg" alt="" />
+                <img src={bannerState[35]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1712382538/a36_f0eblb.jpg"} alt={bannerState[35]?.alt} />
             </div>
             <div className="products-box margin-section">
  

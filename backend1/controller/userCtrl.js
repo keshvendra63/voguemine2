@@ -691,7 +691,104 @@ const processOrder = async (orderItems) => {
     console.error("Error updating inventory:", error.message);
   }
 };
+const sendDelivery = asyncHandler(async (req, res) => {
+  const { name, ordernumber, number,orderId } = req.body;
+  try {
+      const delightChatResponse = await axios.post('https://api.delightchat.io/api/v1/public/message', {
+          country_code: '+91', // Update the country code if necessary
+          phone_number: number, // Update with the phone number to send the confirmation to
+          automation_id: 'ea986ce8-4b37-451d-ad5d-c9ccedddf447', // Update with your DelightChat automation ID
+          message_data: {
+              // Add any data you want to include in the message
+              1: name,
+              2: ordernumber,
+              // Add more data as needed
+          }
+      }, {
+          headers: {
+              'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
+              'Content-Type': 'application/json'
+          }
+      });
+      const updatedOrder = await Order.findByIdAndUpdate(orderId, { orderStatus: 'Delivered' }, {
+        new: true,
+      });
+      // Only send necessary data from the response to the client
+      if (delightChatResponse.data) {
+          res.json(delightChatResponse.data); // Send JSON data only
+      } else {
+          res.status(404).send('No data found');
+      }
+  } catch (error) {
+      console.error('Failed to send message:', error);
+      res.status(500).send(error.message);
+  }
+});
 
+
+
+const sendTracking = asyncHandler(async (req, res) => {
+  try {
+    const { name, ordernumber, partner, link, number,orderId } = req.body;
+
+      const delightChatResponse = await axios.post('https://api.delightchat.io/api/v1/public/message', {
+          country_code: '+91', // Update the country code if necessary
+          phone_number: number, // Update with the phone number to send the confirmation to
+          automation_id: 'cf8fa126-e0ef-46b8-8575-986a45faf4a9', // Update with your DelightChat automation ID
+          message_data: {
+              // Add any data you want to include in the message
+              1: name,
+              2: ordernumber,
+              3: partner,
+              4: link,
+              // Add more data as needed
+          }
+      }, {
+          headers: {
+              'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
+              'Content-Type': 'application/json'
+          }
+      });
+      const updatedOrder = await Order.findByIdAndUpdate(orderId, { orderStatus: 'Fullfilled' }, {
+        new: true,
+      });
+      // Only send necessary data from the response to the client
+      if (delightChatResponse.data) {
+          res.json(delightChatResponse.data); // Send JSON data only
+      } else {
+          res.status(404).send('No data found');
+      }
+  } catch (error) {
+      console.error('Failed to send message:', error);
+      res.status(500).send(error.message);
+  }
+});
+
+const msgAfter3hour=asyncHandler(async(firstname,ordernumber,phone)=>{
+    const delightChatResponse = await axios.post('https://api.delightchat.io/api/v1/public/message', {
+        country_code: '+91', // Update the country code if necessary
+        phone_number:`${phone}`, // Update with the phone number to send the confirmation to
+        automation_id: '8eb38046-7fc0-4ba0-a529-f9f9bf5a63fe', // Update with your DelightChat automation ID
+        message_data: {
+          // Add any data you want to include in the message
+          1: `${firstname}`,
+          2: `${ordernumber}`,
+
+
+          // Add more data as needed
+        }
+      }, {
+        headers: {
+          'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
+          'Content-Type': 'application/json'
+        }
+      });
+      if (delightChatResponse.data) {
+        console.log("success") // Send JSON data only
+    } else {
+      console.log("declined") // Send JSON data only
+    }  
+})
 
 const createOrder=asyncHandler(async(req,res)=>{
   const {shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo,tag}=req.body;
@@ -708,15 +805,15 @@ const createOrder=asyncHandler(async(req,res)=>{
       const delightChatResponse = await axios.post('https://api.delightchat.io/api/v1/public/message', {
         country_code: '+91', // Update the country code if necessary
         phone_number:`${shippingInfo?.phone}`, // Update with the phone number to send the confirmation to
-        automation_id: '98f4a7a2-9ee8-4f1b-a463-2052bd7d3d24', // Update with your DelightChat automation ID
+        automation_id: '0eed4e28-34c1-4494-8026-90439f94fd50', // Update with your DelightChat automation ID
         message_data: {
           // Add any data you want to include in the message
           1: `${shippingInfo.firstname}`,
-          2: `Voguemine`,
-          3: `${order.orderNumber}`,
-          4: `${finalAmount}`,
-          5:orderItemsString,
-          6: `${shippingInfo.address}`,
+          2: `${order.orderNumber}`,
+          3: `${finalAmount}`,
+          4: orderItemsString,
+          5:`${orderType}`,
+          6: `${shippingInfo.address} ${shippingInfo.city} ${shippingInfo.state} ${shippingInfo.pincode}`,
 
           // Add more data as needed
         }
@@ -745,6 +842,9 @@ const createOrder=asyncHandler(async(req,res)=>{
       });
     }
     await processOrder(orderItems);
+    setTimeout(() => {
+      msgAfter3hour(shippingInfo.firstname,order.orderNumber,shippingInfo.phone)
+    }, 7200000);
 
     res.json({
       order,
@@ -1176,5 +1276,7 @@ module.exports = {
   cancelOrder,
   retrieveOrder,
   changeOrderTypeToPrepaid,
-  changeOrderTypeToCOD
+  changeOrderTypeToCOD,
+  sendTracking,
+  sendDelivery
 };

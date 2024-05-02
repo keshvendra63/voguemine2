@@ -10,11 +10,12 @@ import {getAllCollection} from '../../features/collection/collectionSlice'
 import { useDispatch, useSelector } from 'react-redux'
 const Kids = () => {
     const collectionState=useSelector((state)=>state?.collection?.collection)
+    const bannerState=useSelector((state)=>state?.banner?.banner)
 
   return (
     <div className='categoryPage'>
     <div className="category-banner">
-      <img src={banner} alt="" />
+    <img src={bannerState[31]?.images[0]?.url || banner} alt={bannerState[31]?.alt} />
     </div>
     <div className="collections margin-section">
     <Link to={`/collections/${collectionState[16]?.handle}`}>

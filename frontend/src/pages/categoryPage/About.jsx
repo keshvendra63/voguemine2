@@ -5,13 +5,15 @@ import about_img from '../../images/about-img.jpg'
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import { useDispatch, useSelector } from 'react-redux'
 
 const About = () => {
+  const bannerState=useSelector((state)=>state?.banner?.banner)
 
   return (
     <div className='categoryPage'>
             <div className="category-banner">
-        <img src={banner} alt="" />
+            <img src={bannerState[33]?.images[0]?.url || banner} alt={bannerState[33]?.alt} />
       </div>
       <div className="about margin-section">
         <div className="left-about">
@@ -48,7 +50,7 @@ const About = () => {
       </div>
 
 <div className="c-banner" style={{marginBottom:'50px'}}>
-  <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514549/00005_qdvxte.jpg" alt="" style={{width:'100%'}}/>
+  <img src={bannerState[34]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514549/00005_qdvxte.jpg"} alt={bannerState[34]?.alt} style={{width:'100%'}}/>
 </div>
 
       <div className="ourteam">

@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import {getUserCartProduct, removeFromCart, updateQuantityFromCart} from '../../features/user/userSlice'
 import { toast } from 'react-toastify';
 const Cart = () => {
+    const bannerState=useSelector((state)=>state?.banner?.banner)
+
     const customer=JSON.parse(localStorage.getItem("customer"))
 const [cartItems, setCartItems] = useState([]);
 const [productUpdateDetail,setproductUpdateDetail]=useState(null)
@@ -88,7 +90,7 @@ const checkoutClick=()=>{
     return (
         <div className='cart'>
             <div className="category-banner">
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710505435/a34_pjehqe.jpg" alt="" />
+                <img src={bannerState[38]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710505435/a34_pjehqe.jpg"} alt={bannerState[38]?.alt} />
             </div>
             <h1 style={{textAlign:'center',margin:'20px 0',fontSize:'30px',display:'flex',alignItems:'center',justifyContent:'center'}}><LocalMallIcon style={{fontSize:'30px',marginRight:'10px'}}/> My Cart</h1>
             {

@@ -1,12 +1,16 @@
 import React from 'react'
 import './policy.css'
 import {useLocation,Link} from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+
 const Policies = () => {
   const location=useLocation()
+  const bannerState=useSelector((state)=>state?.banner?.banner)
+
   return (
     <div className='policies'>
          <div className="category-banner">
-        <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710505435/a35_qhi2xg.jpg" alt="" />
+        <img src={bannerState[36]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710505435/a35_qhi2xg.jpg"} alt={bannerState[36]?.alt} />
       </div>
       {
         location.pathname==="/pages/shipping-policy"?
