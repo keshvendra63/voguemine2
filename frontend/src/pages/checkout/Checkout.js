@@ -102,7 +102,7 @@ useEffect(()=>{
     };
     const applyCoupon=()=>{
         couponState?.map((item)=>{
-            if(item?.name===coupon){
+            if((item?.name.toLowerCase())===(coupon.toLowerCase())){
                 if(item?.status==="active"){
                     if(item?.discounttype==="freeShip"){
                         setShippingCost(0)
@@ -142,6 +142,7 @@ useEffect(()=>{
                             setCouponAmount(parseInt(item?.discount))
                         }
                     }
+                    toast.success("Coupon Code Applied")
                 }
             }
             // else{
@@ -368,7 +369,23 @@ const initialTime = 120;
    
 
     const [intervalId, setIntervalId] = useState(null);
-
+    function normalizePhoneNumber(phoneNumber) {
+        // Remove all non-digit characters from the phone number
+        let cleanNumber = phoneNumber.replace(/\D/g, '');
+    
+        // Check if the number starts with '91' (India's country code) and is longer than 10 digits
+        if (cleanNumber.startsWith('91') && cleanNumber.length > 10) {
+            // Remove the '91' prefix
+            cleanNumber = cleanNumber.substring(2);
+        } else if (cleanNumber.startsWith('0') && cleanNumber.length > 10) {
+            // Remove the leading '0' if any (common in some domestic formats)
+            cleanNumber = cleanNumber.substring(1);
+        }
+    
+        // Return the cleaned up number assuming it should be 10 digits long
+        return cleanNumber;
+    }
+    
 const sendOtps=async()=>{
     if(phone?.length<10){
         toast.info("Please Fill Correct Number")
@@ -376,7 +393,7 @@ const sendOtps=async()=>{
     else{
         setVerify("Verify")
     setNoneotp("block")
-    await dispatch(sendOtp(phone))
+    await dispatch(sendOtp(normalizePhoneNumber(phone)))
     setTimeLeft(initialTime); // Reset the countdown timer
 
     // Clear any existing interval (safety check)

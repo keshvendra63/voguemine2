@@ -2,6 +2,7 @@ import React,{useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {getAProduct,getAllProducts,rating, resetState } from '../../features/products/productSlice';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import './singleproduct.css'
@@ -373,7 +374,12 @@ const productStat = useSelector((state) => state?.product);
 ""
             }
 
+<div className="coupon-code">
+  <p><span><LocalOfferIcon className='ico'/></span>Buy 1 Get 5% Off- <span>SAVE5</span></p>
+  <p><span><LocalOfferIcon className='ico'/></span>Buy 3 Get 10% Off- <span>MEGA10</span></p>
+  <p><span><LocalOfferIcon className='ico'/></span><span>Free Shipping</span> on Prepaid Orders</p>
 
+</div>
             {
               
               sold==="block" ? <p style={{textAlign:'center',margin:"15px auto",color:'red',fontWeight:600,fontSize:'20px'}}>This size is not available</p>:

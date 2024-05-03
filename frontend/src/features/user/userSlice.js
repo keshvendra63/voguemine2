@@ -103,6 +103,13 @@ export const forgotPasswordToken = createAsyncThunk("auth/password/token", async
         return thunkAPI.rejectWithValue(error)
     }
 })
+export const siteMap = createAsyncThunk("auth/sitemap", async (thunkAPI) => {
+    try {
+        return await authService.sitemap()
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+    }
+})
 export const resetState = createAction("Reset_all");
 
 const getCustomerfromLocalStorage = localStorage.getItem("customer")
@@ -227,6 +234,21 @@ export const authSlice = createSlice({
                 if (state.isError === true) {
                     toast.error(action.error)
                 }
+            })
+            .addCase(siteMap.pending, (state) => {
+                state.isLoading = true;
+            }).addCase(siteMap.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.sitemap = action.payload;
+                
+            }).addCase(siteMap.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+               
             })
             .addCase(removeFromCart.pending, (state) => {
                 state.isLoading = true;

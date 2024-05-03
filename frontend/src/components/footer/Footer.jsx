@@ -64,7 +64,7 @@ const Footer = () => {
       </Row>
     </Container>
     <hr style={{color:'white'}}/>
-    <p>&copy; 2024, Voguemine</p>
+    <p className='copyright'>&copy; 2024, Voguemine</p>
     <div className="arrow-top">
       <ArrowUpwardIcon onClick={handleButtonClick} style={{fontSize:'25px'}}/>
       </div>

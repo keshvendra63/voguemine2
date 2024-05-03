@@ -45,11 +45,14 @@ const {
   changeOrderTypeToPrepaid,
   changeOrderTypeToCOD,
   sendTracking,
-  sendDelivery
+  sendDelivery,
+  getCustomDateRangeOrderIncome,
+  fData
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const {checkout,paymentVerification, phonePe, redirectUri}=require("../controller/paymentCtrl");
 const sendOtp = require("../controller/otpController");
+const {siteMap}=require('../controller/sitemapCtrl')
 const router = express.Router();
 router.post("/register", createUser);
 router.post("/forgot-password-token", forgotPasswordToken);
@@ -90,12 +93,14 @@ router.get("/getYearlyTotalOrders",authMiddleware,getYearlyTotalOrders)
 router.get("/getTodayTotalOrders",authMiddleware,getTodaysOrderIncome)
 router.get("/getWeekTotalOrders",authMiddleware,getWeekWiseOrderIncome)
 router.get("/getYesterdayTotalOrders",authMiddleware,getYesterdayOrderIncome)
+router.get("/getCustomTotalOrders",getCustomDateRangeOrderIncome)
+router.get("/graphData",fData)
 
 router.get("/refresh", handleRefreshToken);
 router.get("/logout", logout);
 router.get("/wishlist", authMiddleware, getWishlist);
 router.get("/cart", authMiddleware, getUserCart);
-
+router.get("/sitemap.xml",siteMap)
 router.get("/:id", authMiddleware, isAdmin, getaUser);
 router.delete("/empty-cart", authMiddleware,emptyCart);
 router.delete("/delete-product-cart/:cartItemId", authMiddleware, removeProductFromCart);

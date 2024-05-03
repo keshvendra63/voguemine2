@@ -29,6 +29,7 @@
     "nvm": "^0.0.4",
     "razorpay": "^2.9.2",
     "sharp": "^0.31.2",
+    "sitemap": "^7.1.1",
     "slugify": "^1.6.5",
     "socket.io": "^4.7.5",
     "uniqid": "^5.4.0",

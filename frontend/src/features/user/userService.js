@@ -117,7 +117,13 @@ const emptyCart=async(data)=>{
         return response.data
     }
 }
-
+const sitemap=async()=>{
+    const response=await axios.get(`${base_url}user/sitemap.xml`)
+    if(response.data){
+       
+        return response.data
+    }
+}
 export const authService={
     register,
     login,
@@ -132,5 +138,6 @@ export const authService={
     forgotPassToken,
     emptyCart,
     createAbondend,
-    getOtp
+    getOtp,
+    sitemap
 }

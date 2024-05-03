@@ -91,6 +91,18 @@
     width: 100%;
     text-align: center;
 }
+.checkout-btn{
+    width: 100%;
+    text-align: center;
+    padding: 8px;
+    font-weight: 500;
+    transition: all 0.5s;
+}
+.checkout-btn:hover{
+    background-color: black;
+    color: white;
+    letter-spacing: 3px;
+}
 .cart-content .checkouts a button{
     width: 100%;
     text-align: center;

@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from 'react'
 import './cart.css'
 import LocalMallIcon from '@mui/icons-material/LocalMall';
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {getUserCartProduct, removeFromCart, updateQuantityFromCart} from '../../features/user/userSlice'
 import { toast } from 'react-toastify';
@@ -75,7 +75,7 @@ useEffect (()=> {
         setTotalAmount(sum)
     }
 },[cartItems])
-
+const navigate=useNavigate()
 const checkoutClick=()=>{
     window.snaptr('track', 'START_CHECKOUT', 
         {'price':totalAmount, 
@@ -94,7 +94,7 @@ const checkoutClick=()=>{
             </div>
             <h1 style={{textAlign:'center',margin:'20px 0',fontSize:'30px',display:'flex',alignItems:'center',justifyContent:'center'}}><LocalMallIcon style={{fontSize:'30px',marginRight:'10px'}}/> My Cart</h1>
             {
-               (cartItems?.length !== null || cartItems?.length !== 0)&&
+               cartItems?.length !== 0?
                 <div className="cart-content margin-section">
                 <div className="left-cart">
                     <hr />
@@ -150,6 +150,11 @@ const checkoutClick=()=>{
                 
                     
                     
+            </div>
+            :
+            <div className='margin-section' style={{textAlign:'center'}}>
+                <p style={{marginBottom:'20px',fontSize:'30px',fontWeight:'500'}}>NO DATA</p>
+                <button className='checkout-btn' onClick={()=>navigate("/home")}>CONTINUE SHOPPING</button>
             </div>
                     
                 

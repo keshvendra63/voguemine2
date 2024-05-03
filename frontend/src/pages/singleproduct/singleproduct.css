@@ -14,6 +14,26 @@
     max-height: 100%;
     overflow: hidden;
 }
+.single-product .coupon-code{
+    margin: 10px 0;
+}
+.single-product .coupon-code p{
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    /* font-size: 15px; */
+}
+.single-product .coupon-code p span:nth-child(1){
+    margin-right: 5px;
+}
+.single-product .coupon-code p span:nth-child(2){
+    font-weight: 500;
+    margin: 0 5px;
+}
+.single-product .coupon-code p span .ico{
+    font-size: 16px;
+
+}
 .single-product .product .prdt-left .thumbs{
     margin:20px 0;
     display: flex;  
@@ -245,6 +265,30 @@ margin-bottom: 0;
 }
 
 @media screen and (max-width:950px) {
+    .single-product .product .prdt-right .buy-btn{
+        position: fixed;
+        left: 0;
+        bottom: -10px;
+        width: 100%;
+        align-items: center;
+        flex-direction: row;
+        z-index: 1;
+        margin-top: 100px;
+    }
+    .single-product .product .prdt-right .buy-btn .btn{
+        width: 50%;
+        padding: 15px 0;
+        border-radius: 0;
+    }
+    .single-product .product .prdt-right .buy-btn .btn:nth-child(1){
+        background-color: black;
+        color: white;
+    }
+    .single-product .product .prdt-right .buy-btn .btn:nth-child(2){
+        background-color: #ffbc21;
+        border: 3px solid #ffbc21;
+        color: black;
+    }
     .single-product .product{
         grid-template-columns: 1fr;
     }

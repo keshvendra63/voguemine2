@@ -4,6 +4,7 @@
     margin-top: 50px;
     position: relative;
     font-family: var(--heading-font);
+    z-index: 2;
 }
 .footer .container .row{
     display: grid;
@@ -57,6 +58,12 @@ margin-top: 15px;
 
 
 @media screen and (max-width:950px) {
+    .copyright{
+        margin-bottom: 50px;
+    }
+    .arrow-top{
+        bottom: 70px;
+    }
     .footer .container .row{
         display: grid;
         grid-template-columns: repeat(2,1fr);

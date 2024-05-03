@@ -955,7 +955,59 @@ const getSingleAbandoned=asyncHandler(async(req,res)=>{
     throw new Error(error)
   }
 })
+const getStartDate = (daysAgo) => {
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  date.setHours(18,30,0)
+  return date;
+};
 
+// Create the aggregation pipeline for a given time unit and number of days ago
+const createAggregationPipeline = (startDate, timeUnit) => {
+  return [
+    {
+      $match: {
+        createdAt: { $gte: startDate }
+      }
+    },
+    {
+      $group: {
+        _id: {
+          timeUnit: {
+            $dateTrunc: {
+              date: "$createdAt",
+              unit: timeUnit,
+              timezone: "Asia/Kolkata" // Adjust timezone according to your location
+            }
+          },
+          orderType: "$orderType"
+        },
+        totalAmount: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        totalItems: { $sum: { $size: "$orderItems" } }
+      }
+    },
+    {
+      $sort: { "_id.timeUnit": 1 } // Sort results by the time unit
+    }
+  ];
+};
+const fData=asyncHandler(async (req, res) => {
+  const daysStartDate = getStartDate(4); // Last 4 days
+  const weeksStartDate = getStartDate(28); // Last 4 weeks
+  const monthsStartDate = getStartDate(120); // Last 4 months
+
+  // Aggregation for each period
+  const dailyData = await Order.aggregate(createAggregationPipeline(daysStartDate, 'day'));
+  const weeklyData = await Order.aggregate(createAggregationPipeline(weeksStartDate, 'week'));
+  const monthlyData = await Order.aggregate(createAggregationPipeline(monthsStartDate, 'month'));
+
+  res.json({
+    dailyStats: dailyData,
+    weeklyStats: weeklyData,
+    monthlyStats: monthlyData
+  });
+})
 
 const getAllOrders = asyncHandler(async (req, res) => {
   const limit = parseInt(req.query.limit) || 50; // Number of items per page
@@ -1026,6 +1078,8 @@ const getMonthWiseOrderIncome=asyncHandler(async(req,res)=>{
  
 const currentDate = new Date();
 currentDate.setDate(1);
+currentDate.setDate(currentDate.getDate()-1)
+currentDate.setHours(18,31,0)
 
   const data=await Order.aggregate([
     {
@@ -1065,19 +1119,25 @@ const getYearlyTotalOrders=asyncHandler(async(req,res)=>{
   const monthNames=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
 
   let d=new Date();
-  let endDate="";
+  let endDate=new Date(d);
   d.setDate(1)
   for (let index = 0; index < 11; index++) {
     d.setMonth(d.getMonth()-1)
-    endDate=monthNames[d.getMonth()]+" "+d.getFullYear()
     
   }
+  // endDate=monthNames[d.getMonth()]+" "+d.getFullYear()
+  d.setMonth(11)
+  d.setDate(30)
+  d.setHours(18,30,0)
+  endDate.setMonth(11)
+  endDate.setDate(30)
+  endDate.setHours(18,29,0)
   const data=await Order.aggregate([
     {
       $match:{
         createdAt:{
-          $lte:new Date(),
-          $gte:new Date(endDate)
+          $lte:endDate,
+          $gte:d
         },
         orderType: { $ne: "Cancelled" } // Exclude orders with the "Cancelled" tag
 
@@ -1113,7 +1173,6 @@ const getTodaysOrderIncome = asyncHandler(async (req, res) => {
 // Set time to 11:59:59.999 PM IST
 const startOfDayIST = new Date(today);
   startOfDayIST.setHours(18, 29, 59, 999)
-  console.log(startOfDay,startOfDayIST)
   const data = await Order.aggregate([
     {
       $match: {
@@ -1151,9 +1210,10 @@ const startOfDayIST = new Date(today);
 const getWeekWiseOrderIncome = asyncHandler(async (req, res) => {
   // Get the start and end dates for the current week
   const today = new Date();
-  const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()); // Start of the week (Sunday)
-  const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (6 - today.getDay())); // End of the week (Saturday)
-
+  const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()); 
+  startOfWeek.setHours(18,30,0)// Start of the week (Sunday)
+  const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (6 - today.getDay())); 
+  endOfWeek.setHours(18,29,0)// End of the week (Saturday)
   const data = await Order.aggregate([
     {
       $match: {
@@ -1230,6 +1290,55 @@ const getYesterdayOrderIncome = asyncHandler(async (req, res) => {
   res.json(data);
 });
 
+const getCustomDateRangeOrderIncome = asyncHandler(async (req, res) => {
+  // Extract startDate and endDate from request body or query string
+  const { startDate, endDate } = req.query; // or req.body, depending on how you send data
+
+  // Convert startDate and endDate to Date objects
+  const start = new Date(startDate);
+  start.setDate(start.getDate()-1)
+  start.setHours(18, 30, 0, 0); // Optional: set to start of day
+  const end = new Date(endDate);
+  end.setHours(18, 29, 0, 0); // Optional: set to end of day
+  console.log(start,end)
+
+  // Ensure dates are valid
+  if (!start.getTime() || !end.getTime()) {
+    return res.status(400).json({ message: "Invalid dates provided." });
+  }
+  const data = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: start,
+          $lte: end
+        },
+        orderType: { $ne: "Cancelled" } // Exclude orders with the "Cancelled" tag
+      }
+    },
+    {
+      $group: {
+        _id: null, // Grouping by null means aggregating all documents that match the filter
+        totalIncome: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        items: { $push: "$orderItems" }
+      }
+    },
+    {
+      $project: {
+        _id: 0, // Exclude _id from results
+        totalIncome: 1,
+        totalCount: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Calculate the total number of items
+      }
+    }
+  ]);
+
+  res.json(data);
+});
+
+
 
 
 module.exports = {
@@ -1278,5 +1387,7 @@ module.exports = {
   changeOrderTypeToPrepaid,
   changeOrderTypeToCOD,
   sendTracking,
-  sendDelivery
+  sendDelivery,
+  getCustomDateRangeOrderIncome,
+  fData
 };

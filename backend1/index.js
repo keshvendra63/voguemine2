@@ -32,6 +32,7 @@ app.use("/api/collection", collectionRouter);
 app.use("/api/banner", bannerRouter);
 app.use("/api/enquiry", enqRouter);
 app.use("/api/upload", uploadRouter);
+
 app.use(notFound);
 app.use(errorHandler);
 
