@@ -66,6 +66,22 @@ useEffect(()=>{
         const updatedOrder = [...existingOrder, product];
         localStorage.setItem("orders", JSON.stringify(updatedOrder));
       };
+      function normalizePhoneNumber(phoneNumber) {
+        // Remove all non-digit characters from the phone number
+        let cleanNumber = phoneNumber.replace(/\D/g, '');
+    
+        // Check if the number starts with '91' (India's country code) and is longer than 10 digits
+        if (cleanNumber.startsWith('91') && cleanNumber.length > 10) {
+            // Remove the '91' prefix
+            cleanNumber = cleanNumber.substring(2);
+        } else if (cleanNumber.startsWith('0') && cleanNumber.length > 10) {
+            // Remove the leading '0' if any (common in some domestic formats)
+            cleanNumber = cleanNumber.substring(1);
+        }
+    
+        // Return the cleaned up number assuming it should be 10 digits long
+        return cleanNumber;
+    }
       const [verify,setVerify]=useState("SEND OTP")
       const [otp,setOtp]=useState()
       const [noneOtp,setNoneotp]=useState("none")
@@ -201,7 +217,7 @@ const completeOrder=()=>{
             lastname:lastname,
             email:email,
             address:address,
-            phone:phone,
+            phone:normalizePhoneNumber(phone),
             mobile:mobile,
             city:city,
             state:state,
@@ -325,7 +341,7 @@ useEffect(()=>{
         firstname:firstname,
         lastname:lastname,
         email:email,
-        phone:phone,
+        phone:normalizePhoneNumber(phone),
         address:address,
         city:city,
         state:state,
@@ -369,22 +385,7 @@ const initialTime = 120;
    
 
     const [intervalId, setIntervalId] = useState(null);
-    function normalizePhoneNumber(phoneNumber) {
-        // Remove all non-digit characters from the phone number
-        let cleanNumber = phoneNumber.replace(/\D/g, '');
-    
-        // Check if the number starts with '91' (India's country code) and is longer than 10 digits
-        if (cleanNumber.startsWith('91') && cleanNumber.length > 10) {
-            // Remove the '91' prefix
-            cleanNumber = cleanNumber.substring(2);
-        } else if (cleanNumber.startsWith('0') && cleanNumber.length > 10) {
-            // Remove the leading '0' if any (common in some domestic formats)
-            cleanNumber = cleanNumber.substring(1);
-        }
-    
-        // Return the cleaned up number assuming it should be 10 digits long
-        return cleanNumber;
-    }
+
     
 const sendOtps=async()=>{
     if(phone?.length<10){
