@@ -55,6 +55,14 @@ var orderSchema = new mongoose.Schema(
         // required:true
       },
     },
+    trackingInfo:{
+      partner:{
+        type:String,
+      },
+      link:{
+        type:String,
+      },
+    },
     paymentInfo:{
       razorpayOrderId:{
         type:String,

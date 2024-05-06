@@ -749,7 +749,10 @@ const sendTracking = asyncHandler(async (req, res) => {
               'Content-Type': 'application/json'
           }
       });
-      const updatedOrder = await Order.findByIdAndUpdate(orderId, { orderStatus: 'Fullfilled' }, {
+      const updatedOrder = await Order.findByIdAndUpdate(orderId, { orderStatus: 'Fullfilled',trackingInfo:{
+        partner:partner,
+        link:link,
+      } }, {
         new: true,
       });
       // Only send necessary data from the response to the client

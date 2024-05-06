@@ -189,6 +189,12 @@ useEffect(()=>{
         setCouponAmount((totalAmount)/10)
         setPayMethod("phonepe")
     }
+    const hdfcClick=()=>{
+        setShippingCost(0)
+        setOrderType("Prepaid")
+        setCouponAmount((totalAmount)/10)
+        setPayMethod("hdfc")
+    }
 
     const finalAmount=shippingCost+totalAmount-couponAmount
     const dispatch=useDispatch();
@@ -296,6 +302,28 @@ const checkOutHandler=async(e)=>{
     axios.post("https://voguemine2.onrender.com/api/user/order/checkout",{amount:finalAmount,number:phone})
     .then(response=>{
         window.location.href=response.data
+    })
+    .catch(error=>{
+        console.log(error)
+    })
+
+
+        // console.log(result)
+// window.location.href=result.data.data.instrumentResponse.redirectInfo.url
+
+       }
+       if(payMethod==="hdfc"){
+        const data = {
+            orderCreationId: "Prepaid", // Set a placeholder value for order creation ID for COD orders
+            razorpayPaymentId: "hdfc", // Set a placeholder value for Razorpay payment ID for COD orders
+            razorpayOrderId: "hdfc", // Set a placeholder value for Razorpay order ID for COD orders
+        };
+        localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }));
+
+    axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.app.github.dev/api/user/order/hdfcPay",{amount:finalAmount})
+    .then(response=>{
+        window.location.href=response.data.payLink
+
     })
     .catch(error=>{
         console.log(error)
@@ -607,6 +635,15 @@ const formatTime = () => {
       >
         <div className="razorpay">
             <FormControlLabel value="razorpay" control={<Radio />} label="PhonePe Secure (UPI, Cards, Wallets, NetBanking)" disabled={false} onClick={phonepeClick}/>
+            {/* <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" /> */}
+            {/* <div className="bottom">
+                <AddCardIcon style={{fontSize:'50px'}}/>
+                <p>After clicking “Pay now”, you will be redirected to PhonePe Secure (UPI, Cards, Wallets, NetBanking) to complete your purchase securely.</p>
+                <p style={{color:'red',marginTop:'10px',fontWeight:500}}>* Due to some Banking issues, we are unable to capture paid orders. Please continue shopping with Cash on Delivery. Sorry for the inconvenience</p>
+            </div> */}
+        </div>
+        <div className="razorpay">
+            <FormControlLabel value="hdfc" control={<Radio />} label="HDFC Secure Payments" disabled={false} onClick={hdfcClick}/>
             {/* <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" /> */}
             {/* <div className="bottom">
                 <AddCardIcon style={{fontSize:'50px'}}/>

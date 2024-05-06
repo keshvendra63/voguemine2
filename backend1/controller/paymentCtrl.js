@@ -5,6 +5,8 @@ const axios = require("axios")
 const psaltIndex = 1
 const psalt = "b5efa4e8-7baf-49ec-b4d7-d059de7517ee"
 const uniqid = require("uniqid")
+const nodeCCAvenue=require('node-ccavenue')
+const CryptoJS=require('crypto-js')
 const phonePe = async (req, res) => {
    try{
     const payEndpoint = '/pg/v1/pay';
@@ -90,7 +92,80 @@ const redirectUri = async (req, res) => {
 }
 
 
+const hdfcPayment = async (req, res,next) => {
+
+    try {
+        const ccav = new nodeCCAvenue.Configure({
+            access_code:"AVKU78LD67AY95UKYA",
+          working_key:"01199B9C3D2E12F539A4A180EBFDF9F3",
+          merchant_id: "3447954",
+        });
+        const orderId = uniqid()
+
+        const orderParams = {
+          redirect_url: encodeURIComponent(
+            `https://probable-halibut-r94v5r7gwjrhxgvj-5000.app.github.dev/api/user/order/hdfcRes`
+          ),
+          cancel_url: encodeURIComponent(
+            `https://probable-halibut-r94v5r7gwjrhxgvj-3000.app.github.dev/checkout`
+          ),
+          merchant_id: "3447954",
+          order_id: orderId,
+          currency: "INR",
+          amount: req.body.amount,
+          language: "EN"
+
+        };
+        const encryptedOrderData = ccav.getEncryptedOrder(orderParams);
+        res.setHeader("content-type", "application/json");
+        res.status(200).json({
+          payLink: `https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&access_code=AVKU78LD67AY95UKYA&encRequest=${encryptedOrderData}`,
+        });
+
+      } catch (err) {
+        next(err);
+      }
+};
+
+const hdfcResponse = async (req, res, next) => {
+  try {
+      // Assuming `encResp` is correctly a base64/hex string of encrypted data
+      const encryption = req.query.encResp || req.body.encResp;
+
+      // Configure your CCAvenue access with the correct working key
+      const ccav = new nodeCCAvenue.Configure({
+          working_key: "01199B9C3D2E12F539A4A180EBFDF9F3",
+          merchant_id: "3447954",
+      });
+
+      // Attempt to decrypt and convert to JSON
+      var ccavResponse = ccav.redirectResponseToJson(encryption);
+      console.log(ccavResponse)
+
+      // You might need to handle the decryption or data conversion based on your setup
+      var ciphertext = CryptoJS.AES.encrypt(
+          JSON.stringify(ccavResponse),
+          "Voguemine"
+      ).toString();
+      // Redirect based on payment status
+      if (ccavResponse["order_status"] === "Success") {
+          res.redirect(`https://probable-halibut-r94v5r7gwjrhxgvj-3000.app.github.dev/`);
+      } else {
+          res.redirect(`https://probable-halibut-r94v5r7gwjrhxgvj-3000.app.github.dev/checkout`);
+      }
+  } catch (error) {
+      console.error("Error processing the HDFC response:", error);
+      next(error);
+  }
+};
+
+
+
+
+
 module.exports = {
     phonePe,
-    redirectUri
+    redirectUri,
+    hdfcPayment,
+    hdfcResponse
 }
