@@ -25,12 +25,24 @@ const {
   getMonthWiseOrderIncome,
   getYearlyTotalOrders,
   getAllOrders,
+  getMonthWiseOrderIncome1,
+  getYearlyTotalOrders1,
+  getAllOrders1,
+  getMonthWiseOrderIncome2,
+  getYearlyTotalOrders2,
+  getAllOrders2,
   getSingleOrder,
   updateOrder,
   emptyCart,
   getTodaysOrderIncome,
   getWeekWiseOrderIncome,
   getYesterdayOrderIncome,
+  getTodaysOrderIncome1,
+  getWeekWiseOrderIncome1,
+  getYesterdayOrderIncome1,
+  getTodaysOrderIncome2,
+  getWeekWiseOrderIncome2,
+  getYesterdayOrderIncome2,
   orderComment,
   orderHistory,
   createAbondend,
@@ -47,7 +59,11 @@ const {
   sendTracking,
   sendDelivery,
   getCustomDateRangeOrderIncome,
-  fData
+  fData,
+  getCustomDateRangeOrderIncome1,
+  fData1,
+  getCustomDateRangeOrderIncome2,
+  fData2
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const {checkout,paymentVerification, phonePe, redirectUri, hdfcPayment, hdfcResponse}=require("../controller/paymentCtrl");
@@ -82,6 +98,9 @@ router.post("/createhistory",authMiddleware,isAdmin,createHistory)
 router.get("/getmyorders", authMiddleware, getMyOrders);
 router.get("/getoldorders", authMiddleware,isAdmin, getOldOrders);
 router.get("/getallorders", authMiddleware, isAdmin, getAllOrders);
+router.get("/getallorders1", authMiddleware, isAdmin, getAllOrders1);
+router.get("/getallorders2", authMiddleware, isAdmin, getAllOrders2);
+
 router.get("/getaOrder/:id", authMiddleware, isAdmin, getSingleOrder);
 router.get("/getallabandoned", authMiddleware, isAdmin, getAllAbandoned);
 router.get("/getaAbandoned/:id", authMiddleware, isAdmin, getSingleAbandoned);
@@ -98,7 +117,20 @@ router.get("/getWeekTotalOrders",authMiddleware,getWeekWiseOrderIncome)
 router.get("/getYesterdayTotalOrders",authMiddleware,getYesterdayOrderIncome)
 router.get("/getCustomTotalOrders",getCustomDateRangeOrderIncome)
 router.get("/graphData",fData)
-
+router.get("/getMonthWiseOrderIncome1",authMiddleware,getMonthWiseOrderIncome1)
+router.get("/getYearlyTotalOrders1",authMiddleware,getYearlyTotalOrders1)
+router.get("/getTodayTotalOrders1",authMiddleware,getTodaysOrderIncome1)
+router.get("/getWeekTotalOrders1",authMiddleware,getWeekWiseOrderIncome1)
+router.get("/getYesterdayTotalOrders1",authMiddleware,getYesterdayOrderIncome1)
+router.get("/getCustomTotalOrders1",getCustomDateRangeOrderIncome1)
+router.get("/graphData1",fData1)
+router.get("/getMonthWiseOrderIncome2",authMiddleware,getMonthWiseOrderIncome2)
+router.get("/getYearlyTotalOrders2",authMiddleware,getYearlyTotalOrders2)
+router.get("/getTodayTotalOrders2",authMiddleware,getTodaysOrderIncome2)
+router.get("/getWeekTotalOrders2",authMiddleware,getWeekWiseOrderIncome2)
+router.get("/getYesterdayTotalOrders2",authMiddleware,getYesterdayOrderIncome2)
+router.get("/getCustomTotalOrders2",getCustomDateRangeOrderIncome2)
+router.get("/graphData2",fData2)
 router.get("/refresh", handleRefreshToken);
 router.get("/logout", logout);
 router.get("/wishlist", authMiddleware, getWishlist);

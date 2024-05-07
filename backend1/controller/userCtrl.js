@@ -800,7 +800,7 @@ const createOrder=asyncHandler(async(req,res)=>{
     const order=await Order.create({
       shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo,tag
     })
-    if (orderType === 'COD') {
+    if (tag === 'Voguemine') {
       const orderItemsString = orderItems.map((item) => {
         return `Name: ${item.product.title}, Color: ${item.color || ""}, Size: ${item.size || ""}`;
       }).join('\n');
@@ -967,10 +967,73 @@ const getStartDate = (daysAgo) => {
 
 // Create the aggregation pipeline for a given time unit and number of days ago
 const createAggregationPipeline = (startDate, timeUnit) => {
+
   return [
     {
       $match: {
         createdAt: { $gte: startDate }
+      }
+    },
+    {
+      $group: {
+        _id: {
+          timeUnit: {
+            $dateTrunc: {
+              date: "$createdAt",
+              unit: timeUnit,
+              timezone: "Asia/Kolkata" // Adjust timezone according to your location
+            }
+          },
+          orderType: "$orderType"
+        },
+        totalAmount: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        totalItems: { $sum: { $size: "$orderItems" } }
+      }
+    },
+    {
+      $sort: { "_id.timeUnit": 1 } // Sort results by the time unit
+    }
+  ];
+};
+const createAggregationPipeline1 = (startDate, timeUnit) => {
+
+  return [
+    {
+      $match: {
+        createdAt: { $gte: startDate },
+        tag: "LevishLuxury" // Match orders with a specific string in the 'tag' field
+      }
+    },
+    {
+      $group: {
+        _id: {
+          timeUnit: {
+            $dateTrunc: {
+              date: "$createdAt",
+              unit: timeUnit,
+              timezone: "Asia/Kolkata" // Adjust timezone according to your location
+            }
+          },
+          orderType: "$orderType"
+        },
+        totalAmount: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        totalItems: { $sum: { $size: "$orderItems" } }
+      }
+    },
+    {
+      $sort: { "_id.timeUnit": 1 } // Sort results by the time unit
+    }
+  ];
+};
+const createAggregationPipeline2 = (startDate, timeUnit) => {
+
+  return [
+    {
+      $match: {
+        createdAt: { $gte: startDate },
+        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
       }
     },
     {
@@ -1012,6 +1075,39 @@ const fData=asyncHandler(async (req, res) => {
   });
 })
 
+const fData1=asyncHandler(async (req, res) => {
+  const daysStartDate = getStartDate(4); // Last 4 days
+  const weeksStartDate = getStartDate(28); // Last 4 weeks
+  const monthsStartDate = getStartDate(120); // Last 4 months
+
+  // Aggregation for each period
+  const dailyData = await Order.aggregate(createAggregationPipeline1(daysStartDate, 'day'));
+  const weeklyData = await Order.aggregate(createAggregationPipeline1(weeksStartDate, 'week'));
+  const monthlyData = await Order.aggregate(createAggregationPipeline1(monthsStartDate, 'month'));
+
+  res.json({
+    dailyStats: dailyData,
+    weeklyStats: weeklyData,
+    monthlyStats: monthlyData
+  });
+})
+const fData2=asyncHandler(async (req, res) => {
+  const daysStartDate = getStartDate(4); // Last 4 days
+  const weeksStartDate = getStartDate(28); // Last 4 weeks
+  const monthsStartDate = getStartDate(120); // Last 4 months
+
+  // Aggregation for each period
+  const dailyData = await Order.aggregate(createAggregationPipeline1(daysStartDate, 'day'));
+  const weeklyData = await Order.aggregate(createAggregationPipeline1(weeksStartDate, 'week'));
+  const monthlyData = await Order.aggregate(createAggregationPipeline1(monthsStartDate, 'month'));
+
+  res.json({
+    dailyStats: dailyData,
+    weeklyStats: weeklyData,
+    monthlyStats: monthlyData
+  });
+})
+
 const getAllOrders = asyncHandler(async (req, res) => {
   const limit = parseInt(req.query.limit) || 50; // Number of items per page
   const page = parseInt(req.query.page) || 1; // Current page, default is 1
@@ -1041,6 +1137,71 @@ const getAllOrders = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
+const getAllOrders1 = asyncHandler(async (req, res) => {
+  const limit = parseInt(req.query.limit) || 50; // Number of items per page
+  const page = parseInt(req.query.page) || 1; 
+
+  try {
+    // Filter orders by tag
+    const tagFilter = { 'tag': "LevishLuxury" };
+
+    const count = await Order.countDocuments(tagFilter); // Total number of orders with the tag "Rampvalk"
+
+    // Calculate the skipping value based on the current page
+    const skip = count - (page * limit);
+
+    // Query orders with reverse pagination and tag filter
+    const orders = await Order.find(tagFilter)
+      .populate("user")
+      .populate("orderItems.product")
+      .skip(Math.max(skip, 0)) // Ensure skip is non-negative
+      .limit(limit);
+
+    res.json({
+      orders,
+      currentPage: page,
+      totalPages: Math.ceil(count / limit),
+      totalOrders: count
+    });
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+const getAllOrders2 = asyncHandler(async (req, res) => {
+  const limit = parseInt(req.query.limit) || 50; // Number of items per page
+  const page = parseInt(req.query.page) || 1; 
+
+  try {
+    // Filter orders by tag
+    const tagFilter = { 'tag': "VoguishHub" };
+
+    const count = await Order.countDocuments(tagFilter); // Total number of orders with the tag "Rampvalk"
+
+    // Calculate the skipping value based on the current page
+    const skip = count - (page * limit);
+
+    // Query orders with reverse pagination and tag filter
+    const orders = await Order.find(tagFilter)
+      .populate("user")
+      .populate("orderItems.product")
+      .skip(Math.max(skip, 0)) // Ensure skip is non-negative
+      .limit(limit);
+
+    res.json({
+      orders,
+      currentPage: page,
+      totalPages: Math.ceil(count / limit),
+      totalOrders: count
+    });
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 const getSingleOrder=asyncHandler(async(req,res)=>{
   const {id}=req.params
   try{
@@ -1341,6 +1502,565 @@ const getCustomDateRangeOrderIncome = asyncHandler(async (req, res) => {
   res.json(data);
 });
 
+const getMonthWiseOrderIncome1=asyncHandler(async(req,res)=>{
+  const monthNames=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
+
+
+const currentDate = new Date();
+currentDate.setDate(1);
+currentDate.setDate(currentDate.getDate()-1)
+currentDate.setHours(18,31,0)
+
+  const data=await Order.aggregate([
+    {
+      $match:{
+        createdAt:{
+          $lte:new Date(),
+          $gte:currentDate
+        },
+        orderType: { $ne: "Cancelled" } ,
+        tag: "LevishLuxury" // Match orders with a specific string in the 'tag' field
+        // Exclude orders with the "Cancelled" tag
+
+      }
+    },{
+      $group: {
+        _id: {
+          month: "$month"
+        },
+        amount: { $sum: "$finalAmount" },
+        count: { $sum: 1 },
+        items: { $push: "$orderItems" } // Accumulate all items in orders
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        amount: 1,
+        count: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
+      }
+    }
+  ])
+  res.json(data)
+})
+
+
+const getYearlyTotalOrders1=asyncHandler(async(req,res)=>{
+  const monthNames=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
+
+  let d=new Date();
+  let endDate=new Date(d);
+  d.setDate(1)
+  for (let index = 0; index < 11; index++) {
+    d.setMonth(d.getMonth()-1)
+    
+  }
+  // endDate=monthNames[d.getMonth()]+" "+d.getFullYear()
+  d.setMonth(11)
+  d.setDate(30)
+  d.setHours(18,30,0)
+  endDate.setMonth(11)
+  endDate.setDate(30)
+  endDate.setHours(18,29,0)
+  const data=await Order.aggregate([
+    {
+      $match:{
+        createdAt:{
+          $lte:endDate,
+          $gte:d
+        },
+        orderType: { $ne: "Cancelled" },
+        tag: "LevishLuxury" // Match orders with a specific string in the 'tag' field
+        // Exclude orders with the "Cancelled" tag
+
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        count: { $sum: 1 },
+        amount: { $sum: "$finalAmount" },
+        items: { $push: "$orderItems" } // Accumulate all items in orders
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        amount: 1,
+        count: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
+      }
+    }
+  ])
+  res.json(data)
+})
+const getTodaysOrderIncome1 = asyncHandler(async (req, res) => {
+  // Get current date in Indian Standard Time (IST)
+
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  const startOfDay = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 18, 30, 0); // Start of yesterday
+// Set time to 11:59:59.999 PM IST
+const startOfDayIST = new Date(today);
+  startOfDayIST.setHours(18, 29, 59, 999)
+  const data = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: startOfDay,
+          $lte: startOfDayIST
+        },
+        orderType: { $ne: "Cancelled" } ,
+        tag: "LevishLuxury" // Match orders with a specific string in the 'tag' field
+        // Exclude orders with the "Cancelled" tag
+
+
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalIncome: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        items: { $push: "$orderItems" }
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        totalIncome: 1,
+        totalCount: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } }
+      }
+    }
+  ]);
+
+  res.json(data);
+});
+
+const getWeekWiseOrderIncome1 = asyncHandler(async (req, res) => {
+  // Get the start and end dates for the current week
+
+  const today = new Date();
+  const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()); 
+  startOfWeek.setHours(18,30,0)// Start of the week (Sunday)
+  const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (6 - today.getDay())); 
+  endOfWeek.setHours(18,29,0)// End of the week (Saturday)
+  const data = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: startOfWeek,
+          $lte: endOfWeek
+        },
+        orderType: { $ne: "Cancelled" },
+        tag: "LevishLuxury" // Match orders with a specific string in the 'tag' field
+        // Exclude orders with the "Cancelled" tag
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalIncome: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        items: { $push: "$orderItems" } // Accumulate all items in orders
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        totalIncome: 1,
+        totalCount: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
+      }
+    }
+  ]);
+
+  res.json(data);
+});
+
+
+const getYesterdayOrderIncome1 = asyncHandler(async (req, res) => {
+
+  // Get yesterday's date
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 2);
+  today.setDate(today.getDate() - 1);
+  const startOfDayIST = new Date(today);
+  startOfDayIST.setHours(18, 29, 59, 999)
+  const startOfDay = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 18, 30, 0); // Start of yesterday
+  // const endOfDay = new Date(today.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59); // End of yesterday
+  const data = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: startOfDay,
+          $lte: startOfDayIST
+        },
+        orderType: { $ne: "Cancelled" },
+        tag: "LevishLuxury" // Match orders with a specific string in the 'tag' field
+        // Exclude orders with the "Cancelled" tag
+
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalIncome: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        items: { $push: "$orderItems" } // Accumulate all items in orders
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        totalIncome: 1,
+        totalCount: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
+      }
+    }
+  ]);
+
+  res.json(data);
+});
+
+const getCustomDateRangeOrderIncome1 = asyncHandler(async (req, res) => {
+  // Extract startDate and endDate from request body or query string
+  const { startDate, endDate } = req.query; // or req.body, depending on how you send data
+  // Convert startDate and endDate to Date objects
+  const start = new Date(startDate);
+  start.setDate(start.getDate()-1)
+  start.setHours(18, 30, 0, 0); // Optional: set to start of day
+  const end = new Date(endDate);
+  end.setHours(18, 29, 0, 0); // Optional: set to end of day
+  console.log(start,end)
+
+  // Ensure dates are valid
+  if (!start.getTime() || !end.getTime()) {
+    return res.status(400).json({ message: "Invalid dates provided." });
+  }
+  const data = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: start,
+          $lte: end
+        },
+        orderType: { $ne: "Cancelled" },
+        tag: "LevishLuxury" // Match orders with a specific string in the 'tag' field
+        // Exclude orders with the "Cancelled" tag
+      }
+    },
+    {
+      $group: {
+        _id: null, // Grouping by null means aggregating all documents that match the filter
+        totalIncome: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        items: { $push: "$orderItems" }
+      }
+    },
+    {
+      $project: {
+        _id: 0, // Exclude _id from results
+        totalIncome: 1,
+        totalCount: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Calculate the total number of items
+      }
+    }
+  ]);
+
+  res.json(data);
+});
+const getMonthWiseOrderIncome2=asyncHandler(async(req,res)=>{
+  const monthNames=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
+
+
+const currentDate = new Date();
+currentDate.setDate(1);
+currentDate.setDate(currentDate.getDate()-1)
+currentDate.setHours(18,31,0)
+
+  const data=await Order.aggregate([
+    {
+      $match:{
+        createdAt:{
+          $lte:new Date(),
+          $gte:currentDate
+        },
+        orderType: { $ne: "Cancelled" } ,
+        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
+        // Exclude orders with the "Cancelled" tag
+
+      }
+    },{
+      $group: {
+        _id: {
+          month: "$month"
+        },
+        amount: { $sum: "$finalAmount" },
+        count: { $sum: 1 },
+        items: { $push: "$orderItems" } // Accumulate all items in orders
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        amount: 1,
+        count: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
+      }
+    }
+  ])
+  res.json(data)
+})
+
+
+const getYearlyTotalOrders2=asyncHandler(async(req,res)=>{
+  const monthNames=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
+
+  let d=new Date();
+  let endDate=new Date(d);
+  d.setDate(1)
+  for (let index = 0; index < 11; index++) {
+    d.setMonth(d.getMonth()-1)
+    
+  }
+  // endDate=monthNames[d.getMonth()]+" "+d.getFullYear()
+  d.setMonth(11)
+  d.setDate(30)
+  d.setHours(18,30,0)
+  endDate.setMonth(11)
+  endDate.setDate(30)
+  endDate.setHours(18,29,0)
+  const data=await Order.aggregate([
+    {
+      $match:{
+        createdAt:{
+          $lte:endDate,
+          $gte:d
+        },
+        orderType: { $ne: "Cancelled" },
+        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
+        // Exclude orders with the "Cancelled" tag
+
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        count: { $sum: 1 },
+        amount: { $sum: "$finalAmount" },
+        items: { $push: "$orderItems" } // Accumulate all items in orders
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        amount: 1,
+        count: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
+      }
+    }
+  ])
+  res.json(data)
+})
+const getTodaysOrderIncome2 = asyncHandler(async (req, res) => {
+  // Get current date in Indian Standard Time (IST)
+
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  const startOfDay = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 18, 30, 0); // Start of yesterday
+// Set time to 11:59:59.999 PM IST
+const startOfDayIST = new Date(today);
+  startOfDayIST.setHours(18, 29, 59, 999)
+  const data = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: startOfDay,
+          $lte: startOfDayIST
+        },
+        orderType: { $ne: "Cancelled" } ,
+        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
+        // Exclude orders with the "Cancelled" tag
+
+
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalIncome: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        items: { $push: "$orderItems" }
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        totalIncome: 1,
+        totalCount: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } }
+      }
+    }
+  ]);
+
+  res.json(data);
+});
+
+const getWeekWiseOrderIncome2 = asyncHandler(async (req, res) => {
+  // Get the start and end dates for the current week
+
+  const today = new Date();
+  const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()); 
+  startOfWeek.setHours(18,30,0)// Start of the week (Sunday)
+  const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (6 - today.getDay())); 
+  endOfWeek.setHours(18,29,0)// End of the week (Saturday)
+  const data = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: startOfWeek,
+          $lte: endOfWeek
+        },
+        orderType: { $ne: "Cancelled" },
+        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
+        // Exclude orders with the "Cancelled" tag
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalIncome: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        items: { $push: "$orderItems" } // Accumulate all items in orders
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        totalIncome: 1,
+        totalCount: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
+      }
+    }
+  ]);
+
+  res.json(data);
+});
+
+
+const getYesterdayOrderIncome2 = asyncHandler(async (req, res) => {
+
+  // Get yesterday's date
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 2);
+  today.setDate(today.getDate() - 1);
+  const startOfDayIST = new Date(today);
+  startOfDayIST.setHours(18, 29, 59, 999)
+  const startOfDay = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 18, 30, 0); // Start of yesterday
+  // const endOfDay = new Date(today.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59); // End of yesterday
+  const data = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: startOfDay,
+          $lte: startOfDayIST
+        },
+        orderType: { $ne: "Cancelled" },
+        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
+        // Exclude orders with the "Cancelled" tag
+
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalIncome: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        items: { $push: "$orderItems" } // Accumulate all items in orders
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        totalIncome: 1,
+        totalCount: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Get the count of orderItems
+      }
+    }
+  ]);
+
+  res.json(data);
+});
+
+const getCustomDateRangeOrderIncome2 = asyncHandler(async (req, res) => {
+  // Extract startDate and endDate from request body or query string
+  const { startDate, endDate } = req.query; // or req.body, depending on how you send data
+  // Convert startDate and endDate to Date objects
+  const start = new Date(startDate);
+  start.setDate(start.getDate()-1)
+  start.setHours(18, 30, 0, 0); // Optional: set to start of day
+  const end = new Date(endDate);
+  end.setHours(18, 29, 0, 0); // Optional: set to end of day
+  console.log(start,end)
+
+  // Ensure dates are valid
+  if (!start.getTime() || !end.getTime()) {
+    return res.status(400).json({ message: "Invalid dates provided." });
+  }
+  const data = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: start,
+          $lte: end
+        },
+        orderType: { $ne: "Cancelled" },
+        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
+        // Exclude orders with the "Cancelled" tag
+      }
+    },
+    {
+      $group: {
+        _id: null, // Grouping by null means aggregating all documents that match the filter
+        totalIncome: { $sum: "$finalAmount" },
+        totalCount: { $sum: 1 },
+        items: { $push: "$orderItems" }
+      }
+    },
+    {
+      $project: {
+        _id: 0, // Exclude _id from results
+        totalIncome: 1,
+        totalCount: 1,
+        items: 1,
+        orderItemCount: { $sum: { $size: "$items" } } // Calculate the total number of items
+      }
+    }
+  ]);
+
+  res.json(data);
+});
+
 
 
 
@@ -1392,5 +2112,21 @@ module.exports = {
   sendTracking,
   sendDelivery,
   getCustomDateRangeOrderIncome,
-  fData
+  fData,
+  getAllOrders1,
+  getMonthWiseOrderIncome1,
+  getYearlyTotalOrders1,
+  getTodaysOrderIncome1,
+  getWeekWiseOrderIncome1,
+  getYesterdayOrderIncome1,
+  getCustomDateRangeOrderIncome1,
+  fData1,
+  getAllOrders2,
+  getMonthWiseOrderIncome2,
+  getYearlyTotalOrders2,
+  getTodaysOrderIncome2,
+  getWeekWiseOrderIncome2,
+  getYesterdayOrderIncome2,
+  getCustomDateRangeOrderIncome2,
+  fData2,
 };
