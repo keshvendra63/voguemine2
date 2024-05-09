@@ -110,9 +110,11 @@ const hdfcPayment = async (req, res,next) => {
             `https://probable-halibut-r94v5r7gwjrhxgvj-3000.app.github.dev/checkout`
           ),
           merchant_id: "3447954",
-          order_id: orderId,
+        //   order_id: orderId,
+        order_id: "12345678",
+
           currency: "INR",
-          amount: req.body.amount,
+          amount: 1,
           language: "EN"
 
         };

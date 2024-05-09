@@ -213,9 +213,9 @@ const completeOrder=()=>{
     if(firstname==="" || lastname==="" || email==="" || phone==="" || mobile==="" || address==="" || city==="" || state==="" || pincode===""){
         toast.info("Please Fill All Information")
     }
-    else if(verified===false){
-        toast.error("Please Verify First")
-    }
+    // else if(verified===false){
+    //     toast.error("Please Verify First")
+    // }
     else{
             setPaySpin(true)
            localStorage.setItem("address",JSON.stringify({

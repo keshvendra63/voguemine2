@@ -1033,7 +1033,7 @@ const createAggregationPipeline2 = (startDate, timeUnit) => {
     {
       $match: {
         createdAt: { $gte: startDate },
-        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
+        tag: "Voguishub" // Match orders with a specific string in the 'tag' field
       }
     },
     {
@@ -1175,7 +1175,7 @@ const getAllOrders2 = asyncHandler(async (req, res) => {
 
   try {
     // Filter orders by tag
-    const tagFilter = { 'tag': "VoguishHub" };
+    const tagFilter = { 'tag': "Voguishub" };
 
     const count = await Order.countDocuments(tagFilter); // Total number of orders with the tag "Rampvalk"
 
@@ -1798,7 +1798,7 @@ currentDate.setHours(18,31,0)
           $gte:currentDate
         },
         orderType: { $ne: "Cancelled" } ,
-        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
+        tag: "Voguishub" // Match orders with a specific string in the 'tag' field
         // Exclude orders with the "Cancelled" tag
 
       }
@@ -1851,7 +1851,7 @@ const getYearlyTotalOrders2=asyncHandler(async(req,res)=>{
           $gte:d
         },
         orderType: { $ne: "Cancelled" },
-        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
+        tag: "Voguishub" // Match orders with a specific string in the 'tag' field
         // Exclude orders with the "Cancelled" tag
 
       }
@@ -1895,7 +1895,7 @@ const startOfDayIST = new Date(today);
           $lte: startOfDayIST
         },
         orderType: { $ne: "Cancelled" } ,
-        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
+        tag: "Voguishub" // Match orders with a specific string in the 'tag' field
         // Exclude orders with the "Cancelled" tag
 
 
@@ -1939,7 +1939,7 @@ const getWeekWiseOrderIncome2 = asyncHandler(async (req, res) => {
           $lte: endOfWeek
         },
         orderType: { $ne: "Cancelled" },
-        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
+        tag: "Voguishub" // Match orders with a specific string in the 'tag' field
         // Exclude orders with the "Cancelled" tag
       }
     },
@@ -1985,7 +1985,7 @@ const getYesterdayOrderIncome2 = asyncHandler(async (req, res) => {
           $lte: startOfDayIST
         },
         orderType: { $ne: "Cancelled" },
-        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
+        tag: "Voguishub" // Match orders with a specific string in the 'tag' field
         // Exclude orders with the "Cancelled" tag
 
       }
@@ -2035,7 +2035,7 @@ const getCustomDateRangeOrderIncome2 = asyncHandler(async (req, res) => {
           $lte: end
         },
         orderType: { $ne: "Cancelled" },
-        tag: "VoguishHub" // Match orders with a specific string in the 'tag' field
+        tag: "Voguishub" // Match orders with a specific string in the 'tag' field
         // Exclude orders with the "Cancelled" tag
       }
     },
