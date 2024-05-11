@@ -39,6 +39,11 @@ const Kids = () => {
           <img src={collectionState[24]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1712903902/co_ord_set_1_rn0pvi.jpg"} alt="" />
           <h2>{collectionState[24]?.category}</h2>
       </div></Link>
+      <Link to={`/collections/${collectionState[34]?.handle}`}>
+      <div className="collection-card">
+          <img src={collectionState[34]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1712903902/co_ord_set_1_rn0pvi.jpg"} alt="" />
+          <h2>{collectionState[34]?.category}</h2>
+      </div></Link>
       <Link to={`/collections/${collectionState[21]?.handle}`}>
       <div className="collection-card">
           <img src={collectionState[21]?.images[0]?.url || k8} alt="" />

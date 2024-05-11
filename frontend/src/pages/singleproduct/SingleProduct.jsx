@@ -11,7 +11,15 @@ import Product from '../../components/Product'
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 import {toast} from 'react-toastify'
+import Carousel from 'react-bootstrap/Carousel';
+
 const SingleProduct = () => {
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex) => {
+    setIndex(selectedIndex);
+    
+  };
   const { handle } = useParams()
   const limit=4
   const page=1
@@ -49,6 +57,7 @@ const SingleProduct = () => {
   useEffect(()=>{
     dispatch(getAProduct(handle))
       getProducts()
+      
   },[limit,page,collectionName,handle])
   const getProducts=()=>{
       dispatch(getAllProducts({limit,page,collectionName,sort:"-createdAt"}))
@@ -159,6 +168,10 @@ const buyNow=async(data)=>{
 }
 const changeMainImage=(img)=>{
   setMainImage(img?.url)
+
+  setTimeout(()=>{
+    setMainImage("")
+  },5000)
 }
 const [imageIndex, setImageIndex] = useState(0);
 
@@ -282,6 +295,18 @@ const productStat = useSelector((state) => state?.product);
         },1000)
       }
     },[isLoading,isSuccess,singleProductState])
+
+
+const [alt,setAlt]=useState("")
+    useEffect(() => {
+      if (singleProductState?.alt && singleProductState?.alt!=="") {
+          setAlt(singleProductState?.alt)
+      }
+      else{
+        setAlt(singleProductState?.title)
+      }
+    
+    }, [singleProductState?.title,singleProductState?.alt]);
   return (
     <div className='single-product margin-section'>
       <div className="product">
@@ -293,12 +318,29 @@ const productStat = useSelector((state) => state?.product);
          
 
             <div className="main">
-            <img src={mainImage==""?singleProductState?.images[imageIndex]?.url : mainImage} alt="" onError={handleImageError}/>
+              {
+                mainImage===""? <Carousel activeIndex={index} onSelect={handleSelect} indicators={false}>
+                {
+                  singleProductState?.images?.map((item)=>{
+                    return <Carousel.Item interval={3000}>
+                    <img src={item?.url} alt="" />
+                  </Carousel.Item>
+                  })
+                }
+  
+        
+      </Carousel>
+      :
+                  <img src={mainImage} alt={alt} onError={handleImageError}/>
+
+              }
+           
+            {/* <img src={mainImage==""?singleProductState?.images[imageIndex]?.url : mainImage} alt={alt} onError={handleImageError}/> */}
             </div>
             <div className="thumbs">
                 {
                   singleProductState?.images?.map((img,index)=>{
-                      return <img src={img?.url} alt={singleProductState?.title} key={index} onClick={()=>changeMainImage(img)}/>
+                      return <img src={img?.url} alt={alt} key={index} onClick={()=>changeMainImage(img)}/>
                     
                     
                   })
@@ -453,7 +495,7 @@ const productStat = useSelector((state) => state?.product);
                 
                 products.map((arm,index)=>{
 
-                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>
+                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} alt={arm?.alt}/>
                    
                     
                 })

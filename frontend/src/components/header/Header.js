@@ -34,6 +34,7 @@ const Header = () => {
   const [search,setSearch] =useState("none")
   const [svalue,setSvalue]=useState(null)
   const [isHead2Open, setIsHead2Open] = useState(false); // Define isHead2Open state variable
+  const bannerState=useSelector((state)=>state?.banner?.banner)
 
 const dispatch=useDispatch()
 useEffect(()=>{
