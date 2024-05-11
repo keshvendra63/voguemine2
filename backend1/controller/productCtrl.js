@@ -61,50 +61,39 @@ const getaProductDashboard = asyncHandler(async (req, res) => {
 
 const getAllProduct = asyncHandler(async (req, res) => {
   try {
-    let query ={};
+    let query = {};
 
     // Check if a collection name is provided
     if (req.params.collectionName) {
-      query = { collectionName: req.params.collectionName};
+      query.collectionName = req.params.collectionName;
     }
+
     if (req.query.size) {
       query['variants.size'] = { $eq: req.query.size }; // Ensure exact match for size
     }
 
-
+    // Handling search conditions...
     if (req.query.search) {
       const searchKeywords = req.query.search.toLowerCase().split(' ');
       const searchConditions = [];
 
-      // Add conditions for each search keyword
       searchKeywords.forEach(keyword => {
         let regexPattern;
         if (keyword === "shirt") {
-          // Exclude 't-shirt' explicitly when 'shirt' is searched
           regexPattern = new RegExp(`^(?!.*t-shirt).*\\b${keyword}\\b.*$`, 'i');
-        } else if (keyword === "tshirt") {
-          // Match 't-shirt' for 'tshirt'
+        } else if (keyword === "tshirt" || keyword === "tshirts" || keyword === "t-shirts") {
           regexPattern = new RegExp(`\\bt-shirt\\b`, 'i');
-        }else if (keyword === "tshirts") {
-          // Match 't-shirt' for 'tshirt'
-          regexPattern = new RegExp(`\\bt-shirt\\b`, 'i');}
-          else if (keyword === "t-shirts") {
-            // Match 't-shirt' for 'tshirt'
-            regexPattern = new RegExp(`\\bt-shirt\\b`, 'i');}
-         else if (keyword === "t-shirt") {
-          // Match 't-shirt' explicitly
+        } else if (keyword === "t-shirt") {
           regexPattern = new RegExp(`\\b${keyword}\\b`, 'i');
         } else if (keyword === "shoes") {
-          // If keyword is 'shoes', search for both 'sneakers' and 'loafers'
           searchConditions.push({
             $or: [
               { title: { $regex: new RegExp("\\bsneakers\\b", 'i') } },
               { title: { $regex: new RegExp("\\bloafers\\b", 'i') } }
             ]
           });
-          return; // Skip the standard search conditions for 'shoes'
+          return;
         } else {
-          // General matching for other keywords
           regexPattern = new RegExp(keyword, 'i');
         }
 
@@ -124,68 +113,55 @@ const getAllProduct = asyncHandler(async (req, res) => {
       query.$and = searchConditions;
     }
 
-
-
     // Filtering
     const queryObj = { ...req.query };
-    const excludeFields = ["page", "sort", "limit", "fields","search"];
-    excludeFields.forEach((el) => delete queryObj[el]);
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    const filter = JSON.parse(queryStr);
+    const excludeFields = ["page", "sort", "limit", "fields", "search"];
+    excludeFields.forEach(el => delete queryObj[el]);
+    let queryStr = JSON.stringify(queryObj).replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+    query = { ...query, ...JSON.parse(queryStr) };
+    
 
-    query = { ...query, ...filter };
-
-    // Querying products based on collection name and filters
-    let productQuery = Product.find(query);
-
-    // Sorting
-    if (req.query.sort) {
-      const sortBy = req.query.sort.split(",").join(" ");
-      productQuery = productQuery.sort(sortBy);
-    } else {
-      productQuery = productQuery.sort("-createdAt");
-    }
-
-    // Limiting the fields
-    if (req.query.fields) {
-      const fields = req.query.fields.split(",").join(" ");
-      productQuery = productQuery.select(fields);
-    } else {
-      productQuery = productQuery.select("-__v");
-    }
-
+    // Aggregation pipeline to compute total quantity and sort products
+    let productQuery = Product.aggregate([
+      { $match: query },
+      { $addFields: { totalQuantity: { $sum: "$variants.quantity" } } },
+      { $sort: { order: 1, createdAt: -1 } }
+    ]);
+    
     // Pagination
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 28;
     const skip = (page - 1) * limit;
     productQuery = productQuery.skip(skip).limit(limit);
 
+    // Optionally add field projection if specified
+    if (req.query.fields) {
+      const fields = req.query.fields.split(",").reduce((acc, field) => {
+        acc[field.trim()] = 1;
+        return acc;
+      }, {});
+      productQuery = productQuery.project(fields)
+    }
+
     // Executing the query
     let products = await productQuery;
-
-    // Move products with quantity 0 to the end
-    products.sort((a, b) => {
-      const sumQuantityA = a.variants.reduce((acc, variant) => acc + variant.quantity, 0);
-      const sumQuantityB = b.variants.reduce((acc, variant) => acc + variant.quantity, 0);
-      if (sumQuantityA === 0 && sumQuantityB !== 0) return 1;
-      if (sumQuantityA !== 0 && sumQuantityB === 0) return -1;
-      return 0;
-    });
+    
 
     // Sending response
     res.json(products);
   } catch (error) {
-    throw new Error(error);
+    res.status(500).send({ message: error.message });
   }
 });
 const reorderProducts = asyncHandler(async (req, res) => {
   const { productIds } = req.body;
   try {
-    // Update the order of products in the database
-    for (let i = 0; i < productIds.length; i++) {
-      await Product.findByIdAndUpdate(productIds[i], { order: i });
-    }
+    const updates = productIds.map((id, index) =>
+      ({ updateOne: { filter: { _id: id }, update: { $set: { order: index } } } })
+    );
+
+    await Product.bulkWrite(updates);
+
     res.status(200).json({ message: "Products reordered successfully" });
   } catch (error) {
     console.error('Error reordering products:', error);

@@ -33,7 +33,7 @@ router.put("/rating", rating);
 router.put("/:id", authMiddleware, isAdmin, updateProduct);
 router.get("/:handle", getaProduct);
 router.get("/dashboard/:id",getaProductDashboard)
-router.put("/reorder", authMiddleware, isAdmin, reorderProducts); // Add the reorder route
+router.post("/reorder",reorderProducts); // Add the reorder route
 router.get("/getallratings", getAllRatings);
 
 router.get("/", getAllProduct);

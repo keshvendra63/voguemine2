@@ -17,6 +17,11 @@ import Product from '../../components/Product'
 import Reviews from './Reviews';
 
 const HomeMain = () => {
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex) => {
+    setIndex(selectedIndex);
+  };
   const navigate=useNavigate()
   const bannerState=useSelector((state)=>state?.banner?.banner)
   const responsive = {
@@ -38,7 +43,7 @@ const HomeMain = () => {
       items: 1
     }
   };
-  const collections = ["Men's Premium Shirts", "Flat Sandals", "Men's Belt"];
+  const collections = ["Men's Premium Shirts", "Women's Dresses", "Men's Belt","Kid's T-Shirts"];
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const page = 1;
@@ -68,8 +73,10 @@ const HomeMain = () => {
   const products = productState ? productState : [];
 
   const shirts = data.filter(object => object.collectionName && object.collectionName === "Men's Premium Shirts").slice(0, 4);
-  const tshirt = data.filter(object => object.collectionName && object.collectionName === "Flat Sandals").slice(0, 4);
+  const tshirt = data.filter(object => object.collectionName && object.collectionName === "Women's Dresses").slice(0, 4);
   const jeans = data.filter(object => object.collectionName && object.collectionName === "Men's Belt").slice(0, 4);
+  const kids = data.filter(object => object.collectionName && object.collectionName === "Kid's T-Shirts").slice(0, 4);
+
 
 
   useEffect(() => {
@@ -81,11 +88,23 @@ const HomeMain = () => {
     }
   }, [isLoading, isSuccess])
 
+  const collectionState=useSelector((state)=>state?.collection?.collection)
 
   return (
     <div className='homeMain'>
       <div className="hero-section">
-      <img src={bannerState[0]?.images[0]?.url || home_benner} alt={bannerState[0]?.alt} />
+      <Carousel activeIndex={index} onSelect={handleSelect} fade>
+      <Carousel.Item interval={2500}>
+        <img src={bannerState[0]?.images[0]?.url} alt="" />
+      </Carousel.Item>
+      <Carousel.Item interval={2500}>
+        <img src={bannerState[38]?.images[0]?.url} alt="" />
+      </Carousel.Item>
+      <Carousel.Item interval={2500}>
+        <img src={bannerState[39]?.images[0]?.url} alt="" />
+      </Carousel.Item>
+      
+    </Carousel>
       </div>
       <div className="categories">
         <ScrollCarousel
@@ -95,19 +114,19 @@ const HomeMain = () => {
         >
           <Link to="/men">
             <div className="cate">
-              <img src={bannerState[1]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713558263/01_hwvjvv.jpg"} alt={bannerState[1]?.alt} />
+              <img src={bannerState[1]?.images[0]?.url} alt={bannerState[1]?.alt} />
             </div>
           </Link><Link to="/women">
             <div className="cate">
-              <img src={bannerState[2]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713558263/02_v6acp2.jpg"} alt={bannerState[2]?.alt} />
+              <img src={bannerState[2]?.images[0]?.url} alt={bannerState[2]?.alt} />
             </div>
           </Link><Link to="/kids">
             <div className="cate">
-              <img src={bannerState[3]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713558265/03_dncxwq.jpg"} alt={bannerState[3]?.alt} />
+              <img src={bannerState[3]?.images[0]?.url} alt={bannerState[3]?.alt} />
             </div>
           </Link><Link to="/accessories">
             <div className="cate">
-              <img src={bannerState[4]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713558266/05_jatmmj.jpg"} alt={bannerState[4]?.alt} />
+              <img src={bannerState[4]?.images[0]?.url} alt={bannerState[4]?.alt} />
             </div>
           </Link>
 
@@ -145,7 +164,7 @@ const HomeMain = () => {
           <div className="shoe-right">
             <p>Introducing our premium men's footwear collection</p>
             <p>style and comfort with our exceptional range of men's footwear that will keep you walking in confidence.</p>
-            <Link to="/collections/loafers-for-men" className='btn'>BUY NOW</Link>
+            <Link to={`/collections/${collectionState[0]?.handle}`} className='btn'>BUY NOW</Link>
           </div>
         </div>
         <div className="products-listing">
@@ -166,7 +185,7 @@ const HomeMain = () => {
 {
                   shirts.map((arm, index) => {
 
-                    return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>
+                    return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm} alt={arm?.alt}/>
 
 
                   })
@@ -204,7 +223,7 @@ const HomeMain = () => {
           <div className="shoe-right">
             <p >Ladies Premium Sandals and Heels</p>
             <p>Style like a Queen with our gorgeous selection of Premium Sandals and Heels for Women.</p>
-            <Link to="/collections/heeled-sandals" className='btn'>BUY NOW</Link>
+            <Link to={`/collections/${collectionState[33]?.handle}`} className='btn'>BUY NOW</Link>
           </div>
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
@@ -231,7 +250,7 @@ const HomeMain = () => {
           </div>
         </div>
         <div className="products-listing">
-          <p className="section-heading">Featured Products</p>
+          <p className="section-heading">Women's Featured Products</p>
 
           {
             loading ? <div className="skeleton">
@@ -246,7 +265,7 @@ const HomeMain = () => {
 
                   tshirt.map((arm, index) => {
 
-                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>
+                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm} alt={arm?.alt}/>
 
 
                   })
@@ -276,6 +295,66 @@ const HomeMain = () => {
             </Link>
           </div>
         </div>
+
+
+        <div className="shoes-section">
+          <div className="shoe-left">
+            <Carousel controls={false} indicators={false} interval={700} slide={false}>
+              <Carousel.Item>
+                <img src={bannerState[41]?.images[0]?.url} alt={bannerState[41]?.alt} />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img src={bannerState[42]?.images[0]?.url} alt={bannerState[42]?.alt} />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img src={bannerState[43]?.images[0]?.url} alt={bannerState[43]?.alt} />
+              </Carousel.Item>
+            </Carousel>
+
+          </div>
+          <div className="shoe-right">
+            <p>Elegant Kids' Clothing Because Fancy Is Fun</p>
+            <p>Get fancy with our elegant kids' clothing and give you child a special sense of fashion.</p>
+            <Link to={`/kids`} className='btn'>BUY NOW</Link>
+          </div>
+        </div>
+        <div className="products-listing">
+          <p className="section-heading">Kid's Featured Products</p>
+
+
+          {
+            loading ? <div className="skeleton">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+              :
+              <div className="product-list pl1">
+
+
+{
+                  kids.map((arm, index) => {
+
+                    return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm} alt={arm?.alt}/>
+
+
+                  })
+                }
+
+               
+
+              </div>
+          }
+
+
+
+
+        </div>
+
+
+
+
         <div className="shoes-section">
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
@@ -307,7 +386,7 @@ const HomeMain = () => {
           </div>
         </div>
         <div className="products-listing">
-          <p className="section-heading">Featured Products</p>
+          <p className="section-heading">Featured Accessories</p>
           {
             loading ? <div className="skeleton">
               <div></div>
@@ -321,7 +400,7 @@ const HomeMain = () => {
 
                   jeans.map((arm, index) => {
 
-                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>
+                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm} alt={arm?.alt}/>
 
 
                   })

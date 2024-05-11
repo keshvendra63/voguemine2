@@ -9,6 +9,12 @@ var productSchema = new mongoose.Schema(
       trim: true,
       unique:false,
     },
+    alt:{
+      type:String,
+    },
+    order:{
+      type:Number,
+    },
     handle: {
       type: String,
       unique: true,

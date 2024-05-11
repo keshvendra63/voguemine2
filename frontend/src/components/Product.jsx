@@ -196,16 +196,25 @@ const [imageIndex, setImageIndex] = useState(0);
   }, [props.variants]);
  
 
-
+  const [alt,setAlt]=useState("")
+  useEffect(() => {
+    if (props?.alt && props?.alt!=="") {
+        setAlt(props?.alt)
+    }
+    else{
+      setAlt(props?.title)
+    }
+  
+  }, [props?.title,props?.alt]);
   return (
     <div className="product-card" key={props.keys}>
 
                 <div className="product-img">
                 <Link to={`/products/${props.handle}`}>
-                  <img src={props?.img[imageIndex]?.url} alt="" className="product-img1" onError={handleImageError}/>
+                  <img src={props?.img[imageIndex]?.url} alt={alt} className="product-img1" onError={handleImageError}/>
                   
                   {
-                    props?.img?.length>1 ?           <img src={props?.img[imageIndex+1]?.url} alt="" className="product-img2" onError={handleImageError}/>
+                    props?.img?.length>1 ?           <img src={props?.img[imageIndex+1]?.url} alt={alt} className="product-img2" onError={handleImageError}/>
 :
 ""
                   }        

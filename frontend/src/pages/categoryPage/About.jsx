@@ -17,7 +17,7 @@ const About = () => {
       </div>
       <div className="about margin-section">
         <div className="left-about">
-            <img src={about_img} alt="" />
+            <img src={bannerState[37]?.images[0]?.url || about_img} alt={bannerState[39]?.alt} />
             
         </div>
         <div className="right-about">
