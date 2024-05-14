@@ -135,7 +135,7 @@ const handleKeyDown1 = (event) => {
   return (
     <>
     <div className="main-head">
-    Use code "SAVE5" and get 5% off
+    Use code "SAVE5" and get 5% off 
 
 
     </div>
