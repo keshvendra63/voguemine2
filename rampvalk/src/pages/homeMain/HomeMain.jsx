@@ -17,7 +17,13 @@ import Product from '../../components/Product'
 import Reviews from './Reviews';
 
 const HomeMain = () => {
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex) => {
+    setIndex(selectedIndex);
+  };
   const navigate=useNavigate()
+  const bannerState=useSelector((state)=>state?.banner?.banner)
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -37,7 +43,7 @@ const HomeMain = () => {
       items: 1
     }
   };
-  const collections = ["Men's Premium Shirts", "Flat Sandals", "Men's Belt"];
+  const collections = ["Men's Premium Shirts", "Women's Dresses", "Men's Belt","Kid's T-Shirts"];
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const page = 1;
@@ -67,8 +73,10 @@ const HomeMain = () => {
   const products = productState ? productState : [];
 
   const shirts = data.filter(object => object.collectionName && object.collectionName === "Men's Premium Shirts").slice(0, 4);
-  const tshirt = data.filter(object => object.collectionName && object.collectionName === "Flat Sandals").slice(0, 4);
+  const tshirt = data.filter(object => object.collectionName && object.collectionName === "Women's Dresses").slice(0, 4);
   const jeans = data.filter(object => object.collectionName && object.collectionName === "Men's Belt").slice(0, 4);
+  const kids = data.filter(object => object.collectionName && object.collectionName === "Kid's T-Shirts").slice(0, 4);
+
 
 
   useEffect(() => {
@@ -80,11 +88,25 @@ const HomeMain = () => {
     }
   }, [isLoading, isSuccess])
 
+  const collectionState=useSelector((state)=>state?.collection?.collection)
 
   return (
     <div className='homeMain'>
       <div className="hero-section">
-      <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713512957/a51_aqkymn.jpg" alt="" />
+      <img src={bannerState && bannerState[0]?.images[0]?.url} alt="" />
+
+      {/* <Carousel activeIndex={index} onSelect={handleSelect} fade>
+      <Carousel.Item interval={2500}>
+        <img src={bannerState && bannerState[0]?.images[0]?.url} alt="" />
+      </Carousel.Item>
+      <Carousel.Item interval={2500}>
+        <img src={bannerState && bannerState[38]?.images[0]?.url} alt="" />
+      </Carousel.Item>
+      <Carousel.Item interval={2500}>
+        <img src={bannerState && bannerState[39]?.images[0]?.url} alt="" />
+      </Carousel.Item>
+      
+    </Carousel> */}
       </div>
       <div className="categories">
         <ScrollCarousel
@@ -94,19 +116,19 @@ const HomeMain = () => {
         >
           <Link to="/men">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/0006_u5fiek.jpg" alt="" />
+              <img src={bannerState && bannerState[1]?.images[0]?.url} alt={bannerState && bannerState[1]?.alt} />
             </div>
           </Link><Link to="/women">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/0007_bld8nf.jpg" alt="" />
+              <img src={bannerState && bannerState[2]?.images[0]?.url} alt={bannerState && bannerState[2]?.alt} />
             </div>
           </Link><Link to="/kids">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/0008_w3hlql.jpg" alt="" />
+              <img src={bannerState && bannerState[3]?.images[0]?.url} alt={bannerState && bannerState[3]?.alt} />
             </div>
           </Link><Link to="/accessories">
             <div className="cate">
-              <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516229/00009_kwerwy.jpg" alt="" />
+              <img src={bannerState && bannerState[4]?.images[0]?.url} alt={bannerState && bannerState[4]?.alt} />
             </div>
           </Link>
 
@@ -121,22 +143,22 @@ const HomeMain = () => {
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514808/413_o7fvvx.jpg" alt="" />
+                <img src={bannerState && bannerState[5]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514808/413_o7fvvx.jpg"} alt={bannerState && bannerState[5]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514808/360_pjxrdj.jpg" alt="" />
+                <img src={bannerState && bannerState[6]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514808/360_pjxrdj.jpg"} alt={bannerState && bannerState[6]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514809/431_dg5dmr.jpg" alt="" />
+                <img src={bannerState && bannerState[7]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514809/431_dg5dmr.jpg"} alt={bannerState && bannerState[7]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514807/330_dxuvta.jpg" alt="" />
+                <img src={bannerState && bannerState[8]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514807/330_dxuvta.jpg"} alt={bannerState && bannerState[8]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514812/443_ajzh9b.jpg" alt="" />
+                <img src={bannerState && bannerState[9]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514812/443_ajzh9b.jpg"} alt={bannerState && bannerState[9]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514807/310_gblgew.jpg" alt="" />
+                <img src={bannerState && bannerState[10]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514807/310_gblgew.jpg"} alt={bannerState && bannerState[10]?.alt} />
               </Carousel.Item>
             </Carousel>
 
@@ -144,7 +166,7 @@ const HomeMain = () => {
           <div className="shoe-right">
             <p>Introducing our premium men's footwear collection</p>
             <p>style and comfort with our exceptional range of men's footwear that will keep you walking in confidence.</p>
-            <Link to="/collections/loafers-for-men" className='btn'>BUY NOW</Link>
+            <Link to={`/collections/${collectionState?.handle && collectionState[0]?.handle}`} className='btn'>BUY NOW</Link>
           </div>
         </div>
         <div className="products-listing">
@@ -165,7 +187,7 @@ const HomeMain = () => {
 {
                   shirts.map((arm, index) => {
 
-                    return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>
+                    return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm} alt={arm?.alt}/>
 
 
                   })
@@ -185,15 +207,15 @@ const HomeMain = () => {
           <div className="trending-collection">
             <Link to="/collections/men-premium-shirt">
               <div className="trending-card">
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a28_ywebvi.jpg" alt="" />
+                <img src={bannerState && bannerState[11]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a28_ywebvi.jpg"} alt={bannerState && bannerState[11]?.alt} />
               </div>
             </Link><Link to="/collections/t-shirts">
               <div className="trending-card">
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a29_e50fly.jpg" alt="" />
+                <img src={bannerState && bannerState[12]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a29_e50fly.jpg"} alt={bannerState && bannerState[12]?.alt} />
               </div>
             </Link><Link to="/collections/mens-denim-jeans">
               <div className="trending-card">
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341077/a27_juuuzb.jpg" alt="" />
+                <img src={bannerState && bannerState[13]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710341077/a27_juuuzb.jpg"} alt={bannerState && bannerState[13]?.alt} />
               </div>
             </Link>
           </div>
@@ -203,34 +225,34 @@ const HomeMain = () => {
           <div className="shoe-right">
             <p >Ladies Premium Sandals and Heels</p>
             <p>Style like a Queen with our gorgeous selection of Premium Sandals and Heels for Women.</p>
-            <Link to="/collections/heeled-sandals" className='btn'>BUY NOW</Link>
+            <Link to={`/collections/${collectionState?.handle && collectionState[33]?.handle}`} className='btn'>BUY NOW</Link>
           </div>
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516021/90_ouuogk.jpg" alt="" />
+                <img src={bannerState && bannerState[14]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516021/90_ouuogk.jpg"} alt={bannerState && bannerState[14]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516022/95_o6hsau.jpg" alt="" />
+                <img src={bannerState && bannerState[15]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516022/95_o6hsau.jpg"} alt={bannerState && bannerState[15]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516023/37_dxuah4.jpg" alt="" />
+                <img src={bannerState && bannerState[16]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516023/37_dxuah4.jpg"} alt={bannerState && bannerState[16]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516021/67_nkoy08.jpg" alt="" />
+                <img src={bannerState && bannerState[17]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516021/67_nkoy08.jpg"} alt={bannerState && bannerState[17]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516026/107_ybacx7.jpg" alt="" />
+                <img src={bannerState && bannerState[18]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516026/107_ybacx7.jpg"} alt={bannerState && bannerState[18]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516025/137_gna4np.jpg" alt="" />
+                <img src={bannerState && bannerState[19]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516025/137_gna4np.jpg"} alt={bannerState && bannerState[19]?.alt} />
               </Carousel.Item>
             </Carousel>
 
           </div>
         </div>
         <div className="products-listing">
-          <p className="section-heading">Featured Products</p>
+          <p className="section-heading">Women's Featured Products</p>
 
           {
             loading ? <div className="skeleton">
@@ -245,7 +267,7 @@ const HomeMain = () => {
 
                   tshirt.map((arm, index) => {
 
-                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>
+                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm} alt={arm?.alt}/>
 
 
                   })
@@ -261,34 +283,100 @@ const HomeMain = () => {
           <div className="trending-collection">
             <Link to="/collections/womens-dress">
               <div className="trending-card">
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341073/a31_kv2mnb.jpg" alt="" />
+                <img src={bannerState && bannerState[20]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710341073/a31_kv2mnb.jpg"} alt={bannerState && bannerState[20]?.alt} />
               </div>
             </Link><Link to="/collections/womens-shirt-t-shirts">
               <div className="trending-card">
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341073/a30_g0wu0m.jpg" alt="" />
+                <img src={bannerState && bannerState[21]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710341073/a30_g0wu0m.jpg"} alt={bannerState && bannerState[21]?.alt} />
               </div>
             </Link>
             <Link to="/collections/womens-co-ord-set">
               <div className="trending-card">
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a32_l5be5c.jpg" alt="" />
+                <img src={bannerState && bannerState[22]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a32_l5be5c.jpg"} alt={bannerState && bannerState[22]?.alt} />
               </div>
             </Link>
           </div>
         </div>
+
+
         <div className="shoes-section">
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712578479/09_k8f2tm.jpg" alt="" />
+                <img src={bannerState && bannerState[41]?.images[0]?.url} alt={bannerState && bannerState[41]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/011_njreib.jpg" alt="" />
+                <img src={bannerState && bannerState[42]?.images[0]?.url} alt={bannerState && bannerState[42]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/010_czuutf.jpg" alt="" />
+                <img src={bannerState && bannerState[43]?.images[0]?.url} alt={bannerState && bannerState[43]?.alt} />
+              </Carousel.Item>
+            </Carousel>
+
+          </div>
+          <div className="shoe-right">
+            <p>Elegant Kids' Clothing Because Fancy Is Fun</p>
+            <p>Get fancy with our elegant kids' clothing and give you child a special sense of fashion.</p>
+            <Link to={`/kids`} className='btn'>BUY NOW</Link>
+          </div>
+        </div>
+        <div className="products-listing">
+          <p className="section-heading">Kid's Featured Products</p>
+
+
+          {
+            loading ? <div className="skeleton">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+              :
+              <div className="product-list pl1">
+
+
+{
+                  kids.map((arm, index) => {
+
+                    return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm} alt={arm?.alt}/>
+
+
+                  })
+                }
+
+               
+
+              </div>
+          }
+
+
+
+
+        </div>
+
+
+
+
+        <div className="shoes-section">
+          <div className="shoe-left">
+            <Carousel controls={false} indicators={false} interval={700} slide={false}>
+              <Carousel.Item>
+                <img src={bannerState && bannerState[23]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1712578479/09_k8f2tm.jpg"} alt={bannerState && bannerState[23]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516029/towel_wpf5nn.jpg" alt="" />
+                <img src={bannerState && bannerState[24]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/011_njreib.jpg"} alt={bannerState && bannerState[24]?.alt} />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img src={bannerState && bannerState[25]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/010_czuutf.jpg"} alt={bannerState && bannerState[25]?.alt} />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img src={bannerState && bannerState[26]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516029/towel_wpf5nn.jpg"} alt={bannerState && bannerState[26]?.alt} />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img src={bannerState && bannerState[27]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/010_czuutf.jpg"} alt={bannerState && bannerState[27]?.alt} />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img src={bannerState && bannerState[28]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516029/towel_wpf5nn.jpg"} alt={bannerState && bannerState[28]?.alt} />
               </Carousel.Item>
             </Carousel>
 
@@ -300,7 +388,7 @@ const HomeMain = () => {
           </div>
         </div>
         <div className="products-listing">
-          <p className="section-heading">Featured Products</p>
+          <p className="section-heading">Featured Accessories</p>
           {
             loading ? <div className="skeleton">
               <div></div>
@@ -314,7 +402,7 @@ const HomeMain = () => {
 
                   jeans.map((arm, index) => {
 
-                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm}/>
+                    return <Product key={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm} alt={arm?.alt}/>
 
 
                   })
@@ -331,7 +419,7 @@ const HomeMain = () => {
           <Reviews/>
         </div> */}
 
-<p style={{textAlign:'center',fontSize:'30px',fontWeight:500}}>Secure With Rampvalk</p>
+<p style={{textAlign:'center',fontSize:'30px',fontWeight:500}}>Secure With Voguemine</p>
 
         <div className="icon-footer">
           <div>

@@ -5,22 +5,24 @@ import about_img from '../../images/about-img.jpg'
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import { useDispatch, useSelector } from 'react-redux'
 
 const About = () => {
+  const bannerState=useSelector((state)=>state?.banner?.banner)
 
   return (
     <div className='categoryPage'>
             <div className="category-banner">
-        <img src={banner} alt="" />
+            <img src={bannerState[33]?.images[0]?.url || banner} alt={bannerState[33]?.alt} />
       </div>
       <div className="about margin-section">
         <div className="left-about">
-            <img src={about_img} alt="" />
+            <img src={bannerState[37]?.images[0]?.url || about_img} alt={bannerState[39]?.alt} />
             
         </div>
         <div className="right-about">
-            <h1>ABOUT RAMPVALK</h1>
-            <p>At Rampvalk by Voguemine, we understand, style is not just about what you wear, it's about how you feel. That's why we go above and beyond to provide an exceptional shopping experience, with attentive customer service and a user-friendly online platform that makes it easy to find the perfect addition of collection to your luxurious wardrobe.
+            <h1>ABOUT VOGUEMINE</h1>
+            <p>At Voguemine, we understand, style is not just about what you wear, it's about how you feel. That's why we go above and beyond to provide an exceptional shopping experience, with attentive customer service and a user-friendly online platform that makes it easy to find the perfect addition of collection to your luxurious wardrobe.
 
 
 
@@ -47,9 +49,9 @@ const About = () => {
         </div>
       </div>
 
-{/* <div className="c-banner" style={{marginBottom:'50px'}}>
-  <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713514549/00005_qdvxte.jpg" alt="" style={{width:'100%'}}/>
-</div> */}
+<div className="c-banner" style={{marginBottom:'50px'}}>
+  <img src={bannerState[34]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514549/00005_qdvxte.jpg"} alt={bannerState[34]?.alt} style={{width:'100%'}}/>
+</div>
 
       <div className="ourteam">
     <h2>Meet Our Team</h2>

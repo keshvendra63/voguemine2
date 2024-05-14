@@ -104,10 +104,10 @@ const hdfcPayment = async (req, res,next) => {
 
         const orderParams = {
           redirect_url: encodeURIComponent(
-            `https://probable-halibut-r94v5r7gwjrhxgvj-5000.app.github.dev/api/user/order/hdfcRes`
+            `https://voguemine2.onrender.com/api/user/order/hdfcRes`
           ),
           cancel_url: encodeURIComponent(
-            `https://probable-halibut-r94v5r7gwjrhxgvj-3000.app.github.dev/checkout`
+            `https://rampvalk.com/checkout`
           ),
           merchant_id: "3447954",
         //   order_id: orderId,
@@ -151,9 +151,9 @@ const hdfcResponse = async (req, res, next) => {
       ).toString();
       // Redirect based on payment status
       if (ccavResponse["order_status"] === "Success") {
-          res.redirect(`https://probable-halibut-r94v5r7gwjrhxgvj-3000.app.github.dev/`);
+          res.redirect(`https://rampvalk.com/`);
       } else {
-          res.redirect(`https://probable-halibut-r94v5r7gwjrhxgvj-3000.app.github.dev/checkout`);
+          res.redirect(`https://rampvalk.com/checkout`);
       }
   } catch (error) {
       console.error("Error processing the HDFC response:", error);

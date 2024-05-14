@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import './checkout.css'
+import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Radio from '@mui/material/Radio';
@@ -8,22 +9,28 @@ import AddCardIcon from '@mui/icons-material/AddCard';
 import CircularProgress from '@mui/material/CircularProgress';
 import {useFormik} from 'formik'
 import * as yup from 'yup'
+import VerifiedIcon from '@mui/icons-material/Verified';
 import { useDispatch,useSelector } from 'react-redux'
 import {useLocation, useNavigate} from 'react-router-dom'
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import InputLabel from '@mui/material/InputLabel';
 import { TextField } from '@mui/material';
 import axios from 'axios'
 import {config} from '../../utils/axiosConfig'  
-import {createAnOrder, deleteCart, getUserCartProduct, resetState,createAbondend} from '../../features/user/userSlice'
+import {createAnOrder, deleteCart, getUserCartProduct, resetState,createAbondend,sendOtp} from '../../features/user/userSlice'
 import {getAllCoupons,getACoupon} from '../../features/coupon/couponSlice'
 import { toast } from 'react-toastify';
 import QR from '../../images/qr.jpg'
 
 
 const Checkout = () => {
-
+const otpState=useSelector((state)=>state?.auth?.otp)
     const [firstname,setFirstname]=useState("")
     const [lastname,setLastname]=useState("")
-const [success,setSuccess]=useState(false)
+    const [success,setSuccess]=useState(false)
+
     const [email,setEmail]=useState("")
 
     const [phone,setPhone]=useState("")
@@ -32,10 +39,8 @@ const [success,setSuccess]=useState(false)
     const [city,setCity]=useState("")
     const [state,setState]=useState("")
     const [pincode,setPincode]=useState("")
-    const orderSuccessfullyPlaced = useSelector(state => state?.auth);
-    const {isSuccess,isError,isLoading,orderedProduct}=orderSuccessfullyPlaced
+    const [verified,setVerified]=useState(false)
 
-     // Assuming you're using Redux and have a slice for order in your store
     const [cartItems, setCartItems] = useState([]);
 const [ship,setShip]=useState({})
 const address1=JSON.parse(localStorage.getItem("address"))
@@ -61,16 +66,34 @@ useEffect(()=>{
         const updatedOrder = [...existingOrder, product];
         localStorage.setItem("orders", JSON.stringify(updatedOrder));
       };
+      function normalizePhoneNumber(phoneNumber) {
+        // Remove all non-digit characters from the phone number
+        let cleanNumber = phoneNumber.replace(/\D/g, '');
+    
+        // Check if the number starts with '91' (India's country code) and is longer than 10 digits
+        if (cleanNumber.startsWith('91') && cleanNumber.length > 10) {
+            // Remove the '91' prefix
+            cleanNumber = cleanNumber.substring(2);
+        } else if (cleanNumber.startsWith('0') && cleanNumber.length > 10) {
+            // Remove the leading '0' if any (common in some domestic formats)
+            cleanNumber = cleanNumber.substring(1);
+        }
+    
+        // Return the cleaned up number assuming it should be 10 digits long
+        return cleanNumber;
+    }
+      const [verify,setVerify]=useState("SEND OTP")
+      const [otp,setOtp]=useState()
+      const [noneOtp,setNoneotp]=useState("none")
       const [paySpin,setPaySpin]=useState(false)
     const [totalAmount,setTotalAmount]=useState(null)
-    const [orderType,setOrderType]=useState("COD")
-    const [shippingCost,setShippingCost]=useState(200)
-    const [discount,setDiscount]=useState(0)
+    const [orderType,setOrderType]=useState("Prepaid")
+    const [shippingCost,setShippingCost]=useState(0)
+    const [discount,setDiscount]=useState(totalAmount/10)
     const [cartProductState,setCartProductState]=useState([])
     const [coupon,setCoupon]=useState("")
-    const [couponAmount,setCouponAmount]=useState(0)
     const couponState=useSelector((state)=>state?.coupon?.coupon)
-    const [payMethod,setPayMethod]=useState("cod")
+    const [payMethod,setPayMethod]=useState("phonepe")
     useEffect(() => {
         // Retrieve cart items from localStorage
         const cartFromStorage = JSON.parse(localStorage.getItem('cart')) || [];
@@ -94,7 +117,7 @@ useEffect(()=>{
     };
     const applyCoupon=()=>{
         couponState?.map((item)=>{
-            if(item?.name===coupon){
+            if((item?.name.toLowerCase())===(coupon.toLowerCase())){
                 if(item?.status==="active"){
                     if(item?.discounttype==="freeShip"){
                         setShippingCost(0)
@@ -134,6 +157,7 @@ useEffect(()=>{
                             setCouponAmount(parseInt(item?.discount))
                         }
                     }
+                    toast.success("Coupon Code Applied")
                 }
             }
             // else{
@@ -151,6 +175,7 @@ useEffect(()=>{
         setOrderType("COD")
         setCouponAmount(0)
         setPayMethod("cod")
+        toast.warn("Oops, you are missing top deals by selecting COD")
     }
     const bankClick=()=>{
         setShippingCost(0)
@@ -164,9 +189,12 @@ useEffect(()=>{
         setCouponAmount((totalAmount)/10)
         setPayMethod("phonepe")
     }
-
-    const finalAmount=shippingCost+totalAmount-couponAmount
-    const dispatch=useDispatch();
+    const hdfcClick=()=>{
+        setShippingCost(0)
+        setOrderType("Prepaid")
+        setCouponAmount((totalAmount)/10)
+        setPayMethod("hdfc")
+    }
     useEffect (()=> {
         let sum=0;
         for(let index=0; index < cartItems?.length; index++){
@@ -174,13 +202,24 @@ useEffect(()=>{
             setTotalAmount(sum)
         }
     },[cartItems])
+    const [couponAmount,setCouponAmount]=useState()
+useEffect(()=>{
+setCouponAmount(totalAmount/10)
+},[totalAmount])
+    const finalAmount=shippingCost+totalAmount-couponAmount
+    const dispatch=useDispatch();
+   
     useEffect(()=>{
         dispatch(getAllCoupons())
     },[])
+
   
 const completeOrder=()=>{
     if(firstname==="" || lastname==="" || email==="" || phone==="" || mobile==="" || address==="" || city==="" || state==="" || pincode===""){
         toast.info("Please Fill All Information")
+    }
+    else if(verified===false){
+        toast.error("Please Verify First")
     }
     else{
             setPaySpin(true)
@@ -189,11 +228,12 @@ const completeOrder=()=>{
             lastname:lastname,
             email:email,
             address:address,
-            phone:phone,
+            phone:normalizePhoneNumber(phone),
             mobile:mobile,
             city:city,
             state:state,
             pincode:pincode,
+            isVarified:verified
            }))
            if(cartItems?.length>=1){
             setSuccess(true)
@@ -245,8 +285,8 @@ const checkOutHandler=async(e)=>{
         };
 
         // Simulating a successful payment verification for COD orders
-        await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" }))
-        addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" })
+        await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }))
+        addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
         localStorage.removeItem('cart');
 
         navigate("/profile")
@@ -262,11 +302,33 @@ const checkOutHandler=async(e)=>{
             razorpayPaymentId: "Phonepe", // Set a placeholder value for Razorpay payment ID for COD orders
             razorpayOrderId: "Phonepe", // Set a placeholder value for Razorpay order ID for COD orders
         };
-        localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" }));
+        localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }));
 
     axios.post("https://voguemine2.onrender.com/api/user/order/checkout",{amount:finalAmount,number:phone})
     .then(response=>{
         window.location.href=response.data
+    })
+    .catch(error=>{
+        console.log(error)
+    })
+
+
+        // console.log(result)
+// window.location.href=result.data.data.instrumentResponse.redirectInfo.url
+
+       }
+       if(payMethod==="hdfc"){
+        const data = {
+            orderCreationId: "Prepaid", // Set a placeholder value for order creation ID for COD orders
+            razorpayPaymentId: "hdfc", // Set a placeholder value for Razorpay payment ID for COD orders
+            razorpayOrderId: "hdfc", // Set a placeholder value for Razorpay order ID for COD orders
+        };
+        localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }));
+
+    axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.app.github.dev/api/user/order/hdfcPay",{amount:finalAmount})
+    .then(response=>{
+        window.location.href=response.data.payLink
+
     })
     .catch(error=>{
         console.log(error)
@@ -286,8 +348,8 @@ const data = {
 
     // Simulating a successful payment verification for COD orders
 
-    await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" }))
-    addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" })
+    await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }))
+    addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
     localStorage.removeItem('cart');
 
     navigate("/profile")
@@ -312,13 +374,13 @@ useEffect(()=>{
         firstname:firstname,
         lastname:lastname,
         email:email,
-        phone:phone,
+        phone:normalizePhoneNumber(phone),
         address:address,
         city:city,
         state:state,
         pincode:pincode,
         mobile:mobile,},
-        tag:"Rampvalk",
+        tag:"Voguemine",
                 orderItems:cartProductState,
                 totalPrice:totalAmount,
                 shippingCost:shippingCost,
@@ -328,7 +390,6 @@ useEffect(()=>{
                 success:success
     }))
 },[firstname,lastname,email,phone,mobile,address,city,state,pincode,cartProductState,success])
-console.log(ship)
 useEffect(() => {
     return () => {
         // Check if the current location is not '/profile'
@@ -347,8 +408,73 @@ useEffect(() => {
         }
     };
 }, [location]);
+const [isRead,setIsread]=useState(false)
+const initialTime = 120;
 
+  // State to keep track of the remaining time
+  const [timeLeft, setTimeLeft] = useState(initialTime);
 
+    // Only set the interval if timeLeft is greater than 0
+   
+
+    const [intervalId, setIntervalId] = useState(null);
+
+    
+const sendOtps=async()=>{
+    if(phone?.length<10){
+        toast.info("Please Fill Correct Number")
+    }
+    else{
+        setVerify("Verify")
+    setNoneotp("block")
+    await dispatch(sendOtp(normalizePhoneNumber(phone)))
+    setTimeLeft(initialTime); // Reset the countdown timer
+
+    // Clear any existing interval (safety check)
+    if (intervalId) clearInterval(intervalId);
+
+    // Start a new countdown timer
+    const id = setInterval(() => {
+        setTimeLeft((prevTime) => {
+            if (prevTime <= 1) {
+                clearInterval(id); // Stop the countdown timer when it reaches zero
+                return 0;
+            }
+            return prevTime - 1;
+        });
+    }, 1000);
+    setIntervalId(id);
+    }
+
+}
+
+const verifyOtp=()=>{
+    console.log(otpState,otp)
+
+if(otpState?.otps===parseInt(otp)){
+    setVerified(true)
+    toast.success("VERIFIED")
+    setIsread(true)
+    
+
+}
+else{
+    setVerified(false)
+    setIsread(true)
+    toast.error("Wrong OTP")
+}
+}
+useEffect(() => {
+    // Cleanup interval on component unmount
+    return () => {
+        if (intervalId) clearInterval(intervalId);
+    };
+}, [intervalId]);
+const formatTime = () => {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+  };
 
     return (
         <div className='margin-section checkout'>
@@ -449,12 +575,51 @@ useEffect(() => {
                         /></div>
                     </div>
                     <div className="mobile input">
-                    <TextField
+
+                    <FormControl>
+                    <InputLabel htmlFor="standard-adornment-password">Phone</InputLabel>
+
+                    <OutlinedInput
+                    
+                    style={{width:'100%',display:'grid',gridTemplateColumns:'11fr 1fr'}}
+           type="number"
+           name='phone'
+           value={phone} onChange={(e)=>setPhone(e.target.value)}
+           readOnly={isRead}
+            endAdornment={
+              <InputAdornment position="end">
+
+                <IconButton
+                style={{display:verified===true?"block":"none"}}
+                  aria-label="toggle password visibility"
+                  edge="end"
+                >
+                <VerifiedIcon className='v-tag'/>
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+                    </FormControl>
+                    {/* <TextField
                             label="Phone*"
                             type="number"
                             name='phone'
                             value={phone} onChange={(e)=>setPhone(e.target.value)}
-                        /> 
+                            
+                        />  */}
+                        <div className='phone-veri' style={{display:verified===true?"none":"flex"}}>
+                            <input type="number" value={otp} placeholder='Enter OTP' onChange={(e)=>setOtp(e.target.value)}  style={{display:noneOtp}} maxLength={6}/>
+                            {
+                                timeLeft>0?                            <button onClick={verify === "SEND OTP" ? sendOtps : verifyOtp} >{verify}</button>
+:
+<button onClick={sendOtps} >SEND AGAIN</button>
+
+                            }
+                            {
+                                timeLeft>0? <p style={{display:verify==="SEND OTP"?"none":"block"}}>Try Again in: {formatTime()}</p>:
+""                            }
+                           
+                        </div>
 
                     </div>
                     <div className="alter-mobile input">
@@ -470,11 +635,11 @@ useEffect(() => {
                         <p className="section-heading">Payment</p>
                     <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="cod"
+        defaultValue="razorpay"
         name="radio-buttons-group"
       >
         <div className="razorpay">
-            <FormControlLabel value="razorpay" control={<Radio />} label="PhonePe Secure (UPI, Cards, Wallets, NetBanking)" disabled={true} onClick={phonepeClick}/>
+            <FormControlLabel value="razorpay" control={<Radio />} label="PhonePe Secure (UPI, Cards, Wallets, NetBanking)" disabled={false} onClick={phonepeClick}/>
             {/* <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" /> */}
             {/* <div className="bottom">
                 <AddCardIcon style={{fontSize:'50px'}}/>
@@ -482,6 +647,15 @@ useEffect(() => {
                 <p style={{color:'red',marginTop:'10px',fontWeight:500}}>* Due to some Banking issues, we are unable to capture paid orders. Please continue shopping with Cash on Delivery. Sorry for the inconvenience</p>
             </div> */}
         </div>
+        {/* <div className="razorpay">
+            <FormControlLabel value="hdfc" control={<Radio />} label="HDFC Secure Payments" disabled={false} onClick={hdfcClick}/>
+            <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" />
+            <div className="bottom">
+                <AddCardIcon style={{fontSize:'50px'}}/>
+                <p>After clicking “Pay now”, you will be redirected to PhonePe Secure (UPI, Cards, Wallets, NetBanking) to complete your purchase securely.</p>
+                <p style={{color:'red',marginTop:'10px',fontWeight:500}}>* Due to some Banking issues, we are unable to capture paid orders. Please continue shopping with Cash on Delivery. Sorry for the inconvenience</p>
+            </div>
+        </div> */}
 
 
         <div className="banking">

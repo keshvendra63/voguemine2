@@ -16,23 +16,23 @@ const SingleBlog = () => {
       dispatch(getABlog(handle))
     },[handle])
     useEffect(() => {
-      if (singleBlogState?.metaTitle1!=="" || singleBlogState?.metaTitle1!==undefined) {
-          document.title = singleBlogState?.metaTitle1;
+      if (singleBlogState?.metaTitle!=="" || singleBlogState?.metaTitle!==undefined) {
+          document.title = singleBlogState?.metaTitle;
       }
       else{
         document.title =`${singleBlogState?.title}`;
       }
   
-  }, [singleBlogState?.metaTitle1]);
+  }, [singleBlogState?.metaTitle]);
   useEffect(() => {
-    if (singleBlogState?.metaDesc1!=="" || singleBlogState?.metaDesc1!==undefined) {
-        document.querySelector('meta[name="description"]').setAttribute('content',singleBlogState?.metaDesc1);
+    if (singleBlogState?.metaDesc!=="" || singleBlogState?.metaDesc!==undefined) {
+        document.querySelector('meta[name="description"]').setAttribute('content',singleBlogState?.metaDesc);
     }
     else{
       document.querySelector('meta[name="description"]').setAttribute('content',singleBlogState?.description);
     }
   
-  }, [singleBlogState?.metaDesc1]);  
+  }, [singleBlogState?.metaDesc]);  
   return (
     <div className='margin-section' style={{marginTop:'100px'}}>
       <p className="section-heading">{singleBlogState?.title}</p>

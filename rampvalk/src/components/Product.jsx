@@ -71,7 +71,8 @@ useEffect(() => {
       }
       else{
         
-        if(data && (data===props.prdt.id)){
+        if(data && (data===props.prdt._id)){
+         
           await addProductToCartLocalStorage({productId:data,color,quantity,price:props.price,size,product:props.prdt})
           toast.success("Added To Cart")
           window.fbq('track', 'AddToCart', {
@@ -92,7 +93,7 @@ useEffect(() => {
     const addToWish=async(data)=>{
 
      
-      if(data && (data===props.prdt.id)){
+      if(data && (data===props.prdt._id)){
         await addProductToWishlistLocalStorage({productId:data,color,quantity,price:props.price,size,product:props.prdt})
         toast.success("Added To Wishlist")
       }
@@ -112,7 +113,8 @@ useEffect(() => {
     }
     
     else{
-      if(data && (data===props.prdt.id)){
+      if(data && (data===props.prdt._id)){
+        
         await addProductToCartLocalStorage({productId:data,color,quantity,price:props.price,size,product:props.prdt})
         toast.success("Added To Cart")
         window.fbq('track', 'InitiateCheckout', {
@@ -123,6 +125,7 @@ useEffect(() => {
           value:`${props?.price}`,
           currency: 'INR'
       });
+     
       setTimeout(()=>{
         dispatch(getUserCartProduct())
         navigate('/checkout')
@@ -178,16 +181,25 @@ const [imageIndex, setImageIndex] = useState(0);
   }, [props.variants]);
  
 
-
+  const [alt,setAlt]=useState("")
+  useEffect(() => {
+    if (props?.alt && props?.alt!=="") {
+        setAlt(props?.alt)
+    }
+    else{
+      setAlt(props?.title)
+    }
+  
+  }, [props?.title,props?.alt]);
   return (
     <div className="product-card" key={props.keys}>
 
                 <div className="product-img">
                 <Link to={`/products/${props.handle}`}>
-                  <img src={props?.img[imageIndex]?.url} alt="" className="product-img1" onError={handleImageError}/>
+                  <img src={props?.img[imageIndex]?.url} alt={alt} className="product-img1" onError={handleImageError}/>
                   
                   {
-                    props?.img?.length>1 ?           <img src={props?.img[imageIndex+1]?.url} alt="" className="product-img2" onError={handleImageError}/>
+                    props?.img?.length>1 ?           <img src={props?.img[imageIndex+1]?.url} alt={alt} className="product-img2" onError={handleImageError}/>
 :
 ""
                   }        
@@ -205,14 +217,17 @@ const [imageIndex, setImageIndex] = useState(0);
                 </div>
                 <div className="product-content">
                   <Link to={`/products/${props.handle}`} className="title" style={{color:'black'}}><p >{props.title}</p></Link>
+                  <p style={{fontSize:'13px',fontWeight:500}}>{props?.prdt?.sku}</p>
+
                   <Stack spacing={1} className="stars">
           <Rating name="size-small" defaultValue={5} size="small" />
     
         </Stack>
         <div className="wish">
-        <div>
+        <div style={{display:'flex',alignItems:'center',marginTop:'10px'}}>
         <p className="price">&#8377;{props.price}</p>
-        <p className="sale-price">&#8377;{(props.price)*8}</p>
+        <p className="sale-price" style={{margin:'0 10px'}}>&#8377;{(props.price)*2}</p>
+
         </div>
         <div>
           {
@@ -228,7 +243,10 @@ const [imageIndex, setImageIndex] = useState(0);
 
                 <div className="hover-details">
     <div className="title-section">
+    <div>
     <p className="title">{props.title}</p>
+    <p style={{fontSize:'13px',fontWeight:500}}>{props?.prdt?.sku}</p>
+    </div>
     <p className="price">&#8377;{props.price}</p>
     </div>
     <div className="size">

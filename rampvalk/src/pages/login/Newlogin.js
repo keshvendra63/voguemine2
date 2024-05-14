@@ -46,6 +46,7 @@ const [login,setLogin]=useState(true)
             validationSchema:signupSchema,
             onSubmit:(values)=>{
               dispatch(registerUser(values))
+             
               setTimeout(()=>{
                   navigate('/')
                 
@@ -59,6 +60,7 @@ const [login,setLogin]=useState(true)
             },
             validationSchema:loginSchema,
             onSubmit:(values)=>{
+             
               dispatch(loginUser(values))
               setTimeout(()=>{
                 
@@ -76,7 +78,7 @@ const [login,setLogin]=useState(true)
             <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713516920/00010_fwk3rg.jpg" alt="" />
           <div className="icon">
             <div className="welcome">
-            <p className='title' style={{fontSize:'30px',fontWeight:'600'}}>Welcome to Rampvalk</p>
+            <p className='title' style={{fontSize:'30px',fontWeight:'600'}}>Welcome to Voguemine</p>
           </div>
           </div>
           

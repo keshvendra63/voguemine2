@@ -2,6 +2,7 @@ import React,{useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {getAProduct,getAllProducts,rating, resetState } from '../../features/products/productSlice';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import './singleproduct.css'
@@ -10,7 +11,15 @@ import Product from '../../components/Product'
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 import {toast} from 'react-toastify'
+import Carousel from 'react-bootstrap/Carousel';
+
 const SingleProduct = () => {
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex) => {
+    setIndex(selectedIndex);
+    
+  };
   const { handle } = useParams()
   const limit=4
   const page=1
@@ -48,33 +57,34 @@ const SingleProduct = () => {
   useEffect(()=>{
     dispatch(getAProduct(handle))
       getProducts()
+      
   },[limit,page,collectionName,handle])
   const getProducts=()=>{
       dispatch(getAllProducts({limit,page,collectionName,sort:"-createdAt"}))
   }
   const products=productState? productState:[]
    const customer=JSON.parse(localStorage.getItem("customer"))
-console.log(singleProductState)
-   useEffect(() => {
-    if (!color || !size) {
-      // If color or size is not selected, set alreadyAdded to false
-      setAlreadyAdded(false);
-      return;
-    }
-  
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const matchingCartItem = cart.find(item => {
-      return item.product._id === singleProductState?._id && item?.color === color && item?.size === size;
-    });
-  
-    if (matchingCartItem) {
-      // If a matching cart item is found, set alreadyAdded to true
-      setAlreadyAdded(true);
-    } else {
-      // If no matching cart item is found, set alreadyAdded to false
-      setAlreadyAdded(false);
-    }
-  }, [color, size,getProductId]);
+
+      useEffect(() => {
+       if (!color || !size) {
+         // If color or size is not selected, set alreadyAdded to false
+         setAlreadyAdded(false);
+         return;
+       }
+     
+       const cart = JSON.parse(localStorage.getItem("cart")) || [];
+       const matchingCartItem = cart.find(item => {
+         return item.product._id === singleProductState?._id && item?.color === color && item?.size === size;
+       });
+     
+       if (matchingCartItem) {
+         // If a matching cart item is found, set alreadyAdded to true
+         setAlreadyAdded(true);
+       } else {
+         // If no matching cart item is found, set alreadyAdded to false
+         setAlreadyAdded(false);
+       }
+     }, [color, size,getProductId]);
   const addProductToCartLocalStorage = (product) => {
     const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
     const updatedCart = [...existingCart, product];
@@ -90,6 +100,7 @@ console.log(singleProductState)
       return false
     }
     else{
+     
       await addProductToCartLocalStorage({productId:data,color,quantity,price:singleProductState?.price,size,product:singleProductState})
           toast.success("Added To Cart")
       window.fbq('track', 'AddToCart', {
@@ -121,6 +132,7 @@ const buyNow=async(data)=>{
  
 
   else{
+    
     await addProductToCartLocalStorage({productId:data,color,quantity,price:singleProductState?.price,size,product:singleProductState})
     toast.success("Added To Cart")   
      window.fbq('track', 'InitiateCheckout', {
@@ -131,8 +143,8 @@ const buyNow=async(data)=>{
       value:`${singleProductState?.price}`,
       currency: 'INR'
   });
-  
     setTimeout(()=>{
+      dispatch(getUserCartProduct())
       navigate('/checkout')
     },1000)
   }
@@ -141,6 +153,10 @@ const buyNow=async(data)=>{
 }
 const changeMainImage=(img)=>{
   setMainImage(img?.url)
+
+  setTimeout(()=>{
+    setMainImage("")
+  },5000)
 }
 const [imageIndex, setImageIndex] = useState(0);
 
@@ -197,23 +213,23 @@ const [imageIndex, setImageIndex] = useState(0);
     }
   }
   useEffect(() => {
-    if (singleProductState?.metaTitle1!=="" || singleProductState?.metaTitle1!==undefined) {
-        document.title = singleProductState?.metaTitle1;
+    if (singleProductState?.metaTitle!=="") {
+        document.title = singleProductState?.metaTitle;
     }
     else{
-      document.title =`${singleProductState?.title}`;
+      document.title =singleProductState?.title;
     }
 
-}, [singleProductState?.metaTitle1]);
+}, [singleProductState?.metaTitle,singleProductState?.title]);
 useEffect(() => {
-  if (singleProductState?.metaDesc1!=="" || singleProductState?.metaDesc1!==undefined) {
-      document.querySelector('meta[name="description"]').setAttribute('content',singleProductState?.metaDesc1);
+  if (singleProductState?.metaDesc!=="") {
+      document.querySelector('meta[name="description"]').setAttribute('content',singleProductState?.metaDesc);
   }
   else{
-    document.querySelector('meta[name="description"]').setAttribute('content',singleProductState?.description);
+    document.querySelector('meta[name="description"]').setAttribute('content',document.createElement('div').innerHTML = singleProductState?.description );
   }
 
-}, [singleProductState?.metaDesc1]);
+}, [singleProductState?.metaDesc,singleProductState?.description]);
 
 const commentPost=()=>{
   if(name==="" || email ==="" || msg===""){
@@ -264,6 +280,18 @@ const productStat = useSelector((state) => state?.product);
         },1000)
       }
     },[isLoading,isSuccess,singleProductState])
+
+
+const [alt,setAlt]=useState("")
+    useEffect(() => {
+      if (singleProductState?.alt && singleProductState?.alt!=="") {
+          setAlt(singleProductState?.alt)
+      }
+      else{
+        setAlt(singleProductState?.title)
+      }
+    
+    }, [singleProductState?.title,singleProductState?.alt]);
   return (
     <div className='single-product margin-section'>
       <div className="product">
@@ -275,12 +303,29 @@ const productStat = useSelector((state) => state?.product);
          
 
             <div className="main">
-            <img src={mainImage==""?singleProductState?.images[imageIndex]?.url : mainImage} alt="" onError={handleImageError}/>
+              {
+                mainImage===""? <Carousel activeIndex={index} onSelect={handleSelect} indicators={false}>
+                {
+                  singleProductState?.images?.map((item)=>{
+                    return <Carousel.Item interval={3000}>
+                    <img src={item?.url} alt="" />
+                  </Carousel.Item>
+                  })
+                }
+  
+        
+      </Carousel>
+      :
+                  <img src={mainImage} alt={alt} onError={handleImageError}/>
+
+              }
+           
+            {/* <img src={mainImage==""?singleProductState?.images[imageIndex]?.url : mainImage} alt={alt} onError={handleImageError}/> */}
             </div>
             <div className="thumbs">
                 {
                   singleProductState?.images?.map((img,index)=>{
-                      return <img src={img?.url} alt={singleProductState?.title} key={index} onClick={()=>changeMainImage(img)}/>
+                      return <img src={img?.url} alt={alt} key={index} onClick={()=>changeMainImage(img)}/>
                     
                     
                   })
@@ -294,7 +339,7 @@ const productStat = useSelector((state) => state?.product);
             <h1 className="product-name">{singleProductState?.title}</h1>
             <div style={{display:'flex',alignItems:'center'}}>
             <p className="prdt-price">&#8377;{singleProductState?.price}</p>
-            <p style={{color:'grey',fontSize:'18px',textDecoration:'line-through',margin:'0 10px 6px 15px'}}>&#8377;{(singleProductState?.price)*8}</p>
+            <p style={{color:'grey',fontSize:'18px',textDecoration:'line-through',margin:'0 10px 6px 15px'}}>&#8377;{(singleProductState?.price)*2}</p>
             <p style={{display:sold,
             margin:'0 10px', 
             backgroundColor: 'rgb(37, 37, 37)',
@@ -356,7 +401,12 @@ const productStat = useSelector((state) => state?.product);
 ""
             }
 
+<div className="coupon-code">
+  <p><span><LocalOfferIcon className='ico'/></span>Buy 1 Get 5% Off- <span>SAVE5</span></p>
+  <p><span><LocalOfferIcon className='ico'/></span>Buy 3 Get 10% Off- <span>MEGA10</span></p>
+  <p><span><LocalOfferIcon className='ico'/></span><span>Free Shipping</span> on Prepaid Orders</p>
 
+</div>
             {
               
               sold==="block" ? <p style={{textAlign:'center',margin:"15px auto",color:'red',fontWeight:600,fontSize:'20px'}}>This size is not available</p>:
@@ -430,7 +480,7 @@ const productStat = useSelector((state) => state?.product);
                 
                 products.map((arm,index)=>{
 
-                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle}/>
+                        return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} alt={arm?.alt}/>
                    
                     
                 })

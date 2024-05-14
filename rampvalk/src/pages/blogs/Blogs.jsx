@@ -24,7 +24,7 @@ const Blog = () => {
   return (
     <div className='margin-section' style={{marginTop:'100px'}}>
       <p className="section-heading">Our Blogs</p>
-      {/* <div className="blogs">
+      <div className="blogs">
         {
          blogs?.map((item,index)=>{
             return(
@@ -46,7 +46,7 @@ const Blog = () => {
         
 
 
-      </div> */}
+      </div>
       
     </div>
 

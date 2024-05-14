@@ -10,6 +10,8 @@ import {toast} from 'react-toastify'
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const Wishlist = () => {
+  const bannerState=useSelector((state)=>state?.banner?.banner)
+
 const [wishlist,setWishlist]=useState([])
   const [color,setColor]=useState(null)
     const [size,setSize]=useState(null)
@@ -38,7 +40,7 @@ const [wishlist,setWishlist]=useState([])
   return (
     <div className=''>
         <div className="category-banner">
-        <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710505441/a33_dc4zuw.jpg" alt="" />
+        <img src={bannerState[36]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710505441/a33_dc4zuw.jpg"} alt={bannerState[37]?.alt} />
       </div>
             <div className="products-listing margin-section">
         <p className="section-heading">Wishlist</p>

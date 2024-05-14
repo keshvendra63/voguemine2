@@ -148,8 +148,8 @@ const config2 = {
       }
       <hr />
       <div className="orders">
-
-        <p className="section-heading" style={{textTransform:'capitalize',color:"green",fontSize:'20px'}}>your order has been placed. thank you for shopping.</p>
+        <p className="section-heading" style={{textTransform:'capitalize',color:"green",fontSize:'20px',textAlign:'center'}}>your order has been placed. thank you for shopping.</p>
+        <p style={{textAlign:'center'}}>*Oops! You missed out on top deals by choosing COD. Next time, opt for prepaid to unlock unbeatable offers and heartfelt savings! Alternatively, reach out to our customer support for personalized deals crafted just for you. 😊</p>
         <button style={{color:'white',backgroundColor:'black',fontWeight:500,margin:'15px 0',border:'none',padding:'8px 15px'}} onClick={()=>navigate("/home")}>Continue Shopping</button>
           <div className="order-list">
             {

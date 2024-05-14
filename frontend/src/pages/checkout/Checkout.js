@@ -92,7 +92,6 @@ useEffect(()=>{
     const [discount,setDiscount]=useState(totalAmount/10)
     const [cartProductState,setCartProductState]=useState([])
     const [coupon,setCoupon]=useState("")
-    const [couponAmount,setCouponAmount]=useState(totalAmount/10)
     const couponState=useSelector((state)=>state?.coupon?.coupon)
     const [payMethod,setPayMethod]=useState("phonepe")
     useEffect(() => {
@@ -176,6 +175,7 @@ useEffect(()=>{
         setOrderType("COD")
         setCouponAmount(0)
         setPayMethod("cod")
+        toast.warn("Oops, you are missing top deals by selecting COD")
     }
     const bankClick=()=>{
         setShippingCost(0)
@@ -195,9 +195,6 @@ useEffect(()=>{
         setCouponAmount((totalAmount)/10)
         setPayMethod("hdfc")
     }
-
-    const finalAmount=shippingCost+totalAmount-couponAmount
-    const dispatch=useDispatch();
     useEffect (()=> {
         let sum=0;
         for(let index=0; index < cartItems?.length; index++){
@@ -205,9 +202,17 @@ useEffect(()=>{
             setTotalAmount(sum)
         }
     },[cartItems])
+    const [couponAmount,setCouponAmount]=useState()
+useEffect(()=>{
+setCouponAmount(totalAmount/10)
+},[totalAmount])
+    const finalAmount=shippingCost+totalAmount-couponAmount
+    const dispatch=useDispatch();
+   
     useEffect(()=>{
         dispatch(getAllCoupons())
     },[])
+
   
 const completeOrder=()=>{
     if(firstname==="" || lastname==="" || email==="" || phone==="" || mobile==="" || address==="" || city==="" || state==="" || pincode===""){
@@ -630,7 +635,7 @@ const formatTime = () => {
                         <p className="section-heading">Payment</p>
                     <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="cod"
+        defaultValue="razorpay"
         name="radio-buttons-group"
       >
         <div className="razorpay">

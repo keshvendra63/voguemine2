@@ -16,7 +16,10 @@ import logo from '../../images/logo.png'
 import {Link,useNavigate} from 'react-router-dom'
 import './header.css'
 import {getProducts} from '../../features/products/productSlice'
+import {getAllBanner} from '../../features/banner/bannerSlice'
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import {getAllCollection} from '../../features/collection/collectionSlice'
+
 const delayExecution = (mls) => {
   return new Promise((resolve) => {
     setTimeout(() => resolve("ok"), mls);
@@ -24,15 +27,20 @@ const delayExecution = (mls) => {
 };
 
 const Header = () => {
+
   const productState=useSelector((state)=>state?.product?.prdt)
   const placeholderText = ["Search Shirts", "Search Loafers", "Search Dresses"];
   const [state, setState] = useState("");
   const [search,setSearch] =useState("none")
   const [svalue,setSvalue]=useState(null)
   const [isHead2Open, setIsHead2Open] = useState(false); // Define isHead2Open state variable
-
+  const bannerState=useSelector((state)=>state?.banner?.banner)
+console.log(bannerState)
 const dispatch=useDispatch()
-
+useEffect(()=>{
+  dispatch(getAllCollection())
+  dispatch(getAllBanner())
+},[dispatch])
   const openSearch=()=>{
     setSearch("flex")
     setScrolled(true);
@@ -101,7 +109,9 @@ const loginOpen=()=>{
     if (event.key === 'Enter') {
       localStorage.setItem("search",JSON.stringify({
         mysearch:svalue
+        
       }))
+      
         navigate(`/products`)
         setSearch("none")
     setScrolled(false);

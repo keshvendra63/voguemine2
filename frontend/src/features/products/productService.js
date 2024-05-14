@@ -3,7 +3,7 @@ import {base_url, config} from '../../utils/axiosConfig'
 
 const getProducts=async(data)=>{
     
-    let url = `${base_url}product?page=${data.page}&limit=${data.limit}&collectionName=${data.collectionName}&state=active&sort=${data.sort}`;
+    let url = `${base_url}product?page=${data.page}&limit=${data.limit}&collectionName=${data.collectionName}&state=active`;
 
     // Check if collectionName is provided
     if (data && data.collectionName) {

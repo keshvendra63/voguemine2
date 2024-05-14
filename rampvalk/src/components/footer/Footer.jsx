@@ -7,6 +7,8 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import {Link} from 'react-router-dom'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import { useDispatch, useSelector } from 'react-redux'
+
 const Footer = () => {
   const handleButtonClick = () => {
     window.scrollTo({
@@ -14,9 +16,10 @@ const Footer = () => {
       behavior: 'smooth' // Adds smooth scrolling effect
     });
   };
+  const bannerState=useSelector((state)=>state?.banner?.banner)
 
   return (
-    <div className='footer'>
+    <div className='footer' style={{backgroundImage:`url("${bannerState && bannerState[40]?.images[0]?.url}")`}}>
         <Container>
       <Row>
         <Col className=''>
@@ -52,8 +55,8 @@ const Footer = () => {
         <Col className=''>
         <h2>Contact Information</h2>
         <ul>
-            <li>Phone: <Link to="tel:+919811363784">+91 9811363784</Link></li>
-            <li>Email: <Link to="mailto:rampvalk@gmail.com">rampvalk@gmail.com</Link></li>
+            <li>Phone: <Link to="tel:+919899202079">+91 9899202079</Link></li>
+            <li>Email: <Link to="mailto:customersupport@voguemine.com">customersupport@voguemine.com</Link></li>
             <li>Address:Noida, U.P, 201301</li>
             <ul>
                 <li><Link to="https://www.instagram.com/voguemine_fashion/"><InstagramIcon/></Link></li>
@@ -64,7 +67,7 @@ const Footer = () => {
       </Row>
     </Container>
     <hr style={{color:'white'}}/>
-    <p>&copy; 2024, Rampvalk</p>
+    <p className='copyright'>&copy; 2024, Voguemine</p>
     <div className="arrow-top">
       <ArrowUpwardIcon onClick={handleButtonClick} style={{fontSize:'25px'}}/>
       </div>

@@ -43,7 +43,7 @@ const HomeMain = () => {
       items: 1
     }
   };
-  const collections = ["Men's Premium Shirts", "Women's Dresses", "Men's Belt","Kid's T-Shirts"];
+  const collections = ["Men's Premium T Shirts", "Women's Dresses", "Men's Belt","Kid's T-Shirts"];
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const page = 1;
@@ -72,7 +72,7 @@ const HomeMain = () => {
   }, [limit, page]);
   const products = productState ? productState : [];
 
-  const shirts = data.filter(object => object.collectionName && object.collectionName === "Men's Premium Shirts").slice(0, 4);
+  const shirts = data.filter(object => object.collectionName && object.collectionName === "Men's Premium T Shirts").slice(0, 4);
   const tshirt = data.filter(object => object.collectionName && object.collectionName === "Women's Dresses").slice(0, 4);
   const jeans = data.filter(object => object.collectionName && object.collectionName === "Men's Belt").slice(0, 4);
   const kids = data.filter(object => object.collectionName && object.collectionName === "Kid's T-Shirts").slice(0, 4);
@@ -93,7 +93,7 @@ const HomeMain = () => {
   return (
     <div className='homeMain'>
       <div className="hero-section">
-      <Carousel activeIndex={index} onSelect={handleSelect} fade>
+      <Carousel activeIndex={index} onSelect={handleSelect} fade controls={false}>
       <Carousel.Item interval={2500}>
         <img src={bannerState[0]?.images[0]?.url} alt="" />
       </Carousel.Item>

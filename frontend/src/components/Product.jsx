@@ -71,7 +71,7 @@ useEffect(() => {
       }
       else{
         
-        if(data && (data===props.prdt.id)){
+        if(data && (data===props.prdt._id)){
           window.snaptr('track', 'ADD_CART', 
           {'price': props?.price, 
           'currency': 'INR', 
@@ -100,7 +100,7 @@ useEffect(() => {
     const addToWish=async(data)=>{
 
      
-      if(data && (data===props.prdt.id)){
+      if(data && (data===props.prdt._id)){
         await addProductToWishlistLocalStorage({productId:data,color,quantity,price:props.price,size,product:props.prdt})
         toast.success("Added To Wishlist")
       }
@@ -120,7 +120,7 @@ useEffect(() => {
     }
     
     else{
-      if(data && (data===props.prdt.id)){
+      if(data && (data===props.prdt._id)){
         window.snaptr('track', 'START_CHECKOUT', 
         {'price': props?.prdt?.price, 
         'currency': 'INR', 
@@ -235,7 +235,7 @@ const [imageIndex, setImageIndex] = useState(0);
                   <p style={{fontSize:'13px',fontWeight:500}}>{props?.prdt?.sku}</p>
 
                   <Stack spacing={1} className="stars">
-          <Rating name="size-small" defaultValue={5} size="small" />
+          <Rating name="size-small" value={5} size="small" />
     
         </Stack>
         <div className="wish">

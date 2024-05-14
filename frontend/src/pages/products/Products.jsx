@@ -42,6 +42,7 @@ const Products = () => {
 const search = JSON.parse(localStorage.getItem("search"))
 useEffect(()=>{
 if(search){
+  if(location.pathname==="/products")
   setSearchvalue(search.mysearch)
 }
 },[search])
@@ -52,340 +53,39 @@ const collection = segments[2]; // Gets "men-premium-shirt" assuming it's always
 
 console.log(collectionState)
 useEffect(()=>{
-localStorage.removeItem("search")
+  if(location?.pathname!=="/products"){
+    localStorage.removeItem("search")
+
+  }
 },[location])
 useEffect(()=>{
   dispatch(resetState())
-},[resetState])
+},[dispatch])
 const updateURL = (sizeNumber) => {
   const searchParams = new URLSearchParams();
   searchParams.set('page', sizeNumber);
   navigate(`${location.pathname}?${searchParams.toString()}`);
 };
-console.log(location.pathname)
-// useEffect(()=>{
-//     if(location.pathname==="/collections/men-premium-shirt"){
-//         setCollectionName("Men's Premium Shirts")
-//         document.title=collectionName
 
-//         setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
-//       }
-//       if(location.pathname==="/collections/men-premium-half-sleeve-shirt"){
-//         setCollectionName("Men's Premium Half Sleeve Shirt")
-//         document.title=collectionName
-
-//         setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
-//       }
-//       if(location.pathname==="/collections/t-shirts"){
-//         setCollectionName("Men's Premium T Shirts")
-//         document.title=collectionName
-
-//         setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46"])
-
-//       }
-//       if(location.pathname==="/collections/mens-sweatshirts"){
-//         setCollectionName("Men's Sweatshirts")
-//         document.title=collectionName
-
-//         setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46"])
-
-//       }
-//       if(location.pathname==="/collections/loafers-for-men"){
-//         setCollectionName("Men's Loafers")
-//         document.title=collectionName
-
-//         setFilter(["UK-6","UK-7","UK-8","UK-9","UK-10","UK-11"])
-
-//       }
-//       if(location.pathname==="/collections/floaters-slippers"){
-//         setCollectionName("Men's Slippers")
-//         document.title=collectionName
-
-//         setFilter(["UK-6","UK-7","UK-8","UK-9","UK-10","UK-11"])
-//       }
-//       if(location.pathname==="/collections/mens-sneakers-firstcopyshoes"){
-//         setCollectionName("Men's Sneakers")
-//         document.title = "Buy Premium First Copy Shoes: Best Brands & Latest Trends - Vogue Mine"
-//         document.querySelector('meta[name="description"]').setAttribute('content',"Shop first copy shoes from Vogue Mine: Get premium, top-quality designs from brands like Dior, Gucci, & more. Latest trends await you!");
-//         setFilter(["UK-6","UK-7","UK-8","UK-9","UK-10","UK-11"])
-//       }
-//       if(location.pathname==="/collections/mens-denim-jeans"){
-//         setCollectionName("Men's Denim Jeans")
-//         document.title=collectionName
-
-//         setFilter(["30","32","34","36","38","40","42"])
-
-//       }
-//       if(location.pathname==="/collections/mens-hoodies"){
-//         setCollectionName("Men's Hoodies")
-//         document.title=collectionName
-
-//         setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46"])
-
-//       }
-//       if(location.pathname==="/collections/mens-trackpants"){
-//         setCollectionName("Men's Trackpants")
-//         document.title=collectionName
-
-//         setFilter(["L-40","XL-42","XXL-44","3XL-46"])
-//       }
-//       if(location.pathname==="/collections/combos"){
-//         setCollectionName("men,s combos")
-//         document.title=collectionName
-
-//         setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46"])
-//       }
-//       if(location.pathname==="/collections/mens-pullover-jackets"){
-//         setCollectionName("Men's Jackets")
-//         document.title=collectionName
-
-//         setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
-
-//       }
-//       if(location.pathname==="/collections/mens-pullover"){
-//         setCollectionName("Men's Pullover")
-//         document.title=collectionName
-
-//         setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
-
-//       }
-//       if(location.pathname==="/collections/mens-premium-shorts"){
-//         setCollectionName("Men's Premium Shorts")
-//         document.title=collectionName
-
-//         setFilter(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
-
-//       }
-//       if(location.pathname==="/collections/mens-trackset"){
-//         setCollectionName("Men's Track Set")
-//         document.title=collectionName
-
-//         setFilter(["L-40","XL-42","XXL-44","3XL-46"])
-
-//       }
-//       if(location.pathname==="/collections/womens-shirt-t-shirts"){
-//         setCollectionName("Women's T-Shirt")
-//         document.title=collectionName
-
-//         setFilter(["S 31-32","M 33-34","L 35-36","XL 37-38","XXl 39-40"])
-
-//     }
-    
-//     if(location.pathname==="/collections/womens-dress"){
-//     setCollectionName("Women's Dresses")
-//     document.title=collectionName
-
-//     setFilter(["S 33-34","M 35-36","L 37-38","XL 39-40","XXl 41-42"])
-
-//     }
-    
-//     if(location.pathname==="/collections/womens-co-ord-set"){
-//     setCollectionName("Women's Co-ord set")
-//     document.title=collectionName
-
-//     setFilter(["S 35-36","M 37-38","L 39-40","XL 41-42","XXl 43-44"])
-
-//     }
-    
-//     if(location.pathname==="/collections/flat-sandals"){
-//     setCollectionName("Flat Sandals")
-//     document.title=collectionName
-
-//     setFilter(["37","38","39","40","41"])
-//     }
-    
-//     if(location.pathname==="/collections/heeled-sandals"){
-//     setCollectionName("Heeled Sandals")
-//     document.title=collectionName
-
-//     setFilter(["37","38","39","40","41"])
-
-//     }
-    
-//     if(location.pathname==="/collections/womens-legging"){
-//     setCollectionName("Women's Legging")
-//     document.title=collectionName
-
-//     }
-    
-//     if(location.pathname==="/collections/womens-sweatshirt"){
-//     setCollectionName("Women's Sweatshirts")
-//     document.title=collectionName
-
-//     }
-    
-//     if(location.pathname==="/collections/womens-hoodie"){
-//     setCollectionName("Women's Pullovers")
-//     document.title=collectionName
-
-//     }
-    
-//     if(location.pathname==="/collections/womens-pullovers"){
-//     setCollectionName("Women's Pullovers")
-//     document.title=collectionName
-
-//     }
-    
-//     if(location.pathname==="/collections/womens-pullover-jackets"){
-//     setCollectionName("Womens'Jackets")
-//     document.title=collectionName
-
-//     }
-    
-//     if(location.pathname==="/collections/womens-winter-coats"){
-//     setCollectionName("Women's Winter Coats")
-//     document.title=collectionName
-
-//     }
-    
-//     if(location.pathname==="/collections/womens-track-sets"){
-//     setCollectionName("Women's Track Sets")
-//     document.title=collectionName
-
-//     }
-    
-//     if(location.pathname==="/collections/kids-tracksuit"){
-//     setCollectionName("Kids Tracksuit")
-//     document.title=collectionName
-
-//     }
-    
-//     if(location.pathname==="/collections/kids-boy-jacket"){
-//     setCollectionName("Kid's Jackets")
-//     document.title=collectionName
-
-//     }
-    
-//     if(location.pathname==="/collections/kids-girl-jacket"){
-//     setCollectionName("Kid's Girl co-ord Set")
-//     document.title=collectionName
-
-//     }
-    
-//     if(location.pathname==="/collections/kids-hoodie"){
-//     setCollectionName("Kid's Boy's Cord-Set")
-//     document.title=collectionName
-
-//     setFilter(["2-90","4-100","6-110","8-120","10-130","12-140","14-150","16-160"])
-
-//     }
-    
-//     if(location.pathname==="/collections/kids-co-ord-set"){
-//     setCollectionName("Kid's Girl co-ord Set")
-//     document.title=collectionName
-
-//     setFilter(["110-26","120-28","130-30","140-32","150-34","160-36"])
-
-//     }
-    
-//     if(location.pathname==="/collections/kids-shirt"){
-//     setCollectionName("Kids Shirts")
-//     document.title=collectionName
-
-//     setFilter(["6-26","8-28","10-30","12-32","14-34","16-36"])
-
-//     }
-    
-//     if(location.pathname==="/collections/kid-girls-dress"){
-//     setCollectionName("Kid Girl's Dress")
-//     document.title=collectionName
-
-//     setFilter(["6-110","8-120","10-130","12-140","14-150","16-160","4-100"])
-//     }
-    
-//     if(location.pathname==="/collections/kids-t-shirts"){
-//     setCollectionName("Kid's T-Shirts")
-//     document.title=collectionName
-
-//     setFilter(["4-100","6-110","8-120","10-130","12-140","14-150","2-22","4-24","6-26","8-28","10-30","12-32","14-34","16-36"])
-
-//     }
-    
-//     if(location.pathname==="/collections/belts"){
-//     setCollectionName("Men's Belt")
-//     document.title=collectionName
-
-//     setFilter(["85-30","90-32","95-34","100-36","105-38","110-40"])
-
-//     }
-    
-//     if(location.pathname==="/collections/towels"){
-//     setCollectionName("Accessories Towel for Men and Women" || "Towels for Men & Women")
-//     document.title=collectionName
-
-//     setFilter([""])
-
-//     }
-    
-//     if(location.pathname==="/collections/under-garment"){
-//     setCollectionName("Men's Accessories Under Garments" || "Men's Under Garments")
-//     document.title=collectionName
-
-//     setFilter(["L 33-34","XL 35-36","XXL 37-38","3XL 39-40"])
-//     }
-    
-//     if(location.pathname==="/collections/no-show"){
-//     setCollectionName("No Show")
-//     document.title=collectionName
-
-//     setFilter([""])
-
-//     }
-    
-//     if(location.pathname==="/collections/low-ankle"){
-//     setCollectionName("Low Ankle") 
-//      document.title=collectionName
-
-
-//     setFilter([""])
-
-//     }
-    
-//     if(location.pathname==="/collections/low-cut"){
-//     setCollectionName("Low Cut")
-//     document.title=collectionName
-
-//     setFilter([""])
-
-//     }
-    
-//     if(location.pathname==="/collections/anklet"){
-//     setCollectionName("Anklet")
-//     document.title=collectionName
-
-//     setFilter([""])
-
-//     }
-    
-//     if(location.pathname==="/collections/crew"){
-//     setCollectionName("Crew")
-//     document.title=collectionName
-
-//     setFilter([""])
-
-//     }
-    
-    
-// },[location])
     const productState=useSelector((state)=>state?.product?.product)
     const productState1=useSelector((state)=>state?.product?.prdt)
     const productStat = useSelector((state) => state?.product);
 
     const {isError,isLoading,isSuccess}=productStat
     const getcollection=async()=>{
-      await dispatch(getACollection(collection))
+    dispatch(getACollection(collection))
       setCollectionName(collectionState?.title)
     }
     useEffect(()=>{
       getcollection()
 
       if(searchValue===undefined){
-          dispatch(getAllProducts({sort,limit,page,collectionName}))
+          dispatch(getAllProducts({sort,limit,page,collectionName:collectionState?.title}))
       }
     else{
         dispatch(getProducts({searchValue,limit,sort,page}))
     }
-    },[collectionName,searchValue,page,limit])
+    },[searchValue,page,limit,collectionState?.title])
     const products=searchValue===undefined?(productState? productState:[]):(productState1? productState1:[])
       
     const [loadings, setLoadings] = useState([]);
@@ -401,7 +101,7 @@ console.log(location.pathname)
           newLoadings[index] = false;
           return newLoadings;
         });
-      }, 3000);
+      }, 2000);
     };
  
   
@@ -543,7 +243,7 @@ const DrawerList = (
       </Drawer>
                         </div>
                         {
-                          loading===true? <p style={{marginBottom:0}}>
+                          loading? <p style={{marginBottom:0}}>
                           Loading.....</p>:
                            <p style={{marginBottom:0}}>
                            {products?.length} Products</p>

@@ -1,11 +1,13 @@
 import React,{useEffect, useState} from 'react'
 import './cart.css'
 import LocalMallIcon from '@mui/icons-material/LocalMall';
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {getUserCartProduct, removeFromCart, updateQuantityFromCart} from '../../features/user/userSlice'
 import { toast } from 'react-toastify';
 const Cart = () => {
+    const bannerState=useSelector((state)=>state?.banner?.banner)
+
     const customer=JSON.parse(localStorage.getItem("customer"))
 const [cartItems, setCartItems] = useState([]);
 const [productUpdateDetail,setproductUpdateDetail]=useState(null)
@@ -73,14 +75,18 @@ useEffect (()=> {
         setTotalAmount(sum)
     }
 },[cartItems])
+const navigate=useNavigate()
+const checkoutClick=()=>{
+    
+}
     return (
         <div className='cart'>
             <div className="category-banner">
-                <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1710505435/a34_pjehqe.jpg" alt="" />
+                <img src={bannerState[44]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710505435/a34_pjehqe.jpg"} alt={bannerState[38]?.alt} />
             </div>
             <h1 style={{textAlign:'center',margin:'20px 0',fontSize:'30px',display:'flex',alignItems:'center',justifyContent:'center'}}><LocalMallIcon style={{fontSize:'30px',marginRight:'10px'}}/> My Cart</h1>
             {
-               (cartItems?.length !== null || cartItems?.length !== 0)&&
+               cartItems?.length !== 0?
                 <div className="cart-content margin-section">
                 <div className="left-cart">
                     <hr />
@@ -131,11 +137,16 @@ useEffect (()=> {
                 </div>
                 <div className="checkouts">
                 <p style={{fontWeight:'bold',color:'blue'}}>10% Instant Off on Prepaid Orders</p>
-                <Link to="/checkout" >  <button className='checkout-btn'>CHECKOUT</button></Link>
+                <Link to="/checkout" >  <button className='checkout-btn' onClick={checkoutClick}>CHECKOUT</button></Link>
                 </div>
                 
                     
                     
+            </div>
+            :
+            <div className='margin-section' style={{textAlign:'center'}}>
+                <p style={{marginBottom:'20px',fontSize:'30px',fontWeight:'500'}}>NO DATA</p>
+                <button className='checkout-btn' onClick={()=>navigate("/")}>CONTINUE SHOPPING</button>
             </div>
                     
                 
