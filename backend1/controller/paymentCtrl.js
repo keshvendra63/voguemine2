@@ -151,7 +151,7 @@ const hdfcResponse = async (req, res, next) => {
       ).toString();
       // Redirect based on payment status
       if (ccavResponse["order_status"] === "Success") {
-          res.redirect(`https://rampvalk.com/`);
+          res.redirect(`https://rampvalk.com/profile`);
       } else {
           res.redirect(`https://rampvalk.com/checkout`);
       }

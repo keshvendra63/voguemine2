@@ -218,9 +218,9 @@ const completeOrder=()=>{
     if(firstname==="" || lastname==="" || email==="" || phone==="" || mobile==="" || address==="" || city==="" || state==="" || pincode===""){
         toast.info("Please Fill All Information")
     }
-    else if(verified===false){
-        toast.error("Please Verify First")
-    }
+    // else if(verified===false){
+    //     toast.error("Please Verify First")
+    // }
     else{
             setPaySpin(true)
            localStorage.setItem("address",JSON.stringify({
@@ -649,12 +649,12 @@ const formatTime = () => {
         </div> */}
         <div className="razorpay">
             <FormControlLabel value="hdfc" control={<Radio />} label="HDFC Secure Payments" disabled={false} onClick={hdfcClick}/>
-            <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" />
-            <div className="bottom">
+            {/* <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" /> */}
+            {/* <div className="bottom">
                 <AddCardIcon style={{fontSize:'50px'}}/>
                 <p>After clicking “Pay now”, you will be redirected to PhonePe Secure (UPI, Cards, Wallets, NetBanking) to complete your purchase securely.</p>
                 <p style={{color:'red',marginTop:'10px',fontWeight:500}}>* Due to some Banking issues, we are unable to capture paid orders. Please continue shopping with Cash on Delivery. Sorry for the inconvenience</p>
-            </div>
+            </div> */}
         </div>
 
 
