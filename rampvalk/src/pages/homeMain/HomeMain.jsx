@@ -419,7 +419,7 @@ const HomeMain = () => {
           <Reviews/>
         </div> */}
 
-<p style={{textAlign:'center',fontSize:'30px',fontWeight:500}}>Secure With Voguemine</p>
+<p style={{textAlign:'center',fontSize:'30px',fontWeight:500}}>Secure With Rampvalk</p>
 
         <div className="icon-footer">
           <div>

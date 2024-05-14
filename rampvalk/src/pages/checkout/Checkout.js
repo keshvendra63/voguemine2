@@ -93,7 +93,7 @@ useEffect(()=>{
     const [cartProductState,setCartProductState]=useState([])
     const [coupon,setCoupon]=useState("")
     const couponState=useSelector((state)=>state?.coupon?.coupon)
-    const [payMethod,setPayMethod]=useState("phonepe")
+    const [payMethod,setPayMethod]=useState("hdfc")
     useEffect(() => {
         // Retrieve cart items from localStorage
         const cartFromStorage = JSON.parse(localStorage.getItem('cart')) || [];
@@ -285,8 +285,8 @@ const checkOutHandler=async(e)=>{
         };
 
         // Simulating a successful payment verification for COD orders
-        await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }))
-        addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
+        await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" }))
+        addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" })
         localStorage.removeItem('cart');
 
         navigate("/profile")
@@ -302,7 +302,7 @@ const checkOutHandler=async(e)=>{
             razorpayPaymentId: "Phonepe", // Set a placeholder value for Razorpay payment ID for COD orders
             razorpayOrderId: "Phonepe", // Set a placeholder value for Razorpay order ID for COD orders
         };
-        localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }));
+        localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" }));
 
     axios.post("https://voguemine2.onrender.com/api/user/order/checkout",{amount:finalAmount,number:phone})
     .then(response=>{
@@ -323,9 +323,9 @@ const checkOutHandler=async(e)=>{
             razorpayPaymentId: "hdfc", // Set a placeholder value for Razorpay payment ID for COD orders
             razorpayOrderId: "hdfc", // Set a placeholder value for Razorpay order ID for COD orders
         };
-        localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }));
+        localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" }));
 
-    axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.app.github.dev/api/user/order/hdfcPay",{amount:finalAmount})
+    axios.post("https://voguemine2.onrender.com/api/user/order/hdfcPay",{amount:finalAmount})
     .then(response=>{
         window.location.href=response.data.payLink
 
@@ -348,8 +348,8 @@ const data = {
 
     // Simulating a successful payment verification for COD orders
 
-    await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }))
-    addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" })
+    await dispatch(createAnOrder({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" }))
+    addProductToOrderLocalStorage({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" })
     localStorage.removeItem('cart');
 
     navigate("/profile")
@@ -380,7 +380,7 @@ useEffect(()=>{
         state:state,
         pincode:pincode,
         mobile:mobile,},
-        tag:"Voguemine",
+        tag:"Rampvalk",
                 orderItems:cartProductState,
                 totalPrice:totalAmount,
                 shippingCost:shippingCost,
@@ -635,20 +635,11 @@ const formatTime = () => {
                         <p className="section-heading">Payment</p>
                     <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="razorpay"
+        defaultValue="hdfc"
         name="radio-buttons-group"
       >
-        <div className="razorpay">
-            <FormControlLabel value="razorpay" control={<Radio />} label="PhonePe Secure (UPI, Cards, Wallets, NetBanking)" disabled={false} onClick={phonepeClick}/>
-            {/* <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" /> */}
-            {/* <div className="bottom">
-                <AddCardIcon style={{fontSize:'50px'}}/>
-                <p>After clicking “Pay now”, you will be redirected to PhonePe Secure (UPI, Cards, Wallets, NetBanking) to complete your purchase securely.</p>
-                <p style={{color:'red',marginTop:'10px',fontWeight:500}}>* Due to some Banking issues, we are unable to capture paid orders. Please continue shopping with Cash on Delivery. Sorry for the inconvenience</p>
-            </div> */}
-        </div>
         {/* <div className="razorpay">
-            <FormControlLabel value="hdfc" control={<Radio />} label="HDFC Secure Payments" disabled={false} onClick={hdfcClick}/>
+            <FormControlLabel value="razorpay" control={<Radio />} label="PhonePe Secure (UPI, Cards, Wallets, NetBanking)" disabled={false} onClick={phonepeClick}/>
             <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" />
             <div className="bottom">
                 <AddCardIcon style={{fontSize:'50px'}}/>
@@ -656,6 +647,15 @@ const formatTime = () => {
                 <p style={{color:'red',marginTop:'10px',fontWeight:500}}>* Due to some Banking issues, we are unable to capture paid orders. Please continue shopping with Cash on Delivery. Sorry for the inconvenience</p>
             </div>
         </div> */}
+        <div className="razorpay">
+            <FormControlLabel value="hdfc" control={<Radio />} label="HDFC Secure Payments" disabled={false} onClick={hdfcClick}/>
+            <img src="https://axwon.com/wp-content/uploads/2021/03/Footer-payment-icons-1-1536x242-1.png" alt="" />
+            <div className="bottom">
+                <AddCardIcon style={{fontSize:'50px'}}/>
+                <p>After clicking “Pay now”, you will be redirected to PhonePe Secure (UPI, Cards, Wallets, NetBanking) to complete your purchase securely.</p>
+                <p style={{color:'red',marginTop:'10px',fontWeight:500}}>* Due to some Banking issues, we are unable to capture paid orders. Please continue shopping with Cash on Delivery. Sorry for the inconvenience</p>
+            </div>
+        </div>
 
 
         <div className="banking">

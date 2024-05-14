@@ -55,19 +55,16 @@ const Footer = () => {
         <Col className=''>
         <h2>Contact Information</h2>
         <ul>
-            <li>Phone: <Link to="tel:+919899202079">+91 9899202079</Link></li>
-            <li>Email: <Link to="mailto:customersupport@voguemine.com">customersupport@voguemine.com</Link></li>
+            <li>Phone: <Link to="tel:+919899202079">+91 9811363784</Link></li>
+            <li>Email: <Link to="mailto:customersupport@rampvalk.com">customersupport@rampvalk.com</Link></li>
             <li>Address:Noida, U.P, 201301</li>
-            <ul>
-                <li><Link to="https://www.instagram.com/voguemine_fashion/"><InstagramIcon/></Link></li>
-                <li><Link to="https://www.facebook.com/vogueminefashion"><FacebookIcon/></Link></li>
-            </ul>
+           
         </ul>
         </Col>
       </Row>
     </Container>
     <hr style={{color:'white'}}/>
-    <p className='copyright'>&copy; 2024, Voguemine</p>
+    <p className='copyright'>&copy; 2024, Rampvalk</p>
     <div className="arrow-top">
       <ArrowUpwardIcon onClick={handleButtonClick} style={{fontSize:'25px'}}/>
       </div>

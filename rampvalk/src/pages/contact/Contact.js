@@ -33,8 +33,8 @@ const Contact = () => {
         <div className="contact-right">
                 <p>Contact Us</p>
                 <div><LocationCityIcon/><p>Noida, U.P, 201301, India</p></div>
-                <div><EmailIcon/><p>customersupport@voguemine.com</p></div>
-                <div><PermPhoneMsgIcon/><p>+91 9899202079</p></div>
+                <div><EmailIcon/><p>customersupport@rampvalk.com</p></div>
+                <div><PermPhoneMsgIcon/><p>+91 9811363784</p></div>
         </div>
       </div>
       <div className="map">
