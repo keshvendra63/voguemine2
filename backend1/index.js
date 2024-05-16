@@ -33,7 +33,12 @@ app.use("/api/collection", collectionRouter);
 app.use("/api/banner", bannerRouter);
 app.use("/api/enquiry", enqRouter);
 app.use("/api/upload", uploadRouter);
+app.post('/webhook', (req, res) => {
+  console.log('Webhook received:', req.body);
 
+  // Respond to acknowledge receipt of the webhook
+  res.status(200).send('Webhook received');
+});
 app.use(notFound);
 app.use(errorHandler);
 
