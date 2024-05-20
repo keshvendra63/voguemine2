@@ -194,7 +194,7 @@ const billPay = async (req, res) => {
     amount: "100.00",
     order_date: orderDate,
     currency: "356",
-    ru: 'http://localhost:5000/api/user/order/billRes',
+    ru: 'https://voguemine2.onrender.com/api/user/order/billRes',
     additional_info: {
       additional_info1: 'Demo',
       additional_info2: 'Voguemine',
