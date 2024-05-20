@@ -247,9 +247,9 @@ const completeOrder=()=>{
     if(firstname==="" || lastname==="" || email==="" || phone==="" || mobile==="" || address==="" || city==="" || state==="" || pincode===""){
         toast.info("Please Fill All Information")
     }
-    // else if(verified===false){
-    //     toast.error("Please Verify First")
-    // }
+    else if(verified===false){
+        toast.error("Please Verify First")
+    }
     else{
             setPaySpin(true)
            localStorage.setItem("address",JSON.stringify({
@@ -776,12 +776,6 @@ const formatTime = () => {
                     </ul>
                 </div>
             </div>
-            <form name="sdklaunch" id="sdklaunch" action="https://uat1.billdesk.com/u2/web/v1_2/embeddedsdk" method="POST">
-<input type="hidden" id="bdorderid" name="bdorderid" value="cyi1175vlwc3xpsn"/>
-<input type="hidden" id="merchantid" name="merchantid" value="UVOGUEV2"/>
-<input type="hidden" id="rdata" name="rdata" value="eyJhbGciOiJIUzI1NiIsImNsaWVudGlkIjoidXZvZ3VldjIiLCJraWQiOiJITUFDIn0.eyJzdGF0dXMiOjQyMiwiZXJyb3JfdHlwZSI6ImludmFsaWRfZGF0YV9lcnJvciIsImVycm9yX2NvZGUiOiJHTklERTAwMDEiLCJtZXNzYWdlIjoiSW52YWxpZCB0aW1lc3RhbXAgaGVhZGVyIn0.iJXgtJVqmwrNhgYaHzyXcDTjFo5NfWa3yRA8G78fEvo"/>
-<input name='submit' type='submit' value='Complete your Payment' />
-</form>
         </div>
     )
 }

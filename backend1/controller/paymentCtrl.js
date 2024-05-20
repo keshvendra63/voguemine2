@@ -162,151 +162,91 @@ const hdfcResponse = async (req, res, next) => {
   }
 };
 
+function formatDateWithTimezone(date) {
+  const pad = (num) => (num < 10 ? '0' : '') + num;
 
+  const yyyy = date.getFullYear();
+  const MM = pad(date.getMonth() + 1);
+  const dd = pad(date.getDate());
+  const hh = pad(date.getHours());
+  const mm = pad(date.getMinutes());
+  const ss = pad(date.getSeconds());
 
-const billdeskHost = "https://uat1.billdesk.com/u2/payments/ve1_2/orders/create";
-const merchantId = 'UVOGUEV2';
-const securityKey = 'rcDR0IKFer68ZpC9qA6DpLzz4CD1rGGu';
+  const timezoneOffset = -date.getTimezoneOffset();
+  const sign = timezoneOffset >= 0 ? '+' : '-';
+  const offsetHours = pad(Math.floor(Math.abs(timezoneOffset) / 60));
+  const offsetMinutes = pad(Math.abs(timezoneOffset) % 60);
 
-const headers = {
-    alg: "HS256",
-    clientid: "uvoguev2",
-    kid: "HMAC"
-};
-
-const createOrder = async () => {
-    const payload = {
-        mercid: merchantId,
-        orderid: "12345gty",
-        amount: "100.00",
-        order_date: new Date().toISOString(),
-        currency: "INR",
-        ru: 'http://localhost:5000/api/user/order/billRes',
-        additional_info: {
-            additional_info1: "cud456",
-            additional_info2: "vogue",
-            additional_info3: "NA",
-            additional_info4: "NA",
-            additional_info5: "NA",
-            additional_info6: "NA",
-            additional_info7: "NA"
-        },
-        itemcode: "DIRECT",
-        device: {
-            init_channel: "internet",
-            ip: "127.0.0.1",
-            mac: "00:00:00:00:00:00",
-            imei: "123456789012345",
-            accept_header: "text/html",
-            user_agent: "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0",
-            fingerprintid: "unique_fingerprint_id"
-        }
-    };
-
-    const token = jwt.sign(payload, securityKey, {
-        algorithm: 'HS256',
-        header: headers
-    });
-
-    try {
-        const response = await axios.post(billdeskHost, token, {
-            headers: {
-                'Content-Type': 'application/jose',
-                'Accept': 'application/jose',
-                'BD-Traceid': payload.orderid,
-                'BD-Timestamp': moment().utc().format('YYYYMMDDTHHmmss') // Format correction
-            }
-        });
-
-        const result = response.data;
-
-        try {
-            const decoded = jwt.verify(result, securityKey, { algorithms: ['HS256'] });
-
-            if (decoded.status === 'ACTIVE') {
-                const transactionid = decoded.links[1].parameters.bdorderid;
-                const authtoken = decoded.links[1].headers.authorization;
-
-                console.log('Transaction is active. Transaction ID:', transactionid);
-
-                const formHTML = `
-                    <html>
-                    <head></head>
-                    <body>
-                        <form name="sdklaunch" id="sdklaunch" action="https://uat1.billdesk.com/u2/web/v1_2/embeddedsdk" method="POST">
-                            <input type="hidden" id="bdorderid" name="bdorderid" value="${transactionid}">
-                            <input type="hidden" id="merchantid" name="merchantid" value="${merchantId}">
-                            <input type="hidden" id="rdata" name="rdata" value="${authtoken}">
-                            <input name='submit' type='submit' value='Complete your Payment' />
-                        </form>
-                        <script type="text/javascript">
-                            document.getElementById('sdklaunch').submit();
-                        </script>
-                    </body>
-                    </html>
-                `;
-                return formHTML;
-            } else {
-                console.error('Response error:', decoded);
-            }
-        } catch (error) {
-            console.error('Return signature validation FAILED:', error);
-        }
-    } catch (error) {
-        console.error('Error submitting to Billdesk:', error.response ? error.response.data : error.message);
-    }
-};
+  return `${yyyy}-${MM}-${dd}T${hh}:${mm}:${ss}${sign}${offsetHours}:${offsetMinutes}`;
+}
+const secretKey = 'rcDR0IKFer68ZpC9qA6DpLzz4CD1rGGu'; // Replace with your actual secret key
+const clientid = 'uvoguev2'; // Replace with your actual clientid
+const mercid = 'UVOGUEV2'; // Replace with your actual mercid
 
 const billPay = async (req, res) => {
-    const formHTML = await createOrder();
-    res.send(formHTML);
+  const now = new Date();
+  const orderDate = formatDateWithTimezone(now);
+  const traceId = uniqid();
+
+  const payload = {
+    mercid,
+    orderid:uniqid(),
+    amount: "100.00",
+    order_date: orderDate,
+    currency: "356",
+    ru: 'http://localhost:5000/api/user/order/billRes',
+    additional_info: {
+      additional_info1: 'Demo',
+      additional_info2: 'Voguemine',
+    },
+    itemcode: 'DIRECT',
+    device: {
+      init_channel: 'internet',
+      ip: req.ip,
+      user_agent: req.headers['user-agent'],
+      accept_header: 'text/html',
+      browser_tz: '-330',
+      browser_color_depth: '32',
+      browser_java_enabled: 'false',
+      browser_screen_height: '601',
+      browser_screen_width: '657',
+      browser_language: 'en-US',
+      browser_javascript_enabled: 'true',
+    },
+    iat: Math.floor(Date.now() / 1000),
+  };
+console.log(mercid,traceId,orderDate,payload)
+  const header = {
+    alg: 'HS256',
+    clientid,
+  };
+
+  const token = jwt.sign(payload, secretKey, { algorithm: 'HS256', header });
+
+  try {
+    const response = await axios.post(
+      'https://uat1.billdesk.com/u2/payments/ve1_2/orders/create',
+      token,
+      {
+        headers: {
+          Accept: 'application/jose',
+          'Content-Type': 'application/jose',
+          'BD-Traceid': traceId,
+          'BD-Timestamp': Math.floor(Date.now() / 1000).toString(),
+        },
+      }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    // console.error(error);
+    res.status(500).json({ error: 'Error processing payment', details: error.response ? error.response.data : error.message });
+  }
 };
-
-
 const billRes=(req, res) => {
-        const tx = req.body.transaction_response;
-    
-        if (!tx) {
-            return res.status(400).send('Invalid call');
-        }
-    
-        // Signature validation
-        try {
-            const resultDecoded = jwt.verify(tx, "rcDR0IKFer68ZpC9qA6DpLzz4CD1rGGu", { algorithms: ['HS256'] });
-            const resultArray = resultDecoded;
-            const resultJson = JSON.stringify(resultArray, null, 2);
-    
-            // Process info
-            if (resultDecoded.transaction_error_type === 'success') {
-                const orderid = resultDecoded.orderid;
-                const transactionDate = resultDecoded.transaction_date;
-                const transactionid = resultDecoded.transactionid;
-                const chargeAmount = resultDecoded.charge_amount;
-    
-                // SAVE TO DB and send receipt
-                // Example: updateTransactionToDB(resultArray);
-                // Example: GenerateReceiptEmail(orderid, 1, draftreceipt);
-    
-                res.send(`
-                    <h2>Transaction was successful....</h2>
-                    Transaction Date: ${transactionDate}<br>
-                    Transaction ID: ${transactionid}<br>
-                    Charge Amount: ₹${chargeAmount}<br>
-                `);
-            } else {
-                const txerror = resultDecoded.transaction_error_type;
-                const transactionid = resultDecoded.transactionid;
-                res.send(`
-                    <h2>Transaction FAILED....</h2>
-                    Transaction Date: ${resultDecoded.transaction_date}<br>
-                    Transaction ID: ${transactionid}<br>
-                    Charge Amount: ₹${resultDecoded.charge_amount}<br>
-                    Failure Reason: ₹${resultDecoded.transaction_error_desc}<br>
-                `);
-            }
-        } catch (error) {
-            res.status(400).send('Invalid response');
-        }
+    const response = req.body;
+    // Handle the response from BillDesk
+    res.json(response);
     }
 module.exports = {
     phonePe,
