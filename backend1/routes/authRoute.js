@@ -66,7 +66,7 @@ const {
   fData2
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
-const {checkout,paymentVerification, phonePe, redirectUri, hdfcPayment, hdfcResponse}=require("../controller/paymentCtrl");
+const {checkout,paymentVerification, phonePe, redirectUri, hdfcPayment, hdfcResponse, billdeskPay, billdeskRes, billPay, billRes}=require("../controller/paymentCtrl");
 const sendOtp = require("../controller/otpController");
 const {siteMap}=require('../controller/sitemapCtrl')
 const router = express.Router();
@@ -81,7 +81,8 @@ router.post("/cart", authMiddleware, userCart);
 router.post("/order/checkout",phonePe)
 router.post("/order/hdfcPay",hdfcPayment)
 router.post("/order/hdfcRes",hdfcResponse)
-
+router.post("/order/billPay",billPay)
+router.post("/order/billRes",billRes)
 router.post("/status/:merchantTransactionId",redirectUri)
 // router.post("/cart/applycoupon", authMiddleware, applyCoupon);
 router.post("/cart/create-order", createOrder);

@@ -212,15 +212,44 @@ setCouponAmount(totalAmount/10)
     useEffect(()=>{
         dispatch(getAllCoupons())
     },[])
+    const generateUniqueId = () => {
+        // Get the current date and time
+        const now = new Date();
+      
+        // Get individual components of the date and time
+        const year = now.getFullYear();
+        const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+        const day = now.getDate().toString().padStart(2, '0');
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        const milliseconds = now.getMilliseconds().toString().padStart(3, '0');
+      
+        // Combine date and time components into a unique string
+        const dateTimeString = `${year}${month}${day}${hours}${minutes}${seconds}${milliseconds}`;
+      
+        // Optionally, add some random element to ensure uniqueness
+        const randomElement = Math.random().toString(36).substring(2, 10);
+      
+        // Combine the dateTimeString with the random element
+        const uniqueId = `${dateTimeString}-${randomElement}`;
+      
+        return uniqueId;
+      };
 
-  
+    const [uniqueId, setUniqueId] = useState('');
+
+    useEffect(() => {
+      const id = generateUniqueId();
+      setUniqueId(id);
+    }, []);
 const completeOrder=()=>{
     if(firstname==="" || lastname==="" || email==="" || phone==="" || mobile==="" || address==="" || city==="" || state==="" || pincode===""){
         toast.info("Please Fill All Information")
     }
-    else if(verified===false){
-        toast.error("Please Verify First")
-    }
+    // else if(verified===false){
+    //     toast.error("Please Verify First")
+    // }
     else{
             setPaySpin(true)
            localStorage.setItem("address",JSON.stringify({
@@ -324,8 +353,14 @@ const checkOutHandler=async(e)=>{
             razorpayOrderId: "hdfc", // Set a placeholder value for Razorpay order ID for COD orders
         };
         localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" }));
+        localStorage.setItem("orderId",JSON.stringify({
+            orderId:uniqueId,
+            amount:finalAmount,
+            totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Rampvalk" 
 
-    axios.post("https://voguemine2.onrender.com/api/user/order/hdfcPay",{amount:finalAmount})
+        }))
+
+    axios.post("https://voguemine2.onrender.com/api/user/order/hdfcPay",{amount:finalAmount,orderId:uniqueId})
     .then(response=>{
         window.location.href=response.data.payLink
 
@@ -741,6 +776,12 @@ const formatTime = () => {
                     </ul>
                 </div>
             </div>
+            <form name="sdklaunch" id="sdklaunch" action="https://uat1.billdesk.com/u2/web/v1_2/embeddedsdk" method="POST">
+<input type="hidden" id="bdorderid" name="bdorderid" value="cyi1175vlwc3xpsn"/>
+<input type="hidden" id="merchantid" name="merchantid" value="UVOGUEV2"/>
+<input type="hidden" id="rdata" name="rdata" value="eyJhbGciOiJIUzI1NiIsImNsaWVudGlkIjoidXZvZ3VldjIiLCJraWQiOiJITUFDIn0.eyJzdGF0dXMiOjQyMiwiZXJyb3JfdHlwZSI6ImludmFsaWRfZGF0YV9lcnJvciIsImVycm9yX2NvZGUiOiJHTklERTAwMDEiLCJtZXNzYWdlIjoiSW52YWxpZCB0aW1lc3RhbXAgaGVhZGVyIn0.iJXgtJVqmwrNhgYaHzyXcDTjFo5NfWa3yRA8G78fEvo"/>
+<input name='submit' type='submit' value='Complete your Payment' />
+</form>
         </div>
     )
 }

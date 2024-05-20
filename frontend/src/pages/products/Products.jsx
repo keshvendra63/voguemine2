@@ -180,21 +180,6 @@ const liItem=(text)=>{
 
 }
 
-const DrawerList = (
-  <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)} className="filter-box">
-    <p style={{fontSize:'20px',marginBottom:'20px',fontWeight:500}}>Select Size</p>
-    <List>
-      {filter?.map((text) => (
-        <ListItem key={text} disablePadding onClick={()=>liItem(text)}>
-          <ListItemButton>
-            <ListItemText primary={text} />
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
-  </Box>
-);
-
 
 // const fetchProducts = async () => {
 //   try {
@@ -239,17 +224,89 @@ const DrawerList = (
                         <div className="filter">
                             <p style={{fontWeight:500,cursor:'pointer'}} onClick={toggleDrawer(true)}>Filter</p>
                             <Drawer open={open} onClose={toggleDrawer(false)}>
-        {DrawerList}
+        <div className="filter-div">
+          <p className='filter-head'>Filter</p>
+          <div className="avail">
+            <p>Availability</p>
+            <p>in stock : 0</p>
+            <p>out of stock : 0</p>
+          </div>
+          <div className="category">
+              <p>Category</p>
+              <ul>
+                <li>cat1</li>
+                <li>cat1</li>
+                <li>cat1</li>
+                <li>cat1</li>
+                <li>cat1</li>
+                <li>cat1</li>
+                <li>cat1</li>
+                <li>cat1</li>
+                <li>cat1</li>
+                <li>cat1</li>
+                <li>cat1</li>
+                <li>cat1</li>
+                <li>cat1</li>
+                <li>cat1</li>
+                <li>cat1</li>
+
+              </ul>
+          </div>
+          <div className="brand">
+<p>Brand</p>
+<ul>
+  <li>Brand1</li>
+  <li>Brand1</li>
+  <li>Brand1</li>
+  <li>Brand1</li>
+  <li>Brand1</li>
+  <li>Brand1</li>
+  <li>Brand1</li>
+  <li>Brand1</li>
+  <li>Brand1</li>
+  <li>Brand1</li>
+
+</ul>
+          </div>
+          <div className="price">
+            <p>Price</p>
+..................
+          </div>
+          <div className="color">
+<p>Color</p>
+<ul>
+  <li>c1</li>
+  <li>c1</li>
+  <li>c1</li>
+  <li>c1</li>
+  <li>c1</li>
+  <li>c1</li>
+  <li>c1</li>
+  <li>c1</li>
+  <li>c1</li>
+  <li>c1</li>
+
+</ul>
+          </div>
+          <div className="size">
+<p>Size</p>
+<ul>
+  <li>Size1</li>
+  <li>Size1</li>
+  <li>Size1</li>
+  <li>Size1</li>
+  <li>Size1</li>
+  <li>Size1</li>
+  <li>Size1</li>
+  <li>Size1</li>
+
+</ul>
+          </div>
+        </div>
       </Drawer>
                         </div>
-                        {
-                          loading? <p style={{marginBottom:0}}>
-                          Loading.....</p>:
-                           <p style={{marginBottom:0}}>
-                           {products?.length} Products</p>
-                        }
-                        {/* <p style={{fontWeight:'bold',marginBottom:0}}>
-                          {products?.length} Products</p> */}
+                       
+                     
                         <div className="sort">
                             <select name="" id="" style={{fontWeight:'bold'}} onChange={sortChange} value={sort} defaultValue="-createdAt">
                                 <option value="title">Alphabet A-Z</option>

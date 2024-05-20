@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import SearchIcon from '@mui/icons-material/Search';
+import Carousel from 'react-bootstrap/Carousel';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
@@ -27,7 +28,11 @@ const delayExecution = (mls) => {
 };
 
 const Header = () => {
+  const [index, setIndex] = useState(0);
 
+  const handleSelect = (selectedIndex) => {
+    setIndex(selectedIndex);
+  };
   const productState=useSelector((state)=>state?.product?.prdt)
   const placeholderText = ["Search Shirts", "Search Loafers", "Search Dresses"];
   const [state, setState] = useState("");
@@ -135,7 +140,15 @@ const handleKeyDown1 = (event) => {
   return (
     <>
     <div className="main-head">
-    Use code "SAVE5" and get 5% off
+    <Carousel activeIndex={index} onSelect={handleSelect} controls={false} indicators={false}>
+      <Carousel.Item interval={3500}>
+        <p style={{marginTop:'10px'}}>Get 10% Off + Free Shipping on Prepaid Orders</p>
+      </Carousel.Item>
+      <Carousel.Item interval={3500}>
+      <p style={{marginTop:'10px'}}>    Use code "SAVE5" and get 15% off</p>
+      </Carousel.Item>
+  
+    </Carousel>
 
 
     </div>

@@ -231,9 +231,11 @@ div a{
     grid-template-columns: 1fr 1fr;
     grid-gap: 6px;
     width: 100%;
+
 }
 .products-listing .product-list .product-card .hover-details .btns .btn{
     height: 40px;
+
 }
 .products-listing .product-list .product-card .hover-details .btns .btn:active{
     scale: 1.01;
@@ -249,11 +251,15 @@ div a{
     border: 2px solid rgb(31, 31, 31);
     color: rgb(31, 31, 31);
     background-color: transparent;
+    font-size: 11px;
+
 }
 .products-listing .product-list .product-card .hover-details .btns .btn:nth-child(2){
     border: 2px solid rgb(31, 31, 31);
     color: white;
     background-color: rgb(31, 31, 31);
+        font-size: 11px;
+
 }
 .products-listing .product-list .product-card .hover-details a button{
     width:100%;

@@ -30,6 +30,7 @@ const config2 = {
     Accept: "application/json",
   },
 };
+const prdt=JSON.parse(localStorage.getItem("orderId"))
   const [edit,setEdit]=useState(true)
   const [bg,setBg]=useState("white")
   const [color,setColor]=useState("black")
@@ -152,37 +153,34 @@ const config2 = {
         <p style={{textAlign:'center'}}>*Oops! You missed out on top deals by choosing COD. Next time, opt for prepaid to unlock unbeatable offers and heartfelt savings! Alternatively, reach out to our customer support for personalized deals crafted just for you. 😊</p>
         <button style={{color:'white',backgroundColor:'black',fontWeight:500,margin:'15px 0',border:'none',padding:'8px 15px'}} onClick={()=>navigate("/")}>Continue Shopping</button>
           <div className="order-list">
-            {
-              orders && orders?.map((item,index)=>{
-               return <div className="order-card">
+            <div className="order-card">
                 {
-                  item?.orderItems?.map((prdt,idx)=>{
+                  prdt?.orderItems?.map((prdts,idx)=>{
                     return <div className="prdts">
-                  <img src={prdt?.product?.images[0]?.url} alt="" />
+                  <img src={prdts?.product?.images[0]?.url} alt="" />
                   <div className="detail">
-                    <p className="title">{prdt?.product?.title}</p>
-                    <p className="variant"><span>{prdt?.color}</span> / <span>{prdt?.size}</span></p>
-                    <p className="price">&#8377; {prdt?.price}</p>
-                    <p className="qty">Quantity :{prdt?.quantity}</p>
+                    <p className="title">{prdts?.product?.title}</p>
+                    <p className="variant"><span>{prdts?.color}</span> / <span>{prdts?.size}</span></p>
+                    <p className="price">&#8377; {prdts?.price}</p>
+                    <p className="qty">Quantity :{prdts?.quantity}</p>
                   </div>
                 </div>
                   })
                 }
                 <div className="total">
                   <div className="left">
-                    <p>Subtotal</p>
+                    <p>Order Number</p>
                     <p>Discount</p>
-                    <p>Total</p>
+                    <p>Amount</p>
                   </div>
                   <div className="right">
-                    <p>&#8377; {item?.totalPrice}</p>
-                    <p>&#8377; {item?.discount}</p>
-                    <p>&#8377; {item?.finalAmount}</p>
+                    <p>{prdt?.orderId}</p>
+                    <p>&#8377; {prdt?.discount}</p>
+                    <p>&#8377; {prdt?.finalAmount}</p>
                   </div>
                 </div>
               </div>
-              })
-            }
+              
            
           </div>
       </div>

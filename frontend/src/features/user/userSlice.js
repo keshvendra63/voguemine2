@@ -39,8 +39,18 @@ export const addToCart = createAsyncThunk("auth/cart/add", async (cartData, thun
 })
 
 export const createAnOrder = createAsyncThunk("auth/cart/create-order", async (orderDetails, thunkAPI) => {
+    const finalAmount = orderDetails.finalAmount; // Access finalAmount from orderDetails
+
     try {
         return await authService.createOrder(orderDetails)
+        window.fbq('track', 'Purchase', {
+            content_name: 'Checkout',
+            content_category: 'Page',
+            content_ids: 'purchase',
+            content_type: 'page',
+            value:finalAmount,
+            currency: 'INR'
+        });
     } catch (error) {
         return thunkAPI.rejectWithValue(error)
     }
@@ -299,14 +309,7 @@ export const authSlice = createSlice({
                     toast.success("Order Placed")
                     const ad=JSON.parse(localStorage.getItem("temp"))
                     const items=ad?.orderItems?.map((item)=>{return item?.product})
-                    window.fbq('track', 'Purchase', {
-                        content_name: 'Checkout',
-                        content_category: 'Page',
-                        content_ids: 'purchase',
-                        content_type: 'page',
-                        value: ``,
-                        currency: 'INR'
-                    });
+                   
                     window.snaptr('track', 'PURCHASE', { 
                         'price':`${ad.finalAmount}`, 
                         'currency': 'INR', 
