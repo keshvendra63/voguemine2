@@ -211,7 +211,7 @@ const [imageIndex, setImageIndex] = useState(0);
 
                 <div className="product-img">
                 <Link to={`/products/${props.handle}`}>
-                  <img src={props?.img[imageIndex]?.url} alt={alt} className="product-img1" onError={handleImageError}/>
+                  <img src={props?.img[imageIndex]?.url} alt={alt} className="product-img1" onError={handleImageError} />
                   
                   {
                     props?.img?.length>1 ?           <img src={props?.img[imageIndex+1]?.url} alt={alt} className="product-img2" onError={handleImageError}/>

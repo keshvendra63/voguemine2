@@ -49,20 +49,22 @@ const Kids = () => {
           <img src={collectionState[21]?.images[0]?.url || k8} alt="" />
           <h2>{collectionState[21]?.category}</h2>
       </div></Link>
-      <Link to={`/collections/${collectionState[32]?.handle}`}>
+      {/* <Link to={`/collections/${collectionState[32]?.handle}`}>
       <div className="collection-card">
           <img src={collectionState[32]?.images[0]?.url || k1} alt="" />
           <h2>Kid's Hoodie</h2>
       </div>
-</Link><Link to={`/collections/${collectionState[29]?.handle}`}>
+</Link> */}
+<Link to={`/collections/${collectionState[29]?.handle}`}>
       <div className="collection-card">
           <img src={collectionState[29]?.images[0]?.url || k4} alt="" />
           <h2>{collectionState[29]?.category}</h2>
-      </div></Link><Link to="#">
+      </div></Link>
+      {/* <Link to="#">
       <div className="collection-card">
           <img src={k6} alt="" />
           <h2>Kid's Girl's Jackets</h2>
-      </div></Link>
+      </div></Link> */}
 
     </div>
   </div>

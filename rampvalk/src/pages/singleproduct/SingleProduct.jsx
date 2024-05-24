@@ -12,8 +12,34 @@ import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 import {toast} from 'react-toastify'
 import Carousel from 'react-bootstrap/Carousel';
+import StraightenIcon from '@mui/icons-material/Straighten';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import Slide from '@mui/material/Slide';
+import img from '../../images/women.jpg'
+import CloseIcon from '@mui/icons-material/Close';
+import img1 from '../../images/1.jpg'
+import img2 from '../../images/2.jpg'
+import img3 from '../../images/3.jpg'
+import img4 from '../../images/4.jpg'
+import img5 from '../../images/5.jpg'
+import img6 from '../../images/6.jpg'
+import img7 from '../../images/7.jpg'
+import img8 from '../../images/8.jpg'
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 const SingleProduct = () => {
+  const [open, setOpen] =useState(false);
+const [chart,setChart]=useState("")
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex) => {
@@ -64,7 +90,188 @@ const SingleProduct = () => {
   }
   const products=productState? productState:[]
    const customer=JSON.parse(localStorage.getItem("customer"))
+useEffect(()=>{
+  if(singleProductState?.collectionName==="Men's Loafers"){
+setChart(img1)
+  }
 
+    else if(singleProductState?.collectionName==="Men's Denim Jeans"){
+      setChart(img2)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Men's Premium Shirts"){
+      setChart(img4)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Men's Premium T Shirts"){
+      setChart(img4)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Men's Sweatshirts"){
+      setChart(img4)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Men's Slippers"){
+      setChart(img1)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Men's Sneakers"){
+      setChart(img1)
+    }
+    
+    else if(singleProductState?.collectionName==="Men's Hoodies"){
+      setChart(img4)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Men's Trackpants"){
+      setChart(img2)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Men's Co-ord Set"){
+      setChart(img4)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Men's Premium Shorts"){
+      setChart(img3)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Men's Jackets"){
+      setChart(img4)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Women's Co-ord set"){
+      setChart(img8)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Kid's T-Shirts"){
+
+    }
+    
+        
+    else if(singleProductState?.collectionName==="Kids Shirts"){
+
+    }
+    
+    else if(singleProductState?.collectionName==="men,s combos"){
+      setChart(img4)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Women's T-Shirt"){
+      setChart(img8)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Men's Pullover"){
+      setChart(img4)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Men's Track Set"){
+      setChart(img4)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Kids Tracksuit"){
+
+    }
+    
+    else if(singleProductState?.collectionName==="Women's Dresses"){
+      setChart(img5)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Flat Sandals"){
+      setChart(img6)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Kid's Girl co-ord Set"){
+
+    }
+        
+    else if(singleProductState?.collectionName==="Women's Sandals "){
+      setChart(img6)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Kids Hoodies"){
+
+    }
+    
+    else if(singleProductState?.collectionName==="Womens'Jackets"){
+      setChart(img8)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Kid's Jackets"){
+
+    }
+    
+    else if(singleProductState?.collectionName==="Women's Pullovers"){
+      setChart(img8)
+
+    }
+        
+    else if(singleProductState?.collectionName==="Kid's Co-Ord Sets"){
+
+    }
+    
+    else if(singleProductState?.collectionName==="Heeled Sandals"){
+      setChart(img6)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Boy's Cord-Set"){
+
+    }
+    
+    else if(singleProductState?.collectionName==="Women's Track Sets"){
+      setChart(img8)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Kid Girl's Dress"){
+
+    }
+    
+    
+    else if(singleProductState?.collectionName==="Women's Legging"){
+      setChart(img7)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Women's Sweatshirts"){
+      setChart(img8)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Men's Combos"){
+      setChart(img4)
+
+    }
+    
+    else if(singleProductState?.collectionName==="Women's Winter Coats"){
+      setChart(img8)
+
+    }
+        
+    else if(singleProductState?.collectionName==="Men's Premium Half Sleeve Shirt"){
+      setChart(img4)
+
+    }
+})
       useEffect(() => {
        if (!color || !size) {
          // If color or size is not selected, set alreadyAdded to false
@@ -100,7 +307,14 @@ const SingleProduct = () => {
       return false
     }
     else{
-     
+      window.snaptr('track', 'ADD_CART', 
+          {'price': singleProductState?.price, 
+          'currency': 'INR', 
+          'item_ids': [`${data}`], 
+          'item_category': `${singleProductState?.category}`, 
+          'number_items': 1, 
+          'uuid_c1': `${data}`, 
+         })
       await addProductToCartLocalStorage({productId:data,color,quantity,price:singleProductState?.price,size,product:singleProductState})
           toast.success("Added To Cart")
       window.fbq('track', 'AddToCart', {
@@ -132,7 +346,15 @@ const buyNow=async(data)=>{
  
 
   else{
-    
+    window.snaptr('track', 'START_CHECKOUT', 
+        {'price': singleProductState?.price, 
+        'currency': 'INR', 
+        'item_ids': [`${singleProductState?._id}`], 
+        'item_category': `${singleProductState?.category}`, 
+        'number_items': quantity, 
+        'payment_info_available': 1, 
+        'uuid_c1': `${singleProductState?._id}`, 
+       })
     await addProductToCartLocalStorage({productId:data,color,quantity,price:singleProductState?.price,size,product:singleProductState})
     toast.success("Added To Cart")   
      window.fbq('track', 'InitiateCheckout', {
@@ -294,6 +516,20 @@ const [alt,setAlt]=useState("")
     }, [singleProductState?.title,singleProductState?.alt]);
   return (
     <div className='single-product margin-section'>
+      <div className="chart">
+      <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogContent className='size-img'>
+          <div className="c-icon" onClick={handleClose}><CloseIcon/></div>
+            <img src={chart} alt="" />
+        </DialogContent>
+      </Dialog>
+      </div>
       <div className="product">
       {
             loading===true ? <p style={{width:'100%',height:'400px',backgroundColor:'rgb(228, 228, 228)',borderRadius:'10px'}} className='prdt-left'></p>:
@@ -304,7 +540,7 @@ const [alt,setAlt]=useState("")
 
             <div className="main">
               {
-                mainImage===""? <Carousel activeIndex={index} onSelect={handleSelect} indicators={false}>
+                mainImage===""? <Carousel activeIndex={index} onSelect={handleSelect}>
                 {
                   singleProductState?.images?.map((item)=>{
                     return <Carousel.Item interval={3000}>
@@ -349,7 +585,7 @@ const [alt,setAlt]=useState("")
     height: '24px'}}>Sold out</p>
             </div>
             <div className="size prdt-variation">
-                <p>SIZE :</p>
+                <p>SIZE : <span onClick={handleClickOpen}><StraightenIcon className='ico'/> Size Chart</span></p>
                 <ul>
     {singleProductState?.variants
       .filter(variant => variant.color === color) // Filter variants based on selected color
@@ -403,7 +639,7 @@ const [alt,setAlt]=useState("")
 
 <div className="coupon-code">
   <p><span><LocalOfferIcon className='ico'/></span>Buy 1 Get 5% Off- <span>SAVE5</span></p>
-  <p><span><LocalOfferIcon className='ico'/></span>Buy 3 Get 10% Off- <span>MEGA10</span></p>
+  <p><span><LocalOfferIcon className='ico'/></span>Buy 2 Get 10% Off- <span>MEGA10</span></p>
   <p><span><LocalOfferIcon className='ico'/></span><span>Free Shipping</span> on Prepaid Orders</p>
 
 </div>

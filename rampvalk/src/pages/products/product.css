@@ -1,6 +1,171 @@
 .Products{
     max-width: 100vw;
 }
+.MuiPaper-root{
+    width: 500px;
+    max-height: 80vh;
+    position: relative;
+    
+}
+.css-ypiqx9-MuiDialogContent-root{
+    padding: 0;
+
+}
+.MuiPaper-root .filter-div .filter-head{
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0;
+
+}
+
+.filt .c-icon{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+}
+.filt .apply{
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    
+
+}
+
+.filt .apply button{
+    margin-left: 10px;
+    padding: 2px 8px;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(60, 60, 60);
+    color: white;
+    z-index: 1;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.MuiPaper-root .filter-div .avail .f-head{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 0;
+    font-weight: 600;
+}
+.MuiPaper-root .filter-div div ul{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.MuiPaper-root .filter-div div ul li{
+    border: 1px solid rgb(207, 207, 207);
+    color: rgb(90, 90, 90);
+    padding: 1px 5px;
+    border-radius: 10px;
+    margin-right: 5px;
+    font-size: 12px;
+}
+.MuiPaper-root .filter-div .color ul{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.MuiPaper-root .filter-div .color ul li{
+    padding: 1px 3px;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    margin-right: 5px;
+    border: none;
+}
+.MuiPaper-root .filter-div .color ul li:nth-child(1){
+    background-color: black;
+}
+.MuiPaper-root .filter-div .color ul li:nth-child(2){
+    background-color: white;
+    border: 1px solid black;
+}
+.MuiPaper-root .filter-div .color ul li:nth-child(3){
+    background-color: red;
+}
+.MuiPaper-root .filter-div .color ul li:nth-child(4){
+    background-color: blue;
+}
+.MuiPaper-root .filter-div .color ul li:nth-child(5){
+    background-color: pink;
+}
+.MuiPaper-root .filter-div .color ul li:nth-child(6){
+    background-color: orange;
+}
+.MuiPaper-root .filter-div .color ul li:nth-child(7){
+    background-color: yellow;
+}
+.MuiPaper-root .filter-div .color ul li:nth-child(8){
+    background-color: green;
+}
+.MuiPaper-root .filter-div .color ul li:nth-child(9){
+    background-color: rgb(72, 11, 11);
+}
+.MuiPaper-root .filter-div .color ul li:nth-child(10){
+    background-color: grey;
+}
+.MuiPaper-root .filter-div .color ul li:nth-child(11){
+    background-color: brown;
+}
+.MuiPaper-root .filter-div .color ul li:nth-child(12){
+    background-color: purple;
+}
+.MuiPaper-root .filter-div .color ul li:nth-child(13){
+    background-color: violet;
+}
+.MuiPaper-root .brand .selected{
+    background-color:rgb(80, 80, 255);
+    color: white;
+}
+.MuiPaper-root .size .selected{
+    background-color: rgb(80, 80, 255);
+    color: white;
+}
+.MuiPaper-root .color .selected{
+  scale: 1.3;
+}
+.MuiPaper-root .filter-div div{
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgb(52, 52, 52);
+    border-bottom: 1px solid rgb(228, 228, 228);
+    padding: 15px 0;
+
+}
+.MuiPaper-root .filter-div div p{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.MuiPaper-root .filter-div div div{
+    padding-left: 20px;
+    margin-top: 10px;
+
+}
+.MuiPaper-root .filter-div div p .icon1{
+    font-size: 18px;
+}
+.MuiPaper-root .filter-div div ul{
+    padding-left: 20px;
+   transition: all 0.3s;
+   margin-bottom: 0;
+}
+
+.MuiPaper-root .filter-div div ul li{
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
 .filter-box{
     display: flex;
     justify-content: center;
@@ -8,6 +173,7 @@
     flex-direction: column;
     padding-top: 30px;
     font-family: var(--heading-font);
+    width: 900px;
 }
 .filter-box li{
     color: gray;
@@ -17,6 +183,10 @@
 .Products .handle-buttons{
     display: flex;
     align-items: center;
+}
+.Products .sorting{
+    background-color: white;
+    padding: 10px;
 }
 .Products .handle-buttons p{
     margin: 0 10px;
@@ -70,17 +240,68 @@
     justify-content: space-between;
     align-items: center;
 }
+.Products .p-headi{
+    margin: 10px 0;
+}
 .Products .products-box .products-page hr{
     margin:5px 0;
 }
-
+.Products .f1, .s1{
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    cursor: pointer;
+}
+.Products .f1 span, .s1 span{
+margin-left: 5px;
+}
 .Products .products-box .products-page .sorting .sort select{
-    padding: 5px 10px;
+    padding: 5px;
 }
 .Products .products-box .products-page .pages{
     display: flex;
     justify-content: center;
     margin-top: 50px;
+}
+.Products .products-box .products-page .pages button{
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    box-shadow: none;
+    color: black;
+    margin:0 15px;
+}
+.Products .products-box .products-page .pages button .b-icon{
+    font-size: 30px;
+}
+.Products .products-box .products-page .pages p{
+    background-color: rgb(35, 35, 35);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    font-weight: 600;
+
+}
+@media screen and (max-width:650px){
+    .spa{
+        display: none;
+        }
+        .Products .products-box{
+            margin-top: 120px;
+        }
+        .Products .sorting{
+            background-color: white;
+            padding: 10px;
+        }
+        .Products .hr{
+            display: none;
+        }
+        .Products .p-headi{
+            font-size: 20px;
+            margin: 10px 0;
+        }
 }
 /* .Products .products-box .products-page .all-products{
     display: grid;

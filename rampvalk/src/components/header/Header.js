@@ -154,7 +154,7 @@ const handleKeyDown1 = (event) => {
         </div>
         <div className='head3' style={{textAlign:'right'}}>
           <ul>
-            <li className='li-search'><input type="search" name="" id="" value={svalue} onChange={(e)=>setSvalue(e.target.value)} onKeyDown={handleKeyDown} placeholder={state}/><span onClick={handleKeyDown1}><SearchIcon className='s-icon' /></span></li>
+          <li onClick={openSearch}><SearchIcon className='s-icon'/></li>
             <li className='cart-len'>{
               wishlist && wishlist?.length>=1?<p className='cart-length'>{wishlist?.length}</p>
               :

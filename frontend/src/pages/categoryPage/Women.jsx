@@ -70,11 +70,12 @@ const Women = () => {
                 <div className="collection-card">
                     <img src={collectionState[30]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1712903479/pullover_qkfg1s.jpg"} alt="" />
                     <h2>{collectionState[30]?.category}</h2>
-                </div></Link><Link to="#">
+                </div></Link>
+                {/* <Link to="#">
                 <div className="collection-card">
                     <img src={w6} alt="" />
                     <h2>Women's Hoodie</h2>
-                </div></Link>
+                </div></Link> */}
             </div>
         </div>
     )

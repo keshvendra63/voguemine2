@@ -39,12 +39,23 @@ export const addToCart = createAsyncThunk("auth/cart/add", async (cartData, thun
 })
 
 export const createAnOrder = createAsyncThunk("auth/cart/create-order", async (orderDetails, thunkAPI) => {
+    const finalAmount = orderDetails.finalAmount; // Access finalAmount from orderDetails
+
     try {
-        return await authService.createOrder(orderDetails)
+        await authService.createOrder(orderDetails);
+        window.fbq('track', 'Purchase', {
+            content_name: 'Checkout',
+            content_category: 'Page',
+            content_ids: 'purchase',
+            content_type: 'page',
+            value: finalAmount,
+            currency: 'INR'
+        });
+        return orderDetails; // Return orderDetails after creating order
     } catch (error) {
-        return thunkAPI.rejectWithValue(error)
+        return thunkAPI.rejectWithValue(error);
     }
-})
+});
 export const createAbondend = createAsyncThunk("auth/create-abondend", async (abondendDetails, thunkAPI) => {
     try {
         return await authService.createAbondend(abondendDetails)
@@ -299,15 +310,18 @@ export const authSlice = createSlice({
                     toast.success("Order Placed")
                     const ad=JSON.parse(localStorage.getItem("temp"))
                     const items=ad?.orderItems?.map((item)=>{return item?.product})
-                    window.fbq('track', 'Purchase', {
-                        content_name: 'Checkout',
-                        content_category: 'Page',
-                        content_ids: 'purchase',
-                        content_type: 'page',
-                        value: ``,
-                        currency: 'INR'
-                    });
                    
+                    window.snaptr('track', 'PURCHASE', { 
+                        'price':`${ad.finalAmount}`, 
+                        'currency': 'INR', 
+                        'transaction_id': `${ad.orderType}`, 
+                        'item_ids': [`${items._id}`], 
+                        'item_category':`Snapchat`, 
+                        'number_items': ad?.orderItems?.length, 
+                        'uuid_c1': `${ad?.orderItems[0]?.product?._id}`, 
+                        'user_email':`${ad?.shippingInfo?.email}`, 
+                        'user_phone_number':`${ad?.shippingInfo?.phone}`, 
+                        })
                 }
             }).addCase(createAnOrder.rejected, (state, action) => {
                 state.isLoading = false;

@@ -63,10 +63,11 @@ const {
   getCustomDateRangeOrderIncome1,
   fData1,
   getCustomDateRangeOrderIncome2,
-  fData2
+  fData2,
+  returnOrder
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
-const {checkout,paymentVerification, phonePe, redirectUri, hdfcPayment, hdfcResponse, billdeskPay, billdeskRes, billPay, billRes}=require("../controller/paymentCtrl");
+const {checkout,paymentVerification, phonePe, redirectUri, hdfcPayment, hdfcResponse, billdeskPay, billdeskRes, billPay, billRes, checkOrderStatus}=require("../controller/paymentCtrl");
 const sendOtp = require("../controller/otpController");
 const {siteMap}=require('../controller/sitemapCtrl')
 const router = express.Router();
@@ -81,6 +82,7 @@ router.post("/cart", authMiddleware, userCart);
 router.post("/order/checkout",phonePe)
 router.post("/order/hdfcPay",hdfcPayment)
 router.post("/order/hdfcRes",hdfcResponse)
+router.post("/order/hdfcStatus",checkOrderStatus)
 router.post("/order/billPay",billPay)
 router.post("/order/billRes",billRes)
 router.post("/status/:merchantTransactionId",redirectUri)
@@ -89,6 +91,7 @@ router.post("/cart/create-order", createOrder);
 router.post("/create-abondend", createAbondend);
 router.get("/all-users", getallUser);
 router.put("/cancelOrder/:orderId",authMiddleware,isAdmin,cancelOrder)
+router.put("/returnOrder/:orderId",authMiddleware,isAdmin,returnOrder)
 router.post("/sendTracking",sendTracking)
 router.post("/sendDelivery",sendDelivery)
 router.put("/retrieveOrder/:orderId",authMiddleware,isAdmin,retrieveOrder)

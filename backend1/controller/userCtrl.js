@@ -530,6 +530,55 @@ const getHistory = asyncHandler(async(req, res) =>{
     res.status(500).json({ message: "Server Error" });
   }
 });
+const returnOrder = asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+
+  try {
+    // Fetch the order
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Retrieve order items
+    const orderItems = order.orderItems;
+
+    // Increase inventory for each order item
+    for (const orderItem of orderItems) {
+      const { product, color, size, quantity } = orderItem;
+      const productId = product._id;
+
+      // Find the product in the database
+      const foundProduct = await Product.findById(productId);
+
+      // Find the variant matching the color and size
+      const variant = foundProduct.variants.find(
+        (variant) => variant.color === color && variant.size === size
+      );
+
+      if (variant) {
+        // Check if there is enough quantity available
+          // Subtract the ordered quantity from the variant's quantity
+          variant.quantity += quantity;
+          foundProduct.sold -= quantity;
+          await foundProduct.save();
+
+      } else {
+        throw new Error(`Variant not found for ${color} - ${size}`);
+      }
+    }
+
+    // Update order type to 'Cancelled'
+    order.orderType = 'Returned';
+    await order.save();
+
+    res.json({ message: "Order Return successfully" });
+  } catch (error) {
+    console.error("Error Returning order:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
 const cancelOrder = asyncHandler(async (req, res) => {
   const { orderId } = req.params;
 
@@ -2129,4 +2178,5 @@ module.exports = {
   getYesterdayOrderIncome2,
   getCustomDateRangeOrderIncome2,
   fData2,
+  returnOrder
 };

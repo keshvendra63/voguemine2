@@ -396,9 +396,10 @@ div a{
 }    
 
 @media screen and (max-width:950px){
+   
     .products-listing .product-list{
         grid-template-columns:repeat(2, 1fr);
-        grid-gap: 10px;
+        grid-gap: 5px;
     }
     .products-listing .product-list .product-card .hover-details{
         display:none;
@@ -411,6 +412,8 @@ div a{
     }
     .skeleton{
         grid-template-columns: 1fr 1fr;
+        grid-gap: 5px;
+
     }
     .skeleton div:nth-child(4){
         display: block;
@@ -426,6 +429,9 @@ div a{
 
 }
 @media screen and (max-width:650px) {
+    .p-banner{
+        display: none;
+    }
     .margin-section{
         margin:20px 10px;
     }

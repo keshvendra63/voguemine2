@@ -42,19 +42,20 @@ export const createAnOrder = createAsyncThunk("auth/cart/create-order", async (o
     const finalAmount = orderDetails.finalAmount; // Access finalAmount from orderDetails
 
     try {
-        return await authService.createOrder(orderDetails)
+        await authService.createOrder(orderDetails);
         window.fbq('track', 'Purchase', {
             content_name: 'Checkout',
             content_category: 'Page',
             content_ids: 'purchase',
             content_type: 'page',
-            value:finalAmount,
+            value: finalAmount,
             currency: 'INR'
         });
+        return orderDetails; // Return orderDetails after creating order
     } catch (error) {
-        return thunkAPI.rejectWithValue(error)
+        return thunkAPI.rejectWithValue(error);
     }
-})
+});
 export const createAbondend = createAsyncThunk("auth/create-abondend", async (abondendDetails, thunkAPI) => {
     try {
         return await authService.createAbondend(abondendDetails)

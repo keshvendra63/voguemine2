@@ -1,10 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap');
 .categoryPage{
     max-width: 100vw;
 }
 .categoryPage .collections{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 30px;
+    grid-gap: 30px 15px;
 }
 .categoryPage .collections .collection-card{
     width: 100%;
@@ -14,6 +15,9 @@
     position: relative;
     cursor: pointer;
     overflow: hidden;
+    /* border: 2px solid black; */
+    box-shadow: 5px 5px 4px rgba(214, 214, 214, 0.842);
+
 
 }
 .categoryPage .collections .collection-card:active{
@@ -22,30 +26,28 @@
 .categoryPage .collections .collection-card img{
     width: 100%;
     height: 100%;
-    transition: all 1s;
+    transition: all 0.5s;
 }
 .categoryPage .collections .collection-card h2{
-    font-size: 28px;
+    font-size: 22px;
     color: white;
-    font-weight: 400;
+    font-weight: 600;
     position: absolute;
-    font-family: var(--heading-font);
+    font-family: "Josefin Sans", sans-serif;
     text-transform:uppercase;
     width: 100%;
-    height: 100%;
-    background-color: rgba(6, 6, 6, 0.342);
-    opacity: 0;
+    height: 50px;
+    background-color: rgba(6, 6, 6, 0.717);
     transition: all 1s;
-    top: 0;
+    bottom: 7px;
     display: flex;
     justify-content: center;
     align-items: center;
-    text-decoration: underline;
     padding:0 15px;
     
 }
 .categoryPage .collections .collection-card:hover >img{
-    scale: 1.04;
+    scale: 1.08;
 }
 .categoryPage .collections .collection-card:hover h2{
     opacity: 1;
@@ -224,12 +226,17 @@ transition: transform 0.2s;
             }
 }
 @media screen and (max-width:650px) {
+    .categoryPage .collections .collection-card h2{
+        font-size: 12px;
+        height: 35px;
+        bottom: 0px;
+    }
     .categoryPage .collections{
         margin:50px 20px;
-        grid-gap: 8px;
+        grid-gap: 10px;
     }
     .categoryPage .collections .collection-card{
-        margin-bottom: 5px;
+        /* margin-bottom: 5px; */
     }
     .categoryPage .about{
         margin: 50px 25px;

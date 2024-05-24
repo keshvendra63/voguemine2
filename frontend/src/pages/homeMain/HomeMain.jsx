@@ -95,7 +95,7 @@ const HomeMain = () => {
       <div className="hero-section">
       <Carousel activeIndex={index} onSelect={handleSelect} fade controls={false}>
       <Carousel.Item interval={2500}>
-        <img src={bannerState[0]?.images[0]?.url} alt="" />
+        <img src={bannerState[0]?.images[0]?.url} alt=""/>
       </Carousel.Item>
       <Carousel.Item interval={2500}>
         <img src={bannerState[38]?.images[0]?.url} alt="" />
@@ -114,19 +114,19 @@ const HomeMain = () => {
         >
           <Link to="/men">
             <div className="cate">
-              <img src={bannerState[1]?.images[0]?.url} alt={bannerState[1]?.alt} />
+              <img src={bannerState[1]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1716445897/tlmdpqkm5719udhno6kd.jpg"} alt={bannerState[1]?.alt} />
             </div>
           </Link><Link to="/women">
             <div className="cate">
-              <img src={bannerState[2]?.images[0]?.url} alt={bannerState[2]?.alt} />
+              <img src={bannerState[2]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1716445919/tusfaj3nuvqqwqr1kjz2.jpg"} alt={bannerState[2]?.alt} />
             </div>
           </Link><Link to="/kids">
             <div className="cate">
-              <img src={bannerState[3]?.images[0]?.url} alt={bannerState[3]?.alt} />
+              <img src={bannerState[3]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1716445944/zasszxgbvzqowaanb8ah.jpg"} alt={bannerState[3]?.alt} />
             </div>
           </Link><Link to="/accessories">
             <div className="cate">
-              <img src={bannerState[4]?.images[0]?.url} alt={bannerState[4]?.alt} />
+              <img src={bannerState[4]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1716445956/felldjkeyt9ho7rxudou.jpg"} alt={bannerState[4]?.alt} />
             </div>
           </Link>
 
@@ -141,22 +141,22 @@ const HomeMain = () => {
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
-                <img src={bannerState[5]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514808/413_o7fvvx.jpg"} alt={bannerState[5]?.alt} />
+                <img src={bannerState && bannerState[5]?.images[0]?.url} alt={bannerState[5]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState[6]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514808/360_pjxrdj.jpg"} alt={bannerState[6]?.alt} />
+                <img src={bannerState && bannerState[6]?.images[0]?.url } alt={bannerState[6]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState[7]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514809/431_dg5dmr.jpg"} alt={bannerState[7]?.alt} />
+                <img src={bannerState && bannerState[7]?.images[0]?.url} alt={bannerState[7]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState[8]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514807/330_dxuvta.jpg"} alt={bannerState[8]?.alt} />
+                <img src={bannerState && bannerState[8]?.images[0]?.url} alt={bannerState[8]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState[9]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514812/443_ajzh9b.jpg"} alt={bannerState[9]?.alt} />
+                <img src={bannerState && bannerState[9]?.images[0]?.url} alt={bannerState[9]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState[10]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514807/310_gblgew.jpg"} alt={bannerState[10]?.alt} />
+                <img src={bannerState && bannerState[10]?.images[0]?.url} alt={bannerState[10]?.alt} />
               </Carousel.Item>
             </Carousel>
 
@@ -228,22 +228,22 @@ const HomeMain = () => {
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
-                <img src={bannerState[14]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516021/90_ouuogk.jpg"} alt={bannerState[14]?.alt} />
+                <img src={bannerState && bannerState[14]?.images[0]?.url} alt={bannerState[14]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState[15]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516022/95_o6hsau.jpg"} alt={bannerState[15]?.alt} />
+                <img src={bannerState && bannerState[15]?.images[0]?.url} alt={bannerState[15]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState[16]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516023/37_dxuah4.jpg"} alt={bannerState[16]?.alt} />
+                <img src={bannerState && bannerState[16]?.images[0]?.url} alt={bannerState[16]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState[17]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516021/67_nkoy08.jpg"} alt={bannerState[17]?.alt} />
+                <img src={bannerState && bannerState[17]?.images[0]?.url} alt={bannerState[17]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState[18]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516026/107_ybacx7.jpg"} alt={bannerState[18]?.alt} />
+                <img src={bannerState && bannerState[18]?.images[0]?.url} alt={bannerState[18]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState[19]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516025/137_gna4np.jpg"} alt={bannerState[19]?.alt} />
+                <img src={bannerState && bannerState[19]?.images[0]?.url} alt={bannerState[19]?.alt} />
               </Carousel.Item>
             </Carousel>
 

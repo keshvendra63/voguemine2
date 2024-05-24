@@ -49,10 +49,12 @@ useEffect(()=>{
   const openSearch=()=>{
     setSearch("flex")
     setScrolled(true);
+
   }
   const closeSearch=()=>{
     setSearch("none")
     setScrolled(false);
+
 
   }
   const cart=JSON.parse(localStorage.getItem("cart"))
@@ -80,7 +82,7 @@ useEffect(()=>{
   const closeClick=()=>{
     document.getElementById("head2").style.left="-100%"
     setIsHead2Open(false)
-    document.body.classList.remove('no-scroll'); // Remove class to enable scrolling
+    document.body.classList.remove('no-scroll'); 
 
   }
 const authState=useSelector(state=>state?.auth)
@@ -152,7 +154,7 @@ const handleKeyDown1 = (event) => {
 
 
     </div>
-    <div className={`header ${scrolled ? 'scrolled' : ''}`}>
+    <div className={`header ${scrolled ? 'scrolled' : ''}`} style={{backgroundColor:search==="flex"?'white':''}}>
     {isHead2Open && <div className="overlay" onClick={closeClick}></div>}
       <div className="headerdiv">
         <div className='head1'>
@@ -170,7 +172,7 @@ const handleKeyDown1 = (event) => {
         </div>
         <div className='head3' style={{textAlign:'right'}}>
           <ul>
-            <li className='li-search'><input type="search" name="" id="" value={svalue} onChange={(e)=>setSvalue(e.target.value)} onKeyDown={handleKeyDown} placeholder={state}/><span onClick={handleKeyDown1}><SearchIcon className='s-icon' /></span></li>
+          <li onClick={openSearch}><SearchIcon className='s-icon'/></li>
             <li className='cart-len'>{
               wishlist && wishlist?.length>=1?<p className='cart-length'>{wishlist?.length}</p>
               :
@@ -224,21 +226,21 @@ const handleKeyDown1 = (event) => {
             <ul>
               
               
-              <li onClick={closeClick}><HomeOutlinedIcon/><Link to="/home">Home</Link></li>
-              <li onClick={closeClick}><InfoOutlinedIcon/><Link to="/about">About</Link></li>
-              <li onClick={closeClick}><Face6OutlinedIcon/><Link to="/men">Mens</Link></li>
-              <li onClick={closeClick}><Face4OutlinedIcon/><Link to="/women">Womens</Link></li>
-              <li onClick={closeClick}><FaceOutlinedIcon/><Link to="/kids">Kids</Link></li>
-              <li onClick={closeClick}><AutoAwesomeMosaicOutlinedIcon/><Link to="/accessories">Accessories</Link></li>
-              <li onClick={closeClick}><FaceOutlinedIcon/><Link to="/blogs">Blogs</Link></li>
-              <li onClick={closeClick}><FavoriteBorderIcon/><Link to="/wishlist">Wishlist ( {wishlist?.length} )</Link></li>
-              <li onClick={closeClick}><PersonOutlineIcon/><Link to="/profile">Login/Register</Link></li>
+              <li onClick={closeClick}><Link to="/home"><HomeOutlinedIcon/> Home</Link></li>
+              <li onClick={closeClick}><Link to="/men"><Face6OutlinedIcon/> Mens</Link></li>
+              <li onClick={closeClick}><Link to="/women"><Face4OutlinedIcon/> Womens</Link></li>
+              <li onClick={closeClick}><Link to="/kids"><FaceOutlinedIcon/> Kids</Link></li>
+              <li onClick={closeClick}><Link to="/accessories"><AutoAwesomeMosaicOutlinedIcon/> Accessories</Link></li>
+              <li onClick={closeClick}><Link to="/blogs"><FaceOutlinedIcon/> Blogs</Link></li>
+              <li onClick={closeClick}><Link to="/about"><InfoOutlinedIcon/> About</Link></li>
+              <li onClick={closeClick}><Link to="/wishlist"><FavoriteBorderIcon/> Wishlist ( {wishlist?.length} )</Link></li>
+              <li onClick={closeClick}><Link to="/profile"><PersonOutlineIcon/> Login/Register</Link></li>
               
             </ul>
         </div>
       </div>
       <div className="search" style={{display:search}}>
-      <input type="search" placeholder={state} value={svalue} onChange={(e)=>setSvalue(e.target.value)} onKeyDown={handleKeyDown}/>
+      <input type="search" placeholder={state} value={svalue} onChange={(e)=>setSvalue(e.target.value)} onKeyDown={handleKeyDown} />
           <li onClick={closeSearch}><ClearOutlinedIcon style={{cursor:'pointer'}}  /></li>
         </div>
 

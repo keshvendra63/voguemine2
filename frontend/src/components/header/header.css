@@ -212,7 +212,7 @@ width: 120px;
 .header1 .head2 ul{
     list-style: none;
     text-align: left;
-    padding: 50px 15px;
+    padding: 50px 0px;
     width:70vw;
 
 }
@@ -290,5 +290,8 @@ width: 120px;
     .header .mob-s,.header .cart-i{
         font-size: 30px;
         margin-right: 5px;
+    }
+    .main-head p{
+        font-size: 11px;
     }
 }

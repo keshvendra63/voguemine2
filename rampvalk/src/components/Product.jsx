@@ -72,7 +72,14 @@ useEffect(() => {
       else{
         
         if(data && (data===props.prdt._id)){
-         
+          window.snaptr('track', 'ADD_CART', 
+          {'price': props?.price, 
+          'currency': 'INR', 
+          'item_ids': [`${data}`], 
+          'item_category': `${props?.prdt?.category}`, 
+          'number_items': 1, 
+          'uuid_c1': `${data}`, 
+         })
           await addProductToCartLocalStorage({productId:data,color,quantity,price:props.price,size,product:props.prdt})
           toast.success("Added To Cart")
           window.fbq('track', 'AddToCart', {
@@ -114,7 +121,15 @@ useEffect(() => {
     
     else{
       if(data && (data===props.prdt._id)){
-        
+        window.snaptr('track', 'START_CHECKOUT', 
+        {'price': props?.prdt?.price, 
+        'currency': 'INR', 
+        'item_ids': [`${props?.prdt?._id}`], 
+        'item_category': `${props?.prdt?.category}`, 
+        'number_items': quantity, 
+        'payment_info_available': 1, 
+        'uuid_c1': `${props?.prdt?._id}`, 
+        })
         await addProductToCartLocalStorage({productId:data,color,quantity,price:props.price,size,product:props.prdt})
         toast.success("Added To Cart")
         window.fbq('track', 'InitiateCheckout', {
@@ -196,7 +211,7 @@ const [imageIndex, setImageIndex] = useState(0);
 
                 <div className="product-img">
                 <Link to={`/products/${props.handle}`}>
-                  <img src={props?.img[imageIndex]?.url} alt={alt} className="product-img1" onError={handleImageError}/>
+                  <img src={props?.img[imageIndex]?.url} alt={alt} className="product-img1" onError={handleImageError} />
                   
                   {
                     props?.img?.length>1 ?           <img src={props?.img[imageIndex+1]?.url} alt={alt} className="product-img2" onError={handleImageError}/>
@@ -220,7 +235,7 @@ const [imageIndex, setImageIndex] = useState(0);
                   <p style={{fontSize:'13px',fontWeight:500}}>{props?.prdt?.sku}</p>
 
                   <Stack spacing={1} className="stars">
-          <Rating name="size-small" defaultValue={5} size="small" />
+          <Rating name="size-small" value={5} size="small" />
     
         </Stack>
         <div className="wish">

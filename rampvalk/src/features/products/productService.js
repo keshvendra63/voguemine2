@@ -3,7 +3,7 @@ import {base_url, config} from '../../utils/axiosConfig'
 
 const getProducts=async(data)=>{
     
-    let url = `${base_url}product?page=${data.page}&limit=${data.limit}&collectionName=${data.collectionName}&state=active&sort=${data.sort}`;
+    let url = `${base_url}product?page=${data.page}&limit=${data.limit}&collectionName=${data.collectionName}&state=active`;
 
     // Check if collectionName is provided
     if (data && data.collectionName) {
@@ -11,6 +11,15 @@ const getProducts=async(data)=>{
     }
     if (data && data.size) {
         url += `&size=${data.size}`;
+    }
+    if (data && data.sort) {
+        url += `&sort=${data.sort}`;
+    }
+    if (data && data.color) {
+        url += `&color=${data.color}`;
+    }
+    if (data && data.brand) {
+        url += `&brand=${data.brand}`;
     }
 
     // Add pagination parameters
@@ -28,10 +37,33 @@ const getProducts=async(data)=>{
     }
 }
 const getAllProducts = async (data) => {
-    const response = await axios.get(`${base_url}product?search=${data.searchValue}&state=active&page=${data.page}&limit=${data.limit}&sort=${data.sort}`);
-  
-    return response.data;
-  };
+    let url = `${base_url}product?search=${data.searchValue}&state=active&page=${data.page}&limit=${data.limit}&sort=${data.sort}`;
+
+    // Check if collectionName is provided
+    if (data && data.size) {
+        url += `&size=${data.size}`;
+    }
+    if (data && data.color) {
+        url += `&color=${data.color}`;
+    }
+    if (data && data.brand) {
+        url += `&brand=${data.brand}`;
+    }
+
+    // Add pagination parameters
+
+    try {
+        const response = await axios.get(url);
+        
+        if (response.data) {
+            return response.data;
+        }
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        // Handle error appropriately
+        throw error;
+    }
+    };
 
 
 const addToWishList=async(prodId)=>{

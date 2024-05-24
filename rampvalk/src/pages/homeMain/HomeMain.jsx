@@ -116,19 +116,19 @@ const HomeMain = () => {
         >
           <Link to="/men">
             <div className="cate">
-              <img src={bannerState && bannerState[1]?.images[0]?.url} alt={bannerState && bannerState[1]?.alt} />
+              <img src={bannerState[1]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1716445897/tlmdpqkm5719udhno6kd.jpg"} alt={bannerState[1]?.alt} />
             </div>
           </Link><Link to="/women">
             <div className="cate">
-              <img src={bannerState && bannerState[2]?.images[0]?.url} alt={bannerState && bannerState[2]?.alt} />
+              <img src={bannerState[2]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1716445919/tusfaj3nuvqqwqr1kjz2.jpg"} alt={bannerState[2]?.alt} />
             </div>
           </Link><Link to="/kids">
             <div className="cate">
-              <img src={bannerState && bannerState[3]?.images[0]?.url} alt={bannerState && bannerState[3]?.alt} />
+              <img src={bannerState[3]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1716445944/zasszxgbvzqowaanb8ah.jpg"} alt={bannerState[3]?.alt} />
             </div>
           </Link><Link to="/accessories">
             <div className="cate">
-              <img src={bannerState && bannerState[4]?.images[0]?.url} alt={bannerState && bannerState[4]?.alt} />
+              <img src={bannerState[4]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1716445956/felldjkeyt9ho7rxudou.jpg"} alt={bannerState[4]?.alt} />
             </div>
           </Link>
 

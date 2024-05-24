@@ -7,6 +7,7 @@ const psalt = "b5efa4e8-7baf-49ec-b4d7-d059de7517ee"
 const uniqid = require("uniqid")
 const nodeCCAvenue=require('node-ccavenue')
 const CryptoJS=require('crypto-js')
+const crypto=require('crypto')
 const jwt = require('jsonwebtoken');
 const moment=require("moment")
 const phonePe = async (req, res) => {
@@ -105,7 +106,7 @@ const hdfcPayment = async (req, res,next) => {
 
         const orderParams = {
           redirect_url: encodeURIComponent(
-            `https://voguemine2.onrender.com/api/user/order/hdfcRes`
+            `https://probable-halibut-r94v5r7gwjrhxgvj-5000.app.github.dev/api/user/order/hdfcRes`
           ),
           cancel_url: encodeURIComponent(
             `https://rampvalk.com/checkout`
@@ -122,6 +123,7 @@ const hdfcPayment = async (req, res,next) => {
         const encryptedOrderData = ccav.getEncryptedOrder(orderParams);
         res.setHeader("content-type", "application/json");
         res.status(200).json({
+          encryptedOrderData,
           payLink: `https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&access_code=AVKU78LD67AY95UKYA&encRequest=${encryptedOrderData}`,
         });
 
@@ -134,18 +136,14 @@ const hdfcResponse = async (req, res, next) => {
   try {
       // Assuming `encResp` is correctly a base64/hex string of encrypted data
       const encryption = req.query.encResp || req.body.encResp;
-
+console.log(encryption)
       // Configure your CCAvenue access with the correct working key
       const ccav = new nodeCCAvenue.Configure({
           working_key: "01199B9C3D2E12F539A4A180EBFDF9F3",
           merchant_id: "3447954",
       });
 
-      // Attempt to decrypt and convert to JSON
       var ccavResponse = ccav.redirectResponseToJson(encryption);
-      console.log(ccavResponse)
-
-      // You might need to handle the decryption or data conversion based on your setup
       var ciphertext = CryptoJS.AES.encrypt(
           JSON.stringify(ccavResponse),
           "Voguemine"
@@ -162,26 +160,111 @@ const hdfcResponse = async (req, res, next) => {
   }
 };
 
-function formatDateWithTimezone(date) {
-  const pad = (num) => (num < 10 ? '0' : '') + num;
 
-  const yyyy = date.getFullYear();
-  const MM = pad(date.getMonth() + 1);
-  const dd = pad(date.getDate());
-  const hh = pad(date.getHours());
-  const mm = pad(date.getMinutes());
-  const ss = pad(date.getSeconds());
+const checkOrderStatus = async (req, res) => {
+  const { orderId } = req.body;
+  try {
+      const workingKey = '01199B9C3D2E12F5'; // Shared by CCAVENUES (16 characters)
+      const accessCode = 'AVKU78LD67AY95UKYA';
+      const orderNo = orderId;
+      const referenceNo = orderId;
 
-  const timezoneOffset = -date.getTimezoneOffset();
-  const sign = timezoneOffset >= 0 ? '+' : '-';
-  const offsetHours = pad(Math.floor(Math.abs(timezoneOffset) / 60));
-  const offsetMinutes = pad(Math.abs(timezoneOffset) % 60);
+      // Prepare merchant JSON data
+      const merchantJsonData = {
+          'order_no': orderNo,
+          'reference_no': referenceNo
+      };
 
-  return `${yyyy}-${MM}-${dd}T${hh}:${mm}:${ss}${sign}${offsetHours}:${offsetMinutes}`;
+      // Convert merchant data to JSON string
+      const merchantData = JSON.stringify(merchantJsonData);
+
+      // Encrypt the JSON data
+      const encryptedData = encrypt(merchantData, workingKey);
+
+      // Prepare final data for the request
+      const finalData = new URLSearchParams({
+          'enc_request': encryptedData,
+          'access_code': accessCode,
+          'command': 'orderStatusTracker',
+          'request_type': 'JSON',
+          'response_type': 'JSON'
+      });
+
+      // Make the API request
+      const response = await fetch('https://apitest.ccavenue.com/apis/servlet/DoWebTrans', {
+          method: 'POST',
+          body: finalData
+      });
+
+      // Read the response body as text
+      const responseBody = await response.text();
+      console.log('Raw Response:', responseBody);
+
+      // Parse the response as JSON
+      const responseData = JSON.parse(responseBody);
+      console.log('Parsed Response:', responseData);
+
+      // Check if the response contains error information
+      if (responseData.error_code) {
+          console.error('Error:', responseData.error_desc);
+          return;
+      }
+
+      // Decrypt the encrypted response
+      const decryptedResponse = decrypt(responseData.enc_response, workingKey);
+      console.log('Decrypted Response:', decryptedResponse);
+
+      // Parse the decrypted response as JSON
+      const parsedResponse = JSON.parse(decryptedResponse);
+      console.log('Parsed Decrypted Response:', parsedResponse);
+
+      // Extract relevant information from the parsed response
+      const status = parsedResponse.status;
+      console.log('Order Status:', status);
+
+      // You can further process the parsed response as needed
+
+  } catch (error) {
+      console.error('Error checking order status:', error);
+  }
+};
+
+// Encryption function
+function encrypt(plainText, key) {
+  const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), Buffer.alloc(16, 0));
+  let encryptedData = cipher.update(plainText, 'utf8', 'hex');
+  encryptedData += cipher.final('hex');
+  return encryptedData;
 }
+
+// Decryption function
+function decrypt(encryptedText, key) {
+  const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), Buffer.alloc(16, 0));
+  let decryptedData = decipher.update(encryptedText, 'hex', 'utf8');
+  decryptedData += decipher.final('utf8');
+  return decryptedData;
+}
+
+
 const secretKey = 'rcDR0IKFer68ZpC9qA6DpLzz4CD1rGGu'; // Replace with your actual secret key
 const clientid = 'uvoguev2'; // Replace with your actual clientid
 const mercid = 'UVOGUEV2'; // Replace with your actual mercid
+
+const formatDateWithTimezone = (date) => {
+  const timezoneOffset = -date.getTimezoneOffset() * 60000;
+  const localISOTime = (new Date(date.getTime() + timezoneOffset)).toISOString().slice(0, -1);
+  return localISOTime + '+00:00';
+};
+const verifyToken = (token, secretKey) => {
+  try {
+    const decoded = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
+    console.log('Verified Token:', decoded);
+    return decoded;
+  } catch (error) {
+    console.error('Token verification failed:', error.message);
+    return null;
+  }
+};
 
 const billPay = async (req, res) => {
   const now = new Date();
@@ -190,11 +273,11 @@ const billPay = async (req, res) => {
 
   const payload = {
     mercid,
-    orderid:uniqid(),
-    amount: "100.00",
+    orderid: uniqid(),
+    amount: '100.00',
     order_date: orderDate,
-    currency: "356",
-    ru: 'https://voguemine2.onrender.com/api/user/order/billRes',
+    currency: 'INR',
+    ru: 'http://localhost:5000/api/user/order/billRes',
     additional_info: {
       additional_info1: 'Demo',
       additional_info2: 'Voguemine',
@@ -215,15 +298,21 @@ const billPay = async (req, res) => {
     },
     iat: Math.floor(Date.now() / 1000),
   };
-console.log(mercid,traceId,orderDate,payload)
+
   const header = {
     alg: 'HS256',
-    clientid,
+    typ: 'JWT',
+    clientid, // Include clientid as a custom parameter in the header
   };
 
-  const token = jwt.sign(payload, secretKey, { algorithm: 'HS256', header });
+  console.log('Payload:', JSON.stringify(payload, null, 2));
+  console.log('Header:', JSON.stringify(header, null, 2));
 
   try {
+    const token = jwt.sign(payload, secretKey, { algorithm: 'HS256', header });
+verifyToken(token,secretKey)
+    console.log('Generated JWT:', token);
+
     const response = await axios.post(
       'https://uat1.billdesk.com/u2/payments/ve1_2/orders/create',
       token,
@@ -239,10 +328,16 @@ console.log(mercid,traceId,orderDate,payload)
 
     res.json(response.data);
   } catch (error) {
-    // console.error(error);
-    res.status(500).json({ error: 'Error processing payment', details: error.response ? error.response.data : error.message });
+    console.error('Error response:', error.response ? error.response.data : error.message);
+    console.error('Error details:', error.response ? error.response : error);
+
+    res.status(500).json({
+      error: 'Error processing payment',
+      details: error.response ? error.response.data : error.message,
+    });
   }
 };
+
 const billRes=(req, res) => {
     const response = req.body;
     // Handle the response from BillDesk
@@ -254,5 +349,6 @@ module.exports = {
     hdfcPayment,
     hdfcResponse,
     billPay,
-    billRes
+    billRes,
+    checkOrderStatus
 }
