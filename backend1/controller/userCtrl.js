@@ -881,6 +881,44 @@ const createOrder=asyncHandler(async(req,res)=>{
 
     const newOrder=await axios.post('https://api.delightchat.io/api/v1/public/message', {
       country_code: '+91', // Update the country code if necessary
+      phone_number:`9811363760`, // Update with the phone number to send the confirmation to
+      automation_id: 'd9725206-5614-4944-8d7f-a50c6634cb1f', // Update with your DelightChat automation ID
+      message_data: {
+        // Add any data you want to include in the message
+        1: `${order.orderNumber}`,
+        2: `${finalAmount}`,
+        3: `${orderType}`,
+        4: `${orderItems.length}`,
+
+        // Add more data as needed
+      }
+    }, {
+      headers: {
+        'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
+        'Content-Type': 'application/json'
+      }
+    });
+    const newOrder1=await axios.post('https://api.delightchat.io/api/v1/public/message', {
+      country_code: '+91', // Update the country code if necessary
+      phone_number:`8006009896`, // Update with the phone number to send the confirmation to
+      automation_id: 'd9725206-5614-4944-8d7f-a50c6634cb1f', // Update with your DelightChat automation ID
+      message_data: {
+        // Add any data you want to include in the message
+        1: `${order.orderNumber}`,
+        2: `${finalAmount}`,
+        3: `${orderType}`,
+        4: `${orderItems.length}`,
+
+        // Add more data as needed
+      }
+    }, {
+      headers: {
+        'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
+        'Content-Type': 'application/json'
+      }
+    });
+    const newOrder2=await axios.post('https://api.delightchat.io/api/v1/public/message', {
+      country_code: '+91', // Update the country code if necessary
       phone_number:`6306492433`, // Update with the phone number to send the confirmation to
       automation_id: 'd9725206-5614-4944-8d7f-a50c6634cb1f', // Update with your DelightChat automation ID
       message_data: {
@@ -898,6 +936,26 @@ const createOrder=asyncHandler(async(req,res)=>{
         'Content-Type': 'application/json'
       }
     });
+    const newOrder3=await axios.post('https://api.delightchat.io/api/v1/public/message', {
+      country_code: '+91', // Update the country code if necessary
+      phone_number:`9719250693`, // Update with the phone number to send the confirmation to
+      automation_id: 'd9725206-5614-4944-8d7f-a50c6634cb1f', // Update with your DelightChat automation ID
+      message_data: {
+        // Add any data you want to include in the message
+        1: `${order.orderNumber}`,
+        2: `${finalAmount}`,
+        3: `${orderType}`,
+        4: `${orderItems.length}`,
+
+        // Add more data as needed
+      }
+    }, {
+      headers: {
+        'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
+        'Content-Type': 'application/json'
+      }
+    });
+
     const { firstname, lastname, email, mobile, address } = shippingInfo;
 
     // Check if the user already exists
