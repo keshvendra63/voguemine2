@@ -540,7 +540,7 @@ const [alt,setAlt]=useState("")
 
             <div className="main">
               {
-                mainImage===""? <Carousel activeIndex={index} onSelect={handleSelect}>
+                mainImage===""? <Carousel activeIndex={index} onSelect={handleSelect} data-bs-theme="dark">
                 {
                   singleProductState?.images?.map((item)=>{
                     return <Carousel.Item interval={3000}>

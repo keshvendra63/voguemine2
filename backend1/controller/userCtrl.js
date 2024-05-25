@@ -878,6 +878,26 @@ const createOrder=asyncHandler(async(req,res)=>{
 
       // Handle DelightChat response if necessary
     }
+
+    const newOrder=await axios.post('https://api.delightchat.io/api/v1/public/message', {
+      country_code: '+91', // Update the country code if necessary
+      phone_number:`6306492433`, // Update with the phone number to send the confirmation to
+      automation_id: 'd9725206-5614-4944-8d7f-a50c6634cb1f', // Update with your DelightChat automation ID
+      message_data: {
+        // Add any data you want to include in the message
+        1: `${order.orderNumber}`,
+        2: `${finalAmount}`,
+        3: `${orderType}`,
+        4: `${orderItems.length}`,
+
+        // Add more data as needed
+      }
+    }, {
+      headers: {
+        'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
+        'Content-Type': 'application/json'
+      }
+    });
     const { firstname, lastname, email, mobile, address } = shippingInfo;
 
     // Check if the user already exists
@@ -1156,22 +1176,38 @@ const fData2=asyncHandler(async (req, res) => {
     monthlyStats: monthlyData
   });
 })
-
 const getAllOrders = asyncHandler(async (req, res) => {
   const limit = parseInt(req.query.limit) || 50; // Number of items per page
   const page = parseInt(req.query.page) || 1; // Current page, default is 1
 
   try {
-    const count = await Order.countDocuments(); // Total number of orders
+    let query = {};
+
+    // Check if search query is provided
+    if (req.query.search) {
+      const searchKeyword = req.query.search.toLowerCase().trim();
+      const regexPattern = new RegExp(`^${searchKeyword}$`, 'i');
+
+      query.$or = [
+        { orderNumber: { $regex: searchKeyword } },
+        { 'shippingInfo.firstname': { $regex: new RegExp(searchKeyword, 'i') } },
+        { 'shippingInfo.email': { $regex: new RegExp(searchKeyword, 'i') } },
+        { 'shippingInfo.phone': parseInt(searchKeyword) || null }
+        // Add more fields here for flexible searching
+        // Example: { 'fieldName': { $regex: new RegExp(searchKeyword, 'i') } }
+      ];
+    }
+
+    const count = await Order.countDocuments(query); // Total number of matching orders
 
     // Calculate the skipping value based on the current page
-    const skip = count - (page * limit);
+    const skip = Math.max(0, (count - (page * limit)));
 
-    // Query orders with reverse pagination
-    const orders = await Order.find()
+    // Query orders with pagination and search criteria
+    const orders = await Order.find(query)
       .populate("user")
       .populate("orderItems.product")
-      .skip(Math.max(skip, 0)) // Ensure skip is non-negative
+      .skip(skip)
       .limit(limit);
 
     res.json({
@@ -1186,6 +1222,9 @@ const getAllOrders = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
+
+
+
 const getAllOrders1 = asyncHandler(async (req, res) => {
   const limit = parseInt(req.query.limit) || 50; // Number of items per page
   const page = parseInt(req.query.page) || 1; 

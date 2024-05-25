@@ -71,7 +71,21 @@ useEffect(()=>{
 },[dispatch])
 const updateURL = (sizeNumber) => {
   const searchParams = new URLSearchParams();
+
+  // Add page parameter
   searchParams.set('page', sizeNumber);
+
+  // Add filter parameters
+  if (selectedSizes.length > 0) {
+    searchParams.set('sizes', selectedSizes.join(','));
+  }
+  if (selectedColors.length > 0) {
+    searchParams.set('colors', selectedColors.join(','));
+  }
+  if (selectedBrands.length > 0) {
+    searchParams.set('brands', selectedBrands.join(','));
+  }
+
   navigate(`${location.pathname}?${searchParams.toString()}`);
 };
 
@@ -567,7 +581,7 @@ useEffect(() => {
   <li onClick={()=>toggleBrand("Dolce & Gabbana")} className={isSelectedBrand("Dolce & Gabbana")}>Dolce & Gabbana</li>
 </ul>
 <ul style={{transform:open3,height:open3==="translateX(-200%)"?0:'100%'}}>
-<li onClick={()=>toggleBrand("Fendi")} className={isSelectedBrand("Fendi")}>Emporio Armani</li>
+<li onClick={()=>toggleBrand("Fendi")} className={isSelectedBrand("Emporio Armani")}>Emporio Armani</li>
 
   <li onClick={()=>toggleBrand("Fendi")} className={isSelectedBrand("Fendi")}>Fendi</li>
   <li onClick={()=>toggleBrand("Fred Perry")} className={isSelectedBrand("Fred Perry")}>Fred Perry</li>

@@ -6,6 +6,10 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { useDispatch, useSelector } from 'react-redux'
+import img1 from '../../images/001.jpg'
+import img2 from '../../images/0002.jpg'
+import img3 from '../../images/0003.jpg'
+import img4 from '../../images/00004.jpg'
 
 const About = () => {
   const bannerState=useSelector((state)=>state?.banner?.banner)
@@ -59,7 +63,7 @@ const About = () => {
     <div className='teams'>
        
         <div className="team">
-          <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713513971/0003_dadj7d.jpg" alt="" />
+          <img src={img3} alt="" />
           <p className='name'>Mohinder Bisht</p>
           <p className='detail'>CEO</p>
           <div className="icons">
@@ -70,7 +74,7 @@ const About = () => {
           </div>
         </div>
         <div className="team">
-          <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713513971/0002_kucqzz.jpg" alt="" />
+          <img src={img1} alt="" />
           <p className='name'>Monika Bisht</p>
           <p className='detail'>Co-founder</p>
           <div className="icons">
@@ -81,7 +85,7 @@ const About = () => {
           </div>
         </div>
         <div className="team">
-          <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713513971/001_ppofc5.jpg" alt="" />
+          <img src={img2} alt="" />
           <p className='name'>Daljeet Kaur</p>
           <p className='detail'>HR Manager</p>
           <div className="icons">
@@ -93,7 +97,7 @@ const About = () => {
           </div>
         </div>
         <div className="team">
-          <img src="https://res.cloudinary.com/keshvendra/image/upload/v1713513971/00004_hxog8e.jpg" alt="" />
+          <img src={img4} alt="" />
           <p className='name'>Mukhtesh Rawat</p>
           <p className='detail'>Logistic Manager</p>
           <p className='detail'></p>

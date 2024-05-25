@@ -3,7 +3,7 @@
 }
 .MuiPaper-root{
     min-width: 50vw;
-    min-height: 60vh;
+    /* min-height: 40vh; */
     position: relative;
     
 }
@@ -27,13 +27,15 @@
 }
 .filt .apply{
     position: absolute;
-    bottom: 15px;
+    bottom: 0;
     right: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 0 20px;
+    padding: 5px 20px;
+    background-color: white;
+    z-index: 1;
     
 
 }
@@ -45,8 +47,7 @@
     border: none;
     background-color: rgb(60, 60, 60);
     color: white;
-    z-index: 1;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom: 10px;
 }
 .MuiPaper-root .filter-div .avail .f-head{
     cursor: pointer;
@@ -164,7 +165,7 @@
 }
 
 .MuiPaper-root .filter-div div ul li{
-    margin-bottom: 5px;
+    margin-bottom: 7px;
     cursor: pointer;
 }
 

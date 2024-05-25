@@ -3,6 +3,8 @@
 }
 .MuiPaper-root{
     min-width: 50vw;
+    padding-bottom: 30px;
+
 }
 .size-img{
     position: relative;
@@ -15,7 +17,6 @@
     cursor: pointer;
 }
 .size-img img{
-    padding: 20px;
     width: 100%;
 }
 .single-product .product{

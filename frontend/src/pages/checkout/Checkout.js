@@ -658,31 +658,6 @@ const formatTime = () => {
         </div> */}
 
 
-        <div className="banking">
-        <FormControlLabel  value="bank" control={<Radio />} label="Scan QR or Pay using Bank Account details given below and  get Instant 10% Discount" onClick={bankClick}/>
-            {
-                payMethod==="bank"?
-                <>
-                <div className="qr">
-                <img src={QR} alt="" />
-            </div>
-            <p style={{color:'red',marginTop:'10px',fontWeight:500,textAlign:'center',fontSize:'25px'}}>Payable: &#8377; {totalAmount-(totalAmount/10)}</p>
-            <div className="bank">
-                <p style={{fontWeight:600}}>Bank Details:</p>
-                <p>Account Number: <span>50200091104371</span></p>
-                <p>IFSC: <span>HDFC0000003</span></p>
-            </div>
-            <FormControlLabel  value="paid" control={<Radio />} label="Check If You Have Made Payment" onClick={bankClick} style={{fontWeight:500,margin:'5px 0'}}/>
-
-            </>
-            :
-            ""
-            }
-
-
-        </div>
-
-
 <div className='razorpay'>
 <FormControlLabel  value="cod" control={<Radio />} label="Cash on Delivery (Rs. 200)" onClick={codClick}/>
 
