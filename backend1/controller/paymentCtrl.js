@@ -10,6 +10,7 @@ const CryptoJS=require('crypto-js')
 const crypto=require('crypto')
 const jwt = require('jsonwebtoken');
 const moment=require("moment")
+
 const phonePe = async (req, res) => {
    try{
     const payEndpoint = '/pg/v1/pay';
@@ -144,6 +145,8 @@ console.log(encryption)
       });
 
       var ccavResponse = ccav.redirectResponseToJson(encryption);
+      console.log(ccavResponse)
+
       var ciphertext = CryptoJS.AES.encrypt(
           JSON.stringify(ccavResponse),
           "Voguemine"
@@ -161,89 +164,89 @@ console.log(encryption)
 };
 
 
+ // To parse URL-encoded strings
+
+// Encrypt function for CCAvenue
+const querystring = require('querystring'); // To parse URL-encoded strings
+
+// Encrypt function for CCAvenue
+function encrypt(plainText, workingKey) {
+  const key = CryptoJS.enc.Utf8.parse(workingKey);
+  const iv = CryptoJS.enc.Utf8.parse(workingKey);
+  const encrypted = CryptoJS.AES.encrypt(plainText, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
+  return encrypted.toString();
+}
+
+// Decrypt function for CCAvenue
+function decrypt(encryptedText, workingKey) {
+  const key = CryptoJS.enc.Utf8.parse(workingKey);
+  const iv = CryptoJS.enc.Utf8.parse(workingKey);
+  const decrypted = CryptoJS.AES.decrypt(encryptedText, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
+  return decrypted.toString(CryptoJS.enc.Utf8);
+}
+
 const checkOrderStatus = async (req, res) => {
   const { orderId } = req.body;
   try {
-      const workingKey = '01199B9C3D2E12F5'; // Shared by CCAVENUES (16 characters)
-      const accessCode = 'AVKU78LD67AY95UKYA';
-      const orderNo = orderId;
-      const referenceNo = orderId;
+    const accessCode = 'AVKU78LD67AY95UKYA';
+    const workingKey = '01199B9C3D2E12F5'; // Encryption key
 
-      // Prepare merchant JSON data
-      const merchantJsonData = {
-          'order_no': orderNo,
-          'reference_no': referenceNo
-      };
+    // Prepare data for the request
+    const requestData = {
+      access_code: accessCode,
+      command: 'orderStatusTracker',
+      request_type: 'JSON',
+      response_type: 'JSON',
+      version: '1.2',
+      enc_request: encryptRequest(orderId, workingKey),
+    };
 
-      // Convert merchant data to JSON string
-      const merchantData = JSON.stringify(merchantJsonData);
+    // Make the API request
+    const response = await fetch('https://apitest.ccavenue.com/apis/servlet/DoWebTrans', {
+      method: 'POST',
+      body: new URLSearchParams(requestData),
+    });
 
-      // Encrypt the JSON data
-      const encryptedData = encrypt(merchantData, workingKey);
+    // Read the response body as text
+    const responseBody = await response.text();
+    console.log('Raw Response:', responseBody);
 
-      // Prepare final data for the request
-      const finalData = new URLSearchParams({
-          'enc_request': encryptedData,
-          'access_code': accessCode,
-          'command': 'orderStatusTracker',
-          'request_type': 'JSON',
-          'response_type': 'JSON'
-      });
+    // Parse the response as JSON
+    const parsedResponse = JSON.parse(responseBody);
+    console.log('Parsed Response:', parsedResponse);
 
-      // Make the API request
-      const response = await fetch('https://apitest.ccavenue.com/apis/servlet/DoWebTrans', {
-          method: 'POST',
-          body: finalData
-      });
+    // Check for errors in the response
+    if (parsedResponse.status === '1') {
+      console.error('Error:', parsedResponse.enc_error_code, parsedResponse.enc_response);
+      return res.status(400).json({ error: parsedResponse.enc_response });
+    }
 
-      // Read the response body as text
-      const responseBody = await response.text();
-      console.log('Raw Response:', responseBody);
+    // Decrypt the encrypted response
+    const decryptedResponse = decryptResponse(parsedResponse.enc_response, workingKey);
+    console.log('Decrypted Response:', decryptedResponse);
 
-      // Parse the response as JSON
-      const responseData = JSON.parse(responseBody);
-      console.log('Parsed Response:', responseData);
-
-      // Check if the response contains error information
-      if (responseData.error_code) {
-          console.error('Error:', responseData.error_desc);
-          return;
-      }
-
-      // Decrypt the encrypted response
-      const decryptedResponse = decrypt(responseData.enc_response, workingKey);
-      console.log('Decrypted Response:', decryptedResponse);
-
-      // Parse the decrypted response as JSON
-      const parsedResponse = JSON.parse(decryptedResponse);
-      console.log('Parsed Decrypted Response:', parsedResponse);
-
-      // Extract relevant information from the parsed response
-      const status = parsedResponse.status;
-      console.log('Order Status:', status);
-
-      // You can further process the parsed response as needed
+    // Send the decrypted response back
+    res.json(JSON.parse(decryptedResponse));
 
   } catch (error) {
-      console.error('Error checking order status:', error);
+    console.error('Error checking order status:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-// Encryption function
-function encrypt(plainText, key) {
-  const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), Buffer.alloc(16, 0));
-  let encryptedData = cipher.update(plainText, 'utf8', 'hex');
-  encryptedData += cipher.final('hex');
-  return encryptedData;
-}
+// Function to encrypt the request data
+const encryptRequest = (orderId, workingKey) => {
+  // Implement encryption logic here
+  return 'Encrypted_Request_Data';
+};
 
-// Decryption function
-function decrypt(encryptedText, key) {
-  const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), Buffer.alloc(16, 0));
-  let decryptedData = decipher.update(encryptedText, 'hex', 'utf8');
-  decryptedData += decipher.final('utf8');
-  return decryptedData;
-}
+// Function to decrypt the response data
+const decryptResponse = (encResponse, workingKey) => {
+  // Implement decryption logic here
+  return 'Decrypted_Response_Data';
+};
+
+
 
 
 const secretKey = 'rcDR0IKFer68ZpC9qA6DpLzz4CD1rGGu'; // Replace with your actual secret key

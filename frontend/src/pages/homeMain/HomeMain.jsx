@@ -57,19 +57,32 @@ const HomeMain = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const promises = collections.map((collectionName) => dispatch(getAllProducts({ limit, collectionName, page, sort })));
+      try {
+        const promises = collections.map((collectionName) => dispatch(getAllProducts({ limit, collectionName, page, sort })));
 
-      const dat = await Promise.all(promises)
-      const combinedPayArray = dat.reduce((accumulator, currentObject) => {
-        return [...accumulator, ...currentObject.payload];
-      }, []);
+        const results = await Promise.all(promises);
+        
+        // Logging results to check the structure
+        console.log('Results:', results);
 
-      setData(combinedPayArray)
+        const combinedPayArray = results.reduce((accumulator, currentObject) => {
+          // Check if payload exists and is an array
+          if (Array.isArray(currentObject.payload.products)) {
+            return [...accumulator, ...currentObject.payload.products];
+          } else {
+            console.warn('Payload is not an array:', currentObject.payload);
+            return accumulator;
+          }
+        }, []);
 
+        setData(combinedPayArray);
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      }
     };
 
     fetchProducts();
-  }, [limit, page]);
+  }, [dispatch, limit, page, sort]);
   const products = productState ? productState : [];
 
   const shirts = data.filter(object => object.collectionName && object.collectionName === "Men's Premium T Shirts").slice(0, 4);
@@ -89,7 +102,10 @@ const HomeMain = () => {
   }, [isLoading, isSuccess])
 
   const collectionState=useSelector((state)=>state?.collection?.collection)
-
+  useEffect(()=>{
+    window.fbq('track', 'ViewContent', {
+     });
+  },[page])
   return (
     <div className='homeMain'>
       <div className="hero-section">
@@ -183,7 +199,7 @@ const HomeMain = () => {
 
 
 {
-                  shirts.map((arm, index) => {
+                  shirts?.map((arm, index) => {
 
                     return <Product key={index} keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm} alt={arm?.alt}/>
 

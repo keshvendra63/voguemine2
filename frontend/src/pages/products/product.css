@@ -19,6 +19,7 @@
 
 }
 
+
 .filt .c-icon{
     position: absolute;
     right: 5px;
@@ -266,7 +267,7 @@ margin-left: 5px;
     justify-content: center;
     margin-top: 50px;
 }
-.Products .products-box .products-page .pages button{
+/* .Products .products-box .products-page .pages button{
     border-radius: 50%;
     width: 30px;
     height: 30px;
@@ -274,9 +275,13 @@ margin-left: 5px;
     box-shadow: none;
     color: black;
     margin:0 15px;
-}
+} */
 .Products .products-box .products-page .pages button .b-icon{
     font-size: 30px;
+}
+.css-yuzg60-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected{
+    background-color: black !important;
+    color: white;
 }
 .Products .products-box .products-page .pages p{
     background-color: rgb(35, 35, 35);

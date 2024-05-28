@@ -3,10 +3,9 @@ import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useDispatch, useSelector } from 'react-redux'
-import { addToWishlist,getAProduct } from '../features/products/productSlice';
-import {addToCart,getUserCartProduct} from '../features/user/userSlice'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
+import {getUserCartProduct} from '../features/user/userSlice'
+import { useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify'
 import {Link} from 'react-router-dom'
 const Product = (props) => {
@@ -20,7 +19,6 @@ const addProductToWishlistLocalStorage = (product) => {
   const updatedCart = [...existingCart, product];
   localStorage.setItem("wishlist", JSON.stringify(updatedCart));
 };
-  const [fav,setFav]=useState("block")
 const [red,setRed]=useState("")
     const [sold,setSold]=useState("none")
     const [color,setColor]=useState(null)
@@ -105,7 +103,6 @@ useEffect(() => {
         toast.success("Added To Wishlist")
       }
 
-      setFav("none")
  
   }
 

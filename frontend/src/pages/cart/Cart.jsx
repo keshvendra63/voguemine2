@@ -87,6 +87,16 @@ const checkoutClick=()=>{
         'uuid_c1': `${cartItems[0]?.product?._id}`, 
        })
 }
+useEffect(()=>{
+    window.fbq('track', 'ViewContent', {
+      content_name: `${cartItems[0]?.product?.title}`,
+      content_category:`${cartItems[0]?.product?.category}`,
+      content_ids: `${cartItems[0]?.product?._id}`,
+      content_type: 'product',
+      value:totalAmount,
+      currency: 'INR'
+     });
+  },[cartItems])
     return (
         <div className='cart'>
             <div className="category-banner">

@@ -81,6 +81,7 @@ const getAllProduct = asyncHandler(async (req, res) => {
       const brands = req.query.brand.split(',').map(brand => brand.trim());
       query['brand'] = { $in: brands}; // Exact match for multiple brands
     }
+
     // Handling search conditions...
     if (req.query.search) {
       const searchKeywords = req.query.search.toLowerCase().split(' ');
@@ -141,8 +142,6 @@ const getAllProduct = asyncHandler(async (req, res) => {
       delete query.color;
     }
 
-    // Log the constructed query for debugging
-
     // Aggregation pipeline to compute total quantity and sort products
     let sortCriteria = { order: 1, createdAt: -1 }; // Default sorting
     if (req.query.sort) {
@@ -157,6 +156,14 @@ const getAllProduct = asyncHandler(async (req, res) => {
       }
     }
 
+    // Pagination
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 28;
+    const skip = (page - 1) * limit;
+
+    const totalDocs = await Product.countDocuments(query); // Total matching documents
+    const totalPages = Math.ceil(totalDocs / limit); // Total number of pages
+
     let productQuery = Product.aggregate([
       { $match: query },
       { $addFields: { totalQuantity: { $sum: "$variants.quantity" } } },
@@ -167,16 +174,10 @@ const getAllProduct = asyncHandler(async (req, res) => {
           }
         }
       },
-      { $sort: { isSoldOut: 1, ...sortCriteria } }
+      { $sort: { isSoldOut: 1, ...sortCriteria } },
+      { $skip: skip },
+      { $limit: limit }
     ]);
-
-    // Log the aggregation pipeline for debugging
-
-    // Pagination
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 28;
-    const skip = (page - 1) * limit;
-    productQuery = productQuery.skip(skip).limit(limit);
 
     // Optionally add field projection if specified
     if (req.query.fields) {
@@ -190,14 +191,20 @@ const getAllProduct = asyncHandler(async (req, res) => {
     // Executing the query
     let products = await productQuery;
 
-    // Log the results for debugging
-
     // Sending response
-    res.json(products);
+    res.json({
+      products,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalDocs,
+      },
+    });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
 });
+
 
 
 

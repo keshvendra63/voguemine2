@@ -18,6 +18,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import CircularProgress from '@mui/material/CircularProgress';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -58,14 +60,23 @@ if(search){
 const pathname = location.pathname; // Gives "/collections/men-premium-shirt"
 const segments = pathname.split('/'); // Splits the pathname into segments
 const collection = segments[2]; // Gets "men-premium-shirt" assuming it's always in this position
+useEffect(()=>{
+  window.scrollTo({
+    top: -10,
+  });
+})
 
 useEffect(()=>{
   if(location?.pathname!=="/products"){
     localStorage.removeItem("search")
 
   }
+  
 },[location])
 
+useEffect(()=>{
+
+})
 useEffect(()=>{
   dispatch(resetState())
 },[dispatch])
@@ -155,30 +166,35 @@ const updateURL = (sizeNumber) => {
   
     // Effect to reset load to 28 when the pathname changes
  
-
+    useEffect(()=>{
+  console.log(products?.pagination)
+    },[products])
     const loadMore=()=>{
+      setLoading(true)
+      window.scrollTo({
+        top: -10,
+      });
       if(page>0){
         page--
       updateURL(page)
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth' // Optional: Smooth scrolling animation
-      });
+     
 
       // setLimit(limit+28)
       enterLoading(0)
       }
     }
     const loadMore1=()=>{
+      setLoading(true)
+
+      window.scrollTo({
+        top: -10,
+      });
       page++
       updateURL(page)
 
       // setLimit(limit+28)
       enterLoading(0)
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth' // Optional: Smooth scrolling animation
-      });
+      
     }
     
 
@@ -250,7 +266,7 @@ const toggleDrawer1 = (newOpen) => () => {
 
 const uniqueSizes = new Set();
 
-  products?.forEach(product => {
+  products?.Products?.forEach(product => {
     product.variants.forEach(variant => {
       uniqueSizes.add(variant.size);
     });
@@ -472,7 +488,9 @@ useEffect(() => {
   }
 
 }, [collectionState?.metaDesc,collectionState?.title]);
-
+const handlePageChange = (event, value) => {
+  updateURL(value); // Update the URL with the new page value
+};
 
     return (
         <div className='Products'>
@@ -581,7 +599,7 @@ useEffect(() => {
   <li onClick={()=>toggleBrand("Dolce & Gabbana")} className={isSelectedBrand("Dolce & Gabbana")}>Dolce & Gabbana</li>
 </ul>
 <ul style={{transform:open3,height:open3==="translateX(-200%)"?0:'100%'}}>
-<li onClick={()=>toggleBrand("Fendi")} className={isSelectedBrand("Emporio Armani")}>Emporio Armani</li>
+<li onClick={()=>toggleBrand("Emporio Armani")} className={isSelectedBrand("Emporio Armani")}>Emporio Armani</li>
 
   <li onClick={()=>toggleBrand("Fendi")} className={isSelectedBrand("Fendi")}>Fendi</li>
   <li onClick={()=>toggleBrand("Fred Perry")} className={isSelectedBrand("Fred Perry")}>Fred Perry</li>
@@ -691,6 +709,10 @@ useEffect(() => {
           <div></div>
           <div></div>
           <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
         :
         <div className="product-list">
@@ -699,7 +721,7 @@ useEffect(() => {
 
 
 
-                products?.map((arm,index)=>{
+                products?.products?.map((arm,index)=>{
                     return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} prdt={arm} alt={arm?.alt}/>    
                 })
                 
@@ -719,20 +741,21 @@ useEffect(() => {
                     <div className="pages">
                       {
                         loading===true? <CircularProgress/>:
-                        <div className='handle-buttons'>
-                           <Button type="primary" loading={loadings[0]} onClick={loadMore} style={{color:page===1?"grey":"",cursor:'auto'}}>
-          <KeyboardArrowLeftIcon className='b-icon'/>
-        </Button>
-        <p>{page}</p>
-        <Button type="primary" loading={loadings[0]} onClick={loadMore1} style={{display:btn}}>
-          <KeyboardArrowRightIcon className='b-icon'/>
-        </Button>
-                        </div>
+                        <Stack spacing={2}>
+    <Pagination
+      count={products?.pagination?.totalPages}
+      page={page}
+      onChange={handlePageChange}
+
+    />
+  </Stack>
                        
         
                       }
+                      
                     
                     </div>
+                    
                 </div>
             </div>
         </div>

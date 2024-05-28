@@ -842,119 +842,96 @@ const msgAfter3hour=asyncHandler(async(firstname,ordernumber,phone)=>{
     }  
 })
 
-const createOrder=asyncHandler(async(req,res)=>{
-  const {shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo,tag}=req.body;
-  try{
+const createOrder = asyncHandler(async (req, res) => {
+  const { shippingInfo, orderItems, totalPrice, finalAmount, shippingCost, orderType, discount, paymentInfo, tag } = req.body;
 
-    const order=await Order.create({
-      shippingInfo,orderItems,totalPrice,finalAmount,shippingCost,orderType,discount,paymentInfo,tag
-    })
+  try {
+    // Check inventory before creating the order
+    for (const orderItem of orderItems) {
+      const { product, color, size, quantity } = orderItem;
+      const productId = product._id;
+
+      // Find the product in the database
+      const foundProduct = await Product.findById(productId);
+
+      if (!foundProduct) {
+        throw new Error(`Product with ID ${productId} not found`);
+      }
+
+      // Find the variant matching the color and size
+      const variant = foundProduct.variants.find(
+        (variant) => variant.color === color && variant.size === size
+      );
+
+      if (!variant) {
+        throw new Error(`Variant not found for ${color} - ${size}`);
+      }
+
+      // Check if there is enough quantity available
+      if (variant.quantity < quantity) {
+        throw new Error(`Not enough quantity available for ${color} - ${size}`);
+      }
+    }
+
+    // If inventory is sufficient, create the order
+    const order = await Order.create({
+      shippingInfo,
+      orderItems,
+      totalPrice,
+      finalAmount,
+      shippingCost,
+      orderType,
+      discount,
+      paymentInfo,
+      tag
+    });
+
     if (tag === 'Voguemine') {
       const orderItemsString = orderItems.map((item) => {
         return `Name: ${item.product.title}, Color: ${item.color || ""}, Size: ${item.size || ""}`;
       }).join('\n');
+
       // Send confirmation message using DelightChat API
-      const delightChatResponse = await axios.post('https://api.delightchat.io/api/v1/public/message', {
-        country_code: '+91', // Update the country code if necessary
-        phone_number:`${shippingInfo?.phone}`, // Update with the phone number to send the confirmation to
-        automation_id: '0eed4e28-34c1-4494-8026-90439f94fd50', // Update with your DelightChat automation ID
+      await axios.post('https://api.delightchat.io/api/v1/public/message', {
+        country_code: '+91',
+        phone_number: `${shippingInfo?.phone}`,
+        automation_id: '0eed4e28-34c1-4494-8026-90439f94fd50',
         message_data: {
-          // Add any data you want to include in the message
           1: `${shippingInfo.firstname}`,
           2: `${order.orderNumber}`,
           3: `${finalAmount}`,
           4: orderItemsString,
-          5:`${orderType}`,
-          6: `${shippingInfo.address} ${shippingInfo.city} ${shippingInfo.state} ${shippingInfo.pincode}`,
-
-          // Add more data as needed
+          5: `${orderType}`,
+          6: `${shippingInfo.address} ${shippingInfo.city} ${shippingInfo.state} ${shippingInfo.pincode}`
         }
       }, {
         headers: {
-          'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
+          'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony',
           'Content-Type': 'application/json'
         }
       });
-
-      // Handle DelightChat response if necessary
     }
 
-    const newOrder=await axios.post('https://api.delightchat.io/api/v1/public/message', {
-      country_code: '+91', // Update the country code if necessary
-      phone_number:`9811363760`, // Update with the phone number to send the confirmation to
-      automation_id: 'd9725206-5614-4944-8d7f-a50c6634cb1f', // Update with your DelightChat automation ID
-      message_data: {
-        // Add any data you want to include in the message
-        1: `${order.orderNumber}`,
-        2: `${finalAmount}`,
-        3: `${orderType}`,
-        4: `${orderItems.length}`,
-
-        // Add more data as needed
-      }
-    }, {
-      headers: {
-        'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
-        'Content-Type': 'application/json'
-      }
-    });
-    const newOrder1=await axios.post('https://api.delightchat.io/api/v1/public/message', {
-      country_code: '+91', // Update the country code if necessary
-      phone_number:`8006009896`, // Update with the phone number to send the confirmation to
-      automation_id: 'd9725206-5614-4944-8d7f-a50c6634cb1f', // Update with your DelightChat automation ID
-      message_data: {
-        // Add any data you want to include in the message
-        1: `${order.orderNumber}`,
-        2: `${finalAmount}`,
-        3: `${orderType}`,
-        4: `${orderItems.length}`,
-
-        // Add more data as needed
-      }
-    }, {
-      headers: {
-        'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
-        'Content-Type': 'application/json'
-      }
-    });
-    const newOrder2=await axios.post('https://api.delightchat.io/api/v1/public/message', {
-      country_code: '+91', // Update the country code if necessary
-      phone_number:`6306492433`, // Update with the phone number to send the confirmation to
-      automation_id: 'd9725206-5614-4944-8d7f-a50c6634cb1f', // Update with your DelightChat automation ID
-      message_data: {
-        // Add any data you want to include in the message
-        1: `${order.orderNumber}`,
-        2: `${finalAmount}`,
-        3: `${orderType}`,
-        4: `${orderItems.length}`,
-
-        // Add more data as needed
-      }
-    }, {
-      headers: {
-        'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
-        'Content-Type': 'application/json'
-      }
-    });
-    const newOrder3=await axios.post('https://api.delightchat.io/api/v1/public/message', {
-      country_code: '+91', // Update the country code if necessary
-      phone_number:`9719250693`, // Update with the phone number to send the confirmation to
-      automation_id: 'd9725206-5614-4944-8d7f-a50c6634cb1f', // Update with your DelightChat automation ID
-      message_data: {
-        // Add any data you want to include in the message
-        1: `${order.orderNumber}`,
-        2: `${finalAmount}`,
-        3: `${orderType}`,
-        4: `${orderItems.length}`,
-
-        // Add more data as needed
-      }
-    }, {
-      headers: {
-        'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
-        'Content-Type': 'application/json'
-      }
-    });
+    // Send additional notifications
+    const phoneNumbers = ['9811363760', '8006009896', '9719250693','9873782103'];
+    for (const phoneNumber of phoneNumbers) {
+      await axios.post('https://api.delightchat.io/api/v1/public/message', {
+        country_code: '+91',
+        phone_number: phoneNumber,
+        automation_id: 'd9725206-5614-4944-8d7f-a50c6634cb1f',
+        message_data: {
+          1: `${order.orderNumber}`,
+          2: `${finalAmount}`,
+          3: `${orderType}`,
+          4: `${orderItems.length}`
+        }
+      }, {
+        headers: {
+          'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony',
+          'Content-Type': 'application/json'
+        }
+      });
+    }
 
     const { firstname, lastname, email, mobile, address } = shippingInfo;
 
@@ -971,20 +948,24 @@ const createOrder=asyncHandler(async(req,res)=>{
         address
       });
     }
+
+    // Update the inventory
     await processOrder(orderItems);
+
+    // Schedule a message after 3 hours
     setTimeout(() => {
-      msgAfter3hour(shippingInfo.firstname,order.orderNumber,shippingInfo.phone)
+      msgAfter3hour(shippingInfo.firstname, order.orderNumber, shippingInfo.phone);
     }, 7200000);
 
     res.json({
       order,
-      success:true
-    })  
+      success: true
+    });
+  } catch (error) {
+    console.error("Error creating order:", error.message);
+    res.status(400).json({ message: error.message });
   }
-  catch(error){
-    throw new Error(error)
-  }
-})
+});
 const createAbondend = asyncHandler(async (req, res) => {
   const { shippingInfo, orderItems, totalPrice, finalAmount, shippingCost, orderType, discount, tag } = req.body;
 
@@ -1245,11 +1226,11 @@ const getAllOrders = asyncHandler(async (req, res) => {
     if (req.query.search) {
       const searchKeyword = req.query.search.toLowerCase().trim();
       const regexPattern = new RegExp(`^${searchKeyword}$`, 'i');
-
+    
       query.$or = [
-        { orderNumber: { $regex: searchKeyword } },
-        { 'shippingInfo.firstname': { $regex: new RegExp(searchKeyword, 'i') } },
-        { 'shippingInfo.email': { $regex: new RegExp(searchKeyword, 'i') } },
+        { orderNumber: { $regex: searchKeyword, $options: 'i' } },
+        { 'shippingInfo.firstname': searchKeyword },
+        { 'shippingInfo.email': searchKeyword },
         { 'shippingInfo.phone': parseInt(searchKeyword) || null }
         // Add more fields here for flexible searching
         // Example: { 'fieldName': { $regex: new RegExp(searchKeyword, 'i') } }
