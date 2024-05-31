@@ -244,7 +244,7 @@ const completeOrder=()=>{
 useEffect(()=>{
     let items=[]
     for (let index = 0; index < cartItems?.length; index++) {
-        items.push({product:cartItems[index]?.product,quantity:cartItems[index].quantity,price:cartItems[index].price,color:cartItems[index].color,size:cartItems[index].size})
+        items.push({product:cartItems[index]?.product,quantity:cartItems[index].quantity,price:cartItems[index].price,color:cartItems[index].color,size:cartItems[index].size,sku:cartItems[index]?.product?.sku})
         
     }
     setCartProductState(items)
@@ -305,7 +305,7 @@ const checkOutHandler=async(e)=>{
         };
         localStorage.setItem("recentOrder", JSON.stringify({ totalPrice: totalAmount, finalAmount: finalAmount, shippingCost: shippingCost, orderType: orderType, discount: couponAmount, orderItems: cartProductState, paymentInfo: data, shippingInfo: JSON.parse(localStorage.getItem("address")),tag:"Voguemine" }));
 
-    axios.post("https://probable-halibut-r94v5r7gwjrhxgvj-5000.app.github.dev/api/user/order/hdfcPay",{amount:finalAmount})
+    axios.post("https://voguemine2.onrender.com/api/user/order/hdfcPay",{amount:finalAmount})
     .then(response=>{
         window.location.href=response.data.payLink
 

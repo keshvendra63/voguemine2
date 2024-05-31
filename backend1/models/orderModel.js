@@ -96,6 +96,9 @@ var orderSchema = new mongoose.Schema(
         type:Number,
         required:true
       },
+      sku:{
+        type:String,
+      }
     }],
     paidAt:{
       type:Date,

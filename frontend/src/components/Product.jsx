@@ -216,14 +216,14 @@ const [imageIndex, setImageIndex] = useState(0);
                 </div>
                 <div className="product-content">
                   <Link to={`/products/${props.handle}`} className="title" style={{color:'black'}}><p >{props.title}</p></Link>
-                  <p style={{fontSize:'13px',fontWeight:500}}>{props?.prdt?.sku}</p>
+                  <p style={{fontSize:'13px',fontWeight:500,marginBottom:'0'}}>{props?.prdt?.sku}</p>
 
                   <Stack spacing={1} className="stars">
           <Rating name="size-small" value={5} size="small" />
     
         </Stack>
         <div className="wish">
-        <div style={{display:'flex',alignItems:'center',marginTop:'10px'}}>
+        <div style={{display:'flex',alignItems:'center',marginTop:'0px'}}>
         <p className="price">&#8377;{props.price}</p>
         <p className="sale-price" style={{margin:'0 10px'}}>&#8377;{(props.price)*2}</p>
 
