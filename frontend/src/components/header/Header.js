@@ -37,7 +37,7 @@ const Header = () => {
   const placeholderText = ["Search Shirts", "Search Loafers", "Search Dresses"];
   const [state, setState] = useState("");
   const [search,setSearch] =useState("none")
-  const [svalue,setSvalue]=useState(null)
+  const [svalue,setSvalue]=useState("")
   const [isHead2Open, setIsHead2Open] = useState(false); // Define isHead2Open state variable
   const bannerState=useSelector((state)=>state?.banner?.banner)
 
@@ -118,10 +118,7 @@ const loginOpen=()=>{
         mysearch:svalue
         
       }))
-      window.snaptr('track', 'SEARCH', 
-      { 
-      'search_string':`${svalue}`, 
-      })
+     
         navigate(`/products`)
         setSearch("none")
     setScrolled(false);

@@ -37,7 +37,7 @@ const getProducts=async(data)=>{
     }
 }
 const getAllProducts = async (data) => {
-    let url = `${base_url}product?search=${data.searchValue}&state=active&page=${data.page}&limit=${data.limit}&sort=${data.sort}`;
+    let url = `${base_url}product?search=${data && data.searchValue}&state=active&page=${data && data.page}&limit=${data && data.limit}&sort=${data && data.sort}`;
 
     // Check if collectionName is provided
     if (data && data.size) {

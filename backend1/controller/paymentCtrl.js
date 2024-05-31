@@ -137,7 +137,6 @@ const hdfcResponse = async (req, res, next) => {
   try {
       // Assuming `encResp` is correctly a base64/hex string of encrypted data
       const encryption = req.query.encResp || req.body.encResp;
-console.log(encryption)
       // Configure your CCAvenue access with the correct working key
       const ccav = new nodeCCAvenue.Configure({
           working_key: "01199B9C3D2E12F539A4A180EBFDF9F3",
@@ -145,7 +144,6 @@ console.log(encryption)
       });
 
       var ccavResponse = ccav.redirectResponseToJson(encryption);
-      console.log(ccavResponse)
 
       var ciphertext = CryptoJS.AES.encrypt(
           JSON.stringify(ccavResponse),
@@ -163,90 +161,86 @@ console.log(encryption)
   }
 };
 
-
- // To parse URL-encoded strings
-
-// Encrypt function for CCAvenue
-const querystring = require('querystring'); // To parse URL-encoded strings
-
-// Encrypt function for CCAvenue
-function encrypt(plainText, workingKey) {
-  const key = CryptoJS.enc.Utf8.parse(workingKey);
-  const iv = CryptoJS.enc.Utf8.parse(workingKey);
-  const encrypted = CryptoJS.AES.encrypt(plainText, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
-  return encrypted.toString();
+function encrypt(plainText, key) {
+  key = hextobin(md5(key));
+  const initVector = Buffer.from([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f]);
+  const cipher = crypto.createCipheriv('aes-128-cbc', key, initVector);
+  let encryptedText = cipher.update(plainText, 'utf8', 'hex');
+  encryptedText += cipher.final('hex');
+  return encryptedText;
 }
 
-// Decrypt function for CCAvenue
-function decrypt(encryptedText, workingKey) {
-  const key = CryptoJS.enc.Utf8.parse(workingKey);
-  const iv = CryptoJS.enc.Utf8.parse(workingKey);
-  const decrypted = CryptoJS.AES.decrypt(encryptedText, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
-  return decrypted.toString(CryptoJS.enc.Utf8);
+function decrypt(encryptedText, key) {
+  key = hextobin(md5(key));
+  const initVector = Buffer.from([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f]);
+  const encryptedBuffer = hextobin(encryptedText);
+  const decipher = crypto.createDecipheriv('aes-128-cbc', key, initVector);
+  let decryptedText = decipher.update(encryptedBuffer, 'binary', 'utf8');
+  decryptedText += decipher.final('utf8');
+  return decryptedText;
 }
 
-const checkOrderStatus = async (req, res) => {
-  const { orderId } = req.body;
+function md5(text) {
+  return crypto.createHash('md5').update(text).digest('hex');
+}
+
+function hextobin(hexString) {
+  const buffer = Buffer.alloc(hexString.length / 2);
+  for (let i = 0; i < buffer.length; ++i) {
+      buffer[i] = parseInt(hexString.substr(i * 2, 2), 16);
+  }
+  return buffer;
+}
+
+// Status API
+const hdfcStatus = async (req, res, next) => {
+  const { orderNo, referenceNo } = req.body;
+  const working_key = '01199B9C3D2E12F539A4A180EBFDF9F3'; // Shared by CCAvenue
+  const access_code = 'AVKU78LD67AY95UKYA';
+
+  const merchant_json_data = {
+      'order_no': orderNo,
+      'reference_no': referenceNo
+  };
+
+  const merchant_data = JSON.stringify(merchant_json_data);
+  const encrypted_data = encrypt(merchant_data, working_key);
+  const final_data = `enc_request=${encrypted_data}&access_code=${access_code}&command=orderStatusTracker&request_type=JSON&response_type=JSON&version=1.2`;
+
   try {
-    const accessCode = 'AVKU78LD67AY95UKYA';
-    const workingKey = '01199B9C3D2E12F5'; // Encryption key
+      const response = await axios.post('https://apitest.ccavenue.com/apis/servlet/DoWebTrans', final_data, {
+          headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+          }
+      });
 
-    // Prepare data for the request
-    const requestData = {
-      access_code: accessCode,
-      command: 'orderStatusTracker',
-      request_type: 'JSON',
-      response_type: 'JSON',
-      version: '1.2',
-      enc_request: encryptRequest(orderId, workingKey),
-    };
+      const result = response.data;
+      console.log('API Response:', result); // Log the entire API response for debugging
 
-    // Make the API request
-    const response = await fetch('https://apitest.ccavenue.com/apis/servlet/DoWebTrans', {
-      method: 'POST',
-      body: new URLSearchParams(requestData),
-    });
+      let status = '';
+      const information = result.split('&');
 
-    // Read the response body as text
-    const responseBody = await response.text();
-    console.log('Raw Response:', responseBody);
+      information.forEach(info => {
+          const info_value = info.split('=');
+          if (info_value[0] === 'enc_response') {
+              status = decrypt(info_value[1].trim(), working_key);
+          }
+      });
 
-    // Parse the response as JSON
-    const parsedResponse = JSON.parse(responseBody);
-    console.log('Parsed Response:', parsedResponse);
-
-    // Check for errors in the response
-    if (parsedResponse.status === '1') {
-      console.error('Error:', parsedResponse.enc_error_code, parsedResponse.enc_response);
-      return res.status(400).json({ error: parsedResponse.enc_response });
-    }
-
-    // Decrypt the encrypted response
-    const decryptedResponse = decryptResponse(parsedResponse.enc_response, workingKey);
-    console.log('Decrypted Response:', decryptedResponse);
-
-    // Send the decrypted response back
-    res.json(JSON.parse(decryptedResponse));
-
+      console.log('Decrypted status:', status); // Log the decrypted status
+      if (status) {
+          const obj = JSON.parse(status);
+          console.log('Parsed JSON:', obj); // Log the parsed JSON object
+          res.status(200).json(obj);
+      } else {
+          console.error('No status found in response.');
+          res.status(400).json({ error: 'No status found in response.' });
+      }
   } catch (error) {
-    console.error('Error checking order status:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+      console.error('Error fetching data:', error);
+      next(error);
   }
 };
-
-// Function to encrypt the request data
-const encryptRequest = (orderId, workingKey) => {
-  // Implement encryption logic here
-  return 'Encrypted_Request_Data';
-};
-
-// Function to decrypt the response data
-const decryptResponse = (encResponse, workingKey) => {
-  // Implement decryption logic here
-  return 'Decrypted_Response_Data';
-};
-
-
 
 
 const secretKey = 'rcDR0IKFer68ZpC9qA6DpLzz4CD1rGGu'; // Replace with your actual secret key
@@ -353,5 +347,5 @@ module.exports = {
     hdfcResponse,
     billPay,
     billRes,
-    checkOrderStatus
+    hdfcStatus
 }

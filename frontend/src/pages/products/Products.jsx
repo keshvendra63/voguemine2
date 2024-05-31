@@ -5,11 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {getAllProducts,getProducts, resetState } from '../../features/products/productSlice';
 import { getACollection } from '../../features/collection/collectionSlice';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
-import {Button} from 'antd'
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import Product from '../../components/Product'
-import Drawer from '@mui/material/Drawer';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -17,7 +13,6 @@ import Slide from '@mui/material/Slide';
 import CloseIcon from '@mui/icons-material/Close';
 import CircularProgress from '@mui/material/CircularProgress';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -34,9 +29,7 @@ const Products = () => {
   const collectionState=useSelector((state)=>state?.collection?.singleCollection)
   const bannerState=useSelector((state)=>state?.banner?.banner)
   const navigate=useNavigate()
-  const [filter,setFilter]=useState(["M-38","L-40","XL-42","XXL-44","3XL-46","4XL-48","5XL-50"])
     const [collectionName,setCollectionName]=useState("")
-    const [spinner,setSpinner]=useState("none")
     const [btn,setBtn]=useState("flex")
   const [sort,setSort]=useState("-createdAt")
     const location=useLocation()
@@ -44,8 +37,7 @@ const Products = () => {
   const [loading,setLoading]=useState(true)
   const [searchValue,setSearchvalue]=useState(undefined)
   const [load, setLoad] = useState(28)
-  const [fload,setFload]=useState(0)
-  const searchParams =location.search
+
   const dispatch=useDispatch();
   const queryParams = new URLSearchParams(location.search);
   let page = parseInt(queryParams.get('page')) || 1;
@@ -104,23 +96,9 @@ const updateURL = (sizeNumber) => {
     const productState1=useSelector((state)=>state?.product?.prdt)
     const productStat = useSelector((state) => state?.product);
 
-    const {isError,isLoading,isSuccess}=productStat
+    const {isLoading,isSuccess}=productStat
 
-    useEffect(() => {
-      if (collection) {
-        setLoading(true);
-        dispatch(getACollection(collection))
-          .unwrap()
-          .then((response) => {
-            setCollectionName(response.title);
-            setLoading(false);
-          })
-          .catch((error) => {
-            console.error('Error fetching collection:', error);
-            setLoading(false);
-          });
-      }
-    }, [collection, dispatch]);
+    
     useEffect(()=>{
       const filter = {};
 
@@ -144,62 +122,24 @@ const updateURL = (sizeNumber) => {
     else{
         dispatch(getProducts({searchValue,limit,sort,page,...filter}))
     }
-    },[searchValue,page,collectionName,collection,sort])
+    },[searchValue,page,collectionName,sort])
+    useEffect(() => {
+      if (collection) {
+        setLoading(true);
+        dispatch(getACollection(collection))
+          .unwrap()
+          .then((response) => {
+            setCollectionName(response.title);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error('Error fetching collection:', error);
+            setLoading(false);
+          });
+      }
+    }, [dispatch,collection]);
     const products=searchValue===undefined?(productState? productState:[]):(productState1? productState1:[])
       
-    const [loadings, setLoadings] = useState([]);
-    const enterLoading = (index) => {
-      setLoadings((prevLoadings) => {
-        const newLoadings = [...prevLoadings];
-        newLoadings[index] = true;
-        return newLoadings;
-      });
-      setTimeout(() => {
-        setLoadings((prevLoadings) => {
-          const newLoadings = [...prevLoadings];
-          newLoadings[index] = false;
-          return newLoadings;
-        });
-      }, 2000);
-    };
- 
-  
-    // Effect to reset load to 28 when the pathname changes
- 
-    useEffect(()=>{
-  console.log(products?.pagination)
-    },[products])
-    const loadMore=()=>{
-      setLoading(true)
-      window.scrollTo({
-        top: -10,
-      });
-      if(page>0){
-        page--
-      updateURL(page)
-     
-
-      // setLimit(limit+28)
-      enterLoading(0)
-      }
-    }
-    const loadMore1=()=>{
-      setLoading(true)
-
-      window.scrollTo({
-        top: -10,
-      });
-      page++
-      updateURL(page)
-
-      // setLimit(limit+28)
-      enterLoading(0)
-      
-    }
-    
-
-
-
 
     const sortChange1 = () => {
        setSort("title");
@@ -240,7 +180,7 @@ const sortChange5 = () => {
       setTimeout(()=>{
         setLoading(false)
 
-      },2000)
+      },1000)
     }
   },[isLoading,isSuccess,products])
 
@@ -266,7 +206,7 @@ const toggleDrawer1 = (newOpen) => () => {
 
 const uniqueSizes = new Set();
 
-  products?.Products?.forEach(product => {
+  products?.products?.forEach(product => {
     product.variants.forEach(variant => {
       uniqueSizes.add(variant.size);
     });
@@ -280,8 +220,6 @@ const [open3,setOpen3]=useState("translateX(-200%)")
 const [open4,setOpen4]=useState("translateX(-200%)")
 const [open5,setOpen5]=useState("translateX(-200%)")
 
-  const [gender,setGender]=useState("")
-  const [category,setCategory]=useState("")
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
@@ -309,32 +247,7 @@ const [open5,setOpen5]=useState("translateX(-200%)")
       setSelectedBrands([...selectedBrands, brand]);
     }
   };
-const set1=()=>{
-  if(open1==="translateX(-200%)"){
-    setOpen1("translateX(0)")    
-     setOpen2("translateX(-200%)")
-    setOpen3("translateX(-200%)")
-    setOpen4("translateX(-200%)")
-    setOpen5("translateX(-200%)")
 
-  }
-  else(
-    setOpen1("translateX(-200%)")
-  )
-}
-const set2=()=>{
-  if(open2==="translateX(-200%)"){
-    setOpen2("translateX(0)")    
-     setOpen1("translateX(-200%)")
-    setOpen3("translateX(-200%)")
-    setOpen4("translateX(-200%)")
-    setOpen5("translateX(-200%)")
-
-  }
-  else(
-    setOpen2("translateX(-200%)")
-  )
-}
 const set3=()=>{
   if(open3==="translateX(-200%)"){
     setOpen3("translateX(0)")    
@@ -491,11 +404,15 @@ useEffect(() => {
 const handlePageChange = (event, value) => {
   updateURL(value); // Update the URL with the new page value
 };
+const modifyCloudinaryUrl = (url) => {
+  const urlParts = url?.split('/upload/');
+  return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+};
 
     return (
         <div className='Products'>
             <div className="category-banner p-banner">
-                <img src={bannerState[35]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1712382538/a36_f0eblb.jpg"} alt={bannerState[35]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState[35]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1712382538/a36_f0eblb.jpg")} alt={bannerState[35]?.alt} />
             </div>
             <div className="products-box margin-section">
  
@@ -521,61 +438,14 @@ const handlePageChange = (event, value) => {
           <div className="available">
             <p>Availability</p>
             <p>In Stock: {products && products?.length}</p>
-            {/* <p>Out of Stock: 0</p> */}
           </div>
-          {/*<div className="gender" style={{display:searchValue===undefined?'none':'block'}}>
-              <p onClick={set1}><span>Gender</span><KeyboardArrowDownIcon className='icon1'/></p>
-              <ul style={{transform:open1,height:open1==="translateX(-200%)"?0:'100%'}} >
-                <li onClick={()=>setGender("Men")}>Men</li>
-                <li onClick={()=>setGender("Women")}>Women</li>
-                <li onClick={()=>setGender("Kids")}>Kids</li>
-              </ul>
-          </div>
-          <div className="category" style={{display:searchValue===undefined?'none':'block'}}>
-              <p onClick={set2}><span>Category</span><KeyboardArrowDownIcon className='icon1'/></p>
-              {
-                (gender==="" || gender==="Men")?
-                <ul style={{transform:open2,height:open2==="translateX(-200%)"?0:'100%'}}>
-                
-                <li onClick={()=>setCategory("Shirt")}>Shirts</li>
-                <li onClick={()=>setCategory("T-Shirts")}>T-Shirts</li>
-                <li onClick={()=>setCategory("Jeans")}>Jeans</li>
-                <li onClick={()=>setCategory("Loafers")}>Loafers</li>
-                <li onClick={()=>setCategory("Sneakers")}>Sneakers</li>
-                <li onClick={()=>setCategory("Slippers")}>Slippers</li>
-                <li onClick={()=>setCategory("Shorts")}>Shorts</li>
-                <li onClick={()=>setCategory("Trackpants")}>Trackpants</li>
-              </ul>
-              :
-              gender==="Women"?
-              <ul style={{transform:open2,height:open2==="translateX(-200%)"?0:'100%'}}>
-              <li onClick={()=>setCategory("T-Shirts")}>T-Shirts</li>
-              <li onClick={()=>setCategory("Dresses")}>Dresses</li>
-              <li onClick={()=>setCategory("Co-ord Set")}>Co-ord Set</li>
-              <li onClick={()=>setCategory("Heeled Sandals")}>Heeled Sandals</li>
-              <li onClick={()=>setCategory("Flat Sandals")}>Flat Sandals</li>
-              <li onClick={()=>setCategory("Track Sets")}>Track Sets</li>
-              <li onClick={()=>setCategory("Legging")}>Legging</li>
-              <li onClick={()=>setCategory("Sweatshirts")}>Sweatshirts</li>
-            </ul>
-            :
-            <ul style={{transform:open2,height:open2==="translateX(-200%)"?0:'100%'}}>
-            <li onClick={()=>setCategory("Shirts")}>Shirts</li>
-            <li onClick={()=>setCategory("T-Shirts")}>T-Shirts</li>
-            <li onClick={()=>setCategory("Girl Dress")}>Girl Dress</li>
-            <li onClick={()=>setCategory("Girl Co-ord set")}>Girl Co-ord set</li>
-            <li onClick={()=>setCategory("Boy Co-ord set")}>Boy Co-ord set</li>
-            <li onClick={()=>setCategory("Tracksuit")}>Tracksuit</li>
-          </ul>
-              
-              }
-            </div>*/}
+
           <div className="brand">
           <p onClick={set3}><span>Brand - {selectedBrands?.length}</span><KeyboardArrowDownIcon className='icon1'/></p>
 
           <ul style={{transform:open3,height:open3==="translateX(-200%)"?0:'100%'}}>
   <li onClick={()=>toggleBrand("Amiri")} className={isSelectedBrand("Amiri")}>Amiri</li>
-  <li onClick={()=>toggleBrand("Armani")} className={isSelectedBrand("Armani")}>Armani Exchange</li>
+  <li onClick={()=>toggleBrand("Armani Exchange")} className={isSelectedBrand("Armani Exchange")}>Armani Exchange</li>
 </ul>
 <ul style={{transform:open3,height:open3==="translateX(-200%)"?0:'100%'}}>
   <li onClick={()=>toggleBrand("Balenciaga")} className={isSelectedBrand("Balenciaga")}>Balenciaga</li>
@@ -702,7 +572,7 @@ const handlePageChange = (event, value) => {
                         </div>
                     </div>
                     <div className="products-listing">
-        <h1 className="section-heading p-headi">{collectionName}</h1>
+        <h1 className="section-heading p-headi">{collectionName || searchValue}</h1>
         {
           loading? <div className="skeleton">
           <div></div>

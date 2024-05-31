@@ -33,6 +33,7 @@ const SingleBlog = () => {
     }
   
   }, [singleBlogState?.metaDesc]);  
+  
   return (
     <div className='margin-section' style={{marginTop:'100px'}}>
       <p className="section-heading">{singleBlogState?.title}</p>

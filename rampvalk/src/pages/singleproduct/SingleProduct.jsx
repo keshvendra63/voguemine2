@@ -84,6 +84,8 @@ const [chart,setChart]=useState("")
     dispatch(getAProduct(handle))
       getProducts()
       
+      
+      
   },[limit,page,collectionName,handle])
   const getProducts=()=>{
       dispatch(getAllProducts({limit,page,collectionName,sort:"-createdAt"}))
@@ -404,6 +406,16 @@ const [imageIndex, setImageIndex] = useState(0);
 
     }
   },[color,size])
+  useEffect(()=>{
+    window.fbq('track', 'ViewContent', {
+      content_name: `${singleProductState?.title}`,
+      content_category:`${singleProductState?.category}`,
+      content_ids: `${singleProductState?._id}`,
+      content_type: 'product',
+      value:singleProductState?.price,
+      currency: 'INR'
+     });
+  },[singleProductState])
   useEffect(() => {
     if (singleProductState?.variants) {
       const firstAvailableVariant = singleProductState?.variants?.find(variant => variant.quantity > 0);
@@ -540,7 +552,7 @@ const [alt,setAlt]=useState("")
 
             <div className="main">
               {
-                mainImage===""? <Carousel activeIndex={index} onSelect={handleSelect}>
+                mainImage===""? <Carousel activeIndex={index} onSelect={handleSelect} data-bs-theme="dark">
                 {
                   singleProductState?.images?.map((item)=>{
                     return <Carousel.Item interval={3000}>
@@ -714,7 +726,7 @@ const [alt,setAlt]=useState("")
         <div className="product-list">
             {
                 
-                products.map((arm,index)=>{
+                products?.products?.map((arm,index)=>{
 
                         return <Product keys={index} id={arm?._id} img={arm?.images} title={arm?.title} price={arm?.price} variants={arm?.variants} handle={arm?.handle} alt={arm?.alt}/>
                    

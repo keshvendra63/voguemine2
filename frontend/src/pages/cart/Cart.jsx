@@ -1,16 +1,13 @@
 import React,{useEffect, useState} from 'react'
 import './cart.css'
 import LocalMallIcon from '@mui/icons-material/LocalMall';
-import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import {getUserCartProduct, removeFromCart, updateQuantityFromCart} from '../../features/user/userSlice'
+import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify';
 const Cart = () => {
     const bannerState=useSelector((state)=>state?.banner?.banner)
 
-    const customer=JSON.parse(localStorage.getItem("customer"))
 const [cartItems, setCartItems] = useState([]);
-const [productUpdateDetail,setproductUpdateDetail]=useState(null)
     const [totalAmount,setTotalAmount]=useState(null)
     useEffect(() => {
         // Retrieve cart items from localStorage
@@ -77,30 +74,17 @@ useEffect (()=> {
 },[cartItems])
 const navigate=useNavigate()
 const checkoutClick=()=>{
-    window.snaptr('track', 'START_CHECKOUT', 
-        {'price':totalAmount, 
-        'currency': 'INR', 
-        'item_ids': [`${cartItems[0]?.product?._id}`], 
-        'item_category': `${cartItems[0]?.product?.category}`, 
-        'number_items': cartItems?.length, 
-        'payment_info_available': 1, 
-        'uuid_c1': `${cartItems[0]?.product?._id}`, 
-       })
+   
 }
-useEffect(()=>{
-    window.fbq('track', 'ViewContent', {
-      content_name: `${cartItems[0]?.product?.title}`,
-      content_category:`${cartItems[0]?.product?.category}`,
-      content_ids: `${cartItems[0]?.product?._id}`,
-      content_type: 'product',
-      value:totalAmount,
-      currency: 'INR'
-     });
-  },[cartItems])
+
+  const modifyCloudinaryUrl = (url) => {
+    const urlParts = url?.split('/upload/');
+    return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+  };
     return (
         <div className='cart'>
             <div className="category-banner">
-                <img src={bannerState[44]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710505435/a34_pjehqe.jpg"} alt={bannerState[38]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState[44]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1710505435/a34_pjehqe.jpg")} alt={bannerState[38]?.alt} />
             </div>
             <h1 style={{textAlign:'center',margin:'20px 0',fontSize:'30px',display:'flex',alignItems:'center',justifyContent:'center'}}><LocalMallIcon style={{fontSize:'30px',marginRight:'10px'}}/> My Cart</h1>
             {
@@ -115,7 +99,7 @@ useEffect(()=>{
                         <div className="cartItem-left">
                             <Link to={`/products/${item?.product?.handle}`}>
                             <div className="prdt-img">
-                                <img src={item?.product?.images[0]?.url} alt="" />
+                                <img src={modifyCloudinaryUrl(item?.product?.images[0]?.url)} alt="" />
                             </div>
                             </Link>
                         </div>

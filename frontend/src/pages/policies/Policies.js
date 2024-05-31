@@ -6,11 +6,14 @@ import { useDispatch, useSelector } from 'react-redux'
 const Policies = () => {
   const location=useLocation()
   const bannerState=useSelector((state)=>state?.banner?.banner)
-
+  const modifyCloudinaryUrl = (url) => {
+    const urlParts = url?.split('/upload/');
+    return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+  };
   return (
     <div className='policies'>
          <div className="category-banner">
-        <img src={bannerState[36]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710505435/a35_qhi2xg.jpg"} alt={bannerState[36]?.alt} />
+        <img src={modifyCloudinaryUrl(bannerState[36]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1710505435/a35_qhi2xg.jpg")} alt={bannerState[36]?.alt} />
       </div>
       {
         location.pathname==="/pages/shipping-policy"?

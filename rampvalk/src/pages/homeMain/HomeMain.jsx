@@ -43,7 +43,7 @@ const HomeMain = () => {
       items: 1
     }
   };
-  const collections = ["Men's Premium Shirts", "Women's Dresses", "Men's Belt","Kid's T-Shirts"];
+  const collections = ["Men's Premium T Shirts", "Women's Dresses", "Men's Belt","Kid's T-Shirts"];
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const page = 1;
@@ -57,22 +57,35 @@ const HomeMain = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const promises = collections.map((collectionName) => dispatch(getAllProducts({ limit, collectionName, page, sort })));
+      try {
+        const promises = collections.map((collectionName) => dispatch(getAllProducts({ limit, collectionName, page, sort })));
 
-      const dat = await Promise.all(promises)
-      const combinedPayArray = dat.reduce((accumulator, currentObject) => {
-        return [...accumulator, ...currentObject.payload];
-      }, []);
+        const results = await Promise.all(promises);
+        
+        // Logging results to check the structure
+        console.log('Results:', results);
 
-      setData(combinedPayArray)
+        const combinedPayArray = results.reduce((accumulator, currentObject) => {
+          // Check if payload exists and is an array
+          if (Array.isArray(currentObject.payload.products)) {
+            return [...accumulator, ...currentObject.payload.products];
+          } else {
+            console.warn('Payload is not an array:', currentObject.payload);
+            return accumulator;
+          }
+        }, []);
 
+        setData(combinedPayArray);
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      }
     };
 
     fetchProducts();
-  }, [limit, page]);
+  }, [dispatch, limit, page, sort]);
   const products = productState ? productState : [];
 
-  const shirts = data.filter(object => object.collectionName && object.collectionName === "Men's Premium Shirts").slice(0, 4);
+  const shirts = data.filter(object => object.collectionName && object.collectionName === "Men's Premium T Shirts").slice(0, 4);
   const tshirt = data.filter(object => object.collectionName && object.collectionName === "Women's Dresses").slice(0, 4);
   const jeans = data.filter(object => object.collectionName && object.collectionName === "Men's Belt").slice(0, 4);
   const kids = data.filter(object => object.collectionName && object.collectionName === "Kid's T-Shirts").slice(0, 4);
@@ -89,7 +102,10 @@ const HomeMain = () => {
   }, [isLoading, isSuccess])
 
   const collectionState=useSelector((state)=>state?.collection?.collection)
-
+  useEffect(()=>{
+    window.fbq('track', 'ViewContent', {
+     });
+  },[page])
   return (
     <div className='homeMain'>
       <div className="hero-section">

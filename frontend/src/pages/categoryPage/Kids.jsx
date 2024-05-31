@@ -11,42 +11,45 @@ import { useDispatch, useSelector } from 'react-redux'
 const Kids = () => {
     const collectionState=useSelector((state)=>state?.collection?.collection)
     const bannerState=useSelector((state)=>state?.banner?.banner)
-
+    const modifyCloudinaryUrl = (url) => {
+        const urlParts = url?.split('/upload/');
+        return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+      };
   return (
     <div className='categoryPage'>
     <div className="category-banner">
-    <img src={bannerState[31]?.images[0]?.url || banner} alt={bannerState[31]?.alt} />
+    <img src={modifyCloudinaryUrl(bannerState[31]?.images[0]?.url) || banner} alt={bannerState[31]?.alt} />
     </div>
     <div className="collections margin-section">
     <Link to={`/collections/${collectionState[16]?.handle}`}>
       <div className="collection-card">
-          <img src={collectionState[16]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1712903902/shirts_vrsr9d.jpg"} alt="" />
+          <img src={modifyCloudinaryUrl(collectionState[16]?.images[0]?.url) || "https://res.cloudinary.com/keshvendra/image/upload/v1712903902/shirts_vrsr9d.jpg"} alt="" />
           <h2>{collectionState[16]?.category}</h2>
       </div></Link>
       <Link to={`/collections/${collectionState[13]?.handle}`}>
       <div className="collection-card">
-          <img src={collectionState[13]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1712903900/t_shirts_cid2m0.jpg"} alt="" />
+          <img src={modifyCloudinaryUrl(collectionState[13]?.images[0]?.url) || "https://res.cloudinary.com/keshvendra/image/upload/v1712903900/t_shirts_cid2m0.jpg"} alt="" />
           <h2>{collectionState[13]?.category}</h2>
       </div></Link>
       <Link to={`/collections/${collectionState[36]?.handle}`}>
       <div className="collection-card">
-          <img src={collectionState[36]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1712903902/girl_dresses_mkrgau.jpg"} alt="" />
+          <img src={modifyCloudinaryUrl(collectionState[36]?.images[0]?.url) || "https://res.cloudinary.com/keshvendra/image/upload/v1712903902/girl_dresses_mkrgau.jpg"} alt="" />
           <h2>{collectionState[36]?.category}</h2>
       </div></Link>
       
       <Link to={`/collections/${collectionState[24]?.handle}`}>
       <div className="collection-card">
-          <img src={collectionState[24]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1712903902/co_ord_set_1_rn0pvi.jpg"} alt="" />
+          <img src={modifyCloudinaryUrl(collectionState[24]?.images[0]?.url) || "https://res.cloudinary.com/keshvendra/image/upload/v1712903902/co_ord_set_1_rn0pvi.jpg"} alt="" />
           <h2>{collectionState[24]?.category}</h2>
       </div></Link>
       <Link to={`/collections/${collectionState[34]?.handle}`}>
       <div className="collection-card">
-          <img src={collectionState[34]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1712903902/co_ord_set_1_rn0pvi.jpg"} alt="" />
+          <img src={modifyCloudinaryUrl(collectionState[34]?.images[0]?.url) || "https://res.cloudinary.com/keshvendra/image/upload/v1712903902/co_ord_set_1_rn0pvi.jpg"} alt="" />
           <h2>{collectionState[34]?.category}</h2>
       </div></Link>
       <Link to={`/collections/${collectionState[21]?.handle}`}>
       <div className="collection-card">
-          <img src={collectionState[21]?.images[0]?.url || k8} alt="" />
+          <img src={modifyCloudinaryUrl(collectionState[21]?.images[0]?.url) || k8} alt="" />
           <h2>{collectionState[21]?.category}</h2>
       </div></Link>
       {/* <Link to={`/collections/${collectionState[32]?.handle}`}>
@@ -57,7 +60,7 @@ const Kids = () => {
 </Link> */}
 <Link to={`/collections/${collectionState[29]?.handle}`}>
       <div className="collection-card">
-          <img src={collectionState[29]?.images[0]?.url || k4} alt="" />
+          <img src={modifyCloudinaryUrl(collectionState[29]?.images[0]?.url) || k4} alt="" />
           <h2>{collectionState[29]?.category}</h2>
       </div></Link>
       {/* <Link to="#">

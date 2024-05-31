@@ -5,10 +5,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import AddCardIcon from '@mui/icons-material/AddCard';
 import CircularProgress from '@mui/material/CircularProgress';
-import {useFormik} from 'formik'
-import * as yup from 'yup'
 import VerifiedIcon from '@mui/icons-material/Verified';
 import { useDispatch,useSelector } from 'react-redux'
 import {useLocation, useNavigate} from 'react-router-dom'
@@ -18,11 +15,9 @@ import IconButton from '@mui/material/IconButton';
 import InputLabel from '@mui/material/InputLabel';
 import { TextField } from '@mui/material';
 import axios from 'axios'
-import {config} from '../../utils/axiosConfig'  
-import {createAnOrder, deleteCart, getUserCartProduct, resetState,createAbondend,sendOtp} from '../../features/user/userSlice'
-import {getAllCoupons,getACoupon} from '../../features/coupon/couponSlice'
+import {createAnOrder, resetState,createAbondend,sendOtp} from '../../features/user/userSlice'
+import {getAllCoupons} from '../../features/coupon/couponSlice'
 import { toast } from 'react-toastify';
-import QR from '../../images/qr.jpg'
 
 
 const Checkout = () => {
@@ -42,7 +37,6 @@ const otpState=useSelector((state)=>state?.auth?.otp)
     const [verified,setVerified]=useState(false)
 
     const [cartItems, setCartItems] = useState([]);
-const [ship,setShip]=useState({})
 const address1=JSON.parse(localStorage.getItem("address"))
 useEffect(()=>{
     if (!firstname && !lastname && !email && !address && !phone && !mobile && !city && !state && !pincode) {
@@ -89,7 +83,6 @@ useEffect(()=>{
     const [totalAmount,setTotalAmount]=useState(null)
     const [orderType,setOrderType]=useState("Prepaid")
     const [shippingCost,setShippingCost]=useState(0)
-    const [discount,setDiscount]=useState(totalAmount/10)
     const [cartProductState,setCartProductState]=useState([])
     const [coupon,setCoupon]=useState("")
     const couponState=useSelector((state)=>state?.coupon?.coupon)
@@ -247,19 +240,6 @@ const completeOrder=()=>{
 
 
 
-const loadScript=(src)=>{
-    return new Promise((resolve)=>{
-        const script=document.createElement("script")
-        script.src=src
-        script.onload=()=>{
-            resolve(true)
-        }
-        script.onerror=()=>{
-            resolve(false)
-        }
-        document.body.appendChild(script)
-    })
-}
 
 useEffect(()=>{
     let items=[]
@@ -447,16 +427,7 @@ const sendOtps=async()=>{
     }
 
 }
-useEffect(()=>{
-    window.fbq('track', 'ViewContent', {
-      content_name: `${cartItems[0]?.product?.title}`,
-      content_category:`${cartItems[0]?.product?.category}`,
-      content_ids: `${cartItems[0]?.product?._id}`,
-      content_type: 'product',
-      value:totalAmount,
-      currency: 'INR'
-     });
-  },[cartItems])
+
 const verifyOtp=()=>{
     console.log(otpState,otp)
 
@@ -484,7 +455,10 @@ const formatTime = () => {
     const seconds = timeLeft % 60;
     return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
   };
-
+  const modifyCloudinaryUrl = (url) => {
+    const urlParts = url?.split('/upload/');
+    return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+  };
     return (
         <div className='margin-section checkout'>
             <div className="left-form">
@@ -690,7 +664,7 @@ const formatTime = () => {
                         return(
                             <div className="prdt" key={index}>
                     <div className="detail">
-                        <img src={item?.product?.images[imageIndex]?.url} alt="" onError={handleImageError}/>
+                        <img src={modifyCloudinaryUrl(item?.product?.images[imageIndex]?.url)} alt="" onError={handleImageError}/>
                         <div><p className="p-name">{item?.product?.title}</p>
                         <p className="size"><span>{item?.size}</span><span>/</span><span>{item?.color}</span></p></div>
                     </div>

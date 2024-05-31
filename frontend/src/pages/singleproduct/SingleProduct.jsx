@@ -6,7 +6,6 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import './singleproduct.css'
-import { addToCart, getUserCartProduct } from '../../features/user/userSlice'
 import Product from '../../components/Product'
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
@@ -16,7 +15,6 @@ import StraightenIcon from '@mui/icons-material/Straighten';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Slide from '@mui/material/Slide';
-import img from '../../images/women.jpg'
 import CloseIcon from '@mui/icons-material/Close';
 import img1 from '../../images/1.jpg'
 import img2 from '../../images/2.jpg'
@@ -70,28 +68,21 @@ const [chart,setChart]=useState("")
   const dispatch=useDispatch();
 
   useEffect(()=>{
-      getProduct()      
-  },[])
-  useEffect(()=>{
     dispatch(resetState())
   },[resetState])
-  const getProduct=()=>{
-      
-      dispatch(getUserCartProduct())
-  }
+ 
   const productState=useSelector((state)=>state?.product?.product)
   useEffect(()=>{
     dispatch(getAProduct(handle))
-      getProducts()
       
       
-      
-  },[limit,page,collectionName,handle])
-  const getProducts=()=>{
-      dispatch(getAllProducts({limit,page,collectionName,sort:"-createdAt"}))
-  }
+  },[handle])
+  useEffect(()=>{
+    dispatch(getAllProducts({limit,page,collectionName,sort:"-createdAt"}))
+
+  },[singleProductState?.collectionName])
+
   const products=productState? productState:[]
-   const customer=JSON.parse(localStorage.getItem("customer"))
 useEffect(()=>{
   if(singleProductState?.collectionName==="Men's Loafers"){
 setChart(img1)
@@ -309,14 +300,7 @@ setChart(img1)
       return false
     }
     else{
-      window.snaptr('track', 'ADD_CART', 
-          {'price': singleProductState?.price, 
-          'currency': 'INR', 
-          'item_ids': [`${data}`], 
-          'item_category': `${singleProductState?.category}`, 
-          'number_items': 1, 
-          'uuid_c1': `${data}`, 
-         })
+    
       await addProductToCartLocalStorage({productId:data,color,quantity,price:singleProductState?.price,size,product:singleProductState})
           toast.success("Added To Cart")
       window.fbq('track', 'AddToCart', {
@@ -329,9 +313,6 @@ setChart(img1)
     });
     setAlreadyAdded(true)
       
-      setTimeout(()=>{
-        dispatch(getUserCartProduct())
-      },1000)
     }
     
     
@@ -348,15 +329,7 @@ const buyNow=async(data)=>{
  
 
   else{
-    window.snaptr('track', 'START_CHECKOUT', 
-        {'price': singleProductState?.price, 
-        'currency': 'INR', 
-        'item_ids': [`${singleProductState?._id}`], 
-        'item_category': `${singleProductState?.category}`, 
-        'number_items': quantity, 
-        'payment_info_available': 1, 
-        'uuid_c1': `${singleProductState?._id}`, 
-       })
+   
     await addProductToCartLocalStorage({productId:data,color,quantity,price:singleProductState?.price,size,product:singleProductState})
     toast.success("Added To Cart")   
      window.fbq('track', 'InitiateCheckout', {
@@ -368,7 +341,6 @@ const buyNow=async(data)=>{
       currency: 'INR'
   });
     setTimeout(()=>{
-      dispatch(getUserCartProduct())
       navigate('/checkout')
     },1000)
   }
@@ -526,6 +498,10 @@ const [alt,setAlt]=useState("")
       }
     
     }, [singleProductState?.title,singleProductState?.alt]);
+    const modifyCloudinaryUrl = (url) => {
+      const urlParts = url?.split('/upload/');
+      return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+    };
   return (
     <div className='single-product margin-section'>
       <div className="chart">
@@ -556,7 +532,7 @@ const [alt,setAlt]=useState("")
                 {
                   singleProductState?.images?.map((item)=>{
                     return <Carousel.Item interval={3000}>
-                    <img src={item?.url} alt="" />
+                    <img src={modifyCloudinaryUrl(item?.url)} alt="" />
                   </Carousel.Item>
                   })
                 }
@@ -564,7 +540,7 @@ const [alt,setAlt]=useState("")
         
       </Carousel>
       :
-                  <img src={mainImage} alt={alt} onError={handleImageError}/>
+                  <img src={modifyCloudinaryUrl(mainImage)} alt={alt} onError={handleImageError}/>
 
               }
            
@@ -573,7 +549,7 @@ const [alt,setAlt]=useState("")
             <div className="thumbs">
                 {
                   singleProductState?.images?.map((img,index)=>{
-                      return <img src={img?.url} alt={alt} key={index} onClick={()=>changeMainImage(img)}/>
+                      return <img src={modifyCloudinaryUrl(img?.url)} alt={alt} key={index} onClick={()=>changeMainImage(img)}/>
                     
                     
                   })

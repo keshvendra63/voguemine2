@@ -17,9 +17,12 @@ const Footer = () => {
     });
   };
   const bannerState=useSelector((state)=>state?.banner?.banner)
-
+  const modifyCloudinaryUrl = (url) => {
+    const urlParts = url?.split('/upload/');
+    return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+  };
   return (
-    <div className='footer' style={{backgroundImage:`url("${bannerState[40]?.images[0]?.url}")`}}>
+    <div className='footer' style={{backgroundImage:`url("${modifyCloudinaryUrl(bannerState[40]?.images[0]?.url)}")`}}>
         <Container>
       <Row>
         <Col className=''>
