@@ -311,17 +311,7 @@ export const authSlice = createSlice({
                     const ad=JSON.parse(localStorage.getItem("temp"))
                     const items=ad?.orderItems?.map((item)=>{return item?.product})
                    
-                    window.snaptr('track', 'PURCHASE', { 
-                        'price':`${ad.finalAmount}`, 
-                        'currency': 'INR', 
-                        'transaction_id': `${ad.orderType}`, 
-                        'item_ids': [`${items._id}`], 
-                        'item_category':`Snapchat`, 
-                        'number_items': ad?.orderItems?.length, 
-                        'uuid_c1': `${ad?.orderItems[0]?.product?._id}`, 
-                        'user_email':`${ad?.shippingInfo?.email}`, 
-                        'user_phone_number':`${ad?.shippingInfo?.phone}`, 
-                        })
+                    
                 }
             }).addCase(createAnOrder.rejected, (state, action) => {
                 state.isLoading = false;

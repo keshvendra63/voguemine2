@@ -21,6 +21,10 @@ const Blog = () => {
         dispatch(getAllBlogs())
     }
     const blogs=blogState? blogState :[]
+    const modifyCloudinaryUrl = (url) => {
+      const urlParts = url?.split('/upload/');
+      return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+    };
   return (
     <div className='margin-section' style={{marginTop:'100px'}}>
       <p className="section-heading">Our Blogs</p>
@@ -31,7 +35,7 @@ const Blog = () => {
               <Link to={`/blogs/news/${item?.handle}`} className='blog-card'>
 
               <div className="blog" key={index}>
-                <img src={item?.images[0]?.url} alt={item?.title} />
+                <img src={modifyCloudinaryUrl(item?.images[0]?.url)} alt={item?.title} />
                 <p className='title'> {item?.title}</p>
         <p className='desc' variant="body2" color="text.secondary" style={{height:'100px',overflow:'hidden',textOverflow:'ellipsis'}} dangerouslySetInnerHTML={{ __html: item?.description }}>
         </p>

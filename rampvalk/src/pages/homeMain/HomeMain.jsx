@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ScrollCarousel from 'scroll-carousel-react';
 import Carousel from 'react-bootstrap/Carousel';
-import home_benner from '../../images/home-banner.jpg'
-import Carousel1 from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { Link, Navigate,useNavigate } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 import './homemain.css'
-import Rating from '@mui/material/Rating';
-import Stack from '@mui/material/Stack';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
-import { useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllProducts } from '../../features/products/productSlice';
 import Product from '../../components/Product'
-import Reviews from './Reviews';
 
 const HomeMain = () => {
   const [index, setIndex] = useState(0);
@@ -106,23 +98,15 @@ const HomeMain = () => {
     window.fbq('track', 'ViewContent', {
      });
   },[page])
+  const modifyCloudinaryUrl = (url) => {
+    const urlParts = url?.split('/upload/');
+    return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+  };
   return (
     <div className='homeMain'>
       <div className="hero-section">
-      <img src={bannerState && bannerState[0]?.images[0]?.url} alt="" />
+      <img src={modifyCloudinaryUrl(bannerState && bannerState[0]?.images[0]?.url)} alt="" />
 
-      {/* <Carousel activeIndex={index} onSelect={handleSelect} fade>
-      <Carousel.Item interval={2500}>
-        <img src={bannerState && bannerState[0]?.images[0]?.url} alt="" />
-      </Carousel.Item>
-      <Carousel.Item interval={2500}>
-        <img src={bannerState && bannerState[38]?.images[0]?.url} alt="" />
-      </Carousel.Item>
-      <Carousel.Item interval={2500}>
-        <img src={bannerState && bannerState[39]?.images[0]?.url} alt="" />
-      </Carousel.Item>
-      
-    </Carousel> */}
       </div>
       <div className="categories">
         <ScrollCarousel
@@ -132,19 +116,19 @@ const HomeMain = () => {
         >
           <Link to="/men">
             <div className="cate">
-              <img src={bannerState[1]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1716445897/tlmdpqkm5719udhno6kd.jpg"} alt={bannerState[1]?.alt} />
+              <img src={modifyCloudinaryUrl(bannerState[1]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1716445897/tlmdpqkm5719udhno6kd.jpg")} alt={bannerState[1]?.alt} />
             </div>
           </Link><Link to="/women">
             <div className="cate">
-              <img src={bannerState[2]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1716445919/tusfaj3nuvqqwqr1kjz2.jpg"} alt={bannerState[2]?.alt} />
+              <img src={modifyCloudinaryUrl(bannerState[2]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1716445919/tusfaj3nuvqqwqr1kjz2.jpg")} alt={bannerState[2]?.alt} />
             </div>
           </Link><Link to="/kids">
             <div className="cate">
-              <img src={bannerState[3]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1716445944/zasszxgbvzqowaanb8ah.jpg"} alt={bannerState[3]?.alt} />
+              <img src={modifyCloudinaryUrl(bannerState[3]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1716445944/zasszxgbvzqowaanb8ah.jpg")} alt={bannerState[3]?.alt} />
             </div>
           </Link><Link to="/accessories">
             <div className="cate">
-              <img src={bannerState[4]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1716445956/felldjkeyt9ho7rxudou.jpg"} alt={bannerState[4]?.alt} />
+              <img src={modifyCloudinaryUrl(bannerState[4]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1716445956/felldjkeyt9ho7rxudou.jpg")} alt={bannerState[4]?.alt} />
             </div>
           </Link>
 
@@ -159,22 +143,22 @@ const HomeMain = () => {
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
-                <img src={bannerState && bannerState[5]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514808/413_o7fvvx.jpg"} alt={bannerState && bannerState[5]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[5]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713514808/413_o7fvvx.jpg")} alt={bannerState && bannerState[5]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[6]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514808/360_pjxrdj.jpg"} alt={bannerState && bannerState[6]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[6]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713514808/360_pjxrdj.jpg")} alt={bannerState && bannerState[6]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[7]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514809/431_dg5dmr.jpg"} alt={bannerState && bannerState[7]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[7]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713514809/431_dg5dmr.jpg")} alt={bannerState && bannerState[7]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[8]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514807/330_dxuvta.jpg"} alt={bannerState && bannerState[8]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[8]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713514807/330_dxuvta.jpg")} alt={bannerState && bannerState[8]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[9]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514812/443_ajzh9b.jpg"} alt={bannerState && bannerState[9]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[9]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713514812/443_ajzh9b.jpg")} alt={bannerState && bannerState[9]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[10]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713514807/310_gblgew.jpg"} alt={bannerState && bannerState[10]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[10]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713514807/310_gblgew.jpg")} alt={bannerState && bannerState[10]?.alt} />
               </Carousel.Item>
             </Carousel>
 
@@ -223,15 +207,15 @@ const HomeMain = () => {
           <div className="trending-collection">
             <Link to="/collections/men-premium-shirt">
               <div className="trending-card">
-                <img src={bannerState && bannerState[11]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a28_ywebvi.jpg"} alt={bannerState && bannerState[11]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[11]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a28_ywebvi.jpg")} alt={bannerState && bannerState[11]?.alt} />
               </div>
             </Link><Link to="/collections/t-shirts">
               <div className="trending-card">
-                <img src={bannerState && bannerState[12]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a29_e50fly.jpg"} alt={bannerState && bannerState[12]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[12]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a29_e50fly.jpg")} alt={bannerState && bannerState[12]?.alt} />
               </div>
             </Link><Link to="/collections/mens-denim-jeans">
               <div className="trending-card">
-                <img src={bannerState && bannerState[13]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710341077/a27_juuuzb.jpg"} alt={bannerState && bannerState[13]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[13]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1710341077/a27_juuuzb.jpg")} alt={bannerState && bannerState[13]?.alt} />
               </div>
             </Link>
           </div>
@@ -246,22 +230,22 @@ const HomeMain = () => {
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
-                <img src={bannerState && bannerState[14]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516021/90_ouuogk.jpg"} alt={bannerState && bannerState[14]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[14]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713516021/90_ouuogk.jpg")} alt={bannerState && bannerState[14]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[15]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516022/95_o6hsau.jpg"} alt={bannerState && bannerState[15]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[15]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713516022/95_o6hsau.jpg")} alt={bannerState && bannerState[15]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[16]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516023/37_dxuah4.jpg"} alt={bannerState && bannerState[16]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[16]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713516023/37_dxuah4.jpg")} alt={bannerState && bannerState[16]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[17]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516021/67_nkoy08.jpg"} alt={bannerState && bannerState[17]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[17]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713516021/67_nkoy08.jpg")} alt={bannerState && bannerState[17]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[18]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516026/107_ybacx7.jpg"} alt={bannerState && bannerState[18]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[18]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713516026/107_ybacx7.jpg")} alt={bannerState && bannerState[18]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[19]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516025/137_gna4np.jpg"} alt={bannerState && bannerState[19]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[19]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713516025/137_gna4np.jpg")} alt={bannerState && bannerState[19]?.alt} />
               </Carousel.Item>
             </Carousel>
 
@@ -299,16 +283,16 @@ const HomeMain = () => {
           <div className="trending-collection">
             <Link to="/collections/womens-dress">
               <div className="trending-card">
-                <img src={bannerState && bannerState[20]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710341073/a31_kv2mnb.jpg"} alt={bannerState && bannerState[20]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[20]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1710341073/a31_kv2mnb.jpg")} alt={bannerState && bannerState[20]?.alt} />
               </div>
             </Link><Link to="/collections/womens-shirt-t-shirts">
               <div className="trending-card">
-                <img src={bannerState && bannerState[21]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710341073/a30_g0wu0m.jpg"} alt={bannerState && bannerState[21]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[21]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1710341073/a30_g0wu0m.jpg")} alt={bannerState && bannerState[21]?.alt} />
               </div>
             </Link>
             <Link to="/collections/womens-co-ord-set">
               <div className="trending-card">
-                <img src={bannerState && bannerState[22]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a32_l5be5c.jpg"} alt={bannerState && bannerState[22]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[22]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1710341072/a32_l5be5c.jpg")} alt={bannerState && bannerState[22]?.alt} />
               </div>
             </Link>
           </div>
@@ -319,13 +303,13 @@ const HomeMain = () => {
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
-                <img src={bannerState && bannerState[41]?.images[0]?.url} alt={bannerState && bannerState[41]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[41]?.images[0]?.url)} alt={bannerState && bannerState[41]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[42]?.images[0]?.url} alt={bannerState && bannerState[42]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[42]?.images[0]?.url)} alt={bannerState && bannerState[42]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[43]?.images[0]?.url} alt={bannerState && bannerState[43]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[43]?.images[0]?.url)} alt={bannerState && bannerState[43]?.alt} />
               </Carousel.Item>
             </Carousel>
 
@@ -377,22 +361,22 @@ const HomeMain = () => {
           <div className="shoe-left">
             <Carousel controls={false} indicators={false} interval={700} slide={false}>
               <Carousel.Item>
-                <img src={bannerState && bannerState[23]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1712578479/09_k8f2tm.jpg"} alt={bannerState && bannerState[23]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[23]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1712578479/09_k8f2tm.jpg")} alt={bannerState && bannerState[23]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[24]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/011_njreib.jpg"} alt={bannerState && bannerState[24]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[24]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/011_njreib.jpg")} alt={bannerState && bannerState[24]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[25]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/010_czuutf.jpg"} alt={bannerState && bannerState[25]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[25]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/010_czuutf.jpg")} alt={bannerState && bannerState[25]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[26]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516029/towel_wpf5nn.jpg"} alt={bannerState && bannerState[26]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[26]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713516029/towel_wpf5nn.jpg")} alt={bannerState && bannerState[26]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[27]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/010_czuutf.jpg"} alt={bannerState && bannerState[27]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[27]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1712578475/010_czuutf.jpg")} alt={bannerState && bannerState[27]?.alt} />
               </Carousel.Item>
               <Carousel.Item>
-                <img src={bannerState && bannerState[28]?.images[0]?.url || "https://res.cloudinary.com/keshvendra/image/upload/v1713516029/towel_wpf5nn.jpg"} alt={bannerState && bannerState[28]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState && bannerState[28]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/keshvendra/image/upload/v1713516029/towel_wpf5nn.jpg")} alt={bannerState && bannerState[28]?.alt} />
               </Carousel.Item>
             </Carousel>
 
@@ -439,15 +423,15 @@ const HomeMain = () => {
 
         <div className="icon-footer">
           <div>
-          <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712582661/FREE_FAST_SHIPPING_IN_INDIA_qug5zj.png" alt="" />
+          <img src={modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1712582661/FREE_FAST_SHIPPING_IN_INDIA_qug5zj.png")} alt="" />
 <p>Fast Shipping</p>
           </div>
           <div>
-          <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712582661/SECURE_PAYMENT_eblv7s.png" alt="" />
+          <img src={modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1712582661/SECURE_PAYMENT_eblv7s.png")} alt="" />
 <p>Secure Payment</p>
           </div>
           <div>
-          <img src="https://res.cloudinary.com/dqh6bd766/image/upload/v1712582665/Easy_Exchange_gfloux.png" alt="" />
+          <img src={modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1712582665/Easy_Exchange_gfloux.png")} alt="" />
 
 <p>Easy Exchange</p>
           </div>

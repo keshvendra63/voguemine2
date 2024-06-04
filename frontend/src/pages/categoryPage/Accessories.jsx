@@ -34,7 +34,7 @@ const Accessories = () => {
       <Link to={`/collections/${collectionState[25]?.handle}`}>
       <div className="collection-card">
           <img src={modifyCloudinaryUrl(collectionState[25]?.images[0]?.url) || "https://res.cloudinary.com/keshvendra/image/upload/v1712904156/towel_jj6yuz.jpg"} alt="" />
-          <h2>{collectionState[15]?.category}</h2>
+          <h2>{collectionState[25]?.category}</h2>
       </div></Link><Link to={`/collections/${collectionState[15]?.handle}`}>
       <div className="collection-card">
           <img src={modifyCloudinaryUrl(collectionState[15]?.images[0]?.url) || a3} alt="" />

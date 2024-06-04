@@ -79,10 +79,14 @@ const navigate=useNavigate()
 const checkoutClick=()=>{
     
 }
+const modifyCloudinaryUrl = (url) => {
+    const urlParts = url?.split('/upload/');
+    return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+  };
     return (
         <div className='cart'>
             <div className="category-banner">
-                <img src={bannerState[44]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710505435/a34_pjehqe.jpg"} alt={bannerState[38]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState[44]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1710505435/a34_pjehqe.jpg")} alt={bannerState[38]?.alt} />
             </div>
             <h1 style={{textAlign:'center',margin:'20px 0',fontSize:'30px',display:'flex',alignItems:'center',justifyContent:'center'}}><LocalMallIcon style={{fontSize:'30px',marginRight:'10px'}}/> My Cart</h1>
             {
@@ -97,7 +101,7 @@ const checkoutClick=()=>{
                         <div className="cartItem-left">
                             <Link to={`/products/${item?.product?.handle}`}>
                             <div className="prdt-img">
-                                <img src={item?.product?.images[0]?.url} alt="" />
+                                <img src={modifyCloudinaryUrl(item?.product?.images[0]?.url)} alt="" />
                             </div>
                             </Link>
                         </div>

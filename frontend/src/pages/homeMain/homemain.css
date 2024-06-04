@@ -120,6 +120,49 @@
     width: 100px;
     height: 100px;
 }
+
+.reviews{
+    margin: 50px 0;
+    padding: 10px 0;
+}
+.reviews .head{
+    text-align: center;
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+.reviews .rev{
+    margin: 0 10px;
+    background-color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+.reviews .react-multi-carousel-dot-list{
+    display: none;
+}
+.reviews .rev .para{
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Number of lines to show */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 4.5em; 
+}
+.reviews .rev img{
+    width: 100%;
+    aspect-ratio: 1/1;
+    border: 1px solid rgb(205, 205, 205);
+    margin-bottom: 10px;
+}
+.reviews .rev .name{
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+
 @media screen and (max-width:1200px) {
     /* .homeMain .hero-section img {
         width: 170%;

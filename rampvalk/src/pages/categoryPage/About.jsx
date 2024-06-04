@@ -9,15 +9,19 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const About = () => {
   const bannerState=useSelector((state)=>state?.banner?.banner)
+  const modifyCloudinaryUrl = (url) => {
+    const urlParts = url?.split('/upload/');
+    return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+  };
 
   return (
     <div className='categoryPage'>
             <div className="category-banner">
-            <img src={bannerState[33]?.images[0]?.url || banner} alt={bannerState[33]?.alt} />
+            <img src={modifyCloudinaryUrl(bannerState[33]?.images[0]?.url) || banner} alt={bannerState[33]?.alt} />
       </div>
       <div className="about margin-section">
         <div className="left-about">
-            <img src={bannerState[37]?.images[0]?.url || about_img} alt={bannerState[39]?.alt} />
+            <img src={modifyCloudinaryUrl(bannerState[37]?.images[0]?.url) || about_img} alt={bannerState[39]?.alt} />
             
         </div>
         <div className="right-about">

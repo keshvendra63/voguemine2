@@ -37,10 +37,14 @@ const [wishlist,setWishlist]=useState([])
        toast.success("Removed")
       },300)
     }
+    const modifyCloudinaryUrl = (url) => {
+      const urlParts = url?.split('/upload/');
+      return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+    };
   return (
     <div className=''>
         <div className="category-banner">
-        <img src={bannerState[36]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1710505441/a33_dc4zuw.jpg"} alt={bannerState[37]?.alt} />
+        <img src={modifyCloudinaryUrl(bannerState[36]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1710505441/a33_dc4zuw.jpg")} alt={bannerState[37]?.alt} />
       </div>
             <div className="products-listing margin-section">
         <p className="section-heading">Wishlist</p>
@@ -55,9 +59,9 @@ const [wishlist,setWishlist]=useState([])
       <div className="product-card" key={index}>
       <Link to={`/products/${item?.product?.handle}`}>
       <div className="product-img">
-        <img src={item?.product?.images[1]?.url} alt="" className="product-img1"/>
+        <img src={modifyCloudinaryUrl(item?.product?.images[1]?.url)} alt="" className="product-img1"/>
         {
-          item?.product?.images[2]?.url!==""?<img src={item?.product?.images[2]?.url} alt="" className="product-img2"/>:<img src=
+          item?.product?.images[2]?.url!==""?<img src={modifyCloudinaryUrl(item?.product?.images[2]?.url)} alt="" className="product-img2"/>:<img src=
           "" alt="" className="product-img2"/>
         }
       </div>

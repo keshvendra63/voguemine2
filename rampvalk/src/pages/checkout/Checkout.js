@@ -363,6 +363,7 @@ const checkOutHandler=async(e)=>{
     axios.post("https://voguemine2.onrender.com/api/user/order/hdfcPay",{amount:finalAmount,orderId:uniqueId})
     .then(response=>{
         window.location.href=response.data.payLink
+        localStorage.removeItem('cart');
 
     })
     .catch(error=>{
@@ -509,6 +510,10 @@ const formatTime = () => {
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
     return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+  };
+  const modifyCloudinaryUrl = (url) => {
+    const urlParts = url?.split('/upload/');
+    return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
   };
 
     return (
@@ -741,7 +746,7 @@ const formatTime = () => {
                         return(
                             <div className="prdt" key={index}>
                     <div className="detail">
-                        <img src={item?.product?.images[imageIndex]?.url} alt="" onError={handleImageError}/>
+                        <img src={modifyCloudinaryUrl(item?.product?.images[imageIndex]?.url)} alt="" onError={handleImageError}/>
                         <div><p className="p-name">{item?.product?.title}</p>
                         <p className="size"><span>{item?.size}</span><span>/</span><span>{item?.color}</span></p></div>
                     </div>

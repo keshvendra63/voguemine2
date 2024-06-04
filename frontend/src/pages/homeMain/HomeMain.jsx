@@ -122,6 +122,7 @@ const HomeMain = () => {
       
     </Carousel>
       </div>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/fufw56-W0oE?si=x34-vFZJOxdgyZON" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       <div className="categories">
         <ScrollCarousel
           autoplay
@@ -429,9 +430,10 @@ const HomeMain = () => {
 
         </div>
 
-        {/* <div className="ratings">
+        <div className="ratings">
           <Reviews/>
-        </div> */}
+        </div>
+        
 
 <p style={{textAlign:'center',fontSize:'30px',fontWeight:500}}>Secure With Voguemine</p>
 

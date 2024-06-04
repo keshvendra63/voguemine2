@@ -65,7 +65,10 @@ const prdt=JSON.parse(localStorage.getItem("orderId"))
         
       },[])
 
-
+      const modifyCloudinaryUrl = (url) => {
+        const urlParts = url?.split('/upload/');
+        return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+      };
   return (
     <div className='margin-section profile'>
       {
@@ -157,7 +160,7 @@ const prdt=JSON.parse(localStorage.getItem("orderId"))
                 {
                   prdt?.orderItems?.map((prdts,idx)=>{
                     return <div className="prdts">
-                  <img src={prdts?.product?.images[0]?.url} alt="" />
+                  <img src={modifyCloudinaryUrl(prdts?.product?.images[0]?.url)} alt="" />
                   <div className="detail">
                     <p className="title">{prdts?.product?.title}</p>
                     <p className="variant"><span>{prdts?.color}</span> / <span>{prdts?.size}</span></p>

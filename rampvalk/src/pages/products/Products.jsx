@@ -266,7 +266,7 @@ const toggleDrawer1 = (newOpen) => () => {
 
 const uniqueSizes = new Set();
 
-  products?.Products?.forEach(product => {
+  products?.products?.forEach(product => {
     product.variants.forEach(variant => {
       uniqueSizes.add(variant.size);
     });
@@ -280,8 +280,6 @@ const [open3,setOpen3]=useState("translateX(-200%)")
 const [open4,setOpen4]=useState("translateX(-200%)")
 const [open5,setOpen5]=useState("translateX(-200%)")
 
-  const [gender,setGender]=useState("")
-  const [category,setCategory]=useState("")
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
@@ -492,10 +490,14 @@ const handlePageChange = (event, value) => {
   updateURL(value); // Update the URL with the new page value
 };
 
+const modifyCloudinaryUrl = (url) => {
+  const urlParts = url?.split('/upload/');
+  return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+};
     return (
         <div className='Products'>
             <div className="category-banner p-banner">
-                <img src={bannerState[35]?.images[0]?.url || "https://res.cloudinary.com/dqh6bd766/image/upload/v1712382538/a36_f0eblb.jpg"} alt={bannerState[35]?.alt} />
+                <img src={modifyCloudinaryUrl(bannerState[35]?.images[0]?.url) || modifyCloudinaryUrl("https://res.cloudinary.com/dqh6bd766/image/upload/v1712382538/a36_f0eblb.jpg")} alt={bannerState[35]?.alt} />
             </div>
             <div className="products-box margin-section">
  
@@ -521,55 +523,8 @@ const handlePageChange = (event, value) => {
           <div className="available">
             <p>Availability</p>
             <p>In Stock: {products && products?.length}</p>
-            {/* <p>Out of Stock: 0</p> */}
           </div>
-          {/*<div className="gender" style={{display:searchValue===undefined?'none':'block'}}>
-              <p onClick={set1}><span>Gender</span><KeyboardArrowDownIcon className='icon1'/></p>
-              <ul style={{transform:open1,height:open1==="translateX(-200%)"?0:'100%'}} >
-                <li onClick={()=>setGender("Men")}>Men</li>
-                <li onClick={()=>setGender("Women")}>Women</li>
-                <li onClick={()=>setGender("Kids")}>Kids</li>
-              </ul>
-          </div>
-          <div className="category" style={{display:searchValue===undefined?'none':'block'}}>
-              <p onClick={set2}><span>Category</span><KeyboardArrowDownIcon className='icon1'/></p>
-              {
-                (gender==="" || gender==="Men")?
-                <ul style={{transform:open2,height:open2==="translateX(-200%)"?0:'100%'}}>
-                
-                <li onClick={()=>setCategory("Shirt")}>Shirts</li>
-                <li onClick={()=>setCategory("T-Shirts")}>T-Shirts</li>
-                <li onClick={()=>setCategory("Jeans")}>Jeans</li>
-                <li onClick={()=>setCategory("Loafers")}>Loafers</li>
-                <li onClick={()=>setCategory("Sneakers")}>Sneakers</li>
-                <li onClick={()=>setCategory("Slippers")}>Slippers</li>
-                <li onClick={()=>setCategory("Shorts")}>Shorts</li>
-                <li onClick={()=>setCategory("Trackpants")}>Trackpants</li>
-              </ul>
-              :
-              gender==="Women"?
-              <ul style={{transform:open2,height:open2==="translateX(-200%)"?0:'100%'}}>
-              <li onClick={()=>setCategory("T-Shirts")}>T-Shirts</li>
-              <li onClick={()=>setCategory("Dresses")}>Dresses</li>
-              <li onClick={()=>setCategory("Co-ord Set")}>Co-ord Set</li>
-              <li onClick={()=>setCategory("Heeled Sandals")}>Heeled Sandals</li>
-              <li onClick={()=>setCategory("Flat Sandals")}>Flat Sandals</li>
-              <li onClick={()=>setCategory("Track Sets")}>Track Sets</li>
-              <li onClick={()=>setCategory("Legging")}>Legging</li>
-              <li onClick={()=>setCategory("Sweatshirts")}>Sweatshirts</li>
-            </ul>
-            :
-            <ul style={{transform:open2,height:open2==="translateX(-200%)"?0:'100%'}}>
-            <li onClick={()=>setCategory("Shirts")}>Shirts</li>
-            <li onClick={()=>setCategory("T-Shirts")}>T-Shirts</li>
-            <li onClick={()=>setCategory("Girl Dress")}>Girl Dress</li>
-            <li onClick={()=>setCategory("Girl Co-ord set")}>Girl Co-ord set</li>
-            <li onClick={()=>setCategory("Boy Co-ord set")}>Boy Co-ord set</li>
-            <li onClick={()=>setCategory("Tracksuit")}>Tracksuit</li>
-          </ul>
-              
-              }
-            </div>*/}
+          
           <div className="brand">
           <p onClick={set3}><span>Brand - {selectedBrands?.length}</span><KeyboardArrowDownIcon className='icon1'/></p>
 

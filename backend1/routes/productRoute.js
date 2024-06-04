@@ -28,13 +28,11 @@ router.put(
 );
 router.put("/wishlist", authMiddleware, addToWishlist);
 router.put("/rating", rating);
-
-
+router.get("/getallratings", getAllRatings);
 router.put("/:id", authMiddleware, isAdmin, updateProduct);
 router.get("/:handle", getaProduct);
 router.get("/dashboard/:id",getaProductDashboard)
 router.post("/reorder",reorderProducts); // Add the reorder route
-router.get("/getallratings", getAllRatings);
 
 router.get("/", getAllProduct);
 

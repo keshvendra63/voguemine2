@@ -309,14 +309,7 @@ setChart(img1)
       return false
     }
     else{
-      window.snaptr('track', 'ADD_CART', 
-          {'price': singleProductState?.price, 
-          'currency': 'INR', 
-          'item_ids': [`${data}`], 
-          'item_category': `${singleProductState?.category}`, 
-          'number_items': 1, 
-          'uuid_c1': `${data}`, 
-         })
+      
       await addProductToCartLocalStorage({productId:data,color,quantity,price:singleProductState?.price,size,product:singleProductState})
           toast.success("Added To Cart")
       window.fbq('track', 'AddToCart', {
@@ -348,15 +341,7 @@ const buyNow=async(data)=>{
  
 
   else{
-    window.snaptr('track', 'START_CHECKOUT', 
-        {'price': singleProductState?.price, 
-        'currency': 'INR', 
-        'item_ids': [`${singleProductState?._id}`], 
-        'item_category': `${singleProductState?.category}`, 
-        'number_items': quantity, 
-        'payment_info_available': 1, 
-        'uuid_c1': `${singleProductState?._id}`, 
-       })
+   
     await addProductToCartLocalStorage({productId:data,color,quantity,price:singleProductState?.price,size,product:singleProductState})
     toast.success("Added To Cart")   
      window.fbq('track', 'InitiateCheckout', {
@@ -526,6 +511,10 @@ const [alt,setAlt]=useState("")
       }
     
     }, [singleProductState?.title,singleProductState?.alt]);
+    const modifyCloudinaryUrl = (url) => {
+      const urlParts = url?.split('/upload/');
+      return urlParts && `${urlParts[0]}/upload/c_limit,h_1000,f_auto,q_auto/${urlParts[1]}`;
+    };
   return (
     <div className='single-product margin-section'>
       <div className="chart">
@@ -556,7 +545,7 @@ const [alt,setAlt]=useState("")
                 {
                   singleProductState?.images?.map((item)=>{
                     return <Carousel.Item interval={3000}>
-                    <img src={item?.url} alt="" />
+                    <img src={modifyCloudinaryUrl(item?.url)} alt="" />
                   </Carousel.Item>
                   })
                 }
@@ -564,7 +553,7 @@ const [alt,setAlt]=useState("")
         
       </Carousel>
       :
-                  <img src={mainImage} alt={alt} onError={handleImageError}/>
+                  <img src={modifyCloudinaryUrl(mainImage)} alt={alt} onError={handleImageError}/>
 
               }
            
@@ -573,7 +562,7 @@ const [alt,setAlt]=useState("")
             <div className="thumbs">
                 {
                   singleProductState?.images?.map((img,index)=>{
-                      return <img src={img?.url} alt={alt} key={index} onClick={()=>changeMainImage(img)}/>
+                      return <img src={modifyCloudinaryUrl(img?.url)} alt={alt} key={index} onClick={()=>changeMainImage(img)}/>
                     
                     
                   })
