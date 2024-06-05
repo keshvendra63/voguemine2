@@ -309,7 +309,7 @@ const getAllRatings = asyncHandler(async (req, res) => {
       { $limit: 20 }, // Limit to 20 ratings
       {
         $project: {
-          productId: "$_id",
+          productId: "$handle",
           productImages: "$images",
           star: "$ratings.star",
           name: "$ratings.name",
