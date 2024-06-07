@@ -145,10 +145,10 @@ const hdfcResponse = async (req, res, next) => {
       var ccavResponse = ccav.redirectResponseToJson(encryption);
 
       // Extract the original amount from the custom parameter
-      const originalAmount =ccavResponse.merchant_param1
+      const originalAmount =parseFloat(ccavResponse.merchant_param1)
 
       // Compare the amounts
-      if (parseFloat(ccavResponse.order_amt) !== originalAmount) {
+      if (parseFloat(ccavResponse.amount) !== originalAmount) {
           return res.status(400).json({ error: 'Amount mismatch' });
       }
 
