@@ -96,48 +96,47 @@ const redirectUri = async (req, res) => {
 }
 
 
-const hdfcPayment = async (req, res,next) => {
-    const {orderId,amount}=req.body
-    try {
-        const ccav = new nodeCCAvenue.Configure({
-            access_code:"AVKU78LD67AY95UKYA",
-          working_key:"01199B9C3D2E12F539A4A180EBFDF9F3",
+const hdfcPayment = async (req, res, next) => {
+  const { orderId, amount } = req.body;
+  try {
+      const ccav = new nodeCCAvenue.Configure({
+          access_code: "AVKU78LD67AY95UKYA",
+          working_key: "01199B9C3D2E12F539A4A180EBFDF9F3",
           merchant_id: "3447954",
-        });
+      });
 
-        const orderParams = {
+      // Add original amount as a custom parameter
+      const orderParams = {
           redirect_url: encodeURIComponent(
-            `https://voguemine2.onrender.com/api/user/order/hdfcRes`
+              `https://voguemine2.onrender.com/api/user/order/hdfcRes`
           ),
           cancel_url: encodeURIComponent(
-            `https://rampvalk.com/checkout`
+              `https://rampvalk.com/checkout`
           ),
           merchant_id: "3447954",
-        //   order_id: orderId,
-        order_id:`${orderId}`,
-
+          order_id: `${orderId}`,
           currency: "INR",
           amount: amount,
-          language: "EN"
-
-        };
-        const encryptedOrderData = ccav.getEncryptedOrder(orderParams);
-        res.setHeader("content-type", "application/json");
-        res.status(200).json({
+          language: "EN",
+          merchant_param1: amount // Pass the original amount as a custom parameter
+      };
+      const encryptedOrderData = ccav.getEncryptedOrder(orderParams);
+      res.setHeader("content-type", "application/json");
+      res.status(200).json({
           encryptedOrderData,
           payLink: `https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&access_code=AVKU78LD67AY95UKYA&encRequest=${encryptedOrderData}`,
-        });
+      });
 
-      } catch (err) {
-        next(err);
-      }
+  } catch (err) {
+      next(err);
+  }
 };
+
 
 const hdfcResponse = async (req, res, next) => {
   try {
-      // Assuming `encResp` is correctly a base64/hex string of encrypted data
       const encryption = req.query.encResp || req.body.encResp;
-      // Configure your CCAvenue access with the correct working key
+
       const ccav = new nodeCCAvenue.Configure({
           working_key: "01199B9C3D2E12F539A4A180EBFDF9F3",
           merchant_id: "3447954",
@@ -145,10 +144,19 @@ const hdfcResponse = async (req, res, next) => {
 
       var ccavResponse = ccav.redirectResponseToJson(encryption);
 
+      // Extract the original amount from the custom parameter
+      const originalAmount = parseFloat(ccavResponse.merchant_param1);
+
+      // Compare the amounts
+      if (parseFloat(ccavResponse.order_amt) !== originalAmount) {
+          return res.status(400).json({ error: 'Amount mismatch' });
+      }
+
       var ciphertext = CryptoJS.AES.encrypt(
           JSON.stringify(ccavResponse),
           "Voguemine"
       ).toString();
+
       // Redirect based on payment status
       if (ccavResponse["order_status"] === "Success") {
           res.redirect(`https://rampvalk.com/profile`);
@@ -160,7 +168,6 @@ const hdfcResponse = async (req, res, next) => {
       next(error);
   }
 };
-
 function encrypt(plainText, key) {
   key = hextobin(md5(key));
   const initVector = Buffer.from([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f]);
