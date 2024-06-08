@@ -100,6 +100,18 @@ var productSchema = new mongoose.Schema(
     metaTitle1:{
       type:String,
     },
+    metaDesc2:{
+      type:String,
+    },
+    metaTitle2:{
+      type:String,
+    },
+    metaDesc3:{
+      type:String,
+    },
+    metaTitle3:{
+      type:String,
+    },
     
   },
   {
