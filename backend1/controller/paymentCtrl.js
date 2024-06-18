@@ -115,7 +115,7 @@ const hdfcPayment = async (req, res, next) => {
 
     const orderParams = {
       redirect_url: encodeURIComponent(
-        `http://localhost:5000/api/user/order/hdfcRes`
+        `https://voguemine2.onrender.com/api/user/order/hdfcRes`
       ),
       cancel_url: encodeURIComponent(`https://rampvalk.com/checkout`),
       merchant_id: "3447954",
