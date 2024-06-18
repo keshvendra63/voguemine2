@@ -10,6 +10,7 @@ const CryptoJS=require('crypto-js')
 const crypto=require('crypto')
 const jwt = require('jsonwebtoken');
 const moment=require("moment")
+const Transaction = require("../models/transactionModel");
 
 const phonePe = async (req, res) => {
    try{
@@ -99,72 +100,93 @@ const redirectUri = async (req, res) => {
 const hdfcPayment = async (req, res, next) => {
   const { orderId, amount } = req.body;
   try {
-      const ccav = new nodeCCAvenue.Configure({
-          access_code: "AVKU78LD67AY95UKYA",
-          working_key: "01199B9C3D2E12F539A4A180EBFDF9F3",
-          merchant_id: "3447954",
-      });
+    // Insert order details into the database
+    await Transaction.create({
+      orderId,
+      amount,
+      status: 'initiated',
+    });
 
-      // Add original amount as a custom parameter
-      const orderParams = {
-          redirect_url: encodeURIComponent(
-              `https://voguemine2.onrender.com/api/user/order/hdfcRes`
-          ),
-          cancel_url: encodeURIComponent(
-              `https://rampvalk.com/checkout`
-          ),
-          merchant_id: "3447954",
-          order_id: `${orderId}`,
-          currency: "INR",
-          amount: amount,
-          language: "EN",
-          merchant_param1: amount // Pass the original amount as a custom parameter
-      };
-      const encryptedOrderData = ccav.getEncryptedOrder(orderParams);
-      res.setHeader("content-type", "application/json");
-      res.status(200).json({
-          encryptedOrderData,
-          payLink: `https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&access_code=AVKU78LD67AY95UKYA&encRequest=${encryptedOrderData}`,
-      });
+    const ccav = new nodeCCAvenue.Configure({
+      access_code: "AVKU78LD67AY95UKYA",
+      working_key: "01199B9C3D2E12F539A4A180EBFDF9F3",
+      merchant_id: "3447954",
+    });
+
+    const orderParams = {
+      redirect_url: encodeURIComponent(
+        `http://localhost:5000/api/user/order/hdfcRes`
+      ),
+      cancel_url: encodeURIComponent(`https://rampvalk.com/checkout`),
+      merchant_id: "3447954",
+      order_id: `${orderId}`,
+      currency: "INR",
+      amount: amount,
+      language: "EN",
+      merchant_param1: amount, // Pass the original amount as a custom parameter
+    };
+    const encryptedOrderData = ccav.getEncryptedOrder(orderParams);
+    res.setHeader("content-type", "application/json");
+    res.status(200).json({
+      encryptedOrderData,
+      payLink: `https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&access_code=AVKU78LD67AY95UKYA&encRequest=${encryptedOrderData}`,
+    });
 
   } catch (err) {
-      next(err);
+    next(err);
   }
 };
+
 
 
 const hdfcResponse = async (req, res, next) => {
   try {
-      const encryption = req.query.encResp || req.body.encResp;
+    const encryption = req.query.encResp || req.body.encResp;
 
-      const ccav = new nodeCCAvenue.Configure({
-          working_key: "01199B9C3D2E12F539A4A180EBFDF9F3",
-          merchant_id: "3447954",
-      });
+    const ccav = new nodeCCAvenue.Configure({
+      working_key: "01199B9C3D2E12F539A4A180EBFDF9F3",
+      merchant_id: "3447954",
+    });
 
-      var ccavResponse = ccav.redirectResponseToJson(encryption);
-      // Extract the original amount from the custom parameter
-      const originalAmount =parseFloat(ccavResponse.merchant_param1)
-      // Compare the amounts
-      if (parseFloat(ccavResponse.amount) !== originalAmount) {
-          return res.status(400).json({ error: 'Amount mismatch' });
-      }
-      var ciphertext = CryptoJS.AES.encrypt(
-          JSON.stringify(ccavResponse),
-          "Voguemine"
-      ).toString();
+    const ccavResponse = ccav.redirectResponseToJson(encryption);
+    const originalAmount = parseFloat(ccavResponse.merchant_param1);
 
-      // Redirect based on payment status
-      if (ccavResponse["order_status"] === "Success") {
-          res.redirect(`https://rampvalk.com/profile`);
-      } else {
-          res.redirect(`https://rampvalk.com/checkout`);
-      }
+    // Fetch the transaction from the database
+    const transaction = await Transaction.findOne({ orderId: ccavResponse.order_id });
+
+    if (!transaction) {
+      return res.status(400).json({ error: 'Transaction not found' });
+    }
+
+    // Validate the amounts
+    if (parseFloat(ccavResponse.amount) !== originalAmount) {
+      transaction.status = 'failed';
+      await transaction.save();
+      return res.status(400).json({ error: 'Amount mismatch' });
+    }
+
+    // Update the transaction status and tracking ID
+    transaction.status = ccavResponse.order_status === 'Success' ? 'success' : 'failed';
+    transaction.trackingId = ccavResponse.tracking_id;
+    await transaction.save();
+
+    var ciphertext = CryptoJS.AES.encrypt(
+      JSON.stringify(ccavResponse),
+      "Voguemine"
+    ).toString();
+
+    // Redirect based on payment status
+    if (ccavResponse.order_status === "Success") {
+      res.redirect(`https://rampvalk.com/profile`);
+    } else {
+      res.redirect(`https://rampvalk.com/checkout`);
+    }
   } catch (error) {
-      console.error("Error processing the HDFC response:", error);
-      next(error);
+    console.error("Error processing the HDFC response:", error);
+    next(error);
   }
 };
+
 function encrypt(plainText, key) {
   key = hextobin(md5(key));
   const initVector = Buffer.from([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f]);
@@ -198,13 +220,12 @@ function hextobin(hexString) {
 
 // Status API
 const hdfcStatus = async (req, res, next) => {
-  const { orderNo, referenceNo } = req.body;
+  const { orderNo } = req.body;
   const working_key = '01199B9C3D2E12F539A4A180EBFDF9F3'; // Shared by CCAvenue
   const access_code = 'AVKU78LD67AY95UKYA';
 
   const merchant_json_data = {
-      'order_no': orderNo,
-      'reference_no': referenceNo
+    'order_no': orderNo,
   };
 
   const merchant_data = JSON.stringify(merchant_json_data);
@@ -212,37 +233,50 @@ const hdfcStatus = async (req, res, next) => {
   const final_data = `enc_request=${encrypted_data}&access_code=${access_code}&command=orderStatusTracker&request_type=JSON&response_type=JSON&version=1.2`;
 
   try {
-      const response = await axios.post('https://apitest.ccavenue.com/apis/servlet/DoWebTrans', final_data, {
-          headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-          }
-      });
-
-      const result = response.data;
-      console.log('API Response:', result); // Log the entire API response for debugging
-
-      let status = '';
-      const information = result.split('&');
-
-      information.forEach(info => {
-          const info_value = info.split('=');
-          if (info_value[0] === 'enc_response') {
-              status = decrypt(info_value[1].trim(), working_key);
-          }
-      });
-
-      console.log('Decrypted status:', status); // Log the decrypted status
-      if (status) {
-          const obj = JSON.parse(status);
-          console.log('Parsed JSON:', obj); // Log the parsed JSON object
-          res.status(200).json(obj);
-      } else {
-          console.error('No status found in response.');
-          res.status(400).json({ error: 'No status found in response.' });
+    const response = await axios.post('https://apitest.ccavenue.com/apis/servlet/DoWebTrans', final_data, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
       }
+    });
+
+    const result = response.data;
+    console.log('API Response:', result); // Log the entire API response for debugging
+
+    let status = '';
+    const information = result.split('&');
+
+    information.forEach(info => {
+      const info_value = info.split('=');
+      if (info_value[0] === 'enc_response') {
+        status = decrypt(info_value[1].trim(), working_key);
+      }
+    });
+
+    console.log('Decrypted status:', status); // Log the decrypted status
+    if (status) {
+      const obj = JSON.parse(status);
+      console.log('Parsed JSON:', obj); // Log the parsed JSON object
+
+      // Fetch the transaction from the database
+      const transaction = await Transaction.findOne({ orderId: obj.order_id });
+
+      if (!transaction) {
+        return res.status(400).json({ error: 'Transaction not found' });
+      }
+
+      // Update the transaction status and tracking ID
+      transaction.status = obj.order_status === 'Success' ? 'success' : 'failed';
+      transaction.trackingId = obj.tracking_id;
+      await transaction.save();
+
+      res.status(200).json(obj);
+    } else {
+      console.error('No status found in response.');
+      res.status(400).json({ error: 'No status found in response.' });
+    }
   } catch (error) {
-      console.error('Error fetching data:', error);
-      next(error);
+    console.error('Error fetching data:', error);
+    next(error);
   }
 };
 
