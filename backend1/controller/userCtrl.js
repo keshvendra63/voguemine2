@@ -16,21 +16,24 @@ const sendEmail = require("./emailCtrl");
 const Oldorder = require("../models/oldOrderModel");
 const axios=require("axios")
 // Create a User ----------------------------------------------
-const user200=asyncHandler(async(req,res)=>{
-  const email=req.body.email
-  const mobile =req.body.mobile
-  const emailFind=await User.findOne({email:email})
-  const phoneFind=await User.findOne({mobile:mobile})
+const user200 = asyncHandler(async (req, res) => {
+  const { email, mobile } = req.body;
 
-  if(emailFind){
-    res.send(emailFind)
+  try {
+    const emailFind = await User.findOne({ email });
+    const phoneFind = await User.findOne({ mobile });
+
+    if (emailFind) {
+      res.status(200).json(emailFind);
+    } else if (phoneFind) {
+      res.status(200).json(phoneFind);
+    } else {
+      res.status(404).send("NOT");
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  else if(phoneFind){
-    res.send(phoneFind)
-  }
-
-
-})
+});
 const createUser = asyncHandler(async (req, res) => {
   /**
    * TODO:Get the email from req.body
