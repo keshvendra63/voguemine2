@@ -30,6 +30,7 @@ const user200=asyncHandler(async(req,res)=>{
   }
   else{
 res.send("NOT FOUND")
+  }
 
 })
 const createUser = asyncHandler(async (req, res) => {
