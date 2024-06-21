@@ -64,7 +64,8 @@ const {
   fData1,
   getCustomDateRangeOrderIncome2,
   fData2,
-  returnOrder
+  returnOrder,
+  user200
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const {checkout,paymentVerification, phonePe, redirectUri, hdfcPayment, hdfcResponse, billdeskPay, billdeskRes, billPay, billRes, checkOrderStatus, hdfcStatus,phonePe200, redirectUri200}=require("../controller/paymentCtrl");
@@ -72,6 +73,7 @@ const sendOtp = require("../controller/otpController");
 const {siteMap}=require('../controller/sitemapCtrl')
 const router = express.Router();
 router.post("/register", createUser);
+router.get("/user200", user200);
 router.post("/forgot-password-token", forgotPasswordToken);
 router.get("/sendOtp/:number",sendOtp)
 router.put("/reset-password/:token", resetPassword);
