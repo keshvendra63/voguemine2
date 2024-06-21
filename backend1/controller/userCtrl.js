@@ -28,9 +28,7 @@ const user200=asyncHandler(async(req,res)=>{
   else if(phoneFind){
     res.send(phoneFind)
   }
-  else{
-res.send("NOT FOUND")
-  }
+
 
 })
 const createUser = asyncHandler(async (req, res) => {
