@@ -73,7 +73,7 @@ const sendOtp = require("../controller/otpController");
 const {siteMap}=require('../controller/sitemapCtrl')
 const router = express.Router();
 router.post("/register", createUser);
-router.get("/user200", user200);
+router.post("/user200", user200);
 router.post("/forgot-password-token", forgotPasswordToken);
 router.get("/sendOtp/:number",sendOtp)
 router.put("/reset-password/:token", resetPassword);
