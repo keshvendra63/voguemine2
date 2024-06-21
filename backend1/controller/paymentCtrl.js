@@ -107,7 +107,7 @@ const phonePe200 = async (req, res) => {
           merchantTransactionId: merchantTransactionId,
           merchantUserId: userId,
           amount: 200 * 100,
-          redirectUrl: `http://localhost:5000/api/user/status200/${merchantTransactionId}`,
+          redirectUrl: `https://voguemine2.onrender.com/api/user/status200/${merchantTransactionId}`,
           redirectMode: "POST",
           mobileNumber: number,
           paymentInstrument: {
@@ -172,9 +172,9 @@ const redirectUri200 = async (req, res) => {
           .then(async (response) => {
               const paymentStatus = response.data.code;
               if (paymentStatus === "PAYMENT_SUCCESS") {
-                  res.redirect(`http://localhost:3000/codpay?status=success`);
+                  res.redirect(`https://voguemine.com/codpay?status=success`);
               } else {
-                  res.redirect(`http://localhost:3000/codpay?status=failed`);
+                  res.redirect(`https://voguemine.com/codpay?status=failed`);
               }
           })
           .catch(function (error) {
