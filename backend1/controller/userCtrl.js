@@ -16,7 +16,20 @@ const sendEmail = require("./emailCtrl");
 const Oldorder = require("../models/oldOrderModel");
 const axios=require("axios")
 // Create a User ----------------------------------------------
+const user200=asyncHandler(async(req,res)=>{
+  const email=req.body.email
+  const mobile =req.body.mobile
+  const emailFind=await User.findOne({email:email})
+  const phoneFind=await User.findOne({mobile:mobile})
 
+  if(emailFind){
+    res.send(emailFind)
+  }
+  else if(phoneFind){
+    res.send(phoneFind)
+  }
+
+})
 const createUser = asyncHandler(async (req, res) => {
   /**
    * TODO:Get the email from req.body
@@ -2256,5 +2269,6 @@ module.exports = {
   getYesterdayOrderIncome2,
   getCustomDateRangeOrderIncome2,
   fData2,
-  returnOrder
+  returnOrder,
+  user200
 };
