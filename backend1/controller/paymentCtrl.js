@@ -96,6 +96,101 @@ const redirectUri = async (req, res) => {
 
 }
 
+const phonePe200 = async (req, res) => {
+  try {
+      const payEndpoint = '/pg/v1/pay';
+      const merchantTransactionId = uniqid();
+      const userId = "MUID" + uniqid();
+      const { number } = req.body;
+      const payload = {
+          merchantId: pmId,
+          merchantTransactionId: merchantTransactionId,
+          merchantUserId: userId,
+          amount: 200 * 100,
+          redirectUrl: `http://localhost:5000/api/user/status200/${merchantTransactionId}`,
+          redirectMode: "POST",
+          mobileNumber: number,
+          paymentInstrument: {
+              type: "PAY_PAGE"
+          }
+      };
+
+      const bufferObj = Buffer.from(JSON.stringify(payload), "utf8");
+      const base63EncodedPayload = bufferObj.toString("base64");
+      const xVerify = SHA256(base63EncodedPayload + payEndpoint + psalt) + "###" + psaltIndex;
+      const options = {
+          method: 'POST',
+          url: `${phonepeHost}${payEndpoint}`,
+          headers: {
+              accept: 'application/json',
+              'Content-Type': 'application/json',
+              "X-VERIFY": xVerify,
+          },
+          data: {
+              request: base63EncodedPayload,
+          }
+      };
+
+      axios
+          .request(options)
+          .then(function (response) {
+              return res.status(200).send(response.data.data.instrumentResponse.redirectInfo.url);
+          })
+          .catch(function (error) {
+              console.error(error);
+              res.status(500).send({
+                  message: error.message,
+                  success: false
+              });
+          });
+  } catch (error) {
+      res.status(500).send({
+          message: error.message,
+          success: false
+      });
+  }
+};
+
+
+const redirectUri200 = async (req, res) => {
+  try {
+      const { merchantTransactionId } = req.params;
+      const xverify = SHA256(`/pg/v1/status/${pmId}/${merchantTransactionId}` + psalt) + "###" + psaltIndex;
+      const options = {
+          method: 'GET',
+          url: `${phonepeHost}/pg/v1/status/${pmId}/${merchantTransactionId}`,
+          headers: {
+              accept: 'application/json',
+              'Content-Type': 'application/json',
+              "X-VERIFY": xverify,
+              "X-MERCHANT-ID": pmId
+          }
+      };
+
+      axios
+          .request(options)
+          .then(async (response) => {
+              const paymentStatus = response.data.code;
+              if (paymentStatus === "PAYMENT_SUCCESS") {
+                  res.redirect(`http://localhost:3000/codpay?status=success`);
+              } else {
+                  res.redirect(`http://localhost:3000/codpay?status=failed`);
+              }
+          })
+          .catch(function (error) {
+              console.error(error);
+              res.status(500).send({
+                  message: error.message,
+                  success: false
+              });
+          });
+  } catch (error) {
+      res.status(500).send({
+          message: error.message,
+          success: false
+      });
+  }
+};
 
 const hdfcPayment = async (req, res, next) => {
   const { orderId, amount } = req.body;
@@ -381,6 +476,8 @@ const billRes=(req, res) => {
 module.exports = {
     phonePe,
     redirectUri,
+   phonePe200,
+    redirectUri200,
     hdfcPayment,
     hdfcResponse,
     billPay,
