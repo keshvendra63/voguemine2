@@ -860,7 +860,7 @@ const msgAfter3hour=asyncHandler(async(firstname,ordernumber,phone)=>{
 })
 
 const createOrder = asyncHandler(async (req, res) => {
-  const { shippingInfo, orderItems, totalPrice, finalAmount, shippingCost, orderType, discount, paymentInfo, tag } = req.body;
+  const { shippingInfo, orderItems, totalPrice, finalAmount, shippingCost, orderType, discount, paymentInfo, tag,isPartial } = req.body;
 
   try {
     // Check inventory before creating the order
@@ -900,16 +900,38 @@ const createOrder = asyncHandler(async (req, res) => {
       orderType,
       discount,
       paymentInfo,
-      tag
+      tag,
+      isPartial
     });
 
     if (tag === 'Voguemine') {
       const orderItemsString = orderItems.map((item) => {
         return `Name: ${item.product.title}, Color: ${item.color || ""}, Size: ${item.size || ""}`;
       }).join('\n');
+      
 
       // Send confirmation message using DelightChat API
-      await axios.post('https://api.delightchat.io/api/v1/public/message', {
+     if(isPartial===true){
+        await axios.post('https://api.delightchat.io/api/v1/public/message', {
+        country_code: '+91',
+        phone_number: `${shippingInfo?.phone}`,
+        automation_id: '135e013d-d462-4aa9-bffe-0290383e9e4b',
+        message_data: {
+          1: `${shippingInfo.firstname}`,
+          2: `${order.orderNumber}`,
+          3: `${finalAmount}`,
+          4: orderItemsString,
+          5: `${orderType}`,
+          6: `${shippingInfo.address} ${shippingInfo.city} ${shippingInfo.state} ${shippingInfo.pincode}`
+        }
+      }, {
+        headers: {
+          'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony',
+          'Content-Type': 'application/json'
+        }
+      });
+       else{
+        await axios.post('https://api.delightchat.io/api/v1/public/message', {
         country_code: '+91',
         phone_number: `${shippingInfo?.phone}`,
         automation_id: '0eed4e28-34c1-4494-8026-90439f94fd50',
@@ -927,6 +949,8 @@ const createOrder = asyncHandler(async (req, res) => {
           'Content-Type': 'application/json'
         }
       });
+       }
+     }
     }
 
     // Send additional notifications
