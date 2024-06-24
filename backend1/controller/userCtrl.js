@@ -929,7 +929,8 @@ const createOrder = asyncHandler(async (req, res) => {
           'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony',
           'Content-Type': 'application/json'
         }
-      });
+      })
+     }
        else{
         await axios.post('https://api.delightchat.io/api/v1/public/message', {
         country_code: '+91',
@@ -948,10 +949,10 @@ const createOrder = asyncHandler(async (req, res) => {
           'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony',
           'Content-Type': 'application/json'
         }
-      });
+      })
        }
      }
-    }
+    
 
     // Send additional notifications
     const phoneNumbers = ['9811363760', '8006009896', '9719250693','9873782103','9667692481'];
