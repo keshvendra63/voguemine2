@@ -903,10 +903,53 @@ const createOrder = asyncHandler(async (req, res) => {
       tag
     });
 
-   
+    if (tag === 'Voguemine') {
+      const orderItemsString = orderItems.map((item) => {
+        return `Name: ${item.product.title}, Color: ${item.color || ""}, Size: ${item.size || ""}`;
+      }).join('\n');
+
+      // Send confirmation message using DelightChat API
+      await axios.post('https://api.delightchat.io/api/v1/public/message', {
+        country_code: '+91',
+        phone_number: `${shippingInfo?.phone}`,
+        automation_id: '0eed4e28-34c1-4494-8026-90439f94fd50',
+        message_data: {
+          1: `${shippingInfo.firstname}`,
+          2: `${order.orderNumber}`,
+          3: `${finalAmount}`,
+          4: orderItemsString,
+          5: `${orderType}`,
+          6: `${shippingInfo.address} ${shippingInfo.city} ${shippingInfo.state} ${shippingInfo.pincode}`
+        }
+      }, {
+        headers: {
+          'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony',
+          'Content-Type': 'application/json'
+        }
+      });
+    }
 
     // Send additional notifications
-   
+    const phoneNumbers = ['9811363760', '8006009896', '9719250693','9873782103','9667692481'];
+    for (const phoneNumber of phoneNumbers) {
+      await axios.post('https://api.delightchat.io/api/v1/public/message', {
+        country_code: '+91',
+        phone_number: phoneNumber,
+        automation_id: 'd9725206-5614-4944-8d7f-a50c6634cb1f',
+        message_data: {
+          1: `${order.orderNumber}`,
+          2: `${finalAmount}`,
+          3: `${orderType}`,
+          4: `${orderItems.length}`
+        }
+      }, {
+        headers: {
+          'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony',
+          'Content-Type': 'application/json'
+        }
+      });
+    }
+
     const { firstname, lastname, email, mobile, address } = shippingInfo;
 
     // Check if the user already exists
@@ -927,7 +970,9 @@ const createOrder = asyncHandler(async (req, res) => {
     await processOrder(orderItems);
 
     // Schedule a message after 3 hours
-   
+    setTimeout(() => {
+      msgAfter3hour(shippingInfo.firstname, order.orderNumber, shippingInfo.phone);
+    }, 7200000);
 
     res.json({
       order,
