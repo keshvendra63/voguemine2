@@ -975,7 +975,7 @@ const createOrder = asyncHandler(async (req, res) => {
       });
     }
 
-    const { firstname, lastname, email, mobile, address } = shippingInfo;
+    const { firstname, lastname, email, phone, address } = shippingInfo;
 
     // Check if the user already exists
     let user = await User.findOne({ email });
@@ -986,7 +986,7 @@ const createOrder = asyncHandler(async (req, res) => {
         email,
         firstname,
         lastname,
-        mobile,
+        mobile:phone,
         address
       });
     }
