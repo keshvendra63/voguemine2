@@ -15,9 +15,8 @@ const Transaction = require("../models/transactionModel");
 const phonePe = async (req, res) => {
    try{
     const payEndpoint = '/pg/v1/pay';
-    const merchantTransactionId = uniqid()
     const userId = "MUID"+uniqid()
-    const {amount,number}=req.body
+    const {amount,number,merchantTransactionId}=req.body
     const payload = {
         merchantId: pmId,
         merchantTransactionId: merchantTransactionId,
