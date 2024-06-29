@@ -98,9 +98,8 @@ const redirectUri = async (req, res) => {
 const phonePe200 = async (req, res) => {
   try {
       const payEndpoint = '/pg/v1/pay';
-      const merchantTransactionId = uniqid();
       const userId = "MUID" + uniqid();
-      const { number } = req.body;
+      const { number,merchantTransactionId} = req.body;
       const payload = {
           merchantId: pmId,
           merchantTransactionId: merchantTransactionId,
