@@ -69,9 +69,14 @@ const getAllProduct = asyncHandler(async (req, res) => {
     }
 
     // Apply size filter if provided
-    if (req.query.size) {
+     if (req.query.size) {
       const sizes = req.query.size.split(',').map(size => size.trim());
-      query['variants.size'] = { $in: sizes }; // Exact match for multiple sizes
+      query['variants'] = { 
+        $elemMatch: { 
+          size: { $in: sizes }, 
+          quantity: { $gt: 0 } 
+        } 
+      };
     }
     if (req.query.color) {
       const colors = req.query.color.split(',').map(color => color.trim());
