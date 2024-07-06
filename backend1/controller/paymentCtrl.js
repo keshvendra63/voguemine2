@@ -12,6 +12,66 @@ const jwt = require('jsonwebtoken');
 const moment=require("moment")
 const Transaction = require("../models/transactionModel");
 
+
+const Razorpay=require("razorpay")
+const instancelvl=new Razorpay({
+    key_id:"rzp_live_CDyasQlE6GSv1I",key_secret:"Tv4sR3XtF3EmlVvTqRHW3dro"
+})
+
+const checkoutlvl=async(req,res)=>{
+    try{
+      const {amount}=req.body
+    const option={
+        amount:amount*100,
+        currency:"INR"
+    }
+    const order=await instancelvl.orders.create(option)
+    res.json({
+        success:true,
+        order
+    })
+    }
+    catch(error){
+      console.log(error)
+    }
+}
+
+const paymentVerificationlvl=async(req,res)=>{
+    const {razorpayOrderId,razorpayPaymentId}=req.body
+    res.json({
+        razorpayOrderId,razorpayPaymentId
+    })
+}
+const instancevogue=new Razorpay({
+  key_id:"rzp_live_CDyasQlE6GSv1I",key_secret:"Tv4sR3XtF3EmlVvTqRHW3dro"
+})
+
+const checkoutvogue=async(req,res)=>{
+  try{
+    const {amount}=req.body
+  const option={
+      amount:amount*100,
+      currency:"INR"
+  }
+  const order=await instancevogue.orders.create(option)
+  res.json({
+      success:true,
+      order
+  })
+  }
+  catch(error){
+    console.log(error)
+  }
+}
+
+const paymentVerificationvogue=async(req,res)=>{
+  const {razorpayOrderId,razorpayPaymentId}=req.body
+  res.json({
+      razorpayOrderId,razorpayPaymentId
+  })
+}
+
+
 const phonePe = async (req, res) => {
    try{
     const payEndpoint = '/pg/v1/pay';
@@ -480,5 +540,9 @@ module.exports = {
     hdfcResponse,
     billPay,
     billRes,
-    hdfcStatus
+    hdfcStatus,
+   checkoutlvl,
+    paymentVerificationlvl,
+    checkoutvogue,
+    paymentVerificationvogue
 }
