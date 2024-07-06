@@ -43,7 +43,7 @@ const paymentVerificationlvl=async(req,res)=>{
     })
 }
 const instancevogue=new Razorpay({
-  key_id:"rzp_live_CDyasQlE6GSv1I",key_secret:"Tv4sR3XtF3EmlVvTqRHW3dro"
+  key_id:"rzp_live_sg5qlXqUt3WF68",key_secret:"d296XqRsZH7gn7U0ojlSVCfB"
 })
 
 const checkoutvogue=async(req,res)=>{
