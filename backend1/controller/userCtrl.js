@@ -1066,7 +1066,19 @@ const getOldOrders=asyncHandler(async(req,res)=>{
   }
 })
 
-
+const deleteAbandoned = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedAbandoned = await Abondend.findByIdAndDelete(id);
+    if (deletedAbandoned) {
+      res.json({ message: 'Abandoned document deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'Abandoned document not found' });
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+});
 
 const getAllAbandoned = asyncHandler(async (req, res) => {
   const limit = 50; // Number of items per page
@@ -2299,5 +2311,6 @@ module.exports = {
   getCustomDateRangeOrderIncome2,
   fData2,
   returnOrder,
-  user200
+  user200,
+  deleteAbandoned
 };
