@@ -65,7 +65,8 @@ const {
   getCustomDateRangeOrderIncome2,
   fData2,
   returnOrder,
-  user200
+  user200,
+  deleteAbandoned
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const {checkout,paymentVerification, phonePe, redirectUri, hdfcPayment, hdfcResponse, billdeskPay, billdeskRes, billPay, billRes, checkOrderStatus, hdfcStatus,phonePe200, redirectUri200,checkoutlvl, paymentVerificationlvl, checkoutvogue, paymentVerificationvogue}=require("../controller/paymentCtrl");
@@ -100,6 +101,7 @@ router.post("/cart/create-order", createOrder);
 router.post("/create-abondend", createAbondend);
 router.get("/all-users", getallUser);
 router.put("/cancelOrder/:orderId",authMiddleware,isAdmin,cancelOrder)
+router.delete("/deleteabandoned/:id",authMiddleware,isAdmin,deleteAbandoned)
 router.put("/returnOrder/:orderId",authMiddleware,isAdmin,returnOrder)
 router.post("/sendTracking",sendTracking)
 router.post("/sendDelivery",sendDelivery)
