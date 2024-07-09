@@ -1071,9 +1071,9 @@ const deleteAbandoned = asyncHandler(async (req, res) => {
   try {
     const deletedAbandoned = await Abondend.findByIdAndDelete(id);
     if (deletedAbandoned) {
-      res.json({ message: 'Abandoned document deleted successfully' });
+      res.json({ message: 'Abandoned document deleted successfully'});
     } else {
-      res.status(404).json({ message: 'Abandoned document not found' });
+      res.status(404).json({ message: 'Abandoned document not found'});
     }
   } catch (error) {
     throw new Error(error);
