@@ -144,7 +144,7 @@ const redirectUri = async (req, res) => {
             .request(options)
             .then(async (response) =>{
                if(response.data.code==="PAYMENT_SUCCESS"){
-                return res.redirect("https://voguemine.com/success")
+                return res.redirect("https://voguemine.com/success?status=success1")
                 // window.location.href=""
                }
             })
