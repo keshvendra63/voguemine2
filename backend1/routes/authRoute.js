@@ -69,7 +69,7 @@ const {
   deleteAbandoned
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
-const {checkout,paymentVerification, phonePe, redirectUri, hdfcPayment, hdfcResponse, billdeskPay, billdeskRes, billPay, billRes, checkOrderStatus, hdfcStatus,phonePe200, redirectUri200,checkoutlvl, paymentVerificationlvl, checkoutvogue, paymentVerificationvogue}=require("../controller/paymentCtrl");
+const {checkout,paymentVerification, phonePe, redirectUri, hdfcPayment, hdfcResponse, billdeskPay, billdeskRes, billPay, billRes, checkOrderStatus, hdfcStatus,phonePe200, redirectUri200,checkoutlvl, paymentVerificationlvl, checkoutvogue, paymentVerificationvogue,payuHash, payuSuccess, payuFailed}=require("../controller/paymentCtrl");
 const sendOtp = require("../controller/otpController");
 const {siteMap}=require('../controller/sitemapCtrl')
 const router = express.Router();
@@ -91,7 +91,9 @@ router.post("/order/billPay",billPay)
 router.post("/order/billRes",billRes)
 router.post("/status/:merchantTransactionId",redirectUri)
 router.post("/status200/:merchantTransactionId",redirectUri200)
-
+router.post("/payu/hash",payuHash)
+router.post("/payu/success",payuSuccess)
+router.post("/payu/failed",payuFailed)
 router.post("/order/checkout1",checkoutlvl)
 router.post("/order/paymentVerification1",paymentVerificationlvl)
 router.post("/order/checkout2",checkoutvogue)
