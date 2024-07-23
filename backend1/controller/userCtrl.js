@@ -1009,7 +1009,7 @@ const createOrder = asyncHandler(async (req, res) => {
   }
 });
 const createAbondend = asyncHandler(async (req, res) => {
-  const { shippingInfo, orderItems, totalPrice, finalAmount, shippingCost, orderType, discount, tag } = req.body;
+  const { shippingInfo, orderItems, totalPrice, finalAmount, shippingCost, orderType, discount, tag,isPartial } = req.body;
 
   try {
     // Check if orderItems length is greater than 0 and shippingInfo.firstname and shippingInfo.phone are not empty
@@ -1022,7 +1022,8 @@ const createAbondend = asyncHandler(async (req, res) => {
         shippingCost,
         orderType,
         discount,
-        tag
+        tag,
+        isPartial
       });
       
       res.json({
