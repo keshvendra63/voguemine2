@@ -77,6 +77,9 @@ var abondendSchema = new mongoose.Schema(
     finalAmount:{
       type:Number,
     },
+    isPartial:{
+      type:Boolean
+    },
     orderCalled:{
       type:String,
     },
