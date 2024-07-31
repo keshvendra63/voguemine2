@@ -82,7 +82,7 @@ const phonePe = async (req, res) => {
         merchantTransactionId: merchantTransactionId,
         merchantUserId: userId,
         amount: amount*100,
-        redirectUrl: `https://voguemine2.onrender.com/api/user/status/${merchantTransactionId}`,
+        redirectUrl: `https://voguemine2-kd7q.onrender.com/api/user/status/${merchantTransactionId}`,
         redirectMode: "POST",
         mobileNumber:number,
         paymentInstrument: {
@@ -165,7 +165,7 @@ const phonePe200 = async (req, res) => {
           merchantTransactionId: merchantTransactionId,
           merchantUserId: userId,
           amount: 200 * 100,
-          redirectUrl: `https://voguemine2.onrender.com/api/user/status200/${merchantTransactionId}`,
+          redirectUrl: `https://voguemine2-kd7q.onrender.com/api/user/status200/${merchantTransactionId}`,
           redirectMode: "POST",
           mobileNumber: number,
           paymentInstrument: {
@@ -268,7 +268,7 @@ const hdfcPayment = async (req, res, next) => {
 
     const orderParams = {
       redirect_url: encodeURIComponent(
-        `https://voguemine2.onrender.com/api/user/order/hdfcRes`
+        `https://voguemine2-kd7q.onrender.com/api/user/order/hdfcRes`
       ),
       cancel_url: encodeURIComponent(`https://rampvalk.com/checkout`),
       merchant_id: "3447954",
