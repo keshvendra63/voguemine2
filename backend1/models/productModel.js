@@ -29,6 +29,9 @@ var productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    price1: {
+      type: Number,
+    },
     category: {
       type: String,
       required: true,
@@ -110,6 +113,12 @@ var productSchema = new mongoose.Schema(
       type:String,
     },
     metaTitle3:{
+      type:String,
+    },
+    metaDesc4:{
+      type:String,
+    },
+    metaTitle4:{
       type:String,
     },
     
