@@ -583,6 +583,79 @@ const payuFailed=async(req,res)=>{
 
 
 
+const paypalToken= async (req, res) => {
+  try {
+    const auth = Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_SECRET}`).toString('base64');
+    const response = await axios.post(`${process.env.PAYPAL_API}/v1/oauth2/token`, 'grant_type=client_credentials', {
+      headers: {
+        Authorization: `Basic ${auth}`,
+      },
+    });
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).send('Error fetching PayPal token');
+  }
+}
+
+// Create PayPal order
+const createPaypalOrder=  async (req, res) => {
+  const { amount,currency } = req.body;
+  try {
+    const accessTokenResponse = await axios.post(`${process.env.PAYPAL_API}/v1/oauth2/token`, 'grant_type=client_credentials', {
+      headers: {
+        Authorization: `Basic ${Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_SECRET}`).toString('base64')}`,
+      },
+    });
+    const { access_token } = accessTokenResponse.data;
+
+    const orderResponse = await axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders`, {
+      intent: 'CAPTURE',
+      purchase_units: [{
+        amount: {
+          currency_code: currency,
+          value: amount,
+        },
+      }],
+    }, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+
+    res.json(orderResponse.data);
+  } catch (error) {
+    res.status(500).send('Error creating PayPal order');
+  }
+}
+
+// Capture PayPal order
+  
+const paypalCapture=  async (req, res) => {
+  const { orderId } = req.params;
+  try {
+    const accessTokenResponse = await axios.post(`${process.env.PAYPAL_API}/v1/oauth2/token`, 'grant_type=client_credentials', {
+      headers: {
+        Authorization: `Basic ${Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_SECRET}`).toString('base64')}`,
+      },
+    });
+    const { access_token } = accessTokenResponse.data;
+
+    const captureResponse = await axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders/${orderId}/capture`, {}, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+
+    res.json(captureResponse.data);
+  } catch (error) {
+    res.status(500).send('Error capturing PayPal order');
+  }
+}
+
+
+
+
+
 module.exports = {
     phonePe,
     redirectUri,
@@ -599,5 +672,8 @@ module.exports = {
     paymentVerificationvogue,
     payuHash,
     payuSuccess,
-    payuFailed
+    payuFailed,
+    paypalToken,
+    paypalCapture,
+    createPaypalOrder
 }
