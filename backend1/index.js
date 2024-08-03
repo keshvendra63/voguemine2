@@ -6,6 +6,7 @@ const app = express();
 const dotenv = require("dotenv").config();
 const PORT =5000;
 const authRouter = require("./routes/authRoute");
+const chicRouter=require("./routes/chicRoute")
 const productRouter = require("./routes/productRoute");
 const blogRouter = require("./routes/blogRoute");
 const blogcategoryRouter = require("./routes/blogCatRoute");
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 app.use("/api/user", authRouter);
+app.use("/api/chicoline", chicRouter);
 app.use("/api/product", productRouter);
 app.use("/api/blog", blogRouter);
 app.use("/api/blogcategory", blogcategoryRouter);
