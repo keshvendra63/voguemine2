@@ -56,10 +56,23 @@ const getCollection = asyncHandler(async (req, res) => {
 });
 const getallCollection = asyncHandler(async (req, res) => {
   try {
-    const getallCollection = await Collection.find();
-    res.json(getallCollection);
+    const collections = await Collection.find();
+
+    // Using Promise.all to fetch the product count for each collection in parallel
+    const collectionsWithProductCount = await Promise.all(
+      collections.map(async (collection) => {
+        // Count products belonging to the current collection using collectionName field
+        const productCount = await Product.countDocuments({ collectionName: collection.title });
+        return {
+          ...collection.toObject(), // Convert Mongoose document to plain JavaScript object
+          productCount
+        };
+      })
+    );
+
+    res.json(collectionsWithProductCount);
   } catch (error) {
-    throw new Error(error);
+    res.status(500).json({ message: error.message });
   }
 });
 const uploadImages = asyncHandler(async (req, res) => {
