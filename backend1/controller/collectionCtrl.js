@@ -1,6 +1,7 @@
 const Collection = require("../models/collectionModel");
 const Collection1 = require("../models/collectionModel1");
 const Collection2 = require("../models/collectionModel2");
+const Product =require("../models/productModel")
 
 const asyncHandler = require("express-async-handler");
 const validateMongoDbId = require("../utils/validateMongodbId");
