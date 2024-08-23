@@ -1089,7 +1089,7 @@ const getOrdersByEmail = async (req, res) => {
     // Find orders where the email matches the user's email in shippingInfo
     const orders = await Order.find({ "shippingInfo.email": email })
       .populate("user", "name email") // Populate user data (if needed)
-      .populate("orderItems.product", "name price"); // Populate product data in orderItems (if needed)
+      .populate("orderItems.product"); // Populate product data in orderItems (if needed)
 
     // Check if orders are found
     if (!orders || orders.length === 0) {
