@@ -66,7 +66,8 @@ const {
   fData2,
   returnOrder,
   user200,
-  deleteAbandoned
+  deleteAbandoned,
+  getOrdersByEmail
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const {checkout,paymentVerification, phonePe, redirectUri, hdfcPayment, hdfcResponse, billdeskPay, billdeskRes, billPay, billRes, checkOrderStatus, hdfcStatus,phonePe200, redirectUri200,checkoutlvl, paymentVerificationlvl, checkoutvogue, paymentVerificationvogue,payuHash, payuSuccess, payuFailed, paypalToken, createPaypalOrder, paypalCapture}=require("../controller/paymentCtrl");
@@ -120,7 +121,7 @@ router.get("/getoldorders", authMiddleware,isAdmin, getOldOrders);
 router.get("/getallorders", authMiddleware, isAdmin, getAllOrders);
 router.get("/getallorders1", authMiddleware, isAdmin, getAllOrders1);
 router.get("/getallorders2", authMiddleware, isAdmin, getAllOrders2);
-
+router.get("/orders/:email", getOrdersByEmail);
 router.get("/getaOrder/:id", authMiddleware, isAdmin, getSingleOrder);
 router.get("/getallabandoned", authMiddleware, isAdmin, getAllAbandoned);
 router.get("/getaAbandoned/:id", authMiddleware, isAdmin, getSingleAbandoned);
