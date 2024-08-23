@@ -1081,6 +1081,29 @@ const deleteAbandoned = asyncHandler(async (req, res) => {
   }
 });
 
+
+const getOrdersByEmail = async (req, res) => {
+  try {
+    const { email } = req.params; // Get email from request parameters
+
+    // Find orders where the email matches the user's email in shippingInfo
+    const orders = await Order.find({ "shippingInfo.email": email })
+      .populate("user", "name email") // Populate user data (if needed)
+      .populate("orderItems.product", "name price"); // Populate product data in orderItems (if needed)
+
+    // Check if orders are found
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found for this email." });
+    }
+
+    // Return the orders
+    res.status(200).json({ success: true, orders });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server Error", error: error.message });
+  }
+};
+
 const getAllAbandoned = asyncHandler(async (req, res) => {
   const limit = 50; // Number of items per page
   const page = parseInt(req.query.page) || 1; // Current page, default is 1
@@ -2313,5 +2336,6 @@ module.exports = {
   fData2,
   returnOrder,
   user200,
-  deleteAbandoned
+  deleteAbandoned,
+  getOrdersByEmail
 };
