@@ -11,6 +11,8 @@ const {
   reorderProducts,
   getaProductDashboard,
   getAllRatings,
+  getAllProductSku,
+
 
 } = require("../controller/productCtrl");
 const { isAdmin, authMiddleware } = require("../middlewares/authMiddleware");
@@ -26,6 +28,8 @@ router.put(
   productImgResize,
   uploadImages
 );
+router.get("/sku/:collectionName", getAllProductSku);
+router.get("/sku/", getAllProductSku);
 router.put("/wishlist", authMiddleware, addToWishlist);
 router.put("/rating", rating);
 router.get("/getallratings", getAllRatings);
