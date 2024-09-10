@@ -216,7 +216,179 @@ const getAllProduct = asyncHandler(async (req, res) => {
 
 
 
+const getAllProductSku = asyncHandler(async (req, res) => {
+  try {
+    let query = {};
 
+    // Check if a collection name is provided
+    if (req.params.collectionName) {
+      query.collectionName = req.params.collectionName;
+    }
+
+    // Apply SKU range filtering
+    query.$expr = {
+      $and: [
+        {
+          $gte: [
+            {
+              $convert: {
+                input: {
+                  $trim: {
+                    input: { $arrayElemAt: [{ $split: ["$sku", "-"] }, 1] },
+                    chars: " ", // Remove any leading or trailing spaces
+                  },
+                },
+                to: "int", // Convert to integer
+                onError: -1, // Handle errors by assigning -1
+                onNull: -1, // Handle null by assigning -1
+              },
+            },
+            1,
+          ],
+        },
+        {
+          $lte: [
+            {
+              $convert: {
+                input: {
+                  $trim: {
+                    input: { $arrayElemAt: [{ $split: ["$sku", "-"] }, 1] },
+                    chars: " ", // Remove any leading or trailing spaces
+                  },
+                },
+                to: "int", // Convert to integer
+                onError: -1, // Handle errors by assigning -1
+                onNull: -1, // Handle null by assigning -1
+              },
+            },
+            100,
+          ],
+        },
+      ],
+    };
+
+    // Apply size, color, and brand filters
+    if (req.query.size) {
+      const sizes = req.query.size.split(',').map(size => size.trim());
+      query['variants'] = { 
+        $elemMatch: { 
+          size: { $in: sizes }, 
+          quantity: { $gt: 0 } 
+        } 
+      };
+    }
+    if (req.query.color) {
+      const colors = req.query.color.split(',').map(color => color.trim());
+      query['variants.color'] = { $in: colors.map(color => new RegExp(color, 'i')) };
+    }
+    if (req.query.brand) {
+      const brands = req.query.brand.split(',').map(brand => brand.trim());
+      query['brand'] = { $in: brands };
+    }
+
+    // Handle search conditions
+    if (req.query.search) {
+      const searchKeywords = req.query.search.toLowerCase().split(' ');
+      const searchConditions = [];
+
+      searchKeywords.forEach(keyword => {
+        let regexPattern;
+        if (keyword === "shirt") {
+          regexPattern = new RegExp(`^(?!.*t-shirt).*\\b${keyword}\\b.*$`, 'i');
+        } else if (keyword === "shirts") {
+          regexPattern = new RegExp(`\\bshirt\\b`, 'i');
+        } else if (["tshirt", "tshirts", "t-shirts"].includes(keyword)) {
+          regexPattern = new RegExp(`\\bt-shirt\\b`, 'i');
+        } else if (keyword === "t-shirt") {
+          regexPattern = new RegExp(`\\b${keyword}\\b`, 'i');
+        } else if (keyword === "shoes") {
+          searchConditions.push({
+            $or: [
+              { title: { $regex: new RegExp("\\bsneakers\\b", 'i') } },
+              { title: { $regex: new RegExp("\\bloafers\\b", 'i') } }
+            ]
+          });
+          return;
+        } else {
+          regexPattern = new RegExp(keyword, 'i');
+        }
+
+        if (regexPattern) {
+          searchConditions.push({
+            $or: [
+              { 'variants.color': { $regex: regexPattern } },
+              { title: { $regex: regexPattern } },
+              { brand: { $regex: regexPattern } },
+              { sku: { $regex: regexPattern }},
+              { 'variants.size': { $regex: regexPattern } }
+            ]
+          });
+        }
+      });
+
+      if (searchConditions.length > 0) {
+        query.$and = searchConditions;
+      }
+    }
+
+    // Handling additional query parameters for filtering
+    const queryObj = { ...req.query };
+    const excludeFields = ["page", "sort", "limit", "fields", "search"];
+    excludeFields.forEach(el => delete queryObj[el]);
+
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+    query = { ...query, ...JSON.parse(queryStr) };
+
+    // Pagination
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 28;
+    const skip = (page - 1) * limit;
+
+    const totalDocs = await Product.countDocuments(query); // Total matching documents
+    const totalPages = Math.ceil(totalDocs / limit); // Total number of pages
+
+    // Aggregation pipeline to compute total quantity and sort products
+    let productQuery = Product.aggregate([
+      { $match: query },
+      { $addFields: { totalQuantity: { $sum: "$variants.quantity" } } },
+      {
+        $addFields: {
+          isSoldOut: {
+            $cond: { if: { $eq: ["$totalQuantity", 0] }, then: 1, else: 0 }
+          }
+        }
+      },
+      { $sort: { isSoldOut: 1, createdAt: -1 } }, // Sort by sold-out status, then by creation date
+      { $skip: skip },
+      { $limit: limit }
+    ]);
+
+    // Optionally add field projection if specified
+    if (req.query.fields) {
+      const fields = req.query.fields.split(",").reduce((acc, field) => {
+        acc[field.trim()] = 1;
+        return acc;
+      }, {});
+      productQuery = productQuery.project(fields);
+    }
+
+    // Executing the query
+    let products = await productQuery;
+
+    // Sending response
+    res.json({
+      products,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalDocs,
+      },
+    });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
 
 const reorderProducts = asyncHandler(async (req, res) => {
   const { productIds } = req.body;
@@ -372,5 +544,6 @@ module.exports = {
   reorderProducts,
   getaProductDashboard,
   getAllRatings,
+  getAllProductSku,
 
 };
