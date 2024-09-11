@@ -581,7 +581,53 @@ const payuFailed=async(req,res)=>{
   }
 }
 
+const MERCHANT_KEY1 = 'XDT5my';
+const MERCHANT_SALT1 = 'KsFSGCgDCYEe9agX4OpwRaZbBvJXClqr';
 
+const payuHash1=async(req,res)=>{
+  const {firstname,email,phone,finalAmount,transactionId}=req.body
+
+  const data={
+    key:MERCHANT_KEY1,
+    txnid:transactionId,
+    amount:finalAmount,
+    productinfo:`${phone}`,
+    firstname:firstname,
+    email:email,
+    udf1:"details1",
+    udf2:"details2",
+    udf3:"details3",
+    udf4:"details4",
+    udf5:"details5",
+  }
+
+  const hashString = `${data.key}|${data.txnid}|${data.amount}|${data.productinfo}|${data.firstname}|${data.email}|${data.udf1}|${data.udf2}|${data.udf3}|${data.udf4}|${data.udf5}||||||${MERCHANT_SALT1}`;
+
+  const hash = crypto.createHash('sha512').update(hashString).digest('hex');
+  
+  return res.status(200).send({
+    hash:hash,
+    transactionId:transactionId
+  })
+
+}
+
+const payuSuccess1=async(req,res)=>{
+  try{
+    return res.redirect('https://rampvalk.com/success?status=success')
+  }
+  catch(error){
+    console.log(error)
+  }
+}
+const payuFailed1=async(req,res)=>{
+  try{
+    return res.redirect('https://rampvalk.com/success?status=failed')
+  }
+  catch(error){
+    console.log(error)
+  }
+}
 
 const paypalToken= async (req, res) => {
   try {
@@ -673,6 +719,9 @@ module.exports = {
     payuHash,
     payuSuccess,
     payuFailed,
+    payuHash1,
+    payuSuccess1,
+    payuFailed1,
     paypalToken,
     paypalCapture,
     createPaypalOrder
