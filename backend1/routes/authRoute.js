@@ -70,7 +70,7 @@ const {
   getOrdersByEmail
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
-const {checkout,paymentVerification, phonePe, redirectUri, hdfcPayment, hdfcResponse, billdeskPay, billdeskRes, billPay, billRes, checkOrderStatus, hdfcStatus,phonePe200, redirectUri200,checkoutlvl, paymentVerificationlvl, checkoutvogue, paymentVerificationvogue,payuHash, payuSuccess, payuFailed, paypalToken, createPaypalOrder, paypalCapture}=require("../controller/paymentCtrl");
+const {checkout,paymentVerification, phonePe, redirectUri, hdfcPayment, hdfcResponse, billdeskPay, billdeskRes, billPay, billRes, checkOrderStatus, hdfcStatus,phonePe200, redirectUri200,checkoutlvl, paymentVerificationlvl, checkoutvogue, paymentVerificationvogue,payuHash, payuSuccess, payuFailed,payuHash1, payuSuccess1, payuFailed1, paypalToken, createPaypalOrder, paypalCapture}=require("../controller/paymentCtrl");
 const sendOtp = require("../controller/otpController");
 const {siteMap}=require('../controller/sitemapCtrl')
 const router = express.Router();
@@ -82,6 +82,9 @@ router.put("/reset-password/:token", resetPassword);
 router.put("/password", authMiddleware, updatePassword);
 router.post("/login", loginUserCtrl);
 router.post("/admin-login", loginAdmin);
+router.post("/payu/hash1",payuHash1)
+router.post("/payu/success1",payuSuccess1)
+router.post("/payu/failed1",payuFailed1)
 router.post("/cart", authMiddleware, userCart);
 router.post("/order/checkout",phonePe)
 router.post("/order/codpay",phonePe200)
