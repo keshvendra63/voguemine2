@@ -223,9 +223,55 @@ const getAllProductSku = asyncHandler(async (req, res) => {
     // Check if a collection name is provided
     if (req.params.collectionName) {
       query.collectionName = req.params.collectionName;
+
     }
 
-    // Apply SKU range filtering
+    if (req.query.collectionName === "Men's Denim Jeans") {
+
+      query.$expr = {
+        $and: [
+          {
+            $gte: [
+              {
+                $convert: {
+                  input: {
+                    $trim: {
+                      input: { $arrayElemAt: [{ $split: ["$sku", "-"] }, 1] },
+                      chars: " ", // Remove any leading or trailing spaces
+                    },
+                  },
+                  to: "int", // Convert to integer
+                  onError: -1, // Handle errors by assigning -1
+                  onNull: -1, // Handle null by assigning -1
+                },
+              },
+              1,
+            ],
+          },
+          {
+            $lte: [
+              {
+                $convert: {
+                  input: {
+                    $trim: {
+                      input: { $arrayElemAt: [{ $split: ["$sku", "-"] }, 1] },
+                      chars: " ", // Remove any leading or trailing spaces
+                    },
+                  },
+                  to: "int", // Convert to integer
+                  onError: -1, // Handle errors by assigning -1
+                  onNull: -1, // Handle null by assigning -1
+                },
+              },
+              30,
+            ],
+          },
+        ],
+      };
+    }
+
+
+   if(req.query.collectionName!=="Men's Denim Jeans" && req.query.collectionName!==undefined){
     query.$expr = {
       $and: [
         {
@@ -266,6 +312,7 @@ const getAllProductSku = asyncHandler(async (req, res) => {
         },
       ],
     };
+   }
 
     // Apply size, color, and brand filters
     if (req.query.size) {
