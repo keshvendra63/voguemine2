@@ -67,7 +67,10 @@ const {
   returnOrder,
   user200,
   deleteAbandoned,
-  getOrdersByEmail
+  getOrdersByEmail,
+  getAllAdmins,
+  updateUserPassword,
+  updateUserInfo,
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const {checkout,paymentVerification, phonePe, redirectUri, hdfcPayment, hdfcResponse, billdeskPay, billdeskRes, billPay, billRes, checkOrderStatus, hdfcStatus,phonePe200, redirectUri200,checkoutlvl, paymentVerificationlvl, checkoutvogue, paymentVerificationvogue,payuHash, payuSuccess, payuFailed,payuHash1, payuSuccess1, payuFailed1, paypalToken, createPaypalOrder, paypalCapture}=require("../controller/paymentCtrl");
@@ -76,6 +79,9 @@ const {siteMap}=require('../controller/sitemapCtrl')
 const router = express.Router();
 router.post("/register", createUser);
 router.post("/user200", user200);
+router.put("/getalladmins",authMiddleware,isAdmin,getAllAdmins)
+router.put("/update-admin-pass",authMiddleware,isAdmin,updateUserPassword)
+router.put("/update-user-info",authMiddleware,isAdmin,updateUserInfo)
 router.post("/forgot-password-token", forgotPasswordToken);
 router.get("/sendOtp/:number",sendOtp)
 router.put("/reset-password/:token", resetPassword);
