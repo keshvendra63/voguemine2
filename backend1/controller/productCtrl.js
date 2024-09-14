@@ -332,7 +332,98 @@ const getAllProductSku = asyncHandler(async (req, res) => {
       const brands = req.query.brand.split(',').map(brand => brand.trim());
       query['brand'] = { $in: brands };
     }
+    if (req.query.search) {
+      const searchKeywords = req.query.search.toLowerCase().split(' ');
 
+      // Apply SKU limits based on jeans-related searches
+      const jeansKeywords = ['jeans', 'men jeans', 'mens jeans', 'jeans for men'];
+      const isJeansSearch = searchKeywords.some(keyword => jeansKeywords.includes(keyword));
+
+      if (isJeansSearch) {
+        query.$expr = {
+          $and: [
+            {
+              $gte: [
+                {
+                  $convert: {
+                    input: {
+                      $trim: {
+                        input: { $arrayElemAt: [{ $split: ["$sku", "-"] }, 1] },
+                        chars: " ", // Remove any leading or trailing spaces
+                      },
+                    },
+                    to: "int", // Convert to integer
+                    onError: -1, // Handle errors by assigning -1
+                    onNull: -1, // Handle null by assigning -1
+                  },
+                },
+                1,
+              ],
+            },
+            {
+              $lte: [
+                {
+                  $convert: {
+                    input: {
+                      $trim: {
+                        input: { $arrayElemAt: [{ $split: ["$sku", "-"] }, 1] },
+                        chars: " ", // Remove any leading or trailing spaces
+                      },
+                    },
+                    to: "int", // Convert to integer
+                    onError: -1, // Handle errors by assigning -1
+                    onNull: -1, // Handle null by assigning -1
+                  },
+                },
+                30, // SKU range for jeans-related searches
+              ],
+            },
+          ],
+        };
+      } else {
+        // For other search terms, limit SKUs to 1-100
+        query.$expr = {
+          $and: [
+            {
+              $gte: [
+                {
+                  $convert: {
+                    input: {
+                      $trim: {
+                        input: { $arrayElemAt: [{ $split: ["$sku", "-"] }, 1] },
+                        chars: " ", // Remove any leading or trailing spaces
+                      },
+                    },
+                    to: "int", // Convert to integer
+                    onError: -1, // Handle errors by assigning -1
+                    onNull: -1, // Handle null by assigning -1
+                  },
+                },
+                1,
+              ],
+            },
+            {
+              $lte: [
+                {
+                  $convert: {
+                    input: {
+                      $trim: {
+                        input: { $arrayElemAt: [{ $split: ["$sku", "-"] }, 1] },
+                        chars: " ", // Remove any leading or trailing spaces
+                      },
+                    },
+                    to: "int", // Convert to integer
+                    onError: -1, // Handle errors by assigning -1
+                    onNull: -1, // Handle null by assigning -1
+                  },
+                },
+                100, // SKU range for non-jeans searches
+              ],
+            },
+          ],
+        };
+      }
+    }
     // Handle search conditions
     if (req.query.search) {
       const searchKeywords = req.query.search.toLowerCase().split(' ');
