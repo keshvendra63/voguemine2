@@ -79,13 +79,13 @@ const {siteMap}=require('../controller/sitemapCtrl')
 const router = express.Router();
 router.post("/register", createUser);
 router.post("/user200", user200);
-router.put("/getalladmins",authMiddleware,isAdmin,getAllAdmins)
-router.put("/update-admin-pass",authMiddleware,isAdmin,updateUserPassword)
-router.put("/update-user-info",authMiddleware,isAdmin,updateUserInfo)
+router.get("/getalladmins",authMiddleware,isAdmin,getAllAdmins)
 router.post("/forgot-password-token", forgotPasswordToken);
 router.get("/sendOtp/:number",sendOtp)
 router.put("/reset-password/:token", resetPassword);
 router.put("/password", authMiddleware, updatePassword);
+router.put("/update-admin-pass",authMiddleware,isAdmin,updateUserPassword)
+router.put("/update-user-info",authMiddleware,isAdmin,updateUserInfo)
 router.post("/login", loginUserCtrl);
 router.post("/admin-login", loginAdmin);
 router.post("/payu/hash1",payuHash1)
