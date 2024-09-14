@@ -46,7 +46,7 @@ const getAllAdmins = async () => {
 };
 
 
-const updateUserPassword = async ()=> {
+const updateUserPassword = async (req,res)=> {
 const {userId,newPassword}=req.body
   try {
     // Find the user by ID
@@ -72,7 +72,7 @@ const {userId,newPassword}=req.body
 
 
 
-const updateUserInfo = async () => {
+const updateUserInfo = async (req,res) => {
 const {userId,updates}=req.body
   try {
     // Find the user by ID and update their information
