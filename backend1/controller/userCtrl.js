@@ -2401,5 +2401,8 @@ module.exports = {
   returnOrder,
   user200,
   deleteAbandoned,
-  getOrdersByEmail
+  getOrdersByEmail,
+  getAllAdmins,
+  updateUserPassword,
+  updateUserInfo
 };
