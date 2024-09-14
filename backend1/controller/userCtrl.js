@@ -34,6 +34,73 @@ const user200 = asyncHandler(async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+const getAllAdmins = async () => {
+  try {
+    const admins = await User.find({ role: 'admin' });
+    return admins;
+  } catch (error) {
+    console.error("Error fetching admin users:", error);
+    throw error;
+  }
+};
+
+
+const updateUserPassword = async ()=> {
+const {userId,newPassword}=req.body
+  try {
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Generate salt and hash the new password
+    const salt = await bcrypt.genSaltSync(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+
+    // Save the user with the updated password
+    await user.save();
+    return { message: "Password updated successfully" };
+  } catch (error) {
+    console.error("Error updating password:", error);
+    throw error;
+  }
+};
+
+
+
+
+const updateUserInfo = async () => {
+const {userId,updates}=req.body
+  try {
+    // Find the user by ID and update their information
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          firstname: updates.firstname,
+          lastname: updates.lastname,
+	email:updates.email,
+          mobile: updates.mobile,
+          image: updates.image, // Should contain { public_id, url } if updating image
+        },
+      },
+      { new: true } // Return the updated user
+    );
+
+    if (!updatedUser) {
+      throw new Error("User not found or unable to update");
+    }
+
+    return updatedUser;
+  } catch (error) {
+    console.error("Error updating user information:", error);
+    throw error;
+  }
+};
+
 const createUser = asyncHandler(async (req, res) => {
   /**
    * TODO:Get the email from req.body
