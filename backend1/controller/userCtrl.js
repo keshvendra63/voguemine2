@@ -35,25 +35,25 @@ const user200 = asyncHandler(async (req, res) => {
   }
 });
 
-const getAllAdmins = async () => {
+const getAllAdmins = async (req, res) => {
   try {
     const admins = await User.find({ role: 'admin' });
-    return admins;
+    res.status(200).json(admins); // Respond with the list of admins
   } catch (error) {
     console.error("Error fetching admin users:", error);
-    throw error;
+    res.status(500).json({ message: "Error fetching admin users", error });
   }
 };
 
-
-const updateUserPassword = async (req,res)=> {
-const {userId,newPassword}=req.body
+// Update user's password
+const updateUserPassword = async (req, res) => {
+  const { userId, newPassword } = req.body;
   try {
     // Find the user by ID
     const user = await User.findById(userId);
 
     if (!user) {
-      throw new Error("User not found");
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Generate salt and hash the new password
@@ -62,18 +62,16 @@ const {userId,newPassword}=req.body
 
     // Save the user with the updated password
     await user.save();
-    return { message: "Password updated successfully" };
+    res.status(200).json({ message: "Password updated successfully" });
   } catch (error) {
     console.error("Error updating password:", error);
-    throw error;
+    res.status(500).json({ message: "Error updating password", error });
   }
 };
 
-
-
-
-const updateUserInfo = async (req,res) => {
-const {userId,updates}=req.body
+// Update user info (name, email, mobile, image)
+const updateUserInfo = async (req, res) => {
+  const { userId, updates } = req.body;
   try {
     // Find the user by ID and update their information
     const updatedUser = await User.findByIdAndUpdate(
@@ -82,7 +80,7 @@ const {userId,updates}=req.body
         $set: {
           firstname: updates.firstname,
           lastname: updates.lastname,
-	email:updates.email,
+          email: updates.email,
           mobile: updates.mobile,
           image: updates.image, // Should contain { public_id, url } if updating image
         },
@@ -91,16 +89,15 @@ const {userId,updates}=req.body
     );
 
     if (!updatedUser) {
-      throw new Error("User not found or unable to update");
+      return res.status(404).json({ message: "User not found or unable to update" });
     }
 
-    return updatedUser;
+    res.status(200).json(updatedUser);
   } catch (error) {
     console.error("Error updating user information:", error);
-    throw error;
+    res.status(500).json({ message: "Error updating user information", error });
   }
 };
-
 const createUser = asyncHandler(async (req, res) => {
   /**
    * TODO:Get the email from req.body
