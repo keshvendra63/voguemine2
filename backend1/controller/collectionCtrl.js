@@ -14,9 +14,13 @@ const createCollection = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
 const getaCollection = asyncHandler(async (req, res) => {
   try {
     const findCollection = await Collection.findOne({handle:req.params.handle})
+    if (!findCollection) {
+      return res.status(404).json({ error: 'Collection not found' });
+    }
     res.json(findCollection);
   } catch (error) {
     throw new Error(error);
