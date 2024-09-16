@@ -43,6 +43,9 @@ const deleteProduct = asyncHandler(async (req, res) => {
 const getaProduct = asyncHandler(async (req, res) => {
   try {
     const findProduct = await Product.findOne({handle:req.params.handle})
+    if (!findProduct) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
     res.json(findProduct);
   } catch (error) {
     throw new Error(error);
