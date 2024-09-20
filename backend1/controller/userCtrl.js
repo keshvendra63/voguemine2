@@ -823,7 +823,66 @@ const processOrder = async (orderItems) => {
 };
 
 
-
+const sendDelivery = asyncHandler(async (req, res) => {
+  const { name, ordernumber, email,orderId } = req.body;
+  try {
+    sendEmail({to:`${email}`,subject:"Order Delivered: Your Order is Delivered!",text:"Order Delivered: Your Order is Delivered!",htmlContent : `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Order Delivered</title>
+          <style>
+              body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+              .container { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+              h2 { color: #333333; }
+              p { color: #555555; }
+              .order-details { margin-top: 20px; }
+              .order-details p { margin: 5px 0; }
+              .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #dddddd; font-size: 12px; color: #999999; text-align: center; }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <h2>Order Delivered: Your Order is Delivered!</h2>
+              <p>Dear ${name},</p>
+    
+              <div class="order-details">
+                  <p>Celebration time! Your <strong>Order #${ordernumber}</strong> has reached its destination, bringing joy and satisfaction to your doorstep. We extend our deepest gratitude for your trust in us.</p>
+                  <p></p>
+                  <p>Your patronage means the world to us, and now, we kindly ask for a moment of your precious time. Your feedback is invaluable, so please consider sharing your experience by leaving a review via the link below:</p>
+                  <p></p>
+                  <p>https://g.page/r/Cb_ycM-UC2t5EBM/review</p>
+                  <p></p>
+                  <p>Remember, your satisfaction is our top priority. If you haven't received your shipment, please contact us within 24 hours of this message to ensure your complete happiness. Please note that we may not be able to accommodate complaints reported after this time.</p>
+                  <p></p>
+                  <p>Once again, thank you for being an essential part of our journey. Your support fuels our passion to serve you better.</p>
+              </div>
+    
+              <p>Thank you for choosing <strong>voguemine.com</strong> for your shopping needs!</p>
+    
+              <div class="footer">
+                  <p>&copy; 2024 Voguemine. All rights reserved.</p>
+              </div>
+          </div>
+      </body>
+      </html>
+    `})
+      const updatedOrder = await Order.findByIdAndUpdate(orderId, { orderStatus: 'Delivered' }, {
+        new: true,
+      });
+      // Only send necessary data from the response to the client
+      if (delightChatResponse.data) {
+          res.json(delightChatResponse.data); // Send JSON data only
+      } else {
+          res.status(404).send('No data found');
+      }
+  } catch (error) {
+      console.error('Failed to send message:', error);
+      res.status(500).send(error.message);
+  }
+});
 const sendTracking = asyncHandler(async (req, res) => {
   try {
     const { name, ordernumber, partner, link, email,orderId } = req.body;
