@@ -821,64 +821,51 @@ const processOrder = async (orderItems) => {
     console.error("Error updating inventory:", error.message);
   }
 };
-const sendDelivery = asyncHandler(async (req, res) => {
-  const { name, ordernumber, number,orderId } = req.body;
-  try {
-      const delightChatResponse = await axios.post('https://api.delightchat.io/api/v1/public/message', {
-          country_code: '+91', // Update the country code if necessary
-          phone_number: number, // Update with the phone number to send the confirmation to
-          automation_id: 'ea986ce8-4b37-451d-ad5d-c9ccedddf447', // Update with your DelightChat automation ID
-          message_data: {
-              // Add any data you want to include in the message
-              1: name,
-              2: ordernumber,
-              // Add more data as needed
-          }
-      }, {
-          headers: {
-              'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
-              'Content-Type': 'application/json'
-          }
-      });
-      const updatedOrder = await Order.findByIdAndUpdate(orderId, { orderStatus: 'Delivered' }, {
-        new: true,
-      });
-      // Only send necessary data from the response to the client
-      if (delightChatResponse.data) {
-          res.json(delightChatResponse.data); // Send JSON data only
-      } else {
-          res.status(404).send('No data found');
-      }
-  } catch (error) {
-      console.error('Failed to send message:', error);
-      res.status(500).send(error.message);
-  }
-});
 
 
 
 const sendTracking = asyncHandler(async (req, res) => {
   try {
-    const { name, ordernumber, partner, link, number,orderId } = req.body;
+    const { name, ordernumber, partner, link, email,orderId } = req.body;
 
-      const delightChatResponse = await axios.post('https://api.delightchat.io/api/v1/public/message', {
-          country_code: '+91', // Update the country code if necessary
-          phone_number: number, // Update with the phone number to send the confirmation to
-          automation_id: 'cf8fa126-e0ef-46b8-8575-986a45faf4a9', // Update with your DelightChat automation ID
-          message_data: {
-              // Add any data you want to include in the message
-              1: name,
-              2: ordernumber,
-              3: partner,
-              4: link,
-              // Add more data as needed
-          }
-      }, {
-          headers: {
-              'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
-              'Content-Type': 'application/json'
-          }
-      });
+    sendEmail({to:`${email}`,subject:"Celebratory Update: Your Order is on Route!",text:"Celebratory Update: Your Order is on Route!",htmlContent : `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Order Tracking</title>
+          <style>
+              body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+              .container { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+              h2 { color: #333333; }
+              p { color: #555555; }
+              .order-details { margin-top: 20px; }
+              .order-details p { margin: 5px 0; }
+              .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #dddddd; font-size: 12px; color: #999999; text-align: center; }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <h2>Celebratory Update: Your Order is on Route!</h2>
+              <p>Dear ${name},</p>
+    
+              <div class="order-details">
+                  <p>Great news! Your eagerly awaited <strong>Order #${ordernumber}</strong> from voguemine.com has embarked on its journey, swiftly dispatched via our esteemed courier partner, ${partner}.</p>
+                  <p>Prepare for the excitement of its arrival by effortlessly tracking its progress through the link provided below.</p>
+                  <p></p>
+                  <p><strong>${link}</strong></p>
+              </div>
+    
+              <p>Thank you for choosing <strong>voguemine.com</strong> for your shopping needs!</p>
+    
+              <div class="footer">
+                  <p>&copy; 2024 Voguemine. All rights reserved.</p>
+              </div>
+          </div>
+      </body>
+      </html>
+    `})
       const updatedOrder = await Order.findByIdAndUpdate(orderId, { orderStatus: 'Fullfilled',trackingInfo:{
         partner:partner,
         link:link,
@@ -886,41 +873,51 @@ const sendTracking = asyncHandler(async (req, res) => {
         new: true,
       });
       // Only send necessary data from the response to the client
-      if (delightChatResponse.data) {
-          res.json(delightChatResponse.data); // Send JSON data only
-      } else {
-          res.status(404).send('No data found');
-      }
+      console.log("tracking send")
+    
   } catch (error) {
       console.error('Failed to send message:', error);
       res.status(500).send(error.message);
   }
 });
 
-const msgAfter3hour=asyncHandler(async(firstname,ordernumber,phone)=>{
-    const delightChatResponse = await axios.post('https://api.delightchat.io/api/v1/public/message', {
-        country_code: '+91', // Update the country code if necessary
-        phone_number:`${phone}`, // Update with the phone number to send the confirmation to
-        automation_id: '8eb38046-7fc0-4ba0-a529-f9f9bf5a63fe', // Update with your DelightChat automation ID
-        message_data: {
-          // Add any data you want to include in the message
-          1: `${firstname}`,
-          2: `${ordernumber}`,
-
-
-          // Add more data as needed
-        }
-      }, {
-        headers: {
-          'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony', // Update with your DelightChat API key
-          'Content-Type': 'application/json'
-        }
-      });
-      if (delightChatResponse.data) {
-        console.log("success") // Send JSON data only
-    } else {
-      console.log("declined") // Send JSON data only
-    }  
+const msgAfter3hour=asyncHandler(async(firstname,ordernumber,email)=>{
+  sendEmail({to:`${email}`,subject:"Tracking Details: Your Order is in Process!",text:"Tracking Details: Your Order is in Process!",htmlContent : `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Order Confirmation</title>
+        <style>
+            body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+            .container { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+            h2 { color: #333333; }
+            p { color: #555555; }
+            .order-details { margin-top: 20px; }
+            .order-details p { margin: 5px 0; }
+            .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #dddddd; font-size: 12px; color: #999999; text-align: center; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Tracking Details: Your Order is in Process!</h2>
+            <p>Dear ${firstname},</p>
+  
+            <div class="order-details">
+                <p><strong>Your Order Number is:</strong> #${ordernumber}</p>
+                <p>Once your order is on its way, we'll promptly send you a tracking link for easy monitoring of its dispatch from our side.</p>
+            </div>
+  
+            <p>Thank you for choosing <strong>voguemine.com</strong> for your shopping needs!</p>
+  
+            <div class="footer">
+                <p>&copy; 2024 Voguemine. All rights reserved.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+  `})
 })
 
 const createOrder = asyncHandler(async (req, res) => {
@@ -972,72 +969,52 @@ const createOrder = asyncHandler(async (req, res) => {
       const orderItemsString = orderItems.map((item) => {
         return `Name: ${item.product.title}, Color: ${item.color || ""}, Size: ${item.size || ""}`;
       }).join('\n');
-      sendEmail({firstname:`${shippingInfo.firstname}`,orderNumber:`${order.orderNumber}`,finalAmount:`${finalAmount}`,items:orderItemsString,paymentMethod:`${orderType}`,address:`${shippingInfo.address} ${shippingInfo.city} ${shippingInfo.state} ${shippingInfo.pincode}`,to:`${shippingInfo.email}`})
+      
+sendEmail({to:`${shippingInfo.email}`,subject:"Confirmation: Your Order is in Process!",text:"Confirmation: Your Order is in Process!",htmlContent : `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Order Confirmation</title>
+      <style>
+          body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+          .container { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+          h2 { color: #333333; }
+          p { color: #555555; }
+          .order-details { margin-top: 20px; }
+          .order-details p { margin: 5px 0; }
+          .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #dddddd; font-size: 12px; color: #999999; text-align: center; }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <h2>Confirmation: Your Order is in Process!</h2>
+          <p>Dear ${shippingInfo.firstname},</p>
+          <p>We've successfully received your order with the following details:</p>
 
+          <div class="order-details">
+              <p><strong>Order Number:</strong> #${order.orderNumber}</p>
+              <p><strong>Total Amount:</strong> ₹${finalAmount}</p>
+              <p><strong>Order Items:</strong> ${orderItemsString}</p>
+              <p><strong>Payment Method:</strong> ${orderType}</p>
+              <p><strong>Shipping Address:</strong> ${shippingInfo.address} ${shippingInfo.city} ${shippingInfo.state} ${shippingInfo.pincode}</p>
+              <p><strong>Anticipated Delivery Date:</strong> Within 3 to 5 working days.</p>
+          </div>
+
+          <p>Thank you for choosing <strong>voguemine.com</strong> for your shopping needs!</p>
+
+          <div class="footer">
+              <p>&copy; 2024 Voguemine. All rights reserved.</p>
+          </div>
+      </div>
+  </body>
+  </html>
+`})
       // Send confirmation message using DelightChat API
-     if(isPartial===true){
-        await axios.post('https://api.delightchat.io/api/v1/public/message', {
-        country_code: '+91',
-        phone_number: `${shippingInfo?.phone}`,
-        automation_id: '135e013d-d462-4aa9-bffe-0290383e9e4b',
-        message_data: {
-          1: `${shippingInfo.firstname}`,
-          2: `${order.orderNumber}`,
-          3: `${finalAmount}`,
-          4: orderItemsString,
-          5: `${orderType}`,
-          6: `${shippingInfo.address} ${shippingInfo.city} ${shippingInfo.state} ${shippingInfo.pincode}`
-        }
-      }, {
-        headers: {
-          'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony',
-          'Content-Type': 'application/json'
-        }
-      })
-     }
-       else{
-        await axios.post('https://api.delightchat.io/api/v1/public/message', {
-        country_code: '+91',
-        phone_number: `${shippingInfo?.phone}`,
-        automation_id: '0eed4e28-34c1-4494-8026-90439f94fd50',
-        message_data: {
-          1: `${shippingInfo.firstname}`,
-          2: `${order.orderNumber}`,
-          3: `${finalAmount}`,
-          4: orderItemsString,
-          5: `${orderType}`,
-          6: `${shippingInfo.address} ${shippingInfo.city} ${shippingInfo.state} ${shippingInfo.pincode}`
-        }
-      }, {
-        headers: {
-          'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony',
-          'Content-Type': 'application/json'
-        }
-      })
-       }
      }
     
-
-    // Send additional notifications
-    const phoneNumbers = ['9811363760', '8006009896', '9719250693','9873782103','9667692481'];
-    for (const phoneNumber of phoneNumbers) {
-      await axios.post('https://api.delightchat.io/api/v1/public/message', {
-        country_code: '+91',
-        phone_number: phoneNumber,
-        automation_id: 'd9725206-5614-4944-8d7f-a50c6634cb1f',
-        message_data: {
-          1: `${order.orderNumber}`,
-          2: `${finalAmount}`,
-          3: `${orderType}`,
-          4: `${orderItems.length}`
-        }
-      }, {
-        headers: {
-          'X-API-KEY': 'hJLHJuNA1Wn0GK0VozG0AsfFQ1M7FizrVRWfGdkcMEvR7j6s1bPgO1Db8e9Y91rUbAxduAbFiFLvAony',
-          'Content-Type': 'application/json'
-        }
-      });
-    }
+  
 
     const { firstname, lastname, email, phone, address } = shippingInfo;
 
@@ -1060,7 +1037,7 @@ const createOrder = asyncHandler(async (req, res) => {
 
     // Schedule a message after 3 hours
     setTimeout(() => {
-      msgAfter3hour(shippingInfo.firstname, order.orderNumber, shippingInfo.phone);
+      msgAfter3hour(shippingInfo.firstname, order.orderNumber, shippingInfo.email);
     }, 7200000);
 
     res.json({
@@ -1072,6 +1049,7 @@ const createOrder = asyncHandler(async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+
 const createAbondend = asyncHandler(async (req, res) => {
   const { shippingInfo, orderItems, totalPrice, finalAmount, shippingCost, orderType, discount, tag,isPartial } = req.body;
 
