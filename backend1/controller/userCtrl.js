@@ -826,7 +826,7 @@ const processOrder = async (orderItems) => {
 const sendDelivery = asyncHandler(async (req, res) => {
   const { name, ordernumber, email,orderId } = req.body;
   try {
-    sendEmail({to:`${email}`,subject:"Order Delivered: Your Order is Delivered!",text:"Order Delivered: Your Order is Delivered!",htmlContent : `
+    sendEmail({to:email,subject:"Order Delivered: Your Order is Delivered!",text:"Order Delivered: Your Order is Delivered!",htmlContent : `
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -887,7 +887,7 @@ const sendTracking = asyncHandler(async (req, res) => {
   try {
     const { name, ordernumber, partner, link, email,orderId } = req.body;
 
-    sendEmail({to:`${email}`,subject:"Celebratory Update: Your Order is on Route!",text:"Celebratory Update: Your Order is on Route!",htmlContent : `
+    sendEmail({to:email,subject:"Celebratory Update: Your Order is on Route!",text:"Celebratory Update: Your Order is on Route!",htmlContent : `
       <!DOCTYPE html>
       <html lang="en">
       <head>
