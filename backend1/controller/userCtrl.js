@@ -972,7 +972,7 @@ const createOrder = asyncHandler(async (req, res) => {
       const orderItemsString = orderItems.map((item) => {
         return `Name: ${item.product.title}, Color: ${item.color || ""}, Size: ${item.size || ""}`;
       }).join('\n');
-      
+      sendEmail({firstname:`${shippingInfo.firstname}`,orderNumber:`${order.orderNumber}`,finalAmount:`${finalAmount}`,items:orderItemsString,paymentMethod:`${orderType}`,address:`${shippingInfo.address} ${shippingInfo.city} ${shippingInfo.state} ${shippingInfo.pincode}`,to:`${shippingInfo.email}`})
 
       // Send confirmation message using DelightChat API
      if(isPartial===true){
