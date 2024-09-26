@@ -116,7 +116,8 @@ const getAllProduct = asyncHandler(async (req, res) => {
           });
           return;
         } else {
-          regexPattern = new RegExp(keyword, 'i');
+          regexPattern = new RegExp(`^${keyword}$`, 'i');
+
         }
 
         if (regexPattern) {
