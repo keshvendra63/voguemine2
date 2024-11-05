@@ -5,6 +5,56 @@ const Coupon2 = require("../models/couponModel2");
 const validateMongoDbId = require("../utils/validateMongodbId");
 const asynHandler = require("express-async-handler");
 
+const validateCoupon = async (req, res) => {
+  try {
+      const { name, totalAmount, customerType, cartItemCount, customerEmail } = req.body;
+
+      // Find the coupon based on the name and status
+      const coupon = await Coupon.findOne({
+          name: name.toUpperCase(),
+          status: "active",
+          customertype: customerType,
+      });
+
+      if (!coupon) return res.status(404).json({ message: "Coupon not found or inactive." });
+
+      // Check if the coupon is expired
+      if (moment().isAfter(moment(coupon.expiry))) {
+          return res.status(400).json({ message: "Coupon has expired." });
+      }
+
+      // Validate based on discount type
+      let discountAmount = 0;
+      let isValid = true;
+      
+      if (coupon.discounttype === "freeShip") {
+          discountAmount = 0;
+      } else if (coupon.discounttype === "buyX") {
+          if (coupon.minItem && cartItemCount >= coupon.minItem) {
+              discountAmount = coupon.discount.includes("%") 
+                  ? (parseFloat(coupon.discount) / 100) * totalAmount 
+                  : parseInt(coupon.discount);
+          } else {
+              isValid = false;
+          }
+      } else if (coupon.discounttype === "order") {
+          discountAmount = coupon.discount.includes("%") 
+              ? (parseFloat(coupon.discount) / 100) * totalAmount 
+              : parseInt(coupon.discount);
+      }
+
+      if (isValid) {
+          res.status(200).json({ message: "Coupon valid", discountAmount, discountType: coupon.discounttype });
+      } else {
+          res.status(400).json({ message: "Coupon criteria not met." });
+      }
+
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 const createCoupon = asynHandler(async (req, res) => {
   try {
     const newCoupon = await Coupon.create(req.body);
@@ -150,6 +200,7 @@ const getCoupon2 = asynHandler(async (req, res) => {
   }
 });
 module.exports = {
+  validateCoupon,
   createCoupon,
   getAllCoupons,
   updateCoupon,
