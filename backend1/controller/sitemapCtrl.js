@@ -1,59 +1,69 @@
 const express = require('express');
 const { SitemapStream, streamToPromise } = require('sitemap');
 const { Readable } = require('stream');
-const Product=require('../models/productModel');
-const Collection  = require('../models/collectionModel');
-const Blog  = require('../models/blogModel');
+const Product = require('../models/productModel');
+const Collection = require('../models/collectionModel');
+const Blog = require('../models/blogModel');
 
 const router = express.Router();
 
-// Assuming you have a way to fetch URLs from your database
+// Function to fetch and prepare URLs
 async function getAllUrls() {
     const products = await Product.find({}).select('handle -_id'); // Fetching product slugs
-    const collections = await Collection.find({}).select('handle -_id'); 
+    const collections = await Collection.find({}).select('handle -_id');
     const blogs = await Blog.find({}).select('handle -_id');
-    const pages=[
-        {page:"https://voguemine.com/"},        
-        {page:"https://voguemine.com/home"},
-        {page:"https://voguemine.com/men"},
-        {page:"https://voguemine.com/women"},
-        {page:"https://voguemine.com/kids"},
-        {page:"https://voguemine.com/accessories"},
-        {page:"https://voguemine.com/about"},
-        {page:"https://voguemine.com/pages/contact"},
-        {page:"https://voguemine.com/blogs"},
-        {page:"https://voguemine.com/pages/shipping-policy"},
-        {page:"https://voguemine.com/pages/refund-and-return-policy"},
-        {page:"https://voguemine.com/pages/terms-of-service"},
-        {page:"https://voguemine.com/pages/privacy-policy"},
 
-    ] // Fetching category slugs
-    // Fetching category slugs
-    const urls = products.map(prod => ({ url: `/products/${prod.handle}`, changefreq: 'daily', priority: 0.9 }))
-        .concat(collections.map(col => ({ url: `/collections/${col.handle}`, changefreq: 'weekly', priority: 0.5 })))
-        .concat(blogs.map(blog => ({ url: `/blogs/news/${blog.handle}`, changefreq: 'weekly', priority: 0.4 })))
-        .concat(pages.map(page=>({ url: `${page.page}`, changefreq: 'monthly', priority: 1})))
+    const pages = [
+        { url: "/", changefreq: "monthly", priority: 1 },
+        { url: "/home", changefreq: "monthly", priority: 1 },
+        { url: "/men", changefreq: "monthly", priority: 1 },
+        { url: "/women", changefreq: "monthly", priority: 1 },
+        { url: "/kids", changefreq: "monthly", priority: 1 },
+        { url: "/accessories", changefreq: "monthly", priority: 1 },
+        { url: "/about", changefreq: "monthly", priority: 1 },
+        { url: "/pages/contact", changefreq: "monthly", priority: 0.8 },
+        { url: "/blogs", changefreq: "weekly", priority: 0.6 },
+        { url: "/pages/shipping-policy", changefreq: "monthly", priority: 0.5 },
+        { url: "/pages/refund-and-return-policy", changefreq: "monthly", priority: 0.5 },
+        { url: "/pages/terms-of-service", changefreq: "monthly", priority: 0.5 },
+        { url: "/pages/privacy-policy", changefreq: "monthly", priority: 0.5 },
+    ];
 
-  
-    return urls;
-  }
-const siteMap=async (req, res, next) => {
-  try {
-    const links = await getAllUrls(); // This should return an array of URLs
-    const sitemapStream = new SitemapStream({ hostname: 'https://voguemine.com' });
+    // Combine URLs into a single array
+    const allUrls = [
+        ...products.map(prod => ({ url: `/products/${prod.handle}`, changefreq: "daily", priority: 0.9 })),
+        ...collections.map(col => ({ url: `/collections/${col.handle}`, changefreq: "weekly", priority: 0.7 })),
+        ...blogs.map(blog => ({ url: `/blogs/news/${blog.handle}`, changefreq: "weekly", priority: 0.6 })),
+        ...pages,
+    ];
 
-    res.writeHead(200, {
-      'Content-Type': 'application/xml'
-    });
+    // Deduplicate URLs using a Map
+    const uniqueUrls = Array.from(
+        new Map(allUrls.map(item => [item.url, item])).values()
+    );
 
-    const xmlStream = Readable.from(links).pipe(sitemapStream).pipe(res);
-
-    xmlStream.on('error', (e) => {
-      throw e;
-    });
-  } catch (e) {
-    next(e);
-  }
+    return uniqueUrls;
 }
 
-module.exports = {siteMap}
+// Sitemap Route Handler
+const siteMap = async (req, res, next) => {
+    try {
+        const links = await getAllUrls(); // Fetch unique URLs
+        const sitemapStream = new SitemapStream({ hostname: "https://voguemine.com" });
+
+        res.writeHead(200, {
+            "Content-Type": "application/xml"
+        });
+
+        // Stream the sitemap
+        Readable.from(links).pipe(sitemapStream).pipe(res);
+
+        sitemapStream.on("error", (e) => {
+            throw e;
+        });
+    } catch (e) {
+        next(e);
+    }
+};
+
+module.exports = { siteMap };
