@@ -44,6 +44,9 @@ var productSchema = new mongoose.Schema(
       type:String,
       required:true,
     },
+    collectionHandle:{
+      type:String,
+    },
     sold: {
       type: Number,
       default: 0,
